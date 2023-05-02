@@ -2,13 +2,13 @@
 <resources>
     <string name="app_name">Fox Magisk Module Manager</string>
     <string name="app_name_short">Fox Mmm</string>
-    <string name="fail_root_magisk">Impossibile ottenere l\'accesso al Root o a Magisk</string>
+    <string name="fail_root_magisk">Impossibile ottenere l\'accesso root</string>
     <string name="loading">Caricamento…</string>
     <string name="updatable">Aggiornamento disponibile</string>
     <string name="installed">Installato</string>
     <string name="online_repo">Repository Online</string>
     <string name="showcase_mode">L\'applicazione è in modalità protetta </string>
-    <string name="failed_download">Scaricamento del file non riuscito</string>
+    <string name="failed_download">Impossibile scaricare il file</string>
     <string name="slow_modules">L\'avvio dei moduli è lento, prova a disabilitarne alcuni</string>
     <string name="fail_internet">Impossibile connettersi a internet</string>
     <string name="no_web_view">Impossibile aprire il WebView di sistema</string>
@@ -64,7 +64,7 @@
     <string name="pref_category_settings">Impostazioni</string>
     <string name="enable_monet">Abilita Monet</string>
     <string name="pref_category_info">Informazioni</string>
-    <string name="show_licenses">Mostra le licenze</string>
+    <string name="show_licenses">Mostra licenze</string>
     <string name="licenses">Licenze</string>
     <string name="show_incompatible_pref">Mostra moduli incompatibili</string>
     <string name="show_incompatible_desc">Mostra i moduli che in base ai metadati sono incompatibili con il tuo dispositivo</string>
@@ -402,4 +402,6 @@
     <string name="language_not_available">La lingua %s non è ancora stata tradotta. Vuoi aiutare a farlo\?</string>
     <string name="blur_desc">Crea un effetto di sfocatura dietro ad alcuni elementi. Ricorda che questo effetto visivo potrebbe influire negativamente su alcuni dispositivi, o addirittura non funzionare su alcuni.</string>
     <string name="error_encrypted_shared_preferences">Non è stato possibile determinare le preferenze condivise. Ripristina la app.</string>
+    <string name="eula_sum">Accetto l\'EULA e Licenza</string>
+    <string name="setup_scroll_down_v2">Per abilitare il pulsante Fine, scorri fino in fondo e conferma di aver letto e accettato l\'EULA e le licenze.</string>
 </resources>

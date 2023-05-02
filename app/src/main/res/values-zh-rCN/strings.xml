@@ -398,4 +398,8 @@
     <string name="donate_androidacy_sum">购买 Androidacy premium 订阅以支持应用和仓库。</string>
     <string name="promo_code_copied">使用复制的代码，第一个月可享受半价优惠！</string>
     <string name="warning_pls_restart">请注意，某些设置可能在您重新启动应用程序后才会生效。</string>
+    <string name="reinstall">重新安装</string>
+    <string name="eula_sum">我同意 EULA 和许可</string>
+    <string name="setup_scroll_down_v2">要启用完成按钮，请滚动到底部并确认您已阅读并同意 EULA 和许可。</string>
+    <string name="eula_agree_v2">您同意接受 LGPL-3.0 (https://www.gnu.org/licenses/lgpl-3.0.en.html) 证书和 EULA (https://www.androidacy.com/foxmmm-eula/), 除任何第三方条款外，本应用程序的作者对您的使用不承担任何责任，我们也不提供任何明示或暗示的保证。</string>
 </resources>
