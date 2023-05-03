@@ -63,21 +63,21 @@
     <string name="remote_install_title">Vzdálená instalace</string>
     <string name="file_picker_wierd">Vybraný soubor vrátil nestandartní odpověď.</string>
     <string name="use_magisk_install_command_pref">Použít příkaz instalaci modulu Magisk</string>
-    <string name="use_magisk_install_command_desc">
-        Počas testu instalace modulu se vyskytla chyba, proto jsem schoval tuto možnost do módu pro vývojáře,
-		povolte to jen na vlastní riziko!
-    </string>
+    <string name="use_magisk_install_command_desc">Počas testu instalace modulu se vyskytla chyba, proto jsem schoval tuto možnost do módu pro vývojáře. 
+\nPovolte to jen na vlastní riziko!</string>
     <string name="dev_mode_enabled">Povolen režim pro vývojáře</string>
     <string name="force_english_pref">Vynutit Angličtinu</string>
     <string name="disable_low_quality_module_filter_pref">Zakázat filter nekvalitních modulov</string>
-    <string name="disable_low_quality_module_filter_desc">Některé moduly deklarují svá metadata nesprávně, co může spůsobit závady zobrazení, nebo ukazují nízkou kvalitu modulu, povolte to jen na vlastní riziko!</string>
+    <string name="disable_low_quality_module_filter_desc">Některé moduly deklarují svá metadata nesprávně, co může spůsobit závady zobrazení, nebo ukazují nízkou kvalitu modulu. 
+\nPovolte to jen na vlastní riziko!</string>
     <string name="dns_over_https_pref">Dns přes https</string>
     <string name="dns_over_https_desc">
         V některých případech může opravit problémy s připojením.
         (Nevztahuje se na WebView)
     </string>
     <string name="disable_extensions_pref">Zakázat rozšíření</string>
-    <string name="disable_extensions_desc">Zakáže-li se rozšíření Fox\'s Mmm, zabrání se modulům použít terminal extensions, užitečné používa-li modul rozšíření Fox\'s Mmm nesprávně.</string>
+    <string name="disable_extensions_desc">Zakáže-li se rozšíření Fox\'s Mmm, zabrání se modulům použít terminal extensions. 
+\nUžitečné používá-li modul rozšíření Fox\'s Mmm nesprávně.</string>
     <string name="wrap_text_pref">Zalomit text</string>
     <string name="wrap_text_desc">
         Zalomí text do nové řadky, místo toho
@@ -289,7 +289,7 @@
     <string name="crash_details">Neznámá příčina</string>
     <string name="more_details">Více podrobností níže.</string>
     <string name="crash_details_copied">Stacktrace zkopírován do schránky!</string>
-    <string name="crash_full_stacktrace">Stacktrace:
+    <string name="crash_full_stacktrace">Stacktrace: 
 \n%1$s</string>
     <string name="sentry_enable_nag">Vypadá to, že hlášení o selhání je zakázáno. Chcete-li odeslat zpětnou vazbu, povolte jej.</string>
     <string name="reset_app">Resetovat aplikaci</string>
@@ -368,4 +368,32 @@
     <string name="clear_cache_dialogue_title">Smazat cache aplikace\?</string>
     <string name="clear_cache_dialogue_message">Tím se vymaže cache aplikace. Vaše předvolby budou uloženy, ale aplikace se může dočasně spomalit.</string>
     <string name="certificate_error">Certifikát serveru se nepodařilo ověřit. Ujistěte se, že nic nezachycuje připojení HTTPS pro FoxMMM.</string>
+    <string name="pref_category_privacy">Soukromí</string>
+    <string name="crash_reporting_pii_desc">Umožňuje odesílání dalších informací ve zprávách o selhání, z nichž některé mohou obsahovat osobní údaje, jako je IP adresa nebo identifikátory zařízení.</string>
+    <string name="crash_reporting_pii">Zaslat další informace</string>
+    <string name="setup_crash_reporting_pii">Poslat doplňující informace ve zprávách o selhání.</string>
+    <string name="empty_field">Je vyžadováná URL</string>
+    <string name="repo_already_added">Repozitář už existuje.</string>
+    <string name="showcase_mode_dialogue_message">K aktivaci režimu prezentace je vyžadován restart aplikace.</string>
+    <string name="other_section">Jiné</string>
+    <string name="analytics_desc">Umožněte nám sledovat používání a instalace aplikací. Plně kompatibilní s GDPR a používá Matomo, hostované společností Androidacy.</string>
+    <string name="announcements">Novinky a aktualizace</string>
+    <string name="debug_cat">Ladění</string>
+    <string name="back">Zpátky</string>
+    <string name="reinstall">Přeinstalovat</string>
+    <string name="eula_sum">Souhlasím s EULA a licencí</string>
+    <string name="setup_scroll_down_v2">Chcete-li aktivovat tlačítko Dokončit, přejděte dolů a potvrďte, že jste si přečetli a souhlasíte s EULA a licencí (licencemi).</string>
+    <string name="setup_crash_reporting_pii_summary">To může zahrnovat identifikátory zařízení a IP adresy. Žádná data nebudou použita pro jiné účely kromě analýzy selhání a zlepšování výkonu.</string>
+    <string name="error_creating_cookie_database">Chyba při přístupu k WebView. Může být ovlivněna funkčnost.</string>
+    <string name="setup_scroll_down">Chcete-li aktivovat tlačítko Dokončit, přejděte dolů a zobrazte všechny možnosti.</string>
+    <string name="eula_agree">Kliknutím na tlačítko Dokončit souhlasíte s tím, že budete vázáni licencí LGPL-3.0 (https://www.gnu.org/licenses/lgpl-3.0.en.html) a smlouvou EULA (https://www.androidacy.com /foxmmm-eula/)</string>
+    <string name="eula_agree_v2">Souhlasíte s tím, že budete vázáni licencí LGPL-3.0 (https://www.gnu.org/licenses/lgpl-3.0.en.html) a smlouvou EULA (https://www.androidacy.com/foxmmm-eula/ )a taky podmínek třetích stran, a že autoři této aplikace nenesou žádnou odpovědnost za použití, ani neposkytujeme žádné výslovné ani předpokládané záruky.</string>
+    <string name="donate_androidacy_sum">Kupte si prémiové předplatné Androidacy pro podporu aplikace a repo.</string>
+    <string name="donate_fox">Přispějte Fox2Code-ovi</string>
+    <string name="donate_androidacy">Přispějte společnosti Androidacy</string>
+    <string name="promo_code_copied">Použijte zkopírovaný kód s poloviční slevou za první měsíc!</string>
+    <string name="warning_pls_restart">Upozorňujeme, že některá nastavení se nemusí projevit, dokud aplikaci nerestartujete.</string>
+    <string name="language_not_available">Jazyk %s nebyl přeložen. Pomůžete nám s překladem\?</string>
+    <string name="blur_desc">Vytváří efekt rozostření za některými dialogy a prvky. Pamatujte, že rozostření nemusí fungovat správně na některých zařízeních a nemusí fungovat u všech.</string>
+    <string name="error_encrypted_shared_preferences">Při čtení sdílených předvoleb došlo k chybě. Resetujte aplikaci.</string>
 </resources>

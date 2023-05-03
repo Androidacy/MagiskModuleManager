@@ -1,0 +1,4 @@
+Tato aplikace není oficiálně podporována společností Magisk ani jejími vývojáři.
+
+Moduly zobrazené v této aplikaci nejsou spojeny s touto aplikací. Prosím kontaktujte
+místo toho autory repozitářů.

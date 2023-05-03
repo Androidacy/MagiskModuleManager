@@ -1,0 +1,1 @@
+Správce modulů pro Magisk místo původního v aplikaci , který byl ukončen.
