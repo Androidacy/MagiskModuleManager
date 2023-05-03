@@ -402,6 +402,8 @@
     <string name="language_not_available">La lingua %s non è ancora stata tradotta. Vuoi aiutare a farlo\?</string>
     <string name="blur_desc">Crea un effetto di sfocatura dietro ad alcuni elementi. Ricorda che questo effetto visivo potrebbe influire negativamente su alcuni dispositivi, o addirittura non funzionare su alcuni.</string>
     <string name="error_encrypted_shared_preferences">Non è stato possibile determinare le preferenze condivise. Ripristina la app.</string>
-    <string name="eula_sum">Accetto l\'EULA e Licenza</string>
+    <string name="eula_sum">Accetto l\'EULA e la Licenza</string>
     <string name="setup_scroll_down_v2">Per abilitare il pulsante Fine, scorri fino in fondo e conferma di aver letto e accettato l\'EULA e le licenze.</string>
+    <string name="reinstall">Reinstalla</string>
+    <string name="eula_agree_v2">Accetti di essere vincolato dalla licenza LGPL-3.0 (https://www.gnu.org/licenses/lgpl-3.0.en.html) e dall\'EULA (https://www.androidacy.com/foxmmm-eula/ ), oltre a qualsiasi termine di terze parti, e che gli autori di questa app non si assumono alcuna responsabilità per il suo utilizzo, né offrono alcuna garanzia espressa o implicita.</string>
 </resources>

@@ -1,0 +1,1 @@
+Un gestore di moduli per Magisk perché l'app ufficiale ha abbandonato il supporto.
