@@ -242,4 +242,28 @@
     <string name="low_performance_device_dialogue_message">Estás intentando activar el desenfoque en un dispositivo que puede no funcionar bien con él. 
 \nPuedes activarlo, pero esto puede dar lugar a una mala experiencia de usuario y te recomendamos que no lo hagas.</string>
     <string name="androidacy_thanks_desc">Un gran agradecimiento a Androidacy por su integración y contribuciones a la aplicación.</string>
+    <string name="zip_unpacking">Inspeccionando módulo…</string>
+    <string name="pref_category_contributors">Colaboradores</string>
+    <string name="fox2code_thanks_desc">Fox2Code es el creador original de la aplicación. Sin él, esto nunca habría sido posible.</string>
+    <string name="fox2code_thanks">Creado por Fox2Code</string>
+    <string name="save_logs">Guarde los registros y compartalos</string>
+    <string name="error_saving_logs">No se han podido guardar los registros</string>
+    <string name="share_logs">Compartir registros de FoxMMM</string>
+    <string name="not_official_build">Esta aplicación es una versión no oficial de FoxMMM.</string>
+    <string name="repo_update_failed_message">Los siguientes repositorios no se han actualizado:
+\n
+\n%s</string>
+    <string name="reset_api_key">Restablecer claves API</string>
+    <string name="upgrade_androidacy_promo">Actualizar a premium</string>
+    <string name="upgrade_androidacy_promo_desc">Actualizar a premium eliminará anuncios, captchas, y descargas para el Repositorio de Androidacy, y apoyará a Androidacy y a los autores de los módulos.</string>
+    <string name="crash_text">¡Uh-oh, nos hemos topado con un obstáculo!</string>
+    <string name="contributors">Y, por supuesto, gracias a todos nuestros colaboradores, ya sea por las traducciones, el código o simplemente porque es divertido pasar el rato con ellos. Los queremos a todos.</string>
+    <string name="warning_message">Este módulo tiene indicadores de que puede haber sido instalado sin su consentimiento, o puede estar intentando ocultarse.
+\n
+\nSe recomienda encarecidamente su desinstalación.</string>
+    <string name="understand">Entiendo</string>
+    <string name="setup_theme_title">Elegir tema</string>
+    <string name="setup_language_button">Elegir idioma</string>
+    <string name="title_activity_setup">Asistente de configuración</string>
+    <string name="action_settings">Ajustes</string>
 </resources>

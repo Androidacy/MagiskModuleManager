@@ -199,7 +199,7 @@
     <string name="monet_disabled_summary">Monet tidak kompatibel dengan tema-tema transparen.</string>
     <string name="blur_disabled_summary">Blur tidak kompatibel dengan tema-tema transparen.</string>
     <string name="transparent_theme_dialogue_title">Anda menyetel tema yang transparen</string>
-    <string name="transparent_theme_dialogue_message">Tema transparen mungkin tidak konsisten dan mungkin tidak akan bekerja di semua ROM. Selain itu, monet dan blur akan dimatikan. Anda bisa mengganti kembali kapan saja.</string>
+    <string name="transparent_theme_dialogue_message">Tema transparan mungkin beberapa inkonsistensi dan tidak akan berjalan di semua ROM. Selain itu, monet dan blur akan dinonaktifkan. Anda bisa mengubah kembali kapan saja.</string>
     <string name="custom_repo_always_on">Repo custom selalu nyala sampai anda menghapusnya.</string>
     <string name="sentry_dialogue_message">Kami menemukan kesalahan! Mohon bantu kami meningkatkan aplikasi inni
         dengan menambahkan beberapa informasi tentang kesalahan dibawah ini.\nNama dan email tidak perlu diisi tetapi akan
@@ -230,14 +230,14 @@
     <string name="setup_magisk_alt_repo">Nyalakan Magisk Alt Repo</string>
     <string name="setup_magisk_alt_repo_summary">Restriksi lebih ringan dari repo asli. Memiliki banyak modul-modul tetapi mengorbankan keamanan.</string>
     <string name="setup_crash_reporting">Nyalakan Sentry</string>
-    <string name="setup_crash_reporting_summary">Laporan kesalahan dan perfoma. Semua laporan anonim dan bersifat rahasia.</string>
+    <string name="setup_crash_reporting_summary">Laporan kerusakan dan pemantauan perfoma. Semua laporan bersifat anonim dan rahasia.</string>
     <string name="setup_custom_repos">Anda bisa menambah repo custom nanti di pengaturan.</string>
     <string name="repos">Repos</string>
     <string name="misc">Lain-lain</string>
     <string name="setup_button_skip">Lewati</string>
     <string name="low_performance_device_dialogue_title">Menyalakan blur di perangkat kelas rendah</string>
     <string name="low_performance_device_dialogue_message">Anda mencoba menyalakan blur di perangkat yang kemungkinan tidak berperfoma baik dengan ini.\nAnda bisa menyalakannya, tetapi ini bisa memperburuk pengalaman penggunaan dan sebaiknya anda tidak menyalakannya.</string>
-    <string name="alt_repo_info">Repo ini memiliki lebih sedikit restriksi dan ulasan, akibatknya memiliki modul-modul berkualitas rendah. Sangat kekurangan fitur tetapi mempunyai banyak modul.</string>
+    <string name="alt_repo_info">Repo ini memiliki lebih sedikit batasan dan ulasan, yang memungkinkan terdapat modul-modul berkualitas rendah. Cukup sederhana tetapi memiliki banyak modul.</string>
     <string name="install_terminal_reboot_now_message">Anda akan memuat ulang perangkat anda. Jika anda sudah menyimpan pekerjaan anda, pencet OK untuk lanjut. Jika tidak, pencet Batal.</string>
     <string name="install_terminal_config_missing">Package %s tidak mempunyai konfigurasi modul, jadi kami tidak dapat meluncurkannya.</string>
     <string name="clear_app_data">Hapus data aplikasi</string>
@@ -405,4 +405,13 @@
     <string name="language_not_available">Bahasa %s belum diterjemahkan. Bantu terjemahkan\?</string>
     <string name="blur_desc">Mengaktifkan efek buram di belakang beberapa dialog dan elemen. Perlu dicatat bahwa efek buram mungkin tidak bekerja dengan baik di beberapa perangkat dan mungkin tidak dapat berfungsi untuk semua orang.</string>
     <string name="error_encrypted_shared_preferences">Terjadi kesalahan ketika membaca Shared Preferences. Mohon muat ulang atau pasang ulang aplikasi.</string>
+    <string name="reinstall">Install ulang</string>
+    <string name="eula_agree_v2">Anda setuju untuk terikat pada lisensi LGPL-3.0 (https://www.gnu.org/licenses/lgpl-3.0.en.html) dan EULA (https://www.androidacy.com/foxmmm-eula/), disamping persyaratan pihak ketiga manapun, dan sadar bahwa pembuat aplikasi ini tidak bertanggungjawab atas penggunaan aplikasi ini oleh anda, serta tidak memberikan jaminan apapun, baik tersurat maupun tersirat.</string>
+    <string name="eula_sum">Saya setuju pada EULA dan Lisensi</string>
+    <string name="setup_scroll_down_v2">Untuk mengaktifkan tombol selesai, gulir ke bagian bawah dan nyatakan bahwa anda telah membaca dan menyetujui EULA dan lisensi.</string>
+    <string name="donate_androidacy">Donasi untuk Androidacy</string>
+    <string name="donate_androidacy_sum">Beli langganan premium kepada Androidacy untuk mendukung aplikasi dan repo.</string>
+    <string name="promo_code_copied">Gunakan kode yang disalin untuk mendapatkan potongan setengah harga di bulan pertama anda!</string>
+    <string name="warning_pls_restart">Harap perhatikan bahwa beberapa setelan mungkin tidak diterapkan sampai anda memulai ulang aplikasi.</string>
+    <string name="donate_fox">Donasi untuk Fox2Code</string>
 </resources>

@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <string name="app_name">Fox 的 Magisk 模組管理器</string>
+    <string name="app_name">Foxs_Magisk模組管理工具</string>
     <string name="app_name_short">Fox\'s Mmm</string>
-    <string name="fail_root_magisk">無法取得 ROOT 權限或您並沒有裝 Magisk</string>
+    <string name="fail_root_magisk">無法取得 ROOT 權限或您並沒有正確的安裝 Magisk</string>
     <string name="loading">讀取中請稍後…</string>
-    <string name="updatable">可更新</string>
+    <string name="updatable">可用的更新</string>
     <string name="installed">已安裝</string>
     <string name="online_repo">線上倉庫</string>
     <string name="showcase_mode">目前處於鎖定模式</string>
@@ -14,7 +14,7 @@
     <string name="no_web_view">無法開啟系統內的 WebView</string>
     <string name="title_activity_settings">設定活動</string>
     <string name="app_update_available">可用的應用程式更新</string>
-    <string name="app_update">更新</string>
+    <string name="app_update">更新應用程式</string>
     <string name="no_desc_found">沒有安裝說明</string>
     <string name="download_module">下載模組</string>
     <string name="install_module">安裝模組</string>
@@ -33,8 +33,8 @@
     <string name="sniffed_modules">檢查模組更新</string>
     <string name="sniffing_modules">檢查模組更新中</string>
     <string name="submit_modules">提交一個模組</string>
-    <string name="require_android_6">需要 Android 6.0 或更新的版本</string>
-    <string name="require_android_12">需要 Android 12 或更新的版本</string>
+    <string name="require_android_6">需要 Android 版本高於 6.0</string>
+    <string name="require_android_12">需要 Android 版本高於12.0</string>
     <string name="install_terminal_reboot_now">重新啟動</string>
     <string name="language">語言</string>
     <!-- Module section translation -->
@@ -58,7 +58,7 @@
     <string name="prevent_reboot_pref">防止重啟</string>
     <string name="prevent_reboot_desc">開啟後將防止意外重啟系統</string>
     <string name="pref_category_settings">設定</string>
-    <string name="enable_monet">啟用 Monet</string>
+    <string name="enable_monet">啟用莫奈取色</string>
     <string name="pref_category_info">訊息</string>
     <string name="show_licenses">顯示開放原始碼許可</string>
     <string name="licenses">開放原始碼許可</string>
@@ -134,7 +134,7 @@
     <!-- Replace with your own username when translating -->
     <string name="language_translated_by">由 OrStudio.tw(@crcky5322), ProtoAES256 提供美妙的翻譯</string>
     <!-- Form ender-zhao replenish, may not be standard. some translate need local Taiwan resident change -->
-    <string name="fail_magisk_missing">此設備上未安裝 Magisk</string>
+    <string name="fail_magisk_missing">此設備上未正確的安裝 Magisk</string>
     <string name="fail_root_denied">Root 權限被 Magisk 拒絕授予</string>
     <string name="setup_button">完成</string>
     <string name="crash">程式手動崩潰測試</string>

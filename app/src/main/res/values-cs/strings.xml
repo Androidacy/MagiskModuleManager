@@ -359,4 +359,13 @@
     <string name="yer_a_wizard_harry">Jsi čaroděj, Harry!</string>
     <string name="no_browser">Nemáte nainstalován prohlížeč. Pro pokračování nejaký nainstalujte.</string>
     <string name="setup_background_update_check_require_wifi">Pro kontrolu aktualizací vyžadovat WiFi</string>
+    <string name="setup_background_update_check_require_wifi_summary">K provádění kontrol aktualizací využívat WiFi nebo jiné neměřené připojení</string>
+    <string name="setup_app_analytics">Povolit analýzu aplikací</string>
+    <string name="clear_app_cache">Vyzmazat cache aplikace</string>
+    <string name="clear_app_cache_desc">Obvykle by to nebývá nutné, ale může pomoci vyřešit některé problémy.</string>
+    <string name="cache_cleared">Cache úspěšně smazána</string>
+    <string name="cache_clear_failed">Chyba pri mazání cache</string>
+    <string name="clear_cache_dialogue_title">Smazat cache aplikace\?</string>
+    <string name="clear_cache_dialogue_message">Tím se vymaže cache aplikace. Vaše předvolby budou uloženy, ale aplikace se může dočasně spomalit.</string>
+    <string name="certificate_error">Certifikát serveru se nepodařilo ověřit. Ujistěte se, že nic nezachycuje připojení HTTPS pro FoxMMM.</string>
 </resources>

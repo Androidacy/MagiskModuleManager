@@ -137,7 +137,7 @@
     <integer name="language_support_level">1</integer>
     <string name="language_support_outdated">当前语言的一些翻译不是最新的， 请考虑在 GitHub 上为应用程序的翻译做出贡献</string>
     <!-- Replace with your own username when translating -->
-    <string name="language_translated_by">简体中文由 ender-zhao &amp; ycx 翻译</string>
+    <string name="language_translated_by">简体中文由 Z-Siqi &amp; ycx 翻译</string>
     <string name="crash_reporting">自动向开发人员报告错误和性能</string>
     <string name="crash_reporting_desc">如果禁用此功能，开发人员将不会收到自动错误报告，这可能会使故障排除变得困难</string>
     <string name="api_key">Androidacy API 密钥</string>
@@ -245,14 +245,14 @@
     <string name="androidacy_update_needed">此应用程序已过期。</string>
     <string name="androidacy_update_needed_message">请更新应用至最新版本。</string>
     <string name="androidacy_webview_update_required">您的 Webview 已过期！请更新它。</string>
-    <string name="language_cta">这儿没有你使用的语言？</string>
+    <string name="language_cta">没有看见你使用的语言？</string>
     <string name="language_cta_desc">帮助我们翻译它！点击这里了解更多。</string>
     <string name="source_code_summary"><b>Commit</b> %1$s @ %2$s</string>
     <string name="no_file_provided">尝试打开 zip 时未提供文件。</string>
     <string name="zip_load_failed">无法加载 zip 文件</string>
     <string name="androidacy_thanks">部分由 Androidacy 开发</string>
     <string name="androidacy_thanks_desc">对 Androidacy 的集成和对应用程序的贡献大加赞赏。</string>
-    <string name="contributors">当然，感谢我们所有的贡献者，无论是翻译、代码，或只是为了好玩！我们爱你们所有人。</string>
+    <string name="contributors">当然，无论是为了翻译、代码，或只是觉得好玩，感谢我们的所有贡献者！爱你们所有人。</string>
     <string name="zip_intent_module_install">你确定要从 ZIP 文件 \"%1$s\" 安装模块 \"%2$s\" 吗？
 \n
 \n请确认你信任此模块的来源，因为模块具有很强大的破坏性，它几乎可以做任何事情。</string>
@@ -399,7 +399,7 @@
     <string name="promo_code_copied">使用复制的代码，第一个月可享受半价优惠！</string>
     <string name="warning_pls_restart">请注意，某些设置可能在您重新启动应用程序后才会生效。</string>
     <string name="reinstall">重新安装</string>
-    <string name="eula_sum">我同意 EULA 和许可</string>
-    <string name="setup_scroll_down_v2">要启用完成按钮，请滚动到底部并确认您已阅读并同意 EULA 和许可。</string>
+    <string name="eula_sum">我同意 EULA 和License</string>
+    <string name="setup_scroll_down_v2">在完成设置前，您必须勾选底部的按钮并确认您已阅读并同意 EULA 和License。</string>
     <string name="eula_agree_v2">您同意接受 LGPL-3.0 (https://www.gnu.org/licenses/lgpl-3.0.en.html) 证书和 EULA (https://www.androidacy.com/foxmmm-eula/), 除任何第三方条款外，本应用程序的作者对您的使用不承担任何责任，我们也不提供任何明示或暗示的保证。</string>
 </resources>
