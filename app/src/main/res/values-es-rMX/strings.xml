@@ -96,7 +96,8 @@
     <string name="remote_install_title">Instalación remota</string>
     <string name="file_picker_wierd">Su administrador de archivos retorno una respuesta no esperada.</string>
     <string name="use_magisk_install_command_pref">Usa el siguiente comando: \"magisk —install-module\"</string>
-    <string name="use_magisk_install_command_desc">Durante las pruebas causó problemas a la herramienta de diagnóstico de errores de instalación de módulo, así que escondí esta opción en el modo desarrollador, actívala bajo tu propio riesgo!</string>
+    <string name="use_magisk_install_command_desc">Durante las pruebas causó problemas a la herramienta de diagnóstico de errores de instalación de módulo, así que escondí esta opción en el modo desarrollador.
+\nActívala bajo tu propio riesgo!</string>
     <string name="dev_mode_enabled">Modo desarrollador activado</string>
     <string name="dev_mode_disabled">Modo desarrollador desactivado</string>
     <string name="force_english_pref">Forzar el idioma al Inglés</string>
@@ -132,7 +133,7 @@
     <string name="notification_update_title_easter_egg">Se detectaron %i actualizaciones</string>
     <string name="notification_update_subtitle">Abrir en la aplicación</string>
     <string name="notification_update_pref">Comprobación automática de actualización de módulos en segundo plano</string>
-    <string name="notification_update_desc">Puede aumentar el consumo de la bateria</string>
+    <string name="notification_update_desc">Puede aumentar el consumo de la batería</string>
     <string name="notification_update_debug_pref">Notificación de prueba</string>
     <!-- Set to true in translation file if your language is right to left -->
     <bool name="lang_support_rtl">false</bool>
@@ -317,7 +318,7 @@
     <string name="install_terminal_config_missing">Falta el paquete %s para configuración del módulo, por lo que no podemos iniciarlo.</string>
     <string name="setup_crash_reporting_summary">Reporte de fallos y monitoreo del rendimiento. Todos los reportes son estrictamente anónimos y confidenciales.</string>
     <string name="low_performance_device_dialogue_title">Activar desenfoque en dispositivo de gama baja</string>
-    <string name="setup_theme_transparent_light">Tema transparente claro - desactivará monet y desenfoque!</string>
+    <string name="setup_theme_transparent_light">Tema transparente claro - desactivará monet y blur!</string>
     <string name="error_no_action">ERROR: Acción inválida especificada. Negarse a continuar.</string>
     <string name="error_no_asset">ERROR: No se pudo analizar la información de actualización</string>
     <string name="reset_api_key">Restablecer claves API</string>
@@ -332,4 +333,51 @@
     <string name="notification_update_app_pref">Comprobar actualizaciones de la aplicación</string>
     <string name="setup_app_analytics">Permitir análisis de aplicación</string>
     <string name="notification_update_app_desc">Active la comprobación automática de las actualizaciones de aplicaciones. Las actualizaciones no se descargarán automáticamente.</string>
+    <string name="blur_disabled_summary">Blur no es compatible con temas transparentes.</string>
+    <string name="repo_update_failed_extended">La actualización de %1$s falló. Por favor, inténtelo de nuevo más tarde.</string>
+    <string name="transparent_theme_dialogue_message">Los temas transparentes pueden tener algunas inconsistencias y es posible que no funcionen en todas las ROMs. Además, se desactivarán monet y blur. Puede volver a cambiar en cualquier momento.</string>
+    <string name="sentry_dialogue_message">Encontramos un error! Ayúdenos a mejorar la aplicación agregando información sobre el error a continuación.
+\nEl nombre y el correo electrónico son opcionales, pero nos permitirán comunicarnos con usted si es necesario para obtener más información.</string>
+    <string name="pref_pkg_info_summary">%1$s v%2$s (%3$d) | %4$s Compilar</string>
+    <string name="api_key_restart">La clave API ha sido cambiada. Reinicie la aplicación para aplicar los cambios.</string>
+    <string name="permission_notification_message">Necesitamos el permiso de notificaciones para notificarle sobre actualizaciones de aplicaciones y módulos. Si no concede este permiso, no se ejecutarán las comprobaciones de las actualizaciones automáticas.</string>
+    <string name="force_black_theme_desc">Fuerza fondos AMOLED negros cuando se usa un tema oscuro. Tenga en cuenta que esto puede tener problemas de contraste con algunos temas de color.</string>
+    <string name="androidacy_failed_to_parse_token">No se pudo recuperar el token de Androidacy. Por favor, inténtelo de nuevo más tarde.</string>
+    <string name="androidacy_server_down">No se puede contactar el servidor Androidacy. Comprueba tu conexión e inténtalo de nuevo.</string>
+    <string name="androidacy_failed_to_validate_token">No se pudo validar el token para Androidacy. Por favor, inténtelo de nuevo más tarde.</string>
+    <string name="yer_a_wizard_harry">Eres un mago, Harry!</string>
+    <string name="keep_tapping_to_enter_hogwarts">Sigue pulsando para ser admitido en Hogwarts!</string>
+    <string name="setup_androidacy_repo_summary">Presenta reseñas de usuarios, escaneos automáticos de virus, actualizaciones rápidas, una amplia selección y está respaldado por Androidacy.</string>
+    <string name="setup_magisk_alt_repo_summary">Mucho más laxa que la original. Tiene muchos módulos a costa de cierta seguridad.</string>
+    <string name="setup_crash_reporting">Activar Centinela</string>
+    <string name="low_performance_device_dialogue_message">Está intentando activar blur en un dispositivo que puede no funcionar bien con él.
+\nPuede activarlo, pero esto puede conducir a una mala experiencia de usuario y le recomendamos que no lo haga.</string>
+    <string name="error_no_extras">ERROR: datos inválidos recibidos en el lanzamiento</string>
+    <string name="update_debug_warning">Parece que está ejecutando una compilación de depuración. Las compilaciones de depuración deben actualizarse manualmente y no admiten actualizaciones en la aplicación</string>
+    <string name="downloading_update">Descargando actualización... %1$d%%</string>
+    <string name="upgrade_androidacy_promo_desc">La actualización a premium eliminará anuncios, captchas y descargas para el repositorio de Androidacy y admitirá a Androidacy y los autores del módulo.</string>
+    <string name="crash_text">Uh-oh, nos encontramos con un obstáculo!</string>
+    <string name="sentry_enable_nag">Parece que los informes de fallas están desactivados. Actívelos para enviar comentarios.</string>
+    <string name="crash_icon">Icono de bloqueo</string>
+    <string name="crash_full_stacktrace">Stacktrace:
+\n%1$s</string>
+    <string name="upgraded_summary">Eres bastante increíble! Parece que ya actualizó su suscripción y es compatible con Androidacy.</string>
+    <string name="api_key_mismatch">La clave API tiene un formato inválido</string>
+    <string name="warning_message">Este módulo tiene indicadores de que puede haber sido instalado sin su conocimiento, o puede estar intentando ocultarse.
+\n
+\nSe recomienda encarecidamente la desinstalación.</string>
+    <string name="invalid_characters_message">La lista de módulos que ingresaste es inválida. Por favor ingresa solo IDs de módulos válidos separados por comas</string>
+    <string name="update_message">Espere mientras buscamos e instalamos actualizaciones de FoxMMM. Esto puede tomar unos pocos minutos</string>
+    <string name="add_repo_message">Los repositorios deben servirse a través de HTTPS y deben seguir las especificaciones descritas en la documentación.</string>
+    <string name="notification_channel_category_background_update_description">Muestra una notificación mientras comprueba actualizaciones para que el sistema no la elimine</string>
+    <string name="notification_update_wifi_desc">Solo comprueba WiFi</string>
+    <string name="notification_update_module_template">%1$s a versión %2$s</string>
+    <string name="notification_channel_background_update_app_description">Hay una actualización disponible para FoxMMM. Pulsa aquí para actualizar.</string>
+    <string name="setup_background_update_check_require_wifi">Requiere wifi para comprobaciones de actualización</string>
+    <string name="setup_update_check_headline">Comprobaciones de actualización</string>
+    <string name="crash_reporting_headline">Informando fallos</string>
+    <string name="setup_crash_reporting_pii">Envía información adicional en los informes de fallos.</string>
+    <string name="error_creating_cookie_database">Error al acceder a WebView. La funcionalidad puede verse afectada.</string>
+    <string name="androidacy_repo_disabled_message">A esta compilación le faltan claves de cliente para el repositorio Androidacy. Descargue la versión de GitHub si desea beneficiarse de funciones como revisiones de módulos, controles de seguridad automáticos y más.</string>
+    <string name="alt_repo_info">Este repositorio tiene menos restricciones y reseñas, lo que puede conducir a módulos de menor calidad. Bastante básico, pero tiene muchos módulos.</string>
 </resources>

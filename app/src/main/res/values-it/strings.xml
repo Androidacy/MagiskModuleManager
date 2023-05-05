@@ -19,7 +19,7 @@
     <string name="download_module">Scarica modulo</string>
     <string name="install_module">Installa modulo</string>
     <string name="update_module">Aggiorna modulo</string>
-    <string name="changelog">Registri dei cambiamenti</string>
+    <string name="changelog">Novità</string>
     <string name="website">Sito web</string>
     <string name="support">Supporto</string>
     <string name="donate">Dona</string>
@@ -31,7 +31,7 @@
     <string name="favourite">Preferito</string>
     <string name="report_bugs">Segnala problemi</string>
     <string name="sniffed_modules">Moduli trovati</string>
-    <string name="sniffing_modules">Cerco Moduli</string>
+    <string name="sniffing_modules">Cerco moduli</string>
     <string name="submit_modules">Invia un modulo</string>
     <string name="require_android_6">Richiede Android 6.0+</string>
     <string name="require_android_12">Richiede Android 12+</string>
@@ -51,7 +51,7 @@
     <string name="module_needs_ramdisk_desc">Questo modulo ha bisogno dell\'avvio ramdisk per essere installato</string>
     <string name="module_can_change_boot">Può cambiare avvio</string>
     <string name="module_can_change_boot_desc">Questo modulo può cambiare l\'immagine di avvio</string>
-    <string name="module_min_magisk_chip">Min. Magisk "%s"</string>
+    <string name="module_min_magisk_chip">Versione minima Magisk %s</string>
     <string name="module_min_sdk_chip">Min. Android</string>
     <string name="module_max_sdk_chip">Max. Android</string>
     <!-- Preferenze Titoli -->
@@ -68,7 +68,7 @@
     <string name="licenses">Licenze</string>
     <string name="show_incompatible_pref">Mostra moduli incompatibili</string>
     <string name="show_incompatible_desc">Mostra i moduli che in base ai metadati sono incompatibili con il tuo dispositivo</string>
-    <string name="magisk_outdated">Magisk non è aggiornato!</string>
+    <string name="magisk_outdated">Nuova versione di Magisk da installare!</string>
     <string name="pref_category_repos">Repository</string>
     <string name="pref_category_security">Sicurezza</string>
     <string name="pref_category_appearance">Aspetto</string>
@@ -107,7 +107,7 @@
         Potrebbe risolvere problemi di connessione in alcuni casi.
         (Non si applica a WebView)
     </string>
-    <string name="disable_extensions_pref">No Mmm</string>
+    <string name="disable_extensions_pref">Niente Mmm</string>
     <string name="disable_extensions_desc">
         Disattiva le estensioni di Fox Mmm, impedendo ai moduli di usare
         le estensioni per il terminale.\nUtile se un modulo abusa le estensioni di Fox Mmm.
@@ -286,7 +286,7 @@
     <string name="copy_button">Copia testo</string>
     <string name="crash_details">Causa sconosciuta</string>
     <string name="crash_details_copied">Copiata la stacktrace negli appunti!</string>
-    <string name="crash_full_stacktrace">Stacktrace:
+    <string name="crash_full_stacktrace">Stacktrace: 
 \n%1$s</string>
     <string name="error_no_extras">ERRORE: Dati non validi ricevuti al lancio</string>
     <string name="update_debug_warning">Sembra che tu stia eseguendo una build di debug. Le build di debug devono essere aggiornate manualmente e non supportano gli aggiornamenti in-app</string>
@@ -336,8 +336,7 @@
     <string name="yer_a_wizard_harry">Sei un mago, Harry!</string>
     <string name="keep_tapping_to_enter_hogwarts">Continua a premere per essere ammesso ad Hogwarts!</string>
     <string name="modules">Moduli</string>
-    <string name="no_browser">Non hai un browser installato.
-\nInstallane uno per continuare.</string>
+    <string name="no_browser">Non hai un browser installato. Installane uno per continuare.</string>
     <string name="search">Cerca</string>
     <string name="update_cancel_button">Cancella aggiornamento</string>
     <string name="invalid_repo_url">L\'URL della repo non è corretto</string>
@@ -375,22 +374,22 @@
     <string name="notification_channel_category_background_update_description">Mostra una notifica durante la ricerca di aggiornamenti cosicché il sistema non lo interrompa</string>
     <string name="low_quality_module_desc">Questo modulo ha dei metadata che non sono corretti o sono considerati un segno di scarsa qualità. Si consiglia la rimozione.</string>
     <string name="safe_message">Questo modulo è stato verificato ed è sicuro, ha superato i controlli di qualità e sicurezza, ed è stato controllato per malware.</string>
-    <string name="update_debug_download_pref">Test del sistema di aggiornamento</string>
+    <string name="update_debug_download_pref">Test di aggiornamento</string>
     <string name="changelog_none">Ancora nessuna modifica!</string>
     <string name="setup_crash_reporting_pii_summary">Potrebbe includere ID o indirizzi IP. Nessun dato verrà usato per altri scopi al di fuori di analizzazioni di crash e miglioramenti in performance.</string>
     <string name="certificate_error">Il certificato del server non può essere verificato. Assicurati che nulla stia impedendo le connessioni HTTPS per FoxMMM.</string>
     <string name="pref_category_privacy">Privacy</string>
     <string name="crash_reporting_pii_desc">Consente di inviare informazioni aggiuntive in rapporti di crash, dei quali alcuni potrebbero contenere informazioni identificabili, come un indirizzo IP o un ID.</string>
     <string name="crash_reporting_pii">Invia informazioni aggiuntive</string>
-    <string name="setup_crash_reporting_pii">Invia informazioni aggiuntive nei rapporti di crash.</string>
+    <string name="setup_crash_reporting_pii">Invia informazioni aggiuntive nelle segnalazioni di crash.</string>
     <string name="error_creating_cookie_database">Errore nell\'accesso a WebView. La funzionalità potrebbe non essere disponibile.</string>
-    <string name="setup_scroll_down">Per concludere, scorri verso il basso e visualizza tutte le opzioni.</string>
+    <string name="setup_scroll_down">Per concludere, scorri in basso e visualizza tutte le opzioni.</string>
     <string name="empty_field">L\'URL è richiesto</string>
     <string name="repo_already_added">La repository esiste già.</string>
     <string name="other_section">Altro</string>
     <string name="eula_agree">Continuando, accetti la licenza LGPL-3.0 (https://www.gnu.org/licenses/lgpl-3.0.en.html) e l\'EULA (https://www.androidacy.com/foxmmm-eula/)</string>
     <string name="analytics_desc">Ci consente di tracciare l\'utilizzo della app e la quantità di installazioni. Conforme al GDPR, usa Matomo, un servizio offerto da Androidacy.</string>
-    <string name="debug_cat">Debugging</string>
+    <string name="debug_cat">Debug</string>
     <string name="announcements">Notizie e aggiornamenti</string>
     <string name="back">Indietro</string>
     <string name="showcase_mode_dialogue_message">Un riavvio della app è richiesto, per attivare la modalità showcase.</string>

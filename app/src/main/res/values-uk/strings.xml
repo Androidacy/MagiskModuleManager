@@ -384,4 +384,7 @@
     <string name="promo_code_copied">Використовуйте скопійований код, щоб отримати половину знижки за перший місяць!</string>
     <string name="warning_pls_restart">Зверніть увагу, що деякі налаштування можуть не робити, доки ви не перезавантажите додаток.</string>
     <string name="reinstall">Перевстановити</string>
+    <string name="eula_sum">Я погоджуюся з EULA та Ліцензією</string>
+    <string name="setup_scroll_down_v2">Щоб увімкнути кнопку «OK», прокрутіть униз і підтвердьте, що ви прочитали та погоджуєтеся з Ліцензійною угодою.</string>
+    <string name="eula_agree_v2">Ви погоджуєтеся дотримуватися ліцензії LGPL-3.0 (https://www.gnu.org/licenses/lgpl-3.0.en.html) і EULA (https://www.androidacy.com/foxmmm-eula/ ), на додаток до будь-яких умов третіх сторін, і що автори цієї програми не несуть жодної відповідальності за її використання вами, а також ми не надаємо жодних гарантій, прямих чи непрямих.</string>
 </resources>
