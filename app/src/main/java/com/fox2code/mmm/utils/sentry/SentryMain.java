@@ -53,6 +53,8 @@ public class SentryMain {
             intent.putExtra("sentryException", throwable);
             // pass crashReportingEnabled to crash handler
             intent.putExtra("crashReportingEnabled", isSentryEnabled());
+            // add isCrashing to intent
+            intent.putExtra("isCrashing", isCrashing);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             Timber.e("Starting crash handler");
             mainApplication.startActivity(intent);

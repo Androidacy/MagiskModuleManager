@@ -32,6 +32,7 @@ import com.fox2code.foxcompat.app.internal.FoxProcessExt;
 import com.fox2code.foxcompat.view.FoxThemeWrapper;
 import com.fox2code.mmm.installer.InstallerInitializer;
 import com.fox2code.mmm.utils.TimberUtils;
+import com.fox2code.mmm.utils.io.FileUtils;
 import com.fox2code.mmm.utils.io.GMSProviderInstaller;
 import com.fox2code.mmm.utils.io.net.Http;
 import com.fox2code.mmm.utils.sentry.SentryMain;
@@ -392,17 +393,12 @@ public class MainApplication extends FoxApplication implements androidx.work.Con
         Timber.i("Starting FoxMMM version %s (%d) - commit %s", BuildConfig.VERSION_NAME, BuildConfig.VERSION_CODE, BuildConfig.COMMIT_HASH);
         // Update SSL Ciphers if update is possible
         GMSProviderInstaller.installIfNeeded(this);
-        // detect if we're launching the crashhandler
-        // get intent that started the crashhandler
-        Intent intent = getIntent();
-        if (intent != null) {
-            if (intent.getClass().getName().equals("com.fox2code.mmm.CrashHandler")) {
-                isCrashHandler = true;
-            }
-        }
+        // get intent. if isCrashing is not present or false, call FileUtils.ensureCacheDirs and FileUtils.ensureURLHandler
+        isCrashHandler = getIntent().getBooleanExtra("isCrashing", false);
         if (!isCrashHandler) {
-            Http.ensureCacheDirs();
-            Http.ensureURLHandler(getApplicationContext());
+            FileUtils fileUtils = new FileUtils();
+            fileUtils.ensureCacheDirs();
+            fileUtils.ensureURLHandler(this);
         }
         Timber.d("Initializing FoxMMM");
         Timber.d("Started from background: %s", !isInForeground());

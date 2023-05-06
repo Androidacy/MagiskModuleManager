@@ -29,7 +29,6 @@ import com.fox2code.mmm.utils.io.Files;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.net.cronet.okhttptransport.CronetInterceptor;
 
-import org.apache.commons.io.FileUtils;
 import org.chromium.net.CronetEngine;
 
 import java.io.ByteArrayOutputStream;
@@ -38,7 +37,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.InetAddress;
 import java.net.Proxy;
-import java.net.URL;
 import java.net.UnknownHostException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -78,7 +76,6 @@ public enum Http {
     private static final boolean hasWebView;
     private static String needCaptchaAndroidacyHost;
     private static boolean doh;
-    private static boolean urlFactoryInstalled;
 
     static {
         MainApplication mainApplication = MainApplication.getINSTANCE();
@@ -394,27 +391,6 @@ public enum Http {
 
     public static boolean hasWebView() {
         return hasWebView;
-    }
-
-    public static void ensureCacheDirs() {
-        try {
-            FileUtils.forceMkdir(new File((MainApplication.getINSTANCE().getDataDir() + "/cache/WebView/Default/HTTP Cache/Code Cache/wasm").replaceAll("//", "/")));
-            FileUtils.forceMkdir(new File((MainApplication.getINSTANCE().getDataDir() + "/cache/WebView/Default/HTTP Cache/Code Cache/js").replaceAll("//", "/")));
-            FileUtils.forceMkdir(new File((MainApplication.getINSTANCE().getDataDir() + "/cache/cronet").replaceAll("//", "/")));
-        } catch (IOException e) {
-            Timber.e("Could not create cache dirs");
-        }
-    }
-
-    public static void ensureURLHandler(Context context) {
-        if (!urlFactoryInstalled) {
-            try {
-                URL.setURLStreamHandlerFactory(new CronetEngine.Builder(context).build().createURLStreamHandlerFactory());
-                urlFactoryInstalled = true;
-            } catch (Error ignored) {
-                // Ignore
-            }
-        }
     }
 
     public static boolean hasConnectivity() {

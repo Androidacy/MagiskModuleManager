@@ -287,8 +287,8 @@ android {
 
     compileOptions {
         isCoreLibraryDesugaringEnabled = true
-        sourceCompatibility = JavaVersion.VERSION_19
-        targetCompatibility = JavaVersion.VERSION_19
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
 
     lint {
@@ -393,12 +393,12 @@ dependencies {
     implementation("androidx.recyclerview:recyclerview:1.3.0")
     implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
     implementation("androidx.webkit:webkit:1.6.1")
-    implementation("com.google.android.material:material:1.8.0")
+    implementation("com.google.android.material:material:1.9.0")
     implementation("dev.rikka.rikkax.layoutinflater:layoutinflater:1.3.0")
     implementation("dev.rikka.rikkax.insets:insets:1.3.0")
     implementation("com.github.KieronQuinn:MonetCompat:0.4.1")
     implementation("com.github.Fox2Code:FoxCompat:0.2.0")
-    implementation("com.mikepenz:aboutlibraries:10.6.2")
+    implementation("com.mikepenz:aboutlibraries:10.6.3")
 
     // Utils
     implementation("androidx.work:work-runtime:2.8.1")
@@ -427,7 +427,7 @@ dependencies {
     implementation("com.github.topjohnwu.libsu:io:${libsuVersion}")
 
     implementation("com.github.Fox2Code:RosettaX:1.0.9")
-    implementation("com.github.Fox2Code:AndroidANSI:1.0.1")
+    implementation("com.github.Fox2Code:AndroidANSI:1.2.1")
 
     // sentry
     implementation("io.sentry:sentry-android:6.18.1")
@@ -492,6 +492,6 @@ android {
 
 java {
     toolchain {
-        languageVersion.set(JavaLanguageVersion.of(19))
+        languageVersion.set(JavaLanguageVersion.of(17))
     }
 }

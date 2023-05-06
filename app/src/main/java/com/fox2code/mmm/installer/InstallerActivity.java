@@ -590,7 +590,7 @@ public class InstallerActivity extends FoxActivity {
                 this.useExt = true;
                 return;
             }
-            s = AnsiParser.patchEscapeSequence(s);
+            s = AnsiParser.patchEscapeSequences(s);
             if (this.useExt && s.startsWith("#!")) {
                 this.processCommand(s.substring(2));
             } else if (this.useRecovery && s.startsWith("progress ")) {
