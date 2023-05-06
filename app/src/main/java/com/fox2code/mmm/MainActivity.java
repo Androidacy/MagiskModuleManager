@@ -3,22 +3,19 @@ package com.fox2code.mmm;
 import static com.fox2code.mmm.MainApplication.Iof;
 import static com.fox2code.mmm.manager.ModuleInfo.FLAG_MM_REMOTE_MODULE;
 
-import android.Manifest;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.graphics.Color;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.provider.Settings;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,15 +23,11 @@ import android.view.WindowManager;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
 import android.view.inputmethod.EditorInfo;
-import android.widget.CheckBox;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.SearchView;
 import androidx.cardview.widget.CardView;
-import androidx.core.app.NotificationManagerCompat;
-import androidx.core.content.ContextCompat;
-import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -51,19 +44,17 @@ import com.fox2code.mmm.repo.RepoManager;
 import com.fox2code.mmm.repo.RepoModule;
 import com.fox2code.mmm.settings.SettingsActivity;
 import com.fox2code.mmm.utils.ExternalHelper;
+import com.fox2code.mmm.utils.RuntimeUtils;
 import com.fox2code.mmm.utils.io.net.Http;
 import com.fox2code.mmm.utils.realm.ReposList;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.progressindicator.LinearProgressIndicator;
-import com.google.android.material.snackbar.Snackbar;
 
 import org.matomo.sdk.extra.TrackHelper;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
@@ -91,6 +82,7 @@ public class MainActivity extends FoxActivity implements SwipeRefreshLayout.OnRe
     private CardView searchCard;
     private SearchView searchView;
     private boolean initMode;
+    private RuntimeUtils runtimeUtils;
 
     public MainActivity() {
         this.moduleViewListBuilder = new ModuleViewListBuilder(this);
@@ -171,10 +163,11 @@ public class MainActivity extends FoxActivity implements SwipeRefreshLayout.OnRe
         this.moduleListOnline.setLayoutManager(new LinearLayoutManager(this));
         this.moduleList.setItemViewCacheSize(4); // Default is 2
         this.swipeRefreshLayout.setOnRefreshListener(this);
+        this.runtimeUtils = new RuntimeUtils();
         // add background blur if enabled
         this.updateBlurState();
         //hideActionBar();
-        checkShowInitialSetup();
+        runtimeUtils.checkShowInitialSetup(this, this);
         this.moduleList.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
@@ -326,7 +319,8 @@ public class MainActivity extends FoxActivity implements SwipeRefreshLayout.OnRe
                     });
                 }
                 updateScreenInsets(); // Fix an edge case
-                if (waitInitialSetupFinished()) {
+                Context context = MainActivity.this;
+                if (runtimeUtils.waitInitialSetupFinished(context, MainActivity.this)) {
                     Timber.d("waiting...");
                     return;
                 }
@@ -432,7 +426,7 @@ public class MainActivity extends FoxActivity implements SwipeRefreshLayout.OnRe
         // if system lang is not in MainApplication.supportedLocales, show a snackbar to ask user to help translate
         if (!MainApplication.supportedLocales.contains(this.getResources().getConfiguration().getLocales().get(0).getLanguage())) {
             // call showWeblateSnackbar() with language code and language name
-            showWeblateSnackbar(this.getResources().getConfiguration().getLocales().get(0).getLanguage(), this.getResources().getConfiguration().getLocales().get(0).getDisplayLanguage());
+            runtimeUtils.showWeblateSnackbar(this, this, this.getResources().getConfiguration().getLocales().get(0).getLanguage(), this.getResources().getConfiguration().getLocales().get(0).getDisplayLanguage());
         }
         ExternalHelper.INSTANCE.refreshHelper(this);
         this.initMode = false;
@@ -466,7 +460,7 @@ public class MainActivity extends FoxActivity implements SwipeRefreshLayout.OnRe
         this.searchCard.setAlpha(iconified ? 0.80F : 1F);
     }
 
-    private void updateScreenInsets() {
+    public void updateScreenInsets() {
         this.runOnUiThread(() -> this.updateScreenInsets(this.getResources().getConfiguration()));
     }
 
@@ -517,7 +511,9 @@ public class MainActivity extends FoxActivity implements SwipeRefreshLayout.OnRe
         InstallerInitializer.tryGetMagiskPathAsync(new InstallerInitializer.Callback() {
             @Override
             public void onPathReceived(String path) {
-                checkShowInitialSetup();
+                Context context = MainActivity.this;
+                MainActivity mainActivity = MainActivity.this;
+                runtimeUtils.checkShowInitialSetup(context, mainActivity);
                 // Wait for doSetupNow to finish
                 while (doSetupNowRunning) {
                     try {
@@ -705,157 +701,5 @@ public class MainActivity extends FoxActivity implements SwipeRefreshLayout.OnRe
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
         this.updateScreenInsets();
-    }
-
-    @SuppressLint("RestrictedApi")
-    private void ensurePermissions() {
-        if (BuildConfig.DEBUG) Timber.i("Ensure Permissions");
-        // First, check if user has said don't ask again by checking if pref_dont_ask_again_notification_permission is true
-        if (!PreferenceManager.getDefaultSharedPreferences(this).getBoolean("pref_dont_ask_again_notification_permission", false)) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU && ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
-                if (BuildConfig.DEBUG) Timber.i("Request Notification Permission");
-                if (FoxActivity.getFoxActivity(this).shouldShowRequestPermissionRationale(Manifest.permission.POST_NOTIFICATIONS)) {
-                    // Show a dialog explaining why we need this permission, which is to show
-                    // notifications for updates
-                    runOnUiThread(() -> {
-                        if (BuildConfig.DEBUG) Timber.i("Show Notification Permission Dialog");
-                        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this);
-                        builder.setTitle(R.string.permission_notification_title);
-                        builder.setMessage(R.string.permission_notification_message);
-                        // Don't ask again checkbox
-                        View view = getLayoutInflater().inflate(R.layout.dialog_checkbox, null);
-                        CheckBox checkBox = view.findViewById(R.id.checkbox);
-                        checkBox.setText(R.string.dont_ask_again);
-                        checkBox.setOnCheckedChangeListener((buttonView, isChecked) -> PreferenceManager.getDefaultSharedPreferences(this).edit().putBoolean("pref_dont_ask_again_notification_permission", isChecked).apply());
-                        builder.setView(view);
-                        builder.setPositiveButton(R.string.permission_notification_grant, (dialog, which) -> {
-                            // Request the permission
-                            this.requestPermissions(new String[]{Manifest.permission.POST_NOTIFICATIONS}, 0);
-                            doSetupNowRunning = false;
-                        });
-                        builder.setNegativeButton(R.string.cancel, (dialog, which) -> {
-                            // Set pref_background_update_check to false and dismiss dialog
-                            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-                            prefs.edit().putBoolean("pref_background_update_check", false).apply();
-                            dialog.dismiss();
-                            doSetupNowRunning = false;
-                        });
-                        builder.show();
-                        if (BuildConfig.DEBUG) Timber.i("Show Notification Permission Dialog Done");
-                    });
-                } else {
-                    // Request the permission
-                    if (BuildConfig.DEBUG) Timber.i("Request Notification Permission");
-                    this.requestPermissions(new String[]{Manifest.permission.POST_NOTIFICATIONS}, 0);
-                    if (BuildConfig.DEBUG) {
-                        // Log if granted via onRequestPermissionsResult
-                        boolean granted = ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) == PackageManager.PERMISSION_GRANTED;
-                        Timber.i("Request Notification Permission Done. Result: %s", granted);
-                    }
-                    doSetupNowRunning = false;
-                }
-                // Next branch is for < android 13 and user has blocked notifications
-            } else if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU && !NotificationManagerCompat.from(this).areNotificationsEnabled()) {
-                runOnUiThread(() -> {
-                    MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this);
-                    builder.setTitle(R.string.permission_notification_title);
-                    builder.setMessage(R.string.permission_notification_message);
-                    // Don't ask again checkbox
-                    View view = getLayoutInflater().inflate(R.layout.dialog_checkbox, null);
-                    CheckBox checkBox = view.findViewById(R.id.checkbox);
-                    checkBox.setText(R.string.dont_ask_again);
-                    checkBox.setOnCheckedChangeListener((buttonView, isChecked) -> PreferenceManager.getDefaultSharedPreferences(this).edit().putBoolean("pref_dont_ask_again_notification_permission", isChecked).apply());
-                    builder.setView(view);
-                    builder.setPositiveButton(R.string.permission_notification_grant, (dialog, which) -> {
-                        // Open notification settings
-                        Intent intent = new Intent();
-                        intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-                        Uri uri = Uri.fromParts("package", getPackageName(), null);
-                        intent.setData(uri);
-                        startActivity(intent);
-                        doSetupNowRunning = false;
-                    });
-                    builder.setNegativeButton(R.string.cancel, (dialog, which) -> {
-                        // Set pref_background_update_check to false and dismiss dialog
-                        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-                        prefs.edit().putBoolean("pref_background_update_check", false).apply();
-                        dialog.dismiss();
-                        doSetupNowRunning = false;
-                    });
-                    builder.show();
-                });
-            } else {
-                doSetupNowRunning = false;
-            }
-        } else {
-            if (BuildConfig.DEBUG)
-                Timber.i("Notification Permission Already Granted or Don't Ask Again");
-            doSetupNowRunning = false;
-        }
-    }
-
-    // Method to show a setup box on first launch
-    @SuppressLint({"InflateParams", "RestrictedApi", "UnspecifiedImmutableFlag", "ApplySharedPref"})
-    private void checkShowInitialSetup() {
-        if (BuildConfig.DEBUG) Timber.i("Checking if we need to run setup");
-        // Check if this is the first launch using prefs and if doSetupRestarting was passed in the intent
-        SharedPreferences prefs = MainApplication.getSharedPreferences("mmm");
-        boolean firstLaunch = !Objects.equals(prefs.getString("last_shown_setup", null), "v2");
-        // First launch
-        // this is intentionally separate from the above if statement, because it needs to be checked even if the first launch check is true due to some weird edge cases
-        if (getIntent().getBooleanExtra("doSetupRestarting", false)) {
-            // Restarting setup
-            firstLaunch = false;
-        }
-        if (BuildConfig.DEBUG) {
-            Timber.i("First launch: %s, pref value: %s", firstLaunch, prefs.getString("last_shown_setup", null));
-        }
-        if (firstLaunch) {
-            doSetupNowRunning = true;
-            // Launch setup wizard
-            if (BuildConfig.DEBUG) Timber.i("Launching setup wizard");
-            // Show setup activity
-            Intent intent = new Intent(this, SetupActivity.class);
-            finish();
-            startActivity(intent);
-        } else {
-            ensurePermissions();
-        }
-    }
-
-    /**
-     * @return true if the load workflow must be stopped.
-     */
-    private boolean waitInitialSetupFinished() {
-        if (BuildConfig.DEBUG) Timber.i("waitInitialSetupFinished");
-        if (doSetupNowRunning) updateScreenInsets(); // Fix an edge case
-        try {
-            // Wait for doSetupNow to finish
-            while (doSetupNowRunning) {
-                //noinspection BusyWait
-                Thread.sleep(50);
-            }
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-            return true;
-        }
-        return doSetupRestarting;
-    }
-
-    /**
-     * Shows a snackbar offering to take users to Weblate if their language is not available.
-     *
-     * @param language     The language code.
-     * @param languageName The language name.
-     */
-    @SuppressLint("RestrictedApi")
-    private void showWeblateSnackbar(String language, String languageName) {
-        Snackbar snackbar = Snackbar.make(findViewById(R.id.root_container), getString(R.string.language_not_available, languageName), Snackbar.LENGTH_LONG);
-        snackbar.setAction(R.string.ok, v -> {
-            Intent intent = new Intent(Intent.ACTION_VIEW);
-            intent.setData(Uri.parse("https://translate.nift4.org/engage/foxmmm/?language=" + language));
-            startActivity(intent);
-        });
-        snackbar.show();
     }
 }
