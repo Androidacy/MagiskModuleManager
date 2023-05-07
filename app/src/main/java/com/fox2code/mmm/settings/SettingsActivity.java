@@ -825,7 +825,7 @@ public class SettingsActivity extends FoxActivity implements LanguageActivity {
             String flavor = BuildConfig.FLAVOR;
             String type = BuildConfig.BUILD_TYPE;
             // Set the summary of pref_pkg_info to something like default-debug v1.0 (123) (Official)
-            String pkgInfo = getString(R.string.pref_pkg_info_summary, flavor + "-" + type, BuildConfig.VERSION_NAME, BuildConfig.VERSION_CODE, MainApplication.Iof ? getString(R.string.official) : getString(R.string.unofficial));
+            String pkgInfo = getString(R.string.pref_pkg_info_summary, flavor + "-" + type, BuildConfig.VERSION_NAME, BuildConfig.VERSION_CODE, MainApplication.o ? getString(R.string.official) : getString(R.string.unofficial));
             findPreference("pref_pkg_info").setSummary(pkgInfo);
             // special easter egg :)
             var ref = new Object() {

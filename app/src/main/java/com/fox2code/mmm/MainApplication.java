@@ -94,7 +94,7 @@ public class MainApplication extends FoxApplication implements androidx.work.Con
     // Use FoxProcess wrapper helper.
     private static final boolean wrapped = !FoxProcessExt.isRootLoader();
     private static final ArrayList<String> callers = new ArrayList<>();
-    public static boolean Iof = false;
+    public static boolean o = false;
     private static String SHOWCASE_MODE_TRUE = null;
     private static long secret;
     private static Locale timeFormatLocale = Resources.getSystem().getConfiguration().getLocales().get(0);
@@ -425,10 +425,10 @@ public class MainApplication extends FoxApplication implements androidx.work.Con
         }
         try {
             @SuppressLint("PackageManagerGetSignatures") Signature[] s = this.getPackageManager().getPackageInfo(this.getPackageName(), PackageManager.GET_SIGNATURES).signatures;
-            @SuppressWarnings("SpellCheckingInspection") String[] osh = new String[]{"7bec7c4462f4aac616612d9f56a023ee3046e83afa956463b5fab547fd0a0be6", "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"};
+            @SuppressWarnings("SpellCheckingInspection") String[] osh = new String[]{"7bec7c4462f4aac616612d9f56a023ee3046e83afa956463b5fab547fd0a0be6", "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855", "e8ce7deca880304d7ff09f8fc37656cfa927cee7f6a0bb7b3feda6a5942931f5", "339af2fb5b671fa4af6436b585351f2f1fc746d1d922f9a0b01df2d576381015"};
             //noinspection SpellCheckingInspection
             String oosh = Hashing.sha256().hashBytes(s[0].toByteArray()).toString();
-            Iof = Arrays.asList(osh).contains(oosh);
+            o = Arrays.asList(osh).contains(oosh);
         } catch (PackageManager.NameNotFoundException ignored) {
         }
         SharedPreferences sharedPreferences = MainApplication.getSharedPreferences("mmm");

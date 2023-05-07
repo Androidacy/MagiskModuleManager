@@ -1,6 +1,6 @@
 package com.fox2code.mmm;
 
-import static com.fox2code.mmm.MainApplication.Iof;
+import static com.fox2code.mmm.MainApplication.o;
 import static com.fox2code.mmm.manager.ModuleInfo.FLAG_MM_REMOTE_MODULE;
 
 import android.animation.Animator;
@@ -121,9 +121,9 @@ public class MainActivity extends FoxActivity implements SwipeRefreshLayout.OnRe
         TrackHelper.track().event("enabled_repos", enabledRepos.toString()).with(MainApplication.getINSTANCE().getTracker());
         realm.close();
         // hide this behind a buildconfig flag for now, but crash the app if it's not an official build and not debug
-        if (BuildConfig.ENABLE_PROTECTION && !Iof && !BuildConfig.DEBUG) {
+        if (BuildConfig.ENABLE_PROTECTION && !o && !BuildConfig.DEBUG) {
             throw new RuntimeException("This is not an official build of FoxMMM");
-        } else if (!Iof && !BuildConfig.DEBUG) {
+        } else if (!o && !BuildConfig.DEBUG) {
             Timber.w("You may be running an untrusted build.");
             // Show a toast to warn the user
             Toast.makeText(this, R.string.not_official_build, Toast.LENGTH_LONG).show();
