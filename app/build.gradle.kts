@@ -281,7 +281,7 @@ android {
                     "client_id", "dQ1p7X8bF14PVJ7wAU6ORVjPB2IeTinsuAZ8Uos6tQiyUdUyIjSyZSmN54QBbaTy"
                 ) + "\""
             )
-            versionNameSuffix = "-froid"
+            versionNameSuffix = "-fdroid"
         }
     }
 
