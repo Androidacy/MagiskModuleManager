@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/update_cancel_button"
+        android:icon="@drawable/baseline_close_24"
+        android:title="@string/cancel"
+        android:visible="true"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/action_update"
+        android:icon="@drawable/ic_baseline_refresh_24"
+        android:title="@string/update_button"
+        android:visible="true"
+        android:enabled="false"
+        app:showAsAction="ifRoom" />
+</menu>

@@ -25,9 +25,6 @@ import java.util.zip.ZipFile;
 
 import timber.log.Timber;
 
-interface NotificationTypeCst {
-}
-
 public enum NotificationType implements NotificationTypeCst {
     DEBUG(R.string.debug_build, R.drawable.ic_baseline_bug_report_24, com.google.android.material.R.attr.colorSecondary, com.google.android.material.R.attr.colorOnSecondary) {
         @Override

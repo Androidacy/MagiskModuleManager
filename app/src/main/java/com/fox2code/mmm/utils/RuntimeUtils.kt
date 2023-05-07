@@ -53,7 +53,7 @@ class RuntimeUtils {
                             activity.layoutInflater.inflate(R.layout.dialog_checkbox, null)
                         val checkBox = view.findViewById<CheckBox>(R.id.checkbox)
                         checkBox.setText(R.string.dont_ask_again)
-                        checkBox.setOnCheckedChangeListener { buttonView: CompoundButton?, isChecked: Boolean ->
+                        checkBox.setOnCheckedChangeListener { _: CompoundButton?, isChecked: Boolean ->
                             PreferenceManager.getDefaultSharedPreferences(
                                 context
                             ).edit().putBoolean(
@@ -61,14 +61,14 @@ class RuntimeUtils {
                             ).apply()
                         }
                         builder.setView(view)
-                        builder.setPositiveButton(R.string.permission_notification_grant) { dialog, which ->
+                        builder.setPositiveButton(R.string.permission_notification_grant) { _, _ ->
                             // Request the permission
                             activity.requestPermissions(
                                 arrayOf(Manifest.permission.POST_NOTIFICATIONS), 0
                             )
                             MainActivity.doSetupNowRunning = false
                         }
-                        builder.setNegativeButton(R.string.cancel) { dialog, which ->
+                        builder.setNegativeButton(R.string.cancel) { dialog, _ ->
                             // Set pref_background_update_check to false and dismiss dialog
                             val prefs = PreferenceManager.getDefaultSharedPreferences(context)
                             prefs.edit().putBoolean("pref_background_update_check", false).apply()
@@ -104,7 +104,7 @@ class RuntimeUtils {
                     val view: View = activity.layoutInflater.inflate(R.layout.dialog_checkbox, null)
                     val checkBox = view.findViewById<CheckBox>(R.id.checkbox)
                     checkBox.setText(R.string.dont_ask_again)
-                    checkBox.setOnCheckedChangeListener { buttonView: CompoundButton?, isChecked: Boolean ->
+                    checkBox.setOnCheckedChangeListener { _: CompoundButton?, isChecked: Boolean ->
                         PreferenceManager.getDefaultSharedPreferences(
                             context
                         ).edit()
@@ -112,7 +112,7 @@ class RuntimeUtils {
                             .apply()
                     }
                     builder.setView(view)
-                    builder.setPositiveButton(R.string.permission_notification_grant) { dialog, which ->
+                    builder.setPositiveButton(R.string.permission_notification_grant) { _, _ ->
                         // Open notification settings
                         val intent = Intent()
                         intent.action = Settings.ACTION_APPLICATION_DETAILS_SETTINGS
@@ -121,7 +121,7 @@ class RuntimeUtils {
                         activity.startActivity(intent)
                         MainActivity.doSetupNowRunning = false
                     }
-                    builder.setNegativeButton(R.string.cancel) { dialog, which ->
+                    builder.setNegativeButton(R.string.cancel) { dialog, _ ->
                         // Set pref_background_update_check to false and dismiss dialog
                         val prefs = MainApplication.getSharedPreferences("mmm")
                         prefs.edit().putBoolean("pref_background_update_check", false).apply()
@@ -207,11 +207,11 @@ class RuntimeUtils {
         val prefs = MainApplication.getSharedPreferences("mmm")
         if (prefs.getInt("weblate_snackbar_shown", 0) == BuildConfig.VERSION_CODE) return
         val snackbar: Snackbar = Snackbar.make(
-            activity.findViewById<View>(R.id.root_container),
+            activity.findViewById(R.id.root_container),
             activity.getString(R.string.language_not_available, languageName),
             Snackbar.LENGTH_LONG
         )
-        snackbar.setAction(R.string.ok) { v ->
+        snackbar.setAction(R.string.ok) {
             val intent = Intent(Intent.ACTION_VIEW)
             intent.data = Uri.parse("https://translate.nift4.org/engage/foxmmm/?language=$language")
             activity.startActivity(intent)

@@ -14,12 +14,12 @@
 
 # Uncomment this to preserve the line number information for
 # debugging stack traces.
--keepattributes SourceFile,LineNumberTable,Signature
+# -keepattributes SourceFile,LineNumberTable,Signature
 -printmapping mapping.txt
 
 # Optimisations
 -repackageclasses ""
--overloadaggressively
+# -overloadaggressively
 -allowaccessmodification
 
 
@@ -188,13 +188,13 @@
 }
 
 # Keep all of Cronet API and google's internal classes
--keep class com.google.common.util.concurrent.** { *; }
+# -keep class com.google.common.util.concurrent.** { *; }
 -keepclassmembers class kotlin.SafePublicationLazyImpl {
     java.lang.Object _value;
 }
 
 # fix bug with androidx work and future
--keep class androidx.work.impl.utils.futures.* { *; }
+# -keep class androidx.work.impl.utils.futures.* { *; }
 
 # Silence some warnings
 -dontwarn android.os.SystemProperties
