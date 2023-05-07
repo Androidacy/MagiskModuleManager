@@ -77,17 +77,17 @@
     <string name="pref_category_general">Umum</string>
     <string name="repo_main_desc">Repository yang menampung modul Magisk</string>
     <string name="repo_main_alt">Sebuah alternatif Magisk-Modules-Repo dengan restriksi lebih ringan.</string>
-    <string name="master_delete">Hapus file-file modul?</string>
+    <string name="master_delete">Hapus file module ini\?</string>
     <string name="master_delete_no">Simpan</string>
     <string name="master_delete_yes">Hapus</string>
-    <string name="master_delete_fail">Tidak dapat menghapus file-file modul</string>
+    <string name="master_delete_fail">Tidak dapat menghapus file modul</string>
     <string name="theme_pref">Tema</string>
     <string name="theme_mode_pref">Mode tema</string>
     <string name="module_id_prefix">ID modul: </string>
     <string name="install_from_storage">Pasang modul dari penyimpanan</string>
-    <string name="invalid_format">Modul yang dipilih memiliki format yang tidak valid</string>
-    <string name="low_quality_module">Modul berkualitas rendah</string>
-    <string name="local_install_title">Pasang secara lokal</string>
+    <string name="invalid_format">Modul yang akan diinstal formatnya tidak valid</string>
+    <string name="low_quality_module">Modul kualitas rendah</string>
+    <string name="local_install_title">Pasang via lokal</string>
     <string name="source_code">Sumber kode</string>
     <string name="magisk_builtin_module">Modul built-in Magisk</string>
     <string name="substratum_builtin_module">Modul built-in Substratum</string>
@@ -96,18 +96,14 @@
     <string name="remote_install_title">Pasang secara remote</string>
     <string name="file_picker_wierd">Pemilih file anda mengembalikan sebuah tanggapan yang tidak standar.</string>
     <string name="use_magisk_install_command_pref" tools:ignore="TypographyDashes">Gunakan command \"magisk --install-module\"</string>
-    <string name="use_magisk_install_command_desc">
-        Saat pengujian ini menyebabkan masalah terhadap alat diagnosis eror instalasi modul,
-        jadi opsi ini disembunyikan dibelakang mode pengembang.\nNyalakan ini dengan risiko anda sendiri!
-    </string>
+    <string name="use_magisk_install_command_desc">Saat pengujian, ini menyebabkan masalah, jadi opsi ini disembunyikan dibelakang mode pengembang. 
+\nLakukan dengan resiko ditanggung sendiri!</string>
     <string name="dev_mode_enabled">Mode pengembang nyala</string>
     <string name="dev_mode_disabled">Mode pengembang mati</string>
     <string name="force_english_pref">Aplikasi Bahasa Inggris</string>
-    <string name="disable_low_quality_module_filter_pref">Tampilkan modul-modul berkualitas rendah</string>
-    <string name="disable_low_quality_module_filter_desc">
-        Beberapa modul-modul tidak mengdeklarasikan metadata mereka secara benar, mengakibatkan keasalahan visual
-        dan/atau modul kualitas rendah.\nNyalakan ini dengan risiko anda sendiri!
-    </string>
+    <string name="disable_low_quality_module_filter_pref">Tampilkan modul yang berkualitas rendah</string>
+    <string name="disable_low_quality_module_filter_desc">Beberapa modul tidak menyediakan metadata secara benar, yang berakibat keasalahan visual dan/atau modul kualitas rendah.
+\nNyalakan ini dengan risiko anda sendiri!</string>
     <string name="dns_over_https_pref">DNS melalui HTTPS</string>
     <string name="dns_over_https_desc">
         Bisa memperbaiki masalah koneksi di beberapa kasus.
