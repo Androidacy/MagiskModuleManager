@@ -12,7 +12,7 @@ import androidx.core.content.FileProvider;
 import com.fox2code.foxcompat.app.FoxActivity;
 import com.fox2code.mmm.utils.io.net.Http;
 import com.google.android.material.bottomnavigation.BottomNavigationItemView;
-import com.google.android.material.button.MaterialButton;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.progressindicator.LinearProgressIndicator;
 import com.google.android.material.textview.MaterialTextView;
 
@@ -42,8 +42,9 @@ public class UpdateActivity extends FoxActivity {
         // Get the progress bar and make it indeterminate for now
         LinearProgressIndicator progressIndicator = findViewById(R.id.update_progress);
         progressIndicator.setIndeterminate(true);
-        // get update_cancel button
-        MaterialButton updateCancel = findViewById(R.id.update_cancel_button);
+        // get update_cancel item on bottom navigation
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
+        BottomNavigationItemView updateCancel = bottomNavigationView.findViewById(R.id.update_cancel_button);
         // get status text view
         MaterialTextView statusTextView = findViewById(R.id.update_progress_text);
         // set status text to please wait
@@ -85,8 +86,7 @@ public class UpdateActivity extends FoxActivity {
                 } else if (action == ACTIONS.DOWNLOAD) {
                     try {
                         downloadUpdate();
-                    } catch (
-                            JSONException e) {
+                    } catch (JSONException e) {
                         runOnUiThread(() -> {
                             // set status text to error
                             statusTextView.setText(R.string.error_download_update);
@@ -97,7 +97,7 @@ public class UpdateActivity extends FoxActivity {
                     }
                 } else if (action == ACTIONS.INSTALL) {
                     // ensure path was passed and points to a file within our cache directory. replace .. and url encoded characters
-                    String path = getIntent().getStringExtra("path").trim().replaceAll("\\.\\.", "").replaceAll("%2e%2e", "");
+                    String path = Objects.requireNonNull(getIntent().getStringExtra("path")).trim().replaceAll("\\.\\.", "").replaceAll("%2e%2e", "");
                     if (path.isEmpty()) {
                         runOnUiThread(() -> {
                             // set status text to error
@@ -119,8 +119,7 @@ public class UpdateActivity extends FoxActivity {
                         if (parentFile == null || !parentFile.getCanonicalPath().startsWith(getCacheDir().getCanonicalPath())) {
                             throw new SecurityException("Path is not in cache directory: " + path);
                         }
-                    } catch (
-                            IOException e) {
+                    } catch (IOException e) {
                         throw new SecurityException("Path is not in cache directory: " + path);
                     }
                     if (!file.exists()) {
@@ -164,6 +163,7 @@ public class UpdateActivity extends FoxActivity {
         updateThread.start();
     }
 
+    @SuppressLint("RestrictedApi")
     public void checkForUpdate() {
         // get status text view
         MaterialTextView statusTextView = findViewById(R.id.update_progress_text);
@@ -184,7 +184,9 @@ public class UpdateActivity extends FoxActivity {
                 statusTextView.setText(R.string.update_available);
                 // set button text to download
                 BottomNavigationItemView button = findViewById(R.id.action_update);
-                button.setTooltipText(R.string.download_update);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    button.setTooltipText(getString(R.string.download_update));
+                }
                 button.setEnabled(true);
             });
             // return
@@ -211,8 +213,7 @@ public class UpdateActivity extends FoxActivity {
         byte[] lastestJSON = new byte[0];
         try {
             lastestJSON = Http.doHttpGet(AppUpdateManager.RELEASES_API_URL, false);
-        } catch (
-                Exception e) {
+        } catch (Exception e) {
             // when logging, REMOVE the json from the log
             Timber.e(e, "Error downloading update info");
             runOnUiThread(() -> {
@@ -274,8 +275,7 @@ public class UpdateActivity extends FoxActivity {
                 // update status text
                 statusTextView.setText(getString(R.string.downloading_update, (int) (((float) downloaded / (float) total) * 100)));
             }));
-        } catch (
-                Exception e) {
+        } catch (Exception e) {
             runOnUiThread(() -> {
                 progressIndicator.setIndeterminate(false);
                 progressIndicator.setProgressCompat(100, false);
@@ -320,8 +320,7 @@ public class UpdateActivity extends FoxActivity {
             updateFile = new File(getCacheDir(), "update.apk");
             fileOutputStream = new FileOutputStream(updateFile);
             fileOutputStream.write(update);
-        } catch (
-                IOException e) {
+        } catch (IOException e) {
             runOnUiThread(() -> {
                 progressIndicator.setIndeterminate(false);
                 progressIndicator.setProgressCompat(100, false);
@@ -333,8 +332,7 @@ public class UpdateActivity extends FoxActivity {
             }
             try {
                 Objects.requireNonNull(fileOutputStream).close();
-            } catch (
-                    IOException ignored) {
+            } catch (IOException ignored) {
             }
         }
         // install the update

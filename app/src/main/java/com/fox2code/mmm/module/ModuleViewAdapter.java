@@ -300,6 +300,8 @@ public final class ModuleViewAdapter extends RecyclerView.Adapter<ModuleViewAdap
                 } else {
                     this.cardView.setClickable(moduleHolder.onClickListener != null);
                     this.titleText.setTypeface(Typeface.DEFAULT);
+                    this.titleText.setTextAppearance(com.google.android.material.R.style.TextAppearance_Material3_BodyMedium);
+                    this.titleText.setTextSize(TypedValue.COMPLEX_UNIT_SP, 19);
                 }
             }
             if (type == ModuleHolder.Type.SEPARATOR) {

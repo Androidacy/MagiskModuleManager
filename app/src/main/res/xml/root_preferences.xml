@@ -73,6 +73,15 @@
             app:summary="@string/notification_update_ignore_desc"
             app:title="@string/notification_update_ignore_pref" />
 
+        <!-- exclude specific versions -->
+
+        <Preference
+            app:icon="@drawable/baseline_block_24"
+            app:key="pref_background_update_check_excludes_version"
+            app:singleLineTitle="false"
+            app:summary="@string/notification_update_ignore_version_desc"
+            app:title="@string/notification_update_ignore_version_pref" />
+
         <Preference
             app:icon="@drawable/baseline_notification_important_24"
             app:key="pref_background_update_check_debug"

@@ -413,7 +413,7 @@ dependencies {
     // implementation("com.google.protobuf:protobuf-javalite:3.22.2")
 
     // google guava, maybe fix a bug
-    implementation("com.google.guava:guava:31.1-jre")
+    implementation("com.google.guava:guava:31.1-android")
 
 
     val libsuVersion = "5.0.5"

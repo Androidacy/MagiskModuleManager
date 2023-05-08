@@ -416,4 +416,6 @@
     <string name="warning_pls_restart">Please note that some settings may not take effect until you restart the app.</string>
     <string name="reinstall">Reinstall</string>
     <string name="setup_scroll_down_v2">To enable the finish button, scroll to the bottom and acknowledge you have read and agree to the EULA and license(s).</string>
+    <string name="notification_update_ignore_version_desc">Ignore specific versions when checking for module updates. Disabling update checks per-module above overrides this setting!</string>
+    <string name="notification_update_ignore_version_pref">Exclude version(s) from update checks</string>
 </resources>

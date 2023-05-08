@@ -6,7 +6,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.fox2code.mmm.BuildConfig;
+import com.fox2code.mmm.utils.io.net.Http;
 
+import java.io.IOException;
 import java.util.Objects;
 
 public enum AndroidacyUtil {
@@ -102,5 +104,34 @@ public enum AndroidacyUtil {
             }
         }
         return null;
+    }
+
+    /**
+     * Check if the url is a premium direct download link
+     * @param url url to check
+     * @return true if it is a premium direct download link
+     * @noinspection unused
+     */
+    public static boolean isPremiumDirectDownloadLink(String url) {
+        return url.contains("/magisk/ddl/");
+    }
+
+    /**
+     * Returns the markdown directly from the API for rendering. Premium only, and internal testing only currently.
+     * @param url URL to get markdown from
+     * @return String of markdown
+     * @noinspection unused
+     */
+    public static String getMarkdownFromAPI(String url) {
+        byte[] md;
+        try {
+            md = Http.doHttpGet(url, false);
+        } catch (IOException ignored) {
+            return null;
+        }
+        if (md == null) {
+            return null;
+        }
+        return new String(md);
     }
 }

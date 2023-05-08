@@ -511,6 +511,7 @@ public class SettingsActivity extends FoxActivity implements LanguageActivity {
             }
             Preference debugNotification = findPreference("pref_background_update_check_debug");
             Preference updateCheckExcludes = findPreference("pref_background_update_check_excludes");
+            Preference updateCheckVersionExcludes = findPreference("pref_background_update_check_excludes_version");
             debugNotification.setEnabled(MainApplication.isBackgroundUpdateCheckEnabled());
             debugNotification.setVisible(MainApplication.isDeveloper() && !MainApplication.isWrapped() && MainApplication.isBackgroundUpdateCheckEnabled());
             debugNotification.setOnPreferenceClickListener(preference -> {
