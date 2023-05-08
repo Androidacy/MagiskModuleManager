@@ -11,6 +11,7 @@ import androidx.core.content.FileProvider;
 
 import com.fox2code.foxcompat.app.FoxActivity;
 import com.fox2code.mmm.utils.io.net.Http;
+import com.google.android.material.bottomnavigation.BottomNavigationItemView;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.progressindicator.LinearProgressIndicator;
 import com.google.android.material.textview.MaterialTextView;
@@ -182,8 +183,9 @@ public class UpdateActivity extends FoxActivity {
                 // set status text to update available
                 statusTextView.setText(R.string.update_available);
                 // set button text to download
-                MaterialButton button = findViewById(R.id.update_button);
-                button.setText(R.string.download_update);
+                BottomNavigationItemView button = findViewById(R.id.action_update);
+                button.setTooltipText(R.string.download_update);
+                button.setEnabled(true);
             });
             // return
         } else {
