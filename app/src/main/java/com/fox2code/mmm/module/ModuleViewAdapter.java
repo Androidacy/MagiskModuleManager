@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
@@ -212,6 +213,21 @@ public final class ModuleViewAdapter extends RecyclerView.Adapter<ModuleViewAdap
                 } else {
                     this.creditText.setText(localModuleInfo.version + ((localModuleInfo.updateVersion != null && (Objects.equals(localModuleInfo.version, localModuleInfo.updateVersion) || Objects.equals(localModuleInfo.version, localModuleInfo.updateVersion + " (" + localModuleInfo.updateVersionCode + ")"))) ? "" : " (" + this.getString(R.string.module_last_update) + " " + localModuleInfo.updateVersion + ")") + " " + this.getString(R.string.module_by) + " " + localModuleInfo.author);
                 }
+                // add an onclick listener to the credit text to show the versionCode
+                this.creditText.setOnClickListener(v -> {
+                    // if both local and remote moduleInfo are available, show the versionCode of both
+                    if (localModuleInfo != null) {
+                        // if moduleInfo and localModuleInfo have the same versionCode, only show one, otherwise show both
+                        if (localModuleInfo.versionCode == moduleInfo.versionCode) {
+                            Toast.makeText(this.itemView.getContext(), this.getString(R.string.module_version) + " " + localModuleInfo.version + " (" + localModuleInfo.versionCode + ")", Toast.LENGTH_LONG).show();
+                        } else {
+                            // format is Version: version (versionCode) | Remote Version: version (versionCode)
+                            Toast.makeText(this.itemView.getContext(), this.getString(R.string.module_version) + " " + localModuleInfo.version + " (" + localModuleInfo.versionCode + ") | " + this.getString(R.string.module_remote_version) + " " + moduleInfo.version + " (" + moduleInfo.versionCode + ")", Toast.LENGTH_LONG).show();
+                        }
+                    } else {
+                        Toast.makeText(this.itemView.getContext(), this.getString(R.string.module_remote_version) + " " + moduleInfo.version + " (" + moduleInfo.versionCode + ")", Toast.LENGTH_LONG).show();
+                    }
+                });
                 if (moduleInfo.description == null || moduleInfo.description.isEmpty()) {
                     this.descriptionText.setText(R.string.no_desc_found);
                 } else {

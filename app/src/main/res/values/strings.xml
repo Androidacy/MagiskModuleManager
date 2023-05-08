@@ -418,4 +418,9 @@
     <string name="setup_scroll_down_v2">To enable the finish button, scroll to the bottom and acknowledge you have read and agree to the EULA and license(s).</string>
     <string name="notification_update_ignore_version_desc">Ignore specific versions when checking for module updates. Disabling update checks per-module above overrides this setting!</string>
     <string name="notification_update_ignore_version_pref">Exclude version(s) from update checks</string>
+    <string name="background_update_check_excludes_version">Exclude version(s) of modules from checks</string>
+    <string name="background_update_check_excludes_version_summary">Specify versions of modules you\'d like to ignore. Version code or version name will work, but version code may be more accurate. Use ^ at the beginning to match that version and newer. Use $ at the end to match up until that version.</string>
+    <string name="module_version">"Version: "</string>
+    <string name="module_remote_version">Remote version</string>
+    <string name="background_update_check_excludes_version_hint">Version(s) to ignore</string>
 </resources>

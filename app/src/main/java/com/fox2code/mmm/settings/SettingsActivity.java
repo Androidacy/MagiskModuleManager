@@ -22,9 +22,12 @@ import android.provider.Settings;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.Toast;
 
 import androidx.annotation.StringRes;
@@ -76,6 +79,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.navigation.NavigationBarView;
 import com.google.android.material.snackbar.BaseTransientBottomBar;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.android.material.textview.MaterialTextView;
 import com.mikepenz.aboutlibraries.LibsBuilder;
 import com.topjohnwu.superuser.internal.UiThreadHandler;
 
@@ -579,18 +583,18 @@ public class SettingsActivity extends FoxActivity implements LanguageActivity {
                     String[] moduleNames = new String[localModuleInfos.size()];
                     checkedItems = new boolean[localModuleInfos.size()];
                     int i = 0;
+                    // get the stringset pref_background_update_check_excludes
+                    Set<String> stringSetTemp = sharedPreferences.getStringSet("pref_background_update_check_excludes", new HashSet<>());
+                    // copy to a new set so we can modify it
+                    Set<String> stringSet = new HashSet<>(stringSetTemp);
                     for (LocalModuleInfo localModuleInfo : localModuleInfos) {
                         moduleNames[i] = localModuleInfo.name;
-                        // get the stringset pref_background_update_check_excludes
-                        Set<String> stringSet = sharedPreferences.getStringSet("pref_background_update_check_excludes", new HashSet<>());
                         // Stringset uses id, we show name
                         checkedItems[i] = stringSet.contains(localModuleInfo.id);
                         Timber.d("name: %s, checked: %s", moduleNames[i], checkedItems[i]);
                         i++;
                     }
                     new MaterialAlertDialogBuilder(this.requireContext()).setTitle(R.string.background_update_check_excludes).setMultiChoiceItems(moduleNames, checkedItems, (dialog, which, isChecked) -> {
-                        // get the stringset pref_background_update_check_excludes
-                        Set<String> stringSet = new HashSet<>(sharedPreferences.getStringSet("pref_background_update_check_excludes", new HashSet<>()));
                         // get id from name
                         String id;
                         if (localModuleInfos.stream().anyMatch(localModuleInfo -> localModuleInfo.name.equals(moduleNames[which]))) {
@@ -610,6 +614,72 @@ public class SettingsActivity extends FoxActivity implements LanguageActivity {
                     }).show();
                 } else {
                     new MaterialAlertDialogBuilder(this.requireContext()).setTitle(R.string.background_update_check_excludes).setMessage(R.string.background_update_check_excludes_no_modules).setPositiveButton(R.string.ok, (dialog, which) -> {
+                    }).show();
+                }
+                return true;
+            });
+            // now handle pref_background_update_check_excludes_version
+            updateCheckVersionExcludes.setVisible(MainApplication.isBackgroundUpdateCheckEnabled() && !MainApplication.isWrapped());
+            updateCheckVersionExcludes.setOnPreferenceClickListener(preference -> {
+                // get the stringset pref_background_update_check_excludes_version
+                Set<String> stringSet = sharedPreferences.getStringSet("pref_background_update_check_excludes_version", new HashSet<>());
+                Timber.d("stringSet: %s", stringSet);
+                // for every module, add it's name and a text field to the dialog. the text field should accept a comma separated list of versions
+                Collection<LocalModuleInfo> localModuleInfos = ModuleManager.getINSTANCE().getModules().values();
+                // make sure we have modules
+                if (localModuleInfos.isEmpty()) {
+                    new MaterialAlertDialogBuilder(this.requireContext()).setTitle(R.string.background_update_check_excludes).setMessage(R.string.background_update_check_excludes_no_modules).setPositiveButton(R.string.ok, (dialog, which) -> {
+                    }).show();
+                } else {
+                    LinearLayout layout = new LinearLayout(this.requireContext());
+                    layout.setOrientation(LinearLayout.VERTICAL);
+                    LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                    params.setMargins(48, 0, 48, 0);
+                    // add a summary
+                    MaterialTextView textView = new MaterialTextView(this.requireContext());
+                    textView.setLayoutParams(params);
+                    textView.setText(R.string.background_update_check_excludes_version_summary);
+                    for (LocalModuleInfo localModuleInfo : localModuleInfos) {
+                        // two views: materialtextview for name, edittext for version
+                        MaterialTextView materialTextView = new MaterialTextView(this.requireContext());
+                        materialTextView.setLayoutParams(params);
+                        materialTextView.setPadding(12, 8, 12, 8);
+                        materialTextView.setTextAppearance(com.google.android.material.R.style.TextAppearance_MaterialComponents_Subtitle1);
+                        materialTextView.setText(localModuleInfo.name);
+                        layout.addView(materialTextView);
+                        EditText editText = new EditText(this.requireContext());
+                        editText.setLayoutParams(params);
+                        editText.setHint(R.string.background_update_check_excludes_version_hint);
+                        // stringset uses id:version, we show version for name
+                        // so we need to get id from name, then get version from stringset
+                        String id = localModuleInfos.stream().filter(localModuleInfo1 -> localModuleInfo1.name.equals(localModuleInfo.name)).findFirst().orElse(null).id;
+                        String version = stringSet.stream().filter(s -> s.startsWith(id)).findFirst().orElse("");
+                        if (!version.isEmpty()) {
+                            editText.setText(version.split(":")[1]);
+                        }
+                        layout.addView(editText);
+                    }
+                    ScrollView scrollView = new ScrollView(this.requireContext());
+                    scrollView.addView(layout);
+                    new MaterialAlertDialogBuilder(this.requireContext()).setTitle(R.string.background_update_check_excludes_version).setView(scrollView).setPositiveButton(R.string.ok, (dialog, which) -> {
+                        Timber.d("ok clicked");
+                        // for every module, get the text field and save it to the stringset
+                        Set<String> stringSetTemp = new HashSet<>();
+                        for (int i = 0; i < layout.getChildCount(); i++) {
+                            EditText editText = (EditText) layout.getChildAt(i);
+                            String text = editText.getText().toString();
+                            if (!text.isEmpty()) {
+                                // text cannot contain a colon because we use that to split id and version
+                                text = text.replace(":", "");
+                                // we have to use module id even though we show name
+                                stringSetTemp.add(localModuleInfos.stream().filter(localModuleInfo -> localModuleInfo.name.equals(editText.getHint().toString())).findFirst().orElse(null).id + ":" + text);
+                                Timber.d("text is %s for %s", text, editText.getHint().toString());
+                            } else {
+                                Timber.d("text is empty for %s", editText.getHint().toString());
+                            }
+                        }
+                        sharedPreferences.edit().putStringSet("pref_background_update_check_excludes_version", stringSetTemp).apply();
+                    }).setNegativeButton(R.string.cancel, (dialog, which) -> {
                     }).show();
                 }
                 return true;

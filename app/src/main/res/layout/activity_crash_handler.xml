@@ -68,8 +68,8 @@
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/copy_button"
-                android:layout_width="28dp"
-                android:layout_height="28dp"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
                 android:layout_gravity="top|end"
                 android:layout_margin="10dp"
                 android:background="@drawable/baseline_copy_all_24"

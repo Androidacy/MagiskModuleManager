@@ -37,8 +37,10 @@ import com.fox2code.mmm.repo.RepoModule;
 import com.fox2code.mmm.utils.io.PropUtils;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 import timber.log.Timber;
@@ -136,12 +138,52 @@ public class BackgroundUpdateChecker extends Worker {
                     if ("twrp-keep".equals(localModuleInfo.id)) continue;
                     // exclude all modules with id's stored in the pref pref_background_update_check_excludes
                     try {
-                        if (Objects.requireNonNull(MainApplication.getSharedPreferences("mmm").getStringSet("pref_background_update_check_excludes", null)).contains(localModuleInfo.id))
+                        if (Objects.requireNonNull(MainApplication.getSharedPreferences("mmm").getStringSet("pref_background_update_check_excludes", new HashSet<>())).contains(localModuleInfo.id))
                             continue;
                     } catch (Exception ignored) {
                     }
+                    // now, we just had to make it more fucking complicated, didn't we?
+                    // we now have pref_background_update_check_excludes_version, which is a id:version stringset of versions the user may want to "skip"
+                    // oh, and because i hate myself, i made ^ at the beginning match that version and newer, and $ at the end match that version and older
+                    Set<String> stringSet = MainApplication.getSharedPreferences("mmm").getStringSet("pref_background_update_check_excludes_version", new HashSet<>());
+                    String version = "";
+                    if (stringSet.contains(localModuleInfo.id)) {
+                        // get the one matching
+                         version = stringSet.stream().filter(s -> s.startsWith(localModuleInfo.id)).findFirst().orElse("");
+                    }
                     RepoModule repoModule = repoModules.get(localModuleInfo.id);
                     localModuleInfo.checkModuleUpdate();
+                    String remoteVersion = localModuleInfo.updateVersion;
+                    String remoteVersionCode = String.valueOf(localModuleInfo.updateVersionCode);
+                    if (repoModule != null) {
+                        remoteVersion = repoModule.moduleInfo.version;
+                        remoteVersionCode = String.valueOf(repoModule.moduleInfo.versionCode);
+                    }
+                    // now, coerce everything into an int
+                    int localVersionCode = Integer.parseInt(String.valueOf(localModuleInfo.versionCode));
+                    int remoteVersionCodeInt = Integer.parseInt(remoteVersionCode);
+                    // we also have to match the version name
+                    int localVersion = Integer.parseInt(localModuleInfo.version);
+                    int remoteVersionInt = Integer.parseInt(remoteVersion);
+                    int wantsVersion = Integer.parseInt(version.split(":")[1]);
+                    // now find out if user wants up to and including this version, or this version and newer
+                    // if it starts with ^, it's this version and newer, if it ends with $, it's this version and older
+                    if (version.startsWith("^")) {
+                        // this version and newer
+                        if (wantsVersion > localVersion || wantsVersion > remoteVersionInt || wantsVersion > remoteVersionCodeInt || wantsVersion < localVersionCode) {
+                            // if it is, we skip it
+                            continue;
+                        }
+                    } else if (version.endsWith("$")) {
+                        // this version and older
+                        if (wantsVersion < localVersion || wantsVersion < remoteVersionInt || wantsVersion < remoteVersionCodeInt || wantsVersion > localVersionCode) {
+                            // if it is, we skip it
+                            continue;
+                        }
+                    } else if (wantsVersion == localVersion || wantsVersion == remoteVersionInt || wantsVersion == remoteVersionCodeInt || wantsVersion == localVersionCode) {
+                        // if it is, we skip it
+                        continue;
+                    }
                     if (localModuleInfo.updateVersionCode > localModuleInfo.versionCode && !PropUtils.isNullString(localModuleInfo.updateVersion)) {
                         moduleUpdateCount++;
                         updateableModules.put(localModuleInfo.name, localModuleInfo.version);
