@@ -293,4 +293,12 @@
     <string name="invalid_excludes">Entrada inválida</string>
     <string name="notification_update_ignore_desc">Lista de módulos excluidos de comprobación de actualizaciones</string>
     <string name="sentry_enable_nag">Parece que el envío de errores está desactivado. Por favor actívalo para enviar datos.</string>
+    <string name="error_no_extras">ERROR: Datos inválidos recibidos al iniciar</string>
+    <string name="update_debug_warning">Parece que estás ejecutando una versión de depuración. Las versiones de depuración deben de ser actualizadas manualmente, y no se pueden actualizar en la app</string>
+    <string name="invalid_characters_message">La lista de módulos que has escrito es inválida. Por favor solo escribe id\'s de módulos válidos separados por comas</string>
+    <string name="background_update_check_excludes">Módulos que excluir de comprobaciones de actualizaciones automáticas</string>
+    <string name="title_activity_update">Actualizador</string>
+    <string name="update_title">Actualizar aplicación</string>
+    <string name="update_button">Por favor espere…</string>
+    <string name="update_message">Por favor espere mientras comprobamos e instalamos actualizaciones a FoxMMM. Esto puede tardar algunos minutos</string>
 </resources>
