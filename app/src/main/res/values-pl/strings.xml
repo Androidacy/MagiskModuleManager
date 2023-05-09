@@ -396,4 +396,11 @@
     <string name="eula_sum">Akceptuję licencję i EULA</string>
     <string name="setup_scroll_down_v2">Aby aktywować przycisk „Zakończ”, przewiń do dołu i potwierdź, że akceptujesz licencje i EULA.</string>
     <string name="eula_agree_v2">Zgadzasz się na warunki licencji LGPL-3.0 (https://www.gnu.org/licenses/lgpl-3.0.en.html) i EULA (https://www.androidacy.com/foxmmm-eula/), oprócz wszelkich warunków stron trzecich, oraz że autorzy tej aplikacji nie ponoszą żadnej odpowiedzialności za korzystanie z niej przez użytkownika, ani nie udzielają żadnych jawnych lub rzekomych gwarancji.</string>
+    <string name="notification_update_ignore_version_pref">Wyklucz wersje z sprawdzania aktualizacji</string>
+    <string name="background_update_check_excludes_version">Wyklucz wersje modułów ze sprawdzania</string>
+    <string name="module_version">"Wersja: "</string>
+    <string name="module_remote_version">Zdalna wersja</string>
+    <string name="background_update_check_excludes_version_hint">Ignorowane wersje</string>
+    <string name="notification_update_ignore_version_desc">Ignoruje określone wersje podczas sprawdzania aktualizacji modułów. Wyłączenie sprawdzania aktualizacji dla poszczególnych modułów powyżej nadpisuje to ustawienie!</string>
+    <string name="background_update_check_excludes_version_summary">Określ wersje modułów, które chcesz zignorować. Kod wersji lub nazwa wersji będą działać, ale kod wersji musi być bardziej dokładny. Użyj ^ na początku, aby dopasować wersję i nowszą. Użyj $ na końcu, aby dopasować do aktualnej wersji.</string>
 </resources>

@@ -77,4 +77,7 @@
     <string name="download_update">अध्यावधिक डाउनलोड गर्ने</string>
     <string name="error_download_update">अध्यावधिकको जानकारी डाउनलोड गर्दा एउटा त्रुटि भयो ।</string>
     <string name="notification_update_subtitle">एप खोल्न क्लिकगर्नुहोस्</string>
+    <string name="prevent_reboot_pref">पुनः शुरूगर्नबाट रोक्ने</string>
+    <string name="module_by">द्वारा:</string>
+    <string name="module_downloads">डाउनलोडहरु:</string>
 </resources>
