@@ -34,6 +34,7 @@ import java.net.URL;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
@@ -154,7 +155,7 @@ public final class AndroidacyRepoData extends RepoData {
         try {
             byte[] resp = Http.doHttpGet("https://" + this.host + "/auth/me?token=" + token + "&device_id=" + deviceId + "&client_id=" + BuildConfig.ANDROIDACY_CLIENT_ID, false);
             // response is JSON
-            JSONObject jsonObject = new JSONObject(new String(resp));
+            JSONObject jsonObject = new JSONObject(Arrays.toString(resp));
             memberLevel = jsonObject.getString("role");
             JSONArray memberPermissions = jsonObject.getJSONArray("permissions");
             // set role and permissions on userInfo property
@@ -251,7 +252,7 @@ public final class AndroidacyRepoData extends RepoData {
             try {
                 Timber.i("Requesting new token...");
                 // POST json request to https://production-api.androidacy.com/auth/register
-                token = new String(Http.doHttpPost("https://" + this.host + "/auth/register?client_id=" + BuildConfig.ANDROIDACY_CLIENT_ID, "{\"device_id\":\"" + deviceId + "\"}", false));
+                token = Arrays.toString(Http.doHttpPost("https://" + this.host + "/auth/register?client_id=" + BuildConfig.ANDROIDACY_CLIENT_ID, "{\"device_id\":\"" + deviceId + "\"}", false));
                 // Parse token
                 try {
                     JSONObject jsonObject = new JSONObject(token);

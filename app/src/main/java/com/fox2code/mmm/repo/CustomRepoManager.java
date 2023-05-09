@@ -9,6 +9,7 @@ import com.fox2code.mmm.utils.realm.ReposList;
 import org.json.JSONObject;
 
 import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
@@ -74,7 +75,7 @@ public class CustomRepoManager {
         // parse json
         JSONObject jsonObject;
         try {
-            jsonObject = new JSONObject(new String(json));
+            jsonObject = new JSONObject(Arrays.toString(json));
         } catch (Exception e) {
             Timber.e(e, "Failed to parse json from repo");
             return null;

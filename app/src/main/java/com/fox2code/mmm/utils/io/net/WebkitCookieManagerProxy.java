@@ -11,7 +11,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 import okhttp3.Cookie;
 import okhttp3.CookieJar;
@@ -41,15 +40,13 @@ public class WebkitCookieManagerProxy extends CookieManager implements CookieJar
         String url = uri.toString();
 
         // go over the headers
-        for (String headerKey : responseHeaders.keySet()) {
+        for (Map.Entry<String, List<String>> entry : responseHeaders.entrySet()) {
             // ignore headers which aren't cookie related
-            if ((headerKey == null)
-                    || !(headerKey.equalsIgnoreCase("Set-Cookie2") || headerKey
-                    .equalsIgnoreCase("Set-Cookie")))
+            if ((entry.getKey() == null)
+                    || !(entry.getKey().equalsIgnoreCase("Set-Cookie2") || entry
+                    .getKey().equalsIgnoreCase("Set-Cookie")))
                 continue;
-
-            // process each of the headers
-            for (String headerValue : Objects.requireNonNull(responseHeaders.get(headerKey))) {
+            for (String headerValue : entry.getValue()) {
                 webkitCookieManager.setCookie(url, headerValue);
             }
         }

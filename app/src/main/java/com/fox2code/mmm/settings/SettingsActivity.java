@@ -20,6 +20,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.provider.Settings;
 import android.text.Editable;
+import android.text.InputType;
 import android.text.TextWatcher;
 import android.view.View;
 import android.view.ViewGroup;
@@ -648,6 +649,7 @@ public class SettingsActivity extends FoxActivity implements LanguageActivity {
                         materialTextView.setText(localModuleInfo.name);
                         layout.addView(materialTextView);
                         EditText editText = new EditText(this.requireContext());
+                        editText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
                         editText.setLayoutParams(params);
                         editText.setHint(R.string.background_update_check_excludes_version_hint);
                         // stringset uses id:version, we show version for name
@@ -907,9 +909,10 @@ public class SettingsActivity extends FoxActivity implements LanguageActivity {
                 Timber.d("Version clicks: %d", ref.versionClicks);
                 // if it's been 3 clicks, toast "yer a wizard, harry" or "keep tapping to enter hogwarts"
                 if (ref.versionClicks == 3) {
-                    // pick 1 or 2
-                    int random = new Random().nextInt(2) + 1;
-                    Toast.makeText(p.getContext(), random == 1 ? R.string.yer_a_wizard_harry : R.string.keep_tapping_to_enter_hogwarts, Toast.LENGTH_SHORT).show();
+                    // random choice of 1 or 2
+                    Random rand = new Random();
+                    int n = rand.nextInt(2) + 1;
+                    Toast.makeText(p.getContext(), n == 1 ? R.string.yer_a_wizard_harry : R.string.keep_tapping_to_enter_hogwarts, Toast.LENGTH_SHORT).show();
                 }
                 if (ref.versionClicks == 7) {
                     ref.versionClicks = 0;

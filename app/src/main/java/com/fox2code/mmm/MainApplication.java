@@ -581,7 +581,7 @@ public class MainApplication extends FoxApplication implements androidx.work.Con
                 //noinspection BusyWait
                 Thread.sleep(100);
             } catch (InterruptedException ignored) {
-                // silence is bliss
+                Thread.currentThread().interrupt();
             }
         }
         // attempt to read the existingKey property
@@ -607,7 +607,9 @@ public class MainApplication extends FoxApplication implements androidx.work.Con
         }
         // create a securely generated random asymmetric RSA key
         byte[] realmKey = new byte[Realm.ENCRYPTION_KEY_LENGTH];
-        new SecureRandom().nextBytes(realmKey);
+        do {
+            new SecureRandom().nextBytes(realmKey);
+        } while (realmKey[0] == 0);
         // create a cipher that uses AES encryption -- we'll use this to encrypt our key
         Cipher cipher;
         try {

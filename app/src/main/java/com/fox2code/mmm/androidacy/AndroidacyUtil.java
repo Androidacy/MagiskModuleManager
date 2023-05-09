@@ -9,6 +9,7 @@ import com.fox2code.mmm.BuildConfig;
 import com.fox2code.mmm.utils.io.net.Http;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Objects;
 
 public enum AndroidacyUtil {
@@ -132,6 +133,6 @@ public enum AndroidacyUtil {
         if (md == null) {
             return null;
         }
-        return new String(md);
+        return Arrays.toString(md);
     }
 }

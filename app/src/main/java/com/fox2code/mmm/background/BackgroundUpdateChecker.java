@@ -206,7 +206,7 @@ public class BackgroundUpdateChecker extends Worker {
                         postNotificationForAppUpdate(context);
                     }
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    Timber.e("Failed to check for app update");
                 }
             }
             // remove checking notification

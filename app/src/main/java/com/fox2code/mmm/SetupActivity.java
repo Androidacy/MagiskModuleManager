@@ -204,7 +204,7 @@ public class SetupActivity extends FoxActivity implements LanguageActivity {
             try {
                 Thread.sleep(250);
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                Thread.currentThread().interrupt();
             }
             // Log the changes
             Timber.d("Setup finished. Preferences: %s", prefs.getAll());
@@ -218,7 +218,7 @@ public class SetupActivity extends FoxActivity implements LanguageActivity {
             try {
                 pendingIntent.send();
             } catch (PendingIntent.CanceledException e) {
-                e.printStackTrace();
+                Timber.e(e);
             }
             android.os.Process.killProcess(android.os.Process.myPid());
         });

@@ -312,7 +312,6 @@ public class InstallerActivity extends FoxActivity {
                 return;
             }
             this.installerTerminal.enableAnsi();
-            // Extract customize.sh manually in rootless mode because unzip might not exists
             try (ZipFile zipFile = new ZipFile(file)) {
                 ZipArchiveEntry zipEntry = zipFile.getEntry("customize.sh");
                 if (zipEntry != null) {
