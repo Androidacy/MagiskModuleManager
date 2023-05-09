@@ -75,7 +75,7 @@ public class CustomRepoManager {
         // parse json
         JSONObject jsonObject;
         try {
-            jsonObject = new JSONObject(Arrays.toString(json));
+            jsonObject = new JSONObject(new String(json));
         } catch (Exception e) {
             Timber.e(e, "Failed to parse json from repo");
             return null;

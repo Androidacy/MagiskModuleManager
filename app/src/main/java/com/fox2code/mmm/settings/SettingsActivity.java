@@ -671,8 +671,8 @@ public class SettingsActivity extends FoxActivity implements LanguageActivity {
                             EditText editText = (EditText) layout.getChildAt(i);
                             String text = editText.getText().toString();
                             if (!text.isEmpty()) {
-                                // text cannot contain a colon because we use that to split id and version
-                                text = text.replace(":", "");
+                                // text can only contain numbers
+                                text = text.replaceAll("[^0-9]", "");
                                 // we have to use module id even though we show name
                                 stringSetTemp.add(localModuleInfos.stream().filter(localModuleInfo -> localModuleInfo.name.equals(editText.getHint().toString())).findFirst().orElse(null).id + ":" + text);
                                 Timber.d("text is %s for %s", text, editText.getHint().toString());
@@ -942,23 +942,29 @@ public class SettingsActivity extends FoxActivity implements LanguageActivity {
             // now handle pref_donate_androidacy
             LongClickablePreference pref_donate_androidacy = findPreference("pref_donate_androidacy");
             if (!BuildConfig.FLAVOR.equals("play")) {
-                pref_donate_androidacy.setOnPreferenceClickListener(p -> {
-                    // copy FOX2CODE promo code to clipboard and toast user that they can use it for half off any subscription
-                    String toastText = requireContext().getString(R.string.promo_code_copied);
-                    clipboard.setPrimaryClip(ClipData.newPlainText(toastText, "FOX2CODE"));
-                    Toast.makeText(requireContext(), toastText, Toast.LENGTH_SHORT).show();
-                    // open androidacy
-                    IntentHelper.openUrl(getFoxActivity(this), "https://www.androidacy.com/membership-join/?utm_source=foxmmm&utm_medium=app&utm_campaign=donate");
-                    return true;
-                });
-                // handle long click on pref_donate_androidacy
-                pref_donate_androidacy.setOnPreferenceLongClickListener(p -> {
-                    // copy to clipboard
-                    String toastText = requireContext().getString(R.string.link_copied);
-                    clipboard.setPrimaryClip(ClipData.newPlainText(toastText, "https://www.androidacy.com/membership-join/?utm_source=foxmmm&utm_medium=app&utm_campaign=donate"));
-                    Toast.makeText(requireContext(), toastText, Toast.LENGTH_SHORT).show();
-                    return true;
-                });
+                if (Objects.equals(AndroidacyRepoData.getInstance().memberLevel, "Guest")) {
+                    pref_donate_androidacy.setOnPreferenceClickListener(p -> {
+                        // copy FOX2CODE promo code to clipboard and toast user that they can use it for half off any subscription
+                        String toastText = requireContext().getString(R.string.promo_code_copied);
+                        clipboard.setPrimaryClip(ClipData.newPlainText(toastText, "FOX2CODE"));
+                        Toast.makeText(requireContext(), toastText, Toast.LENGTH_SHORT).show();
+                        // open androidacy
+                        IntentHelper.openUrl(getFoxActivity(this), "https://www.androidacy.com/membership-join/?utm_source=foxmmm&utm_medium=app&utm_campaign=donate");
+                        return true;
+                    });
+                    // handle long click on pref_donate_androidacy
+                    pref_donate_androidacy.setOnPreferenceLongClickListener(p -> {
+                        // copy to clipboard
+                        String toastText = requireContext().getString(R.string.link_copied);
+                        clipboard.setPrimaryClip(ClipData.newPlainText(toastText, "https://www.androidacy.com/membership-join/?utm_source=foxmmm&utm_medium=app&utm_campaign=donate"));
+                        Toast.makeText(requireContext(), toastText, Toast.LENGTH_SHORT).show();
+                        return true;
+                    });
+                } else {
+                    // set text to "Thank you for your support!"
+                    pref_donate_androidacy.setSummary(R.string.androidacy_thanks_up);
+                    pref_donate_androidacy.setTitle(R.string.androidacy_thanks_up_title);
+                }
             } else {
                 pref_donate_androidacy.setVisible(false);
             }

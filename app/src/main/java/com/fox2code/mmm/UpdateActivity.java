@@ -224,7 +224,7 @@ public class UpdateActivity extends FoxActivity {
             });
         }
         // convert to JSON
-        JSONObject latestJSON = new JSONObject(Arrays.toString(lastestJSON));
+        JSONObject latestJSON = new JSONObject(new String(lastestJSON));
         String changelog = latestJSON.getString("body");
         // set changelog text. changelog could be markdown, so we need to convert it to HTML
         MaterialTextView changelogTextView = findViewById(R.id.update_changelog);

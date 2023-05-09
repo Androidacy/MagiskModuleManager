@@ -219,4 +219,35 @@ class RuntimeUtils {
         snackbar.show()
         prefs.edit().putInt("weblate_snackbar_shown", BuildConfig.VERSION_CODE).apply()
     }
+
+    /**
+     * Shows a snackbar to upgrade androidacy membership.
+     * Sure it'll be wildly popular but it's only shown for 7 seconds every 7 days.
+     * We could y'know stick ads in the app but we're gonna play nice.
+     * @param context
+     * @param activity
+     */
+    @SuppressLint("RestrictedApi")
+    fun showUpgradeSnackbar(context: Context, activity: MainActivity) {
+        Timber.i("showUpgradeSnackbar start")
+        val prefs = MainApplication.getSharedPreferences("mmm")
+        // if last shown < 7 days ago
+        if (prefs.getLong("ugsns4", 0) > System.currentTimeMillis() - 604800000) return
+        val snackbar: Snackbar = Snackbar.make(
+            context,
+            activity.findViewById(R.id.blur_frame),
+            activity.getString(R.string.upgrade_snackbar),
+            7000
+        )
+        snackbar.setAction(R.string.upgrade_now) {
+            val intent = Intent(Intent.ACTION_VIEW)
+            intent.data = Uri.parse("https://androidacy.com/membership-join/#utm_source=foxmmm&utm_medium=app&utm_campaign=upgrade_snackbar")
+            activity.startActivity(intent)
+        }
+        snackbar.setAnchorView(R.id.bottom_navigation)
+        snackbar.show()
+        // do not show for another 7 days
+        prefs.edit().putLong("ugsns4", System.currentTimeMillis()).apply()
+        Timber.i("showUpgradeSnackbar done")
+    }
 }

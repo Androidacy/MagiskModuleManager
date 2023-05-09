@@ -133,6 +133,6 @@ public enum AndroidacyUtil {
         if (md == null) {
             return null;
         }
-        return Arrays.toString(md);
+        return new String(md);
     }
 }

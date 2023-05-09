@@ -275,12 +275,14 @@ public final class AndroidacyActivity extends FoxActivity {
 
             @Override
             public boolean onConsoleMessage(ConsoleMessage consoleMessage) {
-                switch (consoleMessage.messageLevel()) {
-                    case TIP -> Timber.tag("JSLog").i(consoleMessage.message());
-                    case LOG -> Timber.tag("JSLog").d(consoleMessage.message());
-                    case WARNING -> Timber.tag("JSLog").w(consoleMessage.message());
-                    case ERROR -> Timber.tag("JSLog").e(consoleMessage.message());
-                    default -> Timber.tag("JSLog").v(consoleMessage.message());
+                if (BuildConfig.DEBUG_HTTP) {
+                    switch (consoleMessage.messageLevel()) {
+                        case TIP -> Timber.tag("JSLog").i(consoleMessage.message());
+                        case LOG -> Timber.tag("JSLog").d(consoleMessage.message());
+                        case WARNING -> Timber.tag("JSLog").w(consoleMessage.message());
+                        case ERROR -> Timber.tag("JSLog").e(consoleMessage.message());
+                        default -> Timber.tag("JSLog").v(consoleMessage.message());
+                    }
                 }
                 return true;
             }

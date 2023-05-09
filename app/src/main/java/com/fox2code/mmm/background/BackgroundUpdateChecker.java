@@ -153,34 +153,28 @@ public class BackgroundUpdateChecker extends Worker {
                     }
                     RepoModule repoModule = repoModules.get(localModuleInfo.id);
                     localModuleInfo.checkModuleUpdate();
-                    String remoteVersion = localModuleInfo.updateVersion;
                     String remoteVersionCode = String.valueOf(localModuleInfo.updateVersionCode);
                     if (repoModule != null) {
-                        remoteVersion = repoModule.moduleInfo.version;
                         remoteVersionCode = String.valueOf(repoModule.moduleInfo.versionCode);
                     }
-                    // now, coerce everything into an int
                     int localVersionCode = Integer.parseInt(String.valueOf(localModuleInfo.versionCode));
                     int remoteVersionCodeInt = Integer.parseInt(remoteVersionCode);
-                    // we also have to match the version name
-                    int localVersion = Integer.parseInt(localModuleInfo.version);
-                    int remoteVersionInt = Integer.parseInt(remoteVersion);
-                    int wantsVersion = Integer.parseInt(version.split(":")[1]);
+                    int wantsVersion = Integer.parseInt(version.split(":")[1].replaceAll("[^0-9]", ""));
                     // now find out if user wants up to and including this version, or this version and newer
                     // if it starts with ^, it's this version and newer, if it ends with $, it's this version and older
                     if (version.startsWith("^")) {
                         // this version and newer
-                        if (wantsVersion > localVersion || wantsVersion > remoteVersionInt || wantsVersion > remoteVersionCodeInt || wantsVersion < localVersionCode) {
+                        if (wantsVersion <= remoteVersionCodeInt || wantsVersion <= localVersionCode) {
                             // if it is, we skip it
                             continue;
                         }
                     } else if (version.endsWith("$")) {
                         // this version and older
-                        if (wantsVersion < localVersion || wantsVersion < remoteVersionInt || wantsVersion < remoteVersionCodeInt || wantsVersion > localVersionCode) {
+                        if (wantsVersion >= remoteVersionCodeInt || wantsVersion >= localVersionCode) {
                             // if it is, we skip it
                             continue;
                         }
-                    } else if (wantsVersion == localVersion || wantsVersion == remoteVersionInt || wantsVersion == remoteVersionCodeInt || wantsVersion == localVersionCode) {
+                    } else if (wantsVersion == remoteVersionCodeInt || wantsVersion == localVersionCode) {
                         // if it is, we skip it
                         continue;
                     }

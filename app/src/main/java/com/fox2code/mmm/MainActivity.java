@@ -34,6 +34,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.fox2code.foxcompat.app.FoxActivity;
 import com.fox2code.foxcompat.view.FoxDisplay;
+import com.fox2code.mmm.androidacy.AndroidacyRepoData;
 import com.fox2code.mmm.background.BackgroundUpdateChecker;
 import com.fox2code.mmm.installer.InstallerInitializer;
 import com.fox2code.mmm.manager.LocalModuleInfo;
@@ -55,6 +56,7 @@ import org.matomo.sdk.extra.TrackHelper;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
@@ -62,6 +64,7 @@ import timber.log.Timber;
 
 public class MainActivity extends FoxActivity implements SwipeRefreshLayout.OnRefreshListener, SearchView.OnQueryTextListener, SearchView.OnCloseListener, OverScrollManager.OverScrollHelper {
     private static final int PRECISION = 10000;
+    private static MainActivity INSTANCE;
     public static boolean doSetupNowRunning = true;
     public static boolean doSetupRestarting = false;
     public static List<LocalModuleInfo> localModuleInfoList = new ArrayList<>();
@@ -420,6 +423,7 @@ public class MainActivity extends FoxActivity implements SwipeRefreshLayout.OnRe
                     searchView.setEnabled(true);
                     updateScreenInsets(getResources().getConfiguration());
                 });
+                maybeShowUpgrade();
                 Timber.i("Finished app opening state!");
             }
         }, true);
@@ -701,5 +705,61 @@ public class MainActivity extends FoxActivity implements SwipeRefreshLayout.OnRe
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
         this.updateScreenInsets();
+    }
+
+
+
+    public void maybeShowUpgrade() {
+        if (AndroidacyRepoData.getInstance() == null || AndroidacyRepoData.getInstance().memberLevel == null) {
+            // wait for up to 10 seconds for AndroidacyRepoData to be initialized
+            int i = 0;
+            while (AndroidacyRepoData.getInstance() == null && i < 10) {
+                try {
+                    //noinspection BusyWait
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    Timber.e(e);
+                }
+                i++;
+            }
+            if (AndroidacyRepoData.getInstance().isEnabled() && AndroidacyRepoData.getInstance().memberLevel == null) {
+                Timber.d("Member level is null, waiting for it to be initialized");
+                i = 0;
+                while (AndroidacyRepoData.getInstance().memberLevel == null && i < 20) {
+                    i++;
+                    try {
+                        //noinspection BusyWait
+                        Thread.sleep(500);
+                    } catch (InterruptedException e) {
+                        Timber.e(e);
+                    }
+                }
+            }
+            // if it's still null, but it's enabled, throw an error
+            if (AndroidacyRepoData.getInstance().isEnabled() && AndroidacyRepoData.getInstance().memberLevel == null) {
+                throw new IllegalStateException("AndroidacyRepoData is enabled, but member level is null");
+            }
+            if (AndroidacyRepoData.getInstance() != null && AndroidacyRepoData.getInstance().isEnabled() && Objects.equals(AndroidacyRepoData.getInstance().memberLevel, "Guest")) {
+                runtimeUtils.showUpgradeSnackbar(this, this);
+            } else {
+                if (!AndroidacyRepoData.getInstance().isEnabled()) {
+                    Timber.i("AndroidacyRepoData is disabled, not showing upgrade snackbar 1");
+                } else if (!Objects.equals(AndroidacyRepoData.getInstance().memberLevel, "Guest")) {
+                    Timber.i("AndroidacyRepoData is not Guest, not showing upgrade snackbar 1. Level: %s", AndroidacyRepoData.getInstance().memberLevel);
+                } else {
+                    Timber.i("Unknown error, not showing upgrade snackbar 1");
+                }
+            }
+        } else if (AndroidacyRepoData.getInstance().isEnabled() && Objects.equals(AndroidacyRepoData.getInstance().memberLevel, "Guest")) {
+            runtimeUtils.showUpgradeSnackbar(this, this);
+        } else {
+            if (!AndroidacyRepoData.getInstance().isEnabled()) {
+                Timber.i("AndroidacyRepoData is disabled, not showing upgrade snackbar 2");
+            } else if (!Objects.equals(AndroidacyRepoData.getInstance().memberLevel, "Guest")) {
+                Timber.i("AndroidacyRepoData is not Guest, not showing upgrade snackbar 2. Level: %s", AndroidacyRepoData.getInstance().memberLevel);
+            } else {
+                Timber.i("Unknown error, not showing upgrade snackbar 2");
+            }
+        }
     }
 }

@@ -98,7 +98,11 @@ android {
             // current timestamp of build
             buildConfigField("long", "BUILD_TIME", "$timestamp")
             // debug http requests. do not set this to true if you care about performance!!!!!
-            buildConfigField("boolean", "DEBUG_HTTP", "false")
+            if (System.getenv("CI") != null) {
+                buildConfigField("boolean", "DEBUG_HTTP", "true")
+            } else {
+                buildConfigField("boolean", "DEBUG_HTTP", "false")
+            }
             // Latest commit hash as BuildConfig.COMMIT_HASH
             buildConfigField("String", "COMMIT_HASH", "\"$gitCommitHash\"")
             // Get the current branch name as BuildConfig.BRANCH_NAME
@@ -161,7 +165,12 @@ android {
             // current timestamp of build
             buildConfigField("long", "BUILD_TIME", "$timestamp")
             // debug http requests. do not set this to true if you care about performance!!!!!
-            buildConfigField("boolean", "DEBUG_HTTP", "false")
+            // if env var CI is set to true, this will be true
+            if (System.getenv("CI") != null) {
+                buildConfigField("boolean", "DEBUG_HTTP", "true")
+            } else {
+                buildConfigField("boolean", "DEBUG_HTTP", "false")
+            }
             // Latest commit hash as BuildConfig.COMMIT_HASH
             buildConfigField("String", "COMMIT_HASH", "\"$gitCommitHash\"")
             // Get the current branch name as BuildConfig.BRANCH_NAME
@@ -223,8 +232,11 @@ android {
             // current timestamp of build
             buildConfigField("long", "BUILD_TIME", "$timestamp")
             // debug http requests. do not set this to true if you care about performance!!!!!
-            buildConfigField("boolean", "DEBUG_HTTP", "false")
-
+            if (System.getenv("CI") != null) {
+                buildConfigField("boolean", "DEBUG_HTTP", "true")
+            } else {
+                buildConfigField("boolean", "DEBUG_HTTP", "false")
+            }
             // Latest commit hash as BuildConfig.COMMIT_HASH
             buildConfigField("String", "COMMIT_HASH", "\"$gitCommitHash\"")
             // Get the current branch name as BuildConfig.BRANCH_NAME
@@ -469,6 +481,9 @@ dependencies {
 
     // desugaring
     coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.0.3")
+
+    // yes
+    implementation("com.github.fingerprintjs:fingerprint-android:2.0.0")
 }
 
 android {

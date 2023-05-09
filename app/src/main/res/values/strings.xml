@@ -419,8 +419,12 @@
     <string name="notification_update_ignore_version_desc">Ignore specific versions when checking for module updates. Disabling update checks per-module above overrides this setting!</string>
     <string name="notification_update_ignore_version_pref">Exclude version(s) from update checks</string>
     <string name="background_update_check_excludes_version">Exclude version(s) of modules from checks</string>
-    <string name="background_update_check_excludes_version_summary">Specify versions of modules you\'d like to ignore. Version code or version name will work, but version code may be more accurate. Use ^ at the beginning to match that version and newer. Use $ at the end to match up until that version.</string>
+    <string name="background_update_check_excludes_version_summary">Specify a version of module updates you\'d like to ignore. Please use the version code only. You can find this by holding down on the version in the module list. Use ^ at the beginning to match that version and newer. Use $ at the end to match up until that version.</string>
     <string name="module_version">"Version: "</string>
     <string name="module_remote_version">Remote version</string>
-    <string name="background_update_check_excludes_version_hint">Version(s) to ignore</string>
+    <string name="background_update_check_excludes_version_hint">Version code to ignore</string>
+    <string name="androidacy_thanks_up">Thanks for upgrading! Module downloads and READMEs will not show ads, and downloads will be unthrottled. In the future. you will be able to directly download modules with one click.</string>
+    <string name="androidacy_thanks_up_title">You\'ve already upgraded!</string>
+    <string name="upgrade_snackbar">Androidacy Premium offers faster downloads, an ad-free experience, and more!</string>
+    <string name="upgrade_now">Upgrade</string>
 </resources>
