@@ -19,9 +19,11 @@ import com.fox2code.mmm.utils.io.PropUtils;
 import com.fox2code.mmm.utils.io.net.Http;
 
 import java.util.Comparator;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
+import java.util.Set;
 
 import timber.log.Timber;
 
@@ -135,13 +137,62 @@ public final class ModuleHolder implements Comparable<ModuleHolder> {
         } else if (this.moduleInfo == null) {
             return Type.INSTALLABLE;
         } else if (this.moduleInfo.versionCode < this.moduleInfo.updateVersionCode || (this.repoModule != null && this.moduleInfo.versionCode < this.repoModule.moduleInfo.versionCode)) {
-            Timber.d("Module %s has update", this.moduleId);
+            boolean ignoreUpdate = false;
+            try {
+                if (Objects.requireNonNull(MainApplication.getSharedPreferences("mmm").getStringSet("pref_background_update_check_excludes", new HashSet<>())).contains(moduleInfo.id))
+                    ignoreUpdate = true;
+            } catch (Exception ignored) {
+            }
+            // now, we just had to make it more fucking complicated, didn't we?
+            // we now have pref_background_update_check_excludes_version, which is a id:version stringset of versions the user may want to "skip"
+            // oh, and because i hate myself, i made ^ at the beginning match that version and newer, and $ at the end match that version and older
+            Set<String> stringSet = MainApplication.getSharedPreferences("mmm").getStringSet("pref_background_update_check_excludes_version", new HashSet<>());
+            String version = "";
+            if (stringSet.contains(moduleInfo.id)) {
+                // get the one matching
+                version = stringSet.stream().filter(s -> s.startsWith(moduleInfo.id)).findFirst().orElse("");
+            }
+            String remoteVersion = moduleInfo.updateVersion;
+            String remoteVersionCode = String.valueOf(moduleInfo.updateVersionCode);
+            if (repoModule != null) {
+                remoteVersion = repoModule.moduleInfo.version;
+                remoteVersionCode = String.valueOf(repoModule.moduleInfo.versionCode);
+            }
+            // now, coerce everything into an int
+            int localVersionCode = Integer.parseInt(String.valueOf(moduleInfo.versionCode));
+            int remoteVersionCodeInt = Integer.parseInt(remoteVersionCode);
+            // we also have to match the version name
+            int localVersion = Integer.parseInt(moduleInfo.version);
+            int remoteVersionInt = Integer.parseInt(remoteVersion);
+            int wantsVersion = Integer.parseInt(version.split(":")[1]);
+            // now find out if user wants up to and including this version, or this version and newer
+            // if it starts with ^, it's this version and newer, if it ends with $, it's this version and older
+            if (version.startsWith("^")) {
+                // this version and newer
+                if (wantsVersion > localVersion || wantsVersion > remoteVersionInt || wantsVersion > remoteVersionCodeInt || wantsVersion < localVersionCode) {
+                    // if it is, we skip it
+                    ignoreUpdate = true;
+                }
+            } else if (version.endsWith("$")) {
+                // this version and older
+                if (wantsVersion < localVersion || wantsVersion < remoteVersionInt || wantsVersion < remoteVersionCodeInt || wantsVersion > localVersionCode) {
+                    // if it is, we skip it
+                    ignoreUpdate = true;
+                }
+            } else if (wantsVersion == localVersion || wantsVersion == remoteVersionInt || wantsVersion == remoteVersionCodeInt || wantsVersion == localVersionCode) {
+                // if it is, we skip it
+                ignoreUpdate = true;
+            }
             MainApplication.getINSTANCE().modulesHaveUpdates = true;
             if (!MainApplication.getINSTANCE().updateModules.contains(this.moduleId)) {
                 MainApplication.getINSTANCE().updateModules.add(this.moduleId);
                 MainApplication.getINSTANCE().updateModuleCount++;
             }
             Timber.d("modulesHaveUpdates = %s, updateModuleCount = %s", MainApplication.getINSTANCE().modulesHaveUpdates, MainApplication.getINSTANCE().updateModuleCount);
+            if (ignoreUpdate) {
+                Timber.d("Module %s has update, but is ignored", this.moduleId);
+                return Type.INSTALLABLE;
+            }
             Timber.d("Module %s has update", this.moduleId);
             return Type.UPDATABLE;
         } else {
@@ -160,8 +211,6 @@ public final class ModuleHolder implements Comparable<ModuleHolder> {
     }
 
     public boolean shouldRemove() {
-        // okay so this is quite possibly the hackiest fucking piece of code i've ever written
-        // basically, if we have a repomodule that has moduleinfo but no update, remove it-
         if (this.repoModule != null && this.moduleInfo != null && !hasUpdate()) {
             return true;
         }
