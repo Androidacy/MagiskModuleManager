@@ -86,6 +86,7 @@ public class MainActivity extends FoxActivity implements SwipeRefreshLayout.OnRe
     private SearchView searchView;
     private boolean initMode;
     private RuntimeUtils runtimeUtils;
+    public static Boolean isShowingWeblateSb = false; // race condition
 
     public MainActivity() {
         this.moduleViewListBuilder = new ModuleViewListBuilder(this);

@@ -7,6 +7,8 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
+import android.os.Handler
+import android.os.Looper
 import android.provider.Settings
 import android.view.View
 import android.widget.CheckBox
@@ -203,13 +205,14 @@ class RuntimeUtils {
     fun showWeblateSnackbar(
         context: Context, activity: MainActivity, language: String, languageName: String
     ) {
+        MainActivity.isShowingWeblateSb = true
         // if we haven't shown context snackbar for context version yet
         val prefs = MainApplication.getSharedPreferences("mmm")
         if (prefs.getInt("weblate_snackbar_shown", 0) == BuildConfig.VERSION_CODE) return
         val snackbar: Snackbar = Snackbar.make(
             activity.findViewById(R.id.root_container),
             activity.getString(R.string.language_not_available, languageName),
-            Snackbar.LENGTH_LONG
+            4000
         )
         snackbar.setAction(R.string.ok) {
             val intent = Intent(Intent.ACTION_VIEW)
@@ -217,6 +220,10 @@ class RuntimeUtils {
             activity.startActivity(intent)
         }
         snackbar.show()
+        // after four seconds, set isShowingWeblateSb to false
+        Handler(Looper.getMainLooper()).postDelayed({
+            MainActivity.isShowingWeblateSb = false
+        }, 4000)
         prefs.edit().putInt("weblate_snackbar_shown", BuildConfig.VERSION_CODE).apply()
     }
 
@@ -230,6 +237,13 @@ class RuntimeUtils {
     @SuppressLint("RestrictedApi")
     fun showUpgradeSnackbar(context: Context, activity: MainActivity) {
         Timber.i("showUpgradeSnackbar start")
+        // if sb is already showing, wait 4 seconds and try again
+        if (MainActivity.isShowingWeblateSb) {
+            Handler(Looper.getMainLooper()).postDelayed({
+                showUpgradeSnackbar(context, activity)
+            }, 4500)
+            return
+        }
         val prefs = MainApplication.getSharedPreferences("mmm")
         // if last shown < 7 days ago
         if (prefs.getLong("ugsns4", 0) > System.currentTimeMillis() - 604800000) return

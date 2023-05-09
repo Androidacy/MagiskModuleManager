@@ -12,6 +12,7 @@ plugins {
     id("com.mikepenz.aboutlibraries.plugin")
     kotlin("android")
     kotlin("kapt")
+    id("androidx.baselineprofile")
 }
 
 // apply realm-android
@@ -39,12 +40,12 @@ android {
         minSdk = 24
         targetSdk = 33
         versionCode = 70
-        versionName = "2.0.2"
+        versionName = "2.1.0"
         vectorDrawables {
             useSupportLibrary = true
         }
         multiDexEnabled = true
-        resourceConfigurations.addAll(listOf("ar", "bs", "cs", "de", "es-rMX", "fr", "hu", "id", "ja", "nl", "pl", "pt", "pt-rBR", "ro", "ru", "tr", "uk", "zh", "zh-rTW", "en"))
+        resourceConfigurations.addAll(listOf("ar", "bs", "cs", "de", "es-rMX", "fr", "hu", "id", "ja", "hu", "nl", "pl", "pt", "pt-rBR", "ro", "ru", "tr", "uk", "zh", "zh-rTW", "en"))
     }
 
     splits {
@@ -426,6 +427,8 @@ dependencies {
 
     // google guava, maybe fix a bug
     implementation("com.google.guava:guava:31.1-android")
+    implementation("androidx.profileinstaller:profileinstaller:1.3.0")
+    "baselineProfile"(project(mapOf("path" to ":baselineprofile")))
 
 
     val libsuVersion = "5.0.5"
