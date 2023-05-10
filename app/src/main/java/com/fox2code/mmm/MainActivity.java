@@ -64,7 +64,6 @@ import timber.log.Timber;
 
 public class MainActivity extends FoxActivity implements SwipeRefreshLayout.OnRefreshListener, SearchView.OnQueryTextListener, SearchView.OnCloseListener, OverScrollManager.OverScrollHelper {
     private static final int PRECISION = 10000;
-    private static MainActivity INSTANCE;
     public static boolean doSetupNowRunning = true;
     public static boolean doSetupRestarting = false;
     public static List<LocalModuleInfo> localModuleInfoList = new ArrayList<>();
@@ -491,8 +490,12 @@ public class MainActivity extends FoxActivity implements SwipeRefreshLayout.OnRe
         if (MainApplication.isBlurEnabled()) {
             // set bottom navigation bar color to transparent blur
             BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
-            bottomNavigationView.setBackgroundColor(Color.TRANSPARENT);
-            bottomNavigationView.setAlpha(0.8F);
+            if (bottomNavigationView != null) {
+                bottomNavigationView.setBackgroundColor(Color.TRANSPARENT);
+                bottomNavigationView.setAlpha(0.8F);
+            } else {
+                Timber.w("Bottom navigation view not found");
+            }
             // set dialogs to have transparent blur
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND);
         }

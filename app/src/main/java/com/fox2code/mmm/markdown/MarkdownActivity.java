@@ -32,6 +32,7 @@ import org.matomo.sdk.extra.TrackHelper;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
+import java.util.Objects;
 
 import timber.log.Timber;
 
@@ -77,7 +78,7 @@ public class MarkdownActivity extends FoxActivity {
             this.forceBackPressed();
             return;
         }
-        String url = intent.getExtras().getString(Constants.EXTRA_MARKDOWN_URL);
+        String url = Objects.requireNonNull(intent.getExtras()).getString(Constants.EXTRA_MARKDOWN_URL);
         String title = intent.getExtras().getString(Constants.EXTRA_MARKDOWN_TITLE);
         String config = intent.getExtras().getString(Constants.EXTRA_MARKDOWN_CONFIG);
         boolean change_boot = intent.getExtras().getBoolean(Constants.EXTRA_MARKDOWN_CHANGE_BOOT);
@@ -152,8 +153,12 @@ public class MarkdownActivity extends FoxActivity {
         if (MainApplication.isBlurEnabled()) {
             // set bottom navigation bar color to transparent blur
             BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
-            bottomNavigationView.setBackgroundColor(Color.TRANSPARENT);
-            bottomNavigationView.setAlpha(0.8F);
+            if (bottomNavigationView != null) {
+                bottomNavigationView.setBackgroundColor(Color.TRANSPARENT);
+                bottomNavigationView.setAlpha(0.8F);
+            } else {
+                Timber.w("Bottom navigation view not found");
+            }
             // set dialogs to have transparent blur
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND);
         }
