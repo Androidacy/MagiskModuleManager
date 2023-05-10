@@ -12,7 +12,6 @@ plugins {
     id("com.mikepenz.aboutlibraries.plugin")
     kotlin("android")
     kotlin("kapt")
-    id("androidx.baselineprofile")
 }
 
 // apply realm-android
@@ -428,7 +427,6 @@ dependencies {
     // google guava, maybe fix a bug
     implementation("com.google.guava:guava:31.1-android")
     implementation("androidx.profileinstaller:profileinstaller:1.3.0")
-    "baselineProfile"(project(mapOf("path" to ":baselineprofile")))
 
 
     val libsuVersion = "5.0.5"
