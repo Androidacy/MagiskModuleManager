@@ -1,7 +1,5 @@
 @file:Suppress("UnstableApiUsage")
 
-include(":baselineprofile")
-
 plugins {
     id("com.gradle.enterprise") version("3.13")
 }
