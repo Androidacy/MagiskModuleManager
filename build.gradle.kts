@@ -1,12 +1,12 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 buildscript {
     repositories {
-        google()
         mavenCentral()
-        gradlePluginPortal()
+        google()
         maven {
             setUrl("https://jitpack.io")
         }
+        gradlePluginPortal()
     }
     extra.apply {
         set("sentryConfigFile", rootProject.file("sentry.properties"))
@@ -31,8 +31,8 @@ tasks.register("clean", Delete::class) {
 
 afterEvaluate {
     tasks.withType<JavaCompile>().configureEach {
-        sourceCompatibility = JavaVersion.VERSION_19.toString()
-        targetCompatibility = JavaVersion.VERSION_19.toString()
+        sourceCompatibility = JavaVersion.VERSION_17.toString()
+        targetCompatibility = JavaVersion.VERSION_17.toString()
     }
 }
 

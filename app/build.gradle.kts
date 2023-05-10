@@ -38,8 +38,8 @@ android {
         applicationId = "com.fox2code.mmm"
         minSdk = 24
         targetSdk = 33
-        versionCode = 70
-        versionName = "2.1.0"
+        versionCode = 72
+        versionName = "2.1.1"
         vectorDrawables {
             useSupportLibrary = true
         }
@@ -467,7 +467,7 @@ dependencies {
     implementation("androidx.security:security-crypto:1.1.0-alpha06")
 
     // some utils
-    implementation("commons-io:commons-io:2.11.0")
+    implementation("commons-io:commons-io:20030203.000550")
     implementation("org.apache.commons:commons-compress:1.23.0")
 
     // analytics
