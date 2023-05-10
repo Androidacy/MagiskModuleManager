@@ -60,7 +60,7 @@
     <string name="prevent_reboot_pref">Uniemożliwiaj restart</string>
     <string name="prevent_reboot_desc">Zapobiega niespodziewanym restartom urządzenia po instalacji modułu</string>
     <string name="pref_category_settings">Ustawienia</string>
-    <string name="enable_monet">Włącz Monet</string>
+    <string name="enable_monet">Silnik motywu Monet</string>
     <string name="pref_category_info">Informacje</string>
     <string name="show_licenses">Pokaż licencje</string>
     <string name="licenses">Licencje</string>
@@ -137,7 +137,7 @@
     <string name="crash_reporting">Raportowanie błędów</string>
     <string name="crash_reporting_desc">Po wyłączeniu twórca nie będzie otrzymywał automatycznych raportów o błędach</string>
     <string name="api_key">Klucz API Androidacy</string>
-    <string name="api_key_summary">Użyj niestandardowego klucza API dla Androidacy. Przydatne dla subskrybentów premium, aby usunąć reklamy i więcej.</string>
+    <string name="api_key_summary">Użyj niestandardowego klucza API dla Androidacy w celu usunięcia reklam i więcej. Przydatne dla subskrybentów premium.</string>
     <string name="api_key_not_set">Klucz API Androidacy jest pusty</string>
     <string name="api_key_set">Bieżący klucz API Androidacy</string>
     <string name="api_key_invalid">Nie można zweryfikować klucza API. Proszę sprawdzić i spróbować ponownie.</string>
@@ -152,9 +152,9 @@
     <string name="crash">Ubij aplikację do testów</string>
     <string name="repackaged_as">Przepakowano jako:</string>
     <string name="wrapped_from">Przepakowane z:</string>
-    <string name="crash_reporting_restart_title">Uruchomić ponownie aplikację, aby zastosować zmiany\?</string>
-    <string name="androidacy_test_mode_disable_warning">Aplikacja zostanie zrestartowana, aby wyłączyć punkt końcowy staging</string>
-    <string name="crash_reporting_restart_message">Aby zastosować to ustawienie, aplikacja musi się ponownie uruchomić</string>
+    <string name="crash_reporting_restart_title">Zrestartować aplikację, aby zastosować zmiany\?</string>
+    <string name="androidacy_test_mode_disable_warning">Aby wyłączyć punkt końcowy staging, aplikacja zostanie ponownie uruchomiona</string>
+    <string name="crash_reporting_restart_message">Aby zastosować to ustawienie, aplikacja zostanie ponownie uruchomiona</string>
     <string name="restart">Uruchom ponownie</string>
     <string name="androidacy_failed_to_parse_token">Nie można pobrać tokena z Androidacy. Proszę spróbować ponownie później.</string>
     <string name="androidacy_failed_to_validate_token">Nie można zweryfikować tokena dla Androidacy. Proszę spróbować ponownie później.</string>
@@ -200,7 +200,7 @@
     <string name="misc">Różne</string>
     <string name="setup_button_skip">Pomiń</string>
     <string name="low_performance_device_dialogue_title">Włączanie rozmycia na słabszych urządzeniach</string>
-    <string name="alt_repo_info">To repo ma mniej ograniczeń i recenzji, co może prowadzić do niższej jakości modułów. Baza modułów jest znacznie większa.</string>
+    <string name="alt_repo_info">To repozytorium ma mniej ograniczeń i recenzji, co może prowadzić do niższej jakości modułów. Baza modułów jest znacznie większa.</string>
     <string name="transparent_theme_dialogue_message">Przezroczyste motywy mogą wykazywać pewne niespójności i mogą nie działać na wszystkich ROM-ach. Monet i rozmycie zostaną wyłączone. Możesz je przywrócić w dowolnym momencie.</string>
     <string name="sentry_dialogue_message">Napotkaliśmy błąd! Prosimy o pomoc w ulepszeniu aplikacji poprzez dodanie informacji o błędzie poniżej.
 \nImię i e-mail są opcjonalne, ale pozwolą nam skontaktować się z Tobą w razie potrzeby uzyskania dodatkowych informacji.</string>
@@ -279,7 +279,7 @@
     <string name="feedback_submit">Prześlij i restartuj</string>
     <string name="please_feedback">Pomóż nam, informując o wykonywanych czynnościach, gdy to się stało.</string>
     <string name="sentry_dialogue_disabled">Raportowanie błędów jest wyłączone. Włącz, aby przesłać informacje zwrotne.</string>
-    <string name="feedback_name">Nazwa (opcjonalnie)</string>
+    <string name="feedback_name">Imię (opcjonalnie)</string>
     <string name="feedback_email">Email (opcjonalnie)</string>
     <string name="sentry_dialogue_empty_message">Nie określono dodatkowych informacji zwrotnych.</string>
     <string name="crash_icon">Ikona awarii</string>
@@ -295,7 +295,7 @@
     <string name="reset_app">Zresetuj aplikację</string>
     <string name="upgraded_summary">Posiadasz już subskrypcję i wspierasz Androidacy.</string>
     <string name="upgraded">Premium aktywny</string>
-    <string name="reset_warning">Jeśli widzisz ten ekran, zresetowanie aplikacji może pomóc. Wyczysci to jej dane, lecz zainstalowane moduły zostaną.</string>
+    <string name="reset_warning">Jeśli widzisz ten ekran, zresetowanie aplikacji może pomóc. Wyczyści to jej dane, lecz zainstalowane moduły zostaną nietknięte.</string>
     <string name="reset_app_message">Wyczysci to wszystkie dane aplikacji i ją zamknie. Moduły nie zostaną usunięte.</string>
     <string name="reset">Zresetuj</string>
     <string name="background_update_check_excludes">Moduły do wykluczenia z automatycznego sprawdzania aktualizacji</string>
@@ -303,7 +303,7 @@
     <string name="update_title">Zaktualizuj aplikację</string>
     <string name="update_message">Proszę poczekać, aż sprawdzimy i zainstalujemy aktualizacje dla FoxMMM. Może to potrwać kilka minut</string>
     <string name="update_button">Proszę czekać…</string>
-    <string name="reset_app_confirmation">To całkowicie wyczysci dane aplikacji, ale moduły nie zostaną ruszone.</string>
+    <string name="reset_app_confirmation">To całkowicie wyczyści dane aplikacji, lecz moduły pozostaną nietknięte.</string>
     <string name="error_no_extras">BŁĄD: Nieprawidłowe dane otrzymane przy uruchomieniu</string>
     <string name="update_debug_warning">Wygląda na to, że używasz wersji debugowanej. Kompilacje debugowe muszą być aktualizowane ręcznie i nie obsługują aktualizacji w aplikacji</string>
     <string name="error_no_action">BŁĄD: Określono nieprawidłowe działanie. Odmowa kontynuacji.</string>
@@ -335,7 +335,7 @@
     <string name="notification_channel_background_update_description">FoxMMM sprawdza w tle aktualizacje.</string>
     <string name="notification_channel_category_background_update">Stan aktualizacji w tle</string>
     <string name="notification_update_wifi_desc">Sprawdzaj tylko na WiFi</string>
-    <string name="notification_update_wifi_pref">Do sprawdzenia aktualizacji wymagane jest WiFi lub sieć bez limitu. Zalecane pozostawienie włączone, jeśli masz ograniczone dane komórkowe.</string>
+    <string name="notification_update_wifi_pref">Do sprawdzenia aktualizacji wymagane jest WiFi lub sieć bez limitu. Pozostaw włączone, jeśli masz ograniczone dane komórkowe.</string>
     <string name="background_update_check_excludes_no_modules">Brak zainstalowanych modułów</string>
     <string name="auto_updates_notifs">Powiadamia o znalezieniu aktualizacji modułu</string>
     <string name="notification_group_updates">Aktualizacje</string>
@@ -378,7 +378,7 @@
     <string name="empty_field">URL jest wymagany</string>
     <string name="repo_already_added">Repo już istnieje.</string>
     <string name="language_not_available">Język %s nie został przetłumaczony. Pomożesz\?</string>
-    <string name="blur_desc">Tworzy efekt rozmycia za niektórymi oknami dialogowymi i elementami. Zauważ, że rozmycie może nie działać dobrze na niektórych urządzeniach i może nie działać dla wszystkich.</string>
+    <string name="blur_desc">Tworzy efekt rozmycia za niektórymi oknami dialogowymi i elementami. Może nie działać dobrze na niektórych urządzeniach.</string>
     <string name="error_encrypted_shared_preferences">Wystąpił błąd podczas odczytywania preferencji współdzielonych. Proszę zresetować aplikację.</string>
     <string name="showcase_mode_dialogue_message">Aby włączyć tryb blokady, wymagany jest restart aplikacji.</string>
     <string name="other_section">Inne</string>
@@ -401,7 +401,7 @@
     <string name="module_version">"Wersja: "</string>
     <string name="module_remote_version">Zdalna wersja</string>
     <string name="background_update_check_excludes_version_hint">Kod wersji do zignorowania</string>
-    <string name="notification_update_ignore_version_desc">Ignoruje określone wersje podczas sprawdzania aktualizacji modułów. Wyłączenie sprawdzania aktualizacji dla poszczególnych modułów powyżej nadpisuje to ustawienie!</string>
+    <string name="notification_update_ignore_version_desc">Ignoruj określone wersje podczas sprawdzania aktualizacji modułów. Opcja znajdująca się wyżej nadpisuje to ustawienie!</string>
     <string name="background_update_check_excludes_version_summary">Określ wersję aktualizacji modułu, którą chcesz zignorować. Używaj wyłącznie kodu wersji. Możesz go znaleźć, przytrzymując wersję na liście modułów. Użyj ^ na początku, aby dopasować tę wersję i nowsze. Użyj $ na końcu, aby dopasować do tej wersji.</string>
     <string name="androidacy_thanks_up_title">Już masz ulepszenie!</string>
     <string name="upgrade_now">Ulepsz</string>
