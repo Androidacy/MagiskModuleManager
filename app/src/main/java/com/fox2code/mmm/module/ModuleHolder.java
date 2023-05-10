@@ -156,40 +156,43 @@ public final class ModuleHolder implements Comparable<ModuleHolder> {
             if (repoModule != null) {
                 remoteVersionCode = String.valueOf(repoModule.moduleInfo.versionCode);
             }
-            // now, coerce everything into an int
-            int localVersionCode = Integer.parseInt(String.valueOf(moduleInfo.versionCode));
-            int remoteVersionCodeInt = Integer.parseInt(remoteVersionCode);
-            int wantsVersion = Integer.parseInt(version.split(":")[1].replaceAll("[^0-9]", ""));
-            // now find out if user wants up to and including this version, or this version and newer
-            // if it starts with ^, it's this version and newer, if it ends with $, it's this version and older
-            if (version.startsWith("^")) {
-                // this version and newer
-                if (wantsVersion <= remoteVersionCodeInt || wantsVersion <= localVersionCode) {
+            if (!version.isEmpty()) {
+                // now, coerce everything into an int
+                int localVersionCode = Integer.parseInt(String.valueOf(moduleInfo.versionCode));
+                int remoteVersionCodeInt = Integer.parseInt(remoteVersionCode);
+                int wantsVersion = Integer.parseInt(version.split(":")[1].replaceAll("[^0-9]", ""));
+                // now find out if user wants up to and including this version, or this version and newer
+                // if it starts with ^, it's this version and newer, if it ends with $, it's this version and older
+                if (version.startsWith("^")) {
+                    // this version and newer
+                    if (wantsVersion <= remoteVersionCodeInt || wantsVersion <= localVersionCode) {
+                        // if it is, we skip it
+                        ignoreUpdate = true;
+                    }
+                } else if (version.endsWith("$")) {
+                    // this version and older
+                    if (wantsVersion >= remoteVersionCodeInt || wantsVersion >= localVersionCode) {
+                        // if it is, we skip it
+                        ignoreUpdate = true;
+                    }
+                } else if (wantsVersion == remoteVersionCodeInt || wantsVersion == localVersionCode) {
                     // if it is, we skip it
                     ignoreUpdate = true;
                 }
-            } else if (version.endsWith("$")) {
-                // this version and older
-                if (wantsVersion >= remoteVersionCodeInt || wantsVersion >= localVersionCode) {
-                    // if it is, we skip it
-                    ignoreUpdate = true;
-                }
-            } else if (wantsVersion == remoteVersionCodeInt || wantsVersion == localVersionCode) {
-                // if it is, we skip it
-                ignoreUpdate = true;
             }
-            MainApplication.getINSTANCE().modulesHaveUpdates = true;
-            if (!MainApplication.getINSTANCE().updateModules.contains(this.moduleId)) {
-                MainApplication.getINSTANCE().updateModules.add(this.moduleId);
-                MainApplication.getINSTANCE().updateModuleCount++;
-            }
-            Timber.d("modulesHaveUpdates = %s, updateModuleCount = %s", MainApplication.getINSTANCE().modulesHaveUpdates, MainApplication.getINSTANCE().updateModuleCount);
             if (ignoreUpdate) {
                 Timber.d("Module %s has update, but is ignored", this.moduleId);
                 return Type.INSTALLABLE;
+            } else {
+                MainApplication.getINSTANCE().modulesHaveUpdates = true;
+                if (!MainApplication.getINSTANCE().updateModules.contains(this.moduleId)) {
+                    MainApplication.getINSTANCE().updateModules.add(this.moduleId);
+                    MainApplication.getINSTANCE().updateModuleCount++;
+                }
+                Timber.d("modulesHaveUpdates = %s, updateModuleCount = %s", MainApplication.getINSTANCE().modulesHaveUpdates, MainApplication.getINSTANCE().updateModuleCount);
+                Timber.d("Module %s has update", this.moduleId);
+                return Type.UPDATABLE;
             }
-            Timber.d("Module %s has update", this.moduleId);
-            return Type.UPDATABLE;
         } else {
             return Type.INSTALLED;
         }

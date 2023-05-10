@@ -671,8 +671,9 @@ public class SettingsActivity extends FoxActivity implements LanguageActivity {
                             EditText editText = (EditText) layout.getChildAt(i);
                             String text = editText.getText().toString();
                             if (!text.isEmpty()) {
-                                // text can only contain numbers
-                                text = text.replaceAll("[^0-9]", "");
+                                // text can only contain numbers and the characters ^ and $
+                                // so we remove all non-numbers and non ^ and $
+                                text = text.replaceAll("[^0-9^$]", "");
                                 // we have to use module id even though we show name
                                 stringSetTemp.add(localModuleInfos.stream().filter(localModuleInfo -> localModuleInfo.name.equals(editText.getHint().toString())).findFirst().orElse(null).id + ":" + text);
                                 Timber.d("text is %s for %s", text, editText.getHint().toString());
