@@ -192,6 +192,7 @@
 -keepclassmembers class kotlin.SafePublicationLazyImpl {
     java.lang.Object _value;
 }
+-keepclassmembers class org.apache.commons.compress.archivers.zip.* { *; }
 
 # fix bug with androidx work and future
 # -keep class androidx.work.impl.utils.futures.* { *; }

@@ -738,7 +738,7 @@ public class MainActivity extends FoxActivity implements SwipeRefreshLayout.OnRe
             }
             // if it's still null, but it's enabled, throw an error
             if (AndroidacyRepoData.getInstance().isEnabled() && AndroidacyRepoData.getInstance().memberLevel == null) {
-                throw new IllegalStateException("AndroidacyRepoData is enabled, but member level is null");
+               Timber.e("AndroidacyRepoData is enabled, but member level is null");
             }
             if (AndroidacyRepoData.getInstance() != null && AndroidacyRepoData.getInstance().isEnabled() && Objects.equals(AndroidacyRepoData.getInstance().memberLevel, "Guest")) {
                 runtimeUtils.showUpgradeSnackbar(this, this);

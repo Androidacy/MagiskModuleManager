@@ -467,7 +467,7 @@ dependencies {
     implementation("androidx.security:security-crypto:1.1.0-alpha06")
 
     // some utils
-    implementation("commons-io:commons-io:20030203.000550")
+    implementation("commons-io:commons-io:2.11.0")
     implementation("org.apache.commons:commons-compress:1.23.0")
 
     // analytics

@@ -106,7 +106,9 @@ public class CrashHandler extends FoxActivity {
             });
             // get restart button
             findViewById(R.id.restart).setOnClickListener(v -> {
-                // Restart the app
+                // Restart the app and submit sans feedback
+                Throwable sentryException = (Throwable) getIntent().getSerializableExtra("sentryException");
+                if (crashReportingEnabled) Sentry.captureException(sentryException);
                 finish();
                 startActivity(getPackageManager().getLaunchIntentForPackage(getPackageName()));
             });
