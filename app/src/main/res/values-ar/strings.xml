@@ -383,4 +383,19 @@
     <string name="donate_androidacy_sum">اشتر اشتراكا مميزا في Androidacy لدعم التطبيق والريبو.</string>
     <string name="promo_code_copied">استخدم الرمز المنسوخ لنصف شهرك الأول!</string>
     <string name="warning_pls_restart">يرجى الملاحظة أن بعض الإعدادات قد لا تظهر الإجراء الخاص بها حتى تقوم بإعادة تشغيل التطبيق.</string>
+    <string name="reinstall">إعادة التثبيت</string>
+    <string name="eula_sum">أوافق على اتفاقية EULA و الترخيص</string>
+    <string name="setup_scroll_down_v2">لتفعيل زر الإنهاء ، قم بالتمرير إلى أسفل وتقر بأنك قد قرأت ووافقت على اتفاقية EULA والترخيص (التراخيص).</string>
+    <string name="notification_update_ignore_version_pref">استبعاد الإصدار (الإصدارات) من عمليات التحقق من التحديث</string>
+    <string name="background_update_check_excludes_version">استبعاد إصدار (إصدارات) الوحدات من عمليات التحقق</string>
+    <string name="module_version">"الإصدار: "</string>
+    <string name="module_remote_version">الإصدار عن بعد</string>
+    <string name="background_update_check_excludes_version_hint">رمز الإصدار المراد تجاهله</string>
+    <string name="androidacy_thanks_up_title">لقد قمت بالترقية بالفعل!</string>
+    <string name="upgrade_snackbar">يوفر Androidacy المميز تنزيلات أسرع وتجربة خالية من الإعلانات والمزيد!</string>
+    <string name="upgrade_now">ترقية</string>
+    <string name="eula_agree_v2">أنت توافق على الالتزام بترخيص LGPL-3.0 (https://www.gnu.org/licenses/lgpl-3.0.en.html) واتفاقية ترخيص EULA (https://www.androidacy.com/foxmmm-eula/) ، بالإضافة إلى أي شروط مرتبطة بطرفً ثالث ، وأن مبرمجي هذا التطبيق لا يتحملون أي مسؤولية عن استخدامك له ، ولا نقدم أي ضمانات صريحة أو ضمنية</string>
+    <string name="notification_update_ignore_version_desc">تجاهل إصدارات معينة عند التحقق من وجود تحديثات للإضافات. يؤدي تعطيل عمليات التحقق من التحديث لكل وحدة أعلاه إلى تجاوز هذا الإعداد!</string>
+    <string name="background_update_check_excludes_version_summary">‍حدد إصدارا من تحديثات الإضافة التي ترغب في تجاهلها. الرجاء استخدام رمز الإصدار فقط. يمكنك العثور على هذا عن طريق الضغط باستمرار على الإصدار في قائمة الإضافات. استخدم ^ في البداية لمطابقة هذا الإصدار والأحدث. استخدم $ في النهاية للمطابقة حتى هذا الإصدار.</string>
+    <string name="androidacy_thanks_up">شكرا للترقية! لن تعرض تنزيلات الإضافات و ملفات القراءة (README) إعلانات، وسيتم إلغاء تقييد التنزيلات. في المستقبل. ستتمكن من تنزيل الإضافات مباشرة بنقرة واحدة.</string>
 </resources>

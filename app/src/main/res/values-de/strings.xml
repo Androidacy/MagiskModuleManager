@@ -166,7 +166,7 @@
     <string name="monet_disabled_summary">Monet ist im transparenten Modus nicht verfügbar.</string>
     <string name="blur_disabled_summary">Blur ist im transparenten Modus nicht verfügbar.</string>
     <string name="transparent_theme_dialogue_title">Transparenter Modus wird aktiviert</string>
-    <string name="transparent_theme_dialogue_message">Der transparente Modus kann inkonsistent sein und funktioniert nicht auf allen Geräten. Monet und Blur sind nicht kompatibel. Du kannst dies jederzeit rückgängig machen.</string>
+    <string name="transparent_theme_dialogue_message">Der transparente Modus kann inkonsistent sein und funktioniert nicht auf allen Geräten. Monet und Unschärfe sind nicht kompatibel. Du kannst dies jederzeit rückgängig machen.</string>
     <string name="custom_repo_always_on">Benutzerdefinierte Repos sind immer an, bis du sie entfernst.</string>
     <string name="sentry_dialogue_message">Ein Fehler ist aufgetreten. Bitte hilf uns, sie App zu verbessern, indem du einige Informationen über den Fehler unten eingibst.
 \nName und Email sind optional, aber wir könnten dich für mehr Information kontaktieren.</string>
@@ -290,4 +290,13 @@
     <string name="upgraded_summary">Du bist echt Klasse! Sieht so aus, als hättest Du Dein Abonnement bereits aktualisiert und unterstützt Androidacy</string>
     <string name="sentry_enable_nag">Es sieht so aus, als sei die Absturz-Meldung deaktiviert. Bitte aktiviere sie, um Feedback zu übermitteln.</string>
     <string name="reset_warning">Wenn Du diesen Bildschirm immer wieder siehst, kann das Zurücksetzen der App helfen. Dadurch werden die Daten der App gelöscht, aber die installierten Module werden nicht beeinflusst.</string>
+    <string name="crash_full_stacktrace">Stacktrace:
+\n%1$s</string>
+    <string name="reset_app_confirmation">Dadurch werden die Daten der App gelöscht, aber die installierten Module werden nicht beeinflusst.</string>
+    <string name="error_adding">Konnte Custom Repo nicht hinzufügen</string>
+    <string name="api_key_mismatch">API Schlüssel ist in einem ungültigen Format</string>
+    <string name="pref_category_updates">Updates</string>
+    <string name="notification_update_ignore_desc">Liste an Modulen die von Updatechecks ausgeschlossen werden</string>
+    <string name="notification_update_ignore_pref">Module ausschließen</string>
+    <string name="invalid_excludes">Ungültige Eingabe</string>
 </resources>

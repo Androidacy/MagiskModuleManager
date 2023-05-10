@@ -400,7 +400,11 @@
     <string name="background_update_check_excludes_version">Wyklucz wersje modułów ze sprawdzania</string>
     <string name="module_version">"Wersja: "</string>
     <string name="module_remote_version">Zdalna wersja</string>
-    <string name="background_update_check_excludes_version_hint">Ignorowane wersje</string>
+    <string name="background_update_check_excludes_version_hint">Kod wersji do zignorowania</string>
     <string name="notification_update_ignore_version_desc">Ignoruje określone wersje podczas sprawdzania aktualizacji modułów. Wyłączenie sprawdzania aktualizacji dla poszczególnych modułów powyżej nadpisuje to ustawienie!</string>
-    <string name="background_update_check_excludes_version_summary">Określ wersje modułów, które chcesz zignorować. Kod wersji lub nazwa wersji będą działać, ale kod wersji musi być bardziej dokładny. Użyj ^ na początku, aby dopasować wersję i nowszą. Użyj $ na końcu, aby dopasować do aktualnej wersji.</string>
+    <string name="background_update_check_excludes_version_summary">Określ wersję aktualizacji modułu, którą chcesz zignorować. Używaj wyłącznie kodu wersji. Możesz go znaleźć, przytrzymując wersję na liście modułów. Użyj ^ na początku, aby dopasować tę wersję i nowsze. Użyj $ na końcu, aby dopasować do tej wersji.</string>
+    <string name="androidacy_thanks_up_title">Już masz ulepszenie!</string>
+    <string name="upgrade_now">Ulepsz</string>
+    <string name="androidacy_thanks_up">Dziękujemy za ulepszenie! Opisy i pobieranie modułów będą pozbawione reklam, i nie będą ograniczane. W przyszłości możliwe będzie bezpośrednie pobieranie modułów za pomocą jednego kliknięcia.</string>
+    <string name="upgrade_snackbar">Androidacy Premium oferuje szybsze pobieranie, doświadczenia wolne od reklam, i więcej!</string>
 </resources>
