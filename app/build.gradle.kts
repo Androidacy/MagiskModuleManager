@@ -426,7 +426,6 @@ dependencies {
 
     // google guava, maybe fix a bug
     implementation("com.google.guava:guava:31.1-android")
-    implementation("androidx.profileinstaller:profileinstaller:1.3.0")
 
 
     val libsuVersion = "5.0.5"
