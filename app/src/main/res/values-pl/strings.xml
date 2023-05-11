@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">Fox - Menedżer Modułów Magisk</string>
-    <string name="app_name_short">FoxMMM</string>
+    <string name="app_name_short">Fox</string>
     <string name="fail_root_magisk">Nie udało się uzyskać dostępu do Root lub Magisk</string>
     <string name="fail_root_denied">Odmówiono dostępu do roota w aplikacji Magisk</string>
     <string name="fail_magisk_missing">Magisk nie jest zainstalowany</string>
