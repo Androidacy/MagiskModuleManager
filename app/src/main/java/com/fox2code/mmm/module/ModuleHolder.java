@@ -146,11 +146,15 @@ public final class ModuleHolder implements Comparable<ModuleHolder> {
             // now, we just had to make it more fucking complicated, didn't we?
             // we now have pref_background_update_check_excludes_version, which is a id:version stringset of versions the user may want to "skip"
             // oh, and because i hate myself, i made ^ at the beginning match that version and newer, and $ at the end match that version and older
-            Set<String> stringSet = MainApplication.getSharedPreferences("mmm").getStringSet("pref_background_update_check_excludes_version", new HashSet<>());
+            Set<String> stringSetT = MainApplication.getSharedPreferences("mmm").getStringSet("pref_background_update_check_excludes_version", new HashSet<>());
             String version = "";
-            if (stringSet.contains(moduleInfo.id)) {
+            Set<String> stringSet = stringSetT;
+            Timber.d(stringSet.toString());
+            if (stringSet.contains(this.moduleInfo.id)) {
                 // get the one matching
-                version = stringSet.stream().filter(s -> s.startsWith(moduleInfo.id)).findFirst().orElse("");
+                Timber.d("found mod in ig ver");
+                version = stringSet.stream().filter(s -> s.startsWith(this.moduleInfo.id)).findFirst().orElse("");
+                Timber.d("igV:%s", version);
             }
             String remoteVersionCode = String.valueOf(moduleInfo.updateVersionCode);
             if (repoModule != null) {
@@ -164,19 +168,24 @@ public final class ModuleHolder implements Comparable<ModuleHolder> {
                 // now find out if user wants up to and including this version, or this version and newer
                 // if it starts with ^, it's this version and newer, if it ends with $, it's this version and older
                 if (version.startsWith("^")) {
+                    Timber.d("igV start with");
                     // this version and newer
                     if (wantsVersion <= remoteVersionCodeInt || wantsVersion <= localVersionCode) {
                         // if it is, we skip it
+                        Timber.d("igu true");
                         ignoreUpdate = true;
                     }
                 } else if (version.endsWith("$")) {
+                    Timber.d("igV end with");
                     // this version and older
                     if (wantsVersion >= remoteVersionCodeInt || wantsVersion >= localVersionCode) {
                         // if it is, we skip it
+                        Timber.d("igu true");
                         ignoreUpdate = true;
                     }
                 } else if (wantsVersion == remoteVersionCodeInt || wantsVersion == localVersionCode) {
                     // if it is, we skip it
+                    Timber.d("igu true");
                     ignoreUpdate = true;
                 }
             }

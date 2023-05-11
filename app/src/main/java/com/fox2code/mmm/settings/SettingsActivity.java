@@ -667,7 +667,13 @@ public class SettingsActivity extends FoxActivity implements LanguageActivity {
                         Timber.d("ok clicked");
                         // for every module, get the text field and save it to the stringset
                         Set<String> stringSetTemp = new HashSet<>();
+                        String prevMod = "";
                         for (int i = 0; i < layout.getChildCount(); i++) {
+                            if (layout.getChildAt(i) instanceof MaterialTextView) {
+                                MaterialTextView mv = (MaterialTextView) layout.getChildAt(i);
+                                prevMod = mv.getText().toString();
+                                continue;
+                            };
                             EditText editText = (EditText) layout.getChildAt(i);
                             String text = editText.getText().toString();
                             if (!text.isEmpty()) {
@@ -675,7 +681,8 @@ public class SettingsActivity extends FoxActivity implements LanguageActivity {
                                 // so we remove all non-numbers and non ^ and $
                                 text = text.replaceAll("[^0-9^$]", "");
                                 // we have to use module id even though we show name
-                                stringSetTemp.add(localModuleInfos.stream().filter(localModuleInfo -> localModuleInfo.name.equals(editText.getHint().toString())).findFirst().orElse(null).id + ":" + text);
+                                String finalprevMod = prevMod;
+                                stringSetTemp.add(localModuleInfos.stream().filter(localModuleInfo -> localModuleInfo.name.equals(finalprevMod)).findFirst().orElse(null).id + ":" + text);
                                 Timber.d("text is %s for %s", text, editText.getHint().toString());
                             } else {
                                 Timber.d("text is empty for %s", editText.getHint().toString());
