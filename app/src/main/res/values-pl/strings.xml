@@ -298,7 +298,7 @@
     <string name="reset_warning">Jeśli widzisz ten ekran, zresetowanie aplikacji może pomóc. Wyczyści to jej dane, lecz zainstalowane moduły zostaną nietknięte.</string>
     <string name="reset_app_message">Wyczysci to wszystkie dane aplikacji i ją zamknie. Moduły nie zostaną usunięte.</string>
     <string name="reset">Zresetuj</string>
-    <string name="background_update_check_excludes">Moduły do wykluczenia z automatycznego sprawdzania aktualizacji</string>
+    <string name="background_update_check_excludes">Ignorowane moduły ze sprawdzania aktualizacji</string>
     <string name="title_activity_update">Wbudowany aktualizator</string>
     <string name="update_title">Zaktualizuj aplikację</string>
     <string name="update_message">Proszę poczekać, aż sprawdzimy i zainstalujemy aktualizacje dla FoxMMM. Może to potrwać kilka minut</string>
@@ -319,7 +319,7 @@
     <string name="error_adding">Nie udało się dodać własnego repo</string>
     <string name="api_key_mismatch">Klucz API jest w nieprawidłowym formacie</string>
     <string name="notification_update_ignore_desc">Lista modułów do wykluczenia ze sprawdzania aktualizacji</string>
-    <string name="notification_update_ignore_pref">Wyklucz moduły</string>
+    <string name="notification_update_ignore_pref">Ignoruj aktualizacje modułów</string>
     <string name="pref_category_updates">Aktualizacje</string>
     <string name="invalid_excludes">Nieprawidłowa wartość</string>
     <string name="invalid_characters_message">Wprowadzona lista modułów jest nieprawidłowa. Proszę wprowadzić tylko poprawne identyfikatory modułów oddzielone przecinkami</string>
@@ -396,8 +396,8 @@
     <string name="eula_sum">Akceptuję licencję i EULA</string>
     <string name="setup_scroll_down_v2">Aby aktywować przycisk „Zakończ”, przewiń do dołu i potwierdź, że akceptujesz licencje i EULA.</string>
     <string name="eula_agree_v2">Zgadzasz się na warunki licencji LGPL-3.0 (https://www.gnu.org/licenses/lgpl-3.0.en.html) i EULA (https://www.androidacy.com/foxmmm-eula/), oprócz wszelkich warunków stron trzecich, oraz że autorzy tej aplikacji nie ponoszą żadnej odpowiedzialności za korzystanie z niej przez użytkownika, ani nie udzielają żadnych jawnych lub rzekomych gwarancji.</string>
-    <string name="notification_update_ignore_version_pref">Wyklucz wersje z sprawdzania aktualizacji</string>
-    <string name="background_update_check_excludes_version">Wyklucz wersje modułów ze sprawdzania</string>
+    <string name="notification_update_ignore_version_pref">Ignoruj wersje modułów</string>
+    <string name="background_update_check_excludes_version">Lista ignorowanych wersji modułów</string>
     <string name="module_version">"Wersja: "</string>
     <string name="module_remote_version">Zdalna wersja</string>
     <string name="background_update_check_excludes_version_hint">Kod wersji do zignorowania</string>
