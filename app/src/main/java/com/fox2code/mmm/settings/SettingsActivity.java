@@ -943,7 +943,7 @@ public class SettingsActivity extends FoxActivity implements LanguageActivity {
             // now handle pref_donate_androidacy
             LongClickablePreference pref_donate_androidacy = findPreference("pref_donate_androidacy");
             if (!BuildConfig.FLAVOR.equals("play")) {
-                if (Objects.equals(AndroidacyRepoData.getInstance().memberLevel, "Guest")) {
+                if (AndroidacyRepoData.getInstance().isEnabled() && Objects.equals(AndroidacyRepoData.getInstance().memberLevel, "Guest") || AndroidacyRepoData.getInstance().memberLevel == null) {
                     pref_donate_androidacy.setOnPreferenceClickListener(p -> {
                         // copy FOX2CODE promo code to clipboard and toast user that they can use it for half off any subscription
                         String toastText = requireContext().getString(R.string.promo_code_copied);

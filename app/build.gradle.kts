@@ -497,7 +497,7 @@ android {
         buildConfig = true
     }
     //noinspection GrDeprecatedAPIUsage
-    buildToolsVersion = "34.0.0 rc3"
+    buildToolsVersion = "33.0.2"
     @Suppress("DEPRECATION") packagingOptions {
         jniLibs {
             useLegacyPackaging = true
