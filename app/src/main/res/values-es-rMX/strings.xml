@@ -188,7 +188,7 @@
     <string name="dns_over_https_pref">DNS sobre HTTPS</string>
     <string name="dont_ask_again">No volver a preguntar</string>
     <string name="download_full_app">Descargar la versión completa</string>
-    <string name="pref_category_contributors">Contribuyentes</string>
+    <string name="pref_category_contributors">Colaboradores</string>
     <string name="fox2code_thanks_desc">Fox2Code es el creador original de esta aplicación.Sin el, esto nunca hubiera sido posible.</string>
     <string name="fox2code_thanks">Creado por Fox2Code</string>
     <string name="search">Buscar</string>
@@ -318,7 +318,7 @@
     <string name="install_terminal_config_missing">Falta el paquete %s para configuración del módulo, por lo que no podemos iniciarlo.</string>
     <string name="setup_crash_reporting_summary">Reporte de fallos y monitoreo del rendimiento. Todos los reportes son estrictamente anónimos y confidenciales.</string>
     <string name="low_performance_device_dialogue_title">Activar desenfoque en dispositivo de gama baja</string>
-    <string name="setup_theme_transparent_light">Tema transparente claro - desactivará monet y blur!</string>
+    <string name="setup_theme_transparent_light">Tema transparente claro - desactivará monet y desenfoque!</string>
     <string name="error_no_action">ERROR: Acción inválida especificada. Negarse a continuar.</string>
     <string name="error_no_asset">ERROR: No se pudo analizar la información de actualización</string>
     <string name="reset_api_key">Restablecer claves API</string>
@@ -380,4 +380,36 @@
     <string name="error_creating_cookie_database">Error al acceder a WebView. La funcionalidad puede verse afectada.</string>
     <string name="androidacy_repo_disabled_message">A esta compilación le faltan claves de cliente para el repositorio Androidacy. Descargue la versión de GitHub si desea beneficiarse de funciones como revisiones de módulos, controles de seguridad automáticos y más.</string>
     <string name="alt_repo_info">Este repositorio tiene menos restricciones y reseñas, lo que puede conducir a módulos de menor calidad. Bastante básico, pero tiene muchos módulos.</string>
+    <string name="notification_update_wifi_pref">Requiere wi-fi o una red no medida para las comprobaciones de actualización. Recomendado para dejar encendido si tiene datos móviles limitados.</string>
+    <string name="low_quality_module_desc">Este módulo tiene metadatos que son inválidos o se consideran un marcador de un módulo de baja calidad. Se recomienda la desinstalación.</string>
+    <string name="safe_message">Este módulo ha sido verificado por el repositorio como seguro, lo que significa que pasa ciertos estándares de calidad y seguridad, y se comprueba en busca de malware.</string>
+    <string name="setup_background_update_check_require_wifi_summary">Requiere wifi o una conexión no medida para realizar comprobaciones de actualización</string>
+    <string name="clear_cache_dialogue_message">Esto borrará la caché de la aplicación. Sus preferencias se guardarán, pero la aplicación puede tardar más en realizar algunas operaciones temporalmente.</string>
+    <string name="certificate_error">No se pudo verificar el certificado del servidor. Asegúrese de que nada esté interceptando las conexiones HTTPS para FoxMMM.</string>
+    <string name="crash_reporting_pii_desc">Permite enviar información adicional en reportes de fallos, algunos de los cuales pueden contener información de identificación personal, como la dirección IP y los identificadores de dispositivo.</string>
+    <string name="setup_crash_reporting_pii_summary">Esto puede incluir identificadores de dispositivo y direcciones IP. No se utilizarán datos para ningún otro propósito que no sea analizar fallas y mejorar el rendimiento.</string>
+    <string name="setup_scroll_down">Para activar el botón Finalizar, desplácese hacia abajo y vea todas las opciones.</string>
+    <string name="showcase_mode_dialogue_message">Se requiere reiniciar la aplicación para activar el modo de exhibición.</string>
+    <string name="eula_agree">Al hacer clic en Finalizar, acepta estar sujeto a la licencia LGPL-3.0 (https://www.gnu.org/licenses/lgpl-3.0.en.html) y al EULA (https://www.androidacy.com) /foxmmm-eula/)</string>
+    <string name="analytics_desc">Permítanos rastrear el uso y las instalaciones de la aplicación. Totalmente compatible con GDPR y utiliza Matomo, alojado por Androidacy.</string>
+    <string name="reinstall">Reinstalar</string>
+    <string name="eula_sum">Acepto el EULA y la licencia</string>
+    <string name="warning_pls_restart">Tenga en cuenta que es posible que algunas configuraciones no surtan efecto hasta que reinicie la aplicación.</string>
+    <string name="promo_code_copied">Use el código copiado para obtener la mitad de descuento en su primer mes!</string>
+    <string name="donate_androidacy_sum">Compre una suscripción premium a Androidacy para apoyar la aplicación y el repositorio.</string>
+    <string name="notification_update_ignore_version_pref">Excluir versión(es) de las comprobaciones de actualización</string>
+    <string name="background_update_check_excludes_version">Excluir versión(es) de módulos de las comprobaciones</string>
+    <string name="module_version">"Versión: "</string>
+    <string name="module_remote_version">Versión remota</string>
+    <string name="background_update_check_excludes_version_hint">Código de versión para ignorar</string>
+    <string name="upgrade_now">Mejora</string>
+    <string name="androidacy_thanks_up_title">Ya has actualizado!</string>
+    <string name="zip_intent_module_install">De verdad quieres instalar este módulo\? \"%1$s\" desde el archivo ZIP \"%2$s\"\?
+\n
+\nAsegúrese de confiar en la fuente de este módulo, ya que los módulos son muy poderosos y pueden hacer casi cualquier cosa.</string>
+    <string name="notification_update_ignore_version_desc">Ignore versiones específicas cuando busque actualizaciones de módulos. Desactivar las comprobaciones de actualización por módulo anterior anula esta configuración!</string>
+    <string name="setup_scroll_down_v2">Para activar el botón Finalizar, desplácese hasta la parte inferior y reconozca que ha leído y acepta el EULA y la(s) licencia(s).</string>
+    <string name="upgrade_snackbar">Androidacy Premium ofrece descargas más rápidas, una experiencia sin publicidad y más!</string>
+    <string name="language_not_available">Idioma %s no ha sido traducido. ¿Ayuda a traducirlo\?</string>
+    <string name="blur_desc">Crea un efecto de desenfoque detrás de algunos diálogos y elementos. Tenga en cuenta que el desenfoque puede no funcionar bien en algunos dispositivos y puede no funcionar para todos.</string>
 </resources>

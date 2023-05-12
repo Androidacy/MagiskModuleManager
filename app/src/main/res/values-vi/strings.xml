@@ -86,24 +86,21 @@
     <string name="remote_install_title">Cài đặt từ xa</string>
     <string name="file_picker_wierd">Trình chọn tệp của bạn đã trả lại phản hồi không chuẩn.</string>
     <string name="use_magisk_install_command_pref">Sử dụng lệnh cài đặt mô-đun Magisk</string>
-    <string name="use_magisk_install_command_desc">
-        Trong quá trình kiểm tra, nó đã gây ra sự cố cho công cụ chuẩn đoán lỗi cài đặt mô-đun,
-        vì vậy tôi đã ẩn tùy chọn này sau chế độ nhà phát triển, hãy tự chịu rủi ro khi bật tùy chọn này!
-    </string>
+    <string name="use_magisk_install_command_desc">Trong quá trình kiểm tra, nó đã gây ra sự cố cho công cụ chuẩn đoán lỗi cài đặt mô-đun, vì vậy tùy chọn này đã bị ẩn khỏi chế độ nhà phát triển.
+\nHãy tự chịu rủi ro khi bật tùy chọn này!</string>
     <string name="dev_mode_enabled">Đã bật Chế độ nhà phát triển</string>
     <string name="force_english_pref">Buộc ngôn ngữ Tiếng Anh</string>
     <string name="disable_low_quality_module_filter_pref">Tắt bộ lọc mô-đun chất lượng thấp</string>
-    <string name="disable_low_quality_module_filter_desc">Một số mô-đun không khai báo siêu dữ liệu của chúng đúng cách, gây ra lỗi hiển thị, và/hoặc cho ra chất lượng mô-đun kém, hãy tự chịu rủi ro khi tắt tùy chọn này!</string>
+    <string name="disable_low_quality_module_filter_desc">Một số mô-đun không khai báo siêu dữ liệu của chúng đúng cách, gây ra lỗi hiển thị, và/hoặc cho ra chất lượng mô-đun kém.
+\nHãy tự chịu rủi ro khi tắt tùy chọn này!</string>
     <string name="dns_over_https_pref">DNS qua HTTPS</string>
     <string name="dns_over_https_desc">
 	    Có thể khắc phục sự cố kết nối trong một số trường hợp.
 	    (Không áp dụng đối với WebView)
     </string>
     <string name="disable_extensions_pref">Tắt tiện ích mở rộng</string>
-    <string name="disable_extensions_desc">
-        Tắt tiện ích mở rộng Tr. quản lý MM của Fox, điều này ngăn các mô-đun sử dụng tiện ích mở rộng
-        thiết bị đầu cuối, hữu ích nếu một mô-đun sử dụng sai tiện ích mở rộng Tr. quản lý MM của Fox.
-    </string>
+    <string name="disable_extensions_desc">Tắt tiện ích mở rộng Tr. quản lý MM của Fox, điều này ngăn các mô-đun sử dụng tiện ích mở rộng dành cho các thiết bị đầu cuối.
+\nHữu ích nếu một mô-đun sử dụng sai tiện ích mở rộng của Trình quản lý MM của Fox.</string>
     <string name="wrap_text_pref">Gói gọn văn bản</string>
     <string name="wrap_text_desc">Gói văn bản thành một dòng mới thay vì đặt tất cả văn bản trên cùng một dòng khi cài đặt một mô-đun.</string>
     <string name="enable_blur_pref">Kích hoạt làm mờ</string>
@@ -119,10 +116,10 @@
     <string name="favourite">Yêu Thích</string>
     <string name="dev_mode_disabled">Chế độ nhà phát triển đang tắt</string>
     <string name="report_bugs">Báo cáo lỗi</string>
-    <string name="fail_root_denied">Root đã bị từ chối thông qua ứng dụng Magisk</string>
+    <string name="fail_root_denied">Quyền try cập Root đã bị từ chối bởi ứng dụng Magisk</string>
     <string name="disable_chips_in_description">Vô hiệu hóa chip trong mô tả</string>
     <string name="repo_update_failed_extended">Cập nhật %1$s không thành công. Vui lòng thử lại sau.</string>
-    <string name="monet_disabled_summary">Monet không tương thích với các chủ đề trong suốt</string>
+    <string name="monet_disabled_summary">Monet không tương thích với các chủ đề trong suốt.</string>
     <string name="blur_disabled_summary">Làm mờ không tương thích với các chủ đề trong suốt.</string>
     <string name="transparent_theme_dialogue_title">Bạn đang đặt một chủ đề trong suốt</string>
     <string name="custom_repo_always_on">Các kho lưu trữ tùy chỉnh luôn bật cho đến khi bạn xóa chúng.</string>
@@ -135,13 +132,13 @@
     <string name="sentry_dialogue_success">Đã gửi phản hồi thành công. Chúng tôi sẽ xem xét nó trong thời gian ngắn</string>
     <string name="sentry_dialogue_no_description">Không thể gửi phản hồi vì không có mô tả nào được cung cấp</string>
     <string name="go_to_online_repo">Di chuyển đến repo trực tuyến</string>
-    <string name="pref_pkg_info_summary">Bản dựng %1$s v%2$s (%3$d) | %4$s</string>
+    <string name="pref_pkg_info_summary">Bản dựng %4$s | %1$s v%2$s (%3$d)</string>
     <string name="official">Chính thức</string>
     <string name="unofficial">Không chính thức</string>
     <string name="setup_title">Thiết lập lần đầu</string>
     <string name="setup_button">Hoàn tất thiết lập</string>
     <string name="setup_androidacy_repo">Kích hoạt repo Androidacy</string>
-    <string name="crash_reporting_desc">Nếu bạn tắt tính năng này, nhà phát triển sẽ không nhận được báo cáo lỗi tự động và điều này có thể khiến việc khắc phục sự cố trở nên khó khăn hơn</string>
+    <string name="crash_reporting_desc">Nếu bạn tắt tính năng này, nhà phát triển sẽ không nắm được thông tin về lỗi đã xảy ra và điều này có thể khiến việc khắc phục sự cố trở nên khó khăn hơn</string>
     <string name="api_key_restart">Khóa API đã được thay đổi. Khởi động lại ứng dụng để áp dụng các thay đổi.</string>
     <string name="api_key_unchanged">Khóa API bạn nhập giống với khóa đã được sử dụng.</string>
     <string name="permission_notification_title">Cho phép thông báo\?</string>
@@ -158,20 +155,20 @@
     <string name="androidacy_failed_to_validate_token">Không thể xác thực token cho Androidacy. Vui lòng thử lại sau.</string>
     <string name="androidacy_server_down">Không thể kết nối với máy chủ Androidacy. Kiểm tra kết nối của bạn và thử lại.</string>
     <string name="androidacy_need_captcha">Cập nhật Androidacy bị chặn bởi Captcha</string>
-    <string name="link_copied">Đã sao chép liên kết</string>
+    <string name="link_copied">Đã sao chép đường dẫn liên kết</string>
     <string name="androidacy_test_mode_pref">Chế độ kiểm tra Androidacy</string>
     <string name="androidacy_test_mode_desc">Sử dụng điểm cuối Androidacy thay vì điểm cuối phát hành. (Sẽ khởi động lại ứng dụng)</string>
     <string name="notification_update_title">Đã tìm thấy %1$d bản cập nhật mô-đun</string>
     <string name="notification_update_title_easter_egg">Đã tìm thấy %i bản cập nhật mô-đun</string>
-    <string name="notification_update_subtitle">Bấm để mở ứng dụng</string>
-    <string name="notification_update_pref">Kiểm tra cập nhật mô-đun tự động</string>
-    <string name="notification_update_desc">Có thể tăng mức sử dụng pin</string>
-    <string name="notification_update_debug_pref">Thông báo cho mục đích kiểm tra</string>
-    <string name="language_translated_by">Dịch bởi HuyMaster</string>
-    <string name="crash_reporting">Tự động báo cáo lỗi và hiệu suất cho các nhà phát triển</string>
+    <string name="notification_update_subtitle">Nhấn để mở ứng dụng</string>
+    <string name="notification_update_pref">Tự động hóa việc kiểm tra cập nhật các mô-đun</string>
+    <string name="notification_update_desc">Có thể làm tăng mức tiêu thụ pin</string>
+    <string name="notification_update_debug_pref">Thông báo thử nghiệm</string>
+    <string name="language_translated_by">Được dịch bởi HuyMaster, ToanTran</string>
+    <string name="crash_reporting">Tự động báo lỗi và hiệu suất cho các nhà phát triển</string>
     <string name="api_key">Khóa API Androidacy</string>
-    <string name="api_key_summary">Sử dụng khóa API tùy chỉnh cho Androidacy. Hữu ích cho người đăng ký trả phí, để xóa quảng cáo và hơn thế nữa.</string>
-    <string name="api_key_set">Khóa API Androidacy hiện tại</string>
+    <string name="api_key_summary">Sử dụng khóa API tùy chỉnh cho Androidacy. Hữu ích cho người đăng ký trả phí, nhằm xoá quảng cáo và mang lại nhiều lợi ích hơn.</string>
+    <string name="api_key_set">Khóa Androidacy API hiện tại</string>
     <string name="checking_api_key">Đang xác thực khóa API…</string>
     <string name="please_wait">Vui lòng chờ</string>
     <string name="api_key_removed">Đặt lại thành công khóa API</string>
@@ -179,11 +176,11 @@
     <string name="warning">Cảnh báo!</string>
     <string name="crash">Làm crash ứng dụng để thử nghiệm</string>
     <string name="repackaged_as">Được đóng gói lại thành:</string>
-    <string name="wrapped_from">Được bọc từ:</string>
+    <string name="wrapped_from">Được đóng gói từ:</string>
     <string name="crash_reporting_restart_title">Khởi động lại ứng dụng để áp dụng các thay đổi\?</string>
     <string name="crash_reporting_restart_message">Ứng dụng cần khởi động lại để áp dụng cài đặt này</string>
     <string name="restart">Khởi động lại</string>
-    <string name="androidacy_test_mode_disable_warning">Ứng dụng sẽ được khởi động lại để tắt điểm cuối theo giai đoạn</string>
+    <string name="androidacy_test_mode_disable_warning">Ứng dụng sẽ được khởi động lại để tắt điểm cuối thử nghiệm</string>
     <string name="api_key_not_set">API Key của Androidacy trống</string>
     <string name="api_key_valid">API Key hợp lệ.</string>
     <string name="clear_app_data">Xóa dữ liệu ứng dụng</string>
@@ -194,7 +191,7 @@
     <string name="setup_background_update_check_summary">Cho phép chúng tôi kiểm tra các bản cập nhật mô-đun và ứng dụng trong nền. Tính năng này có thể sử dụng nhiều pin và dữ liệu hơn.</string>
     <string name="setup_androidacy_repo_summary">Tính năng đánh giá của người dùng, quét vi-rút tự động, cập nhật nhanh, nhiều lựa chọn và được hỗ trợ bởi Androidacy.</string>
     <string name="setup_magisk_alt_repo">Kích hoạt repo Magisk Alt</string>
-    <string name="setup_magisk_alt_repo_summary">Lỏng lẻo hơn nhiều so với bản gốc. Có rất nhiều mô-đun với chi phí an toàn.</string>
+    <string name="setup_magisk_alt_repo_summary">Lỏng lẻo hơn so với bản gốc. Có nhiều mô-đun hơn nhưng kém an toàn hơn.</string>
     <string name="setup_crash_reporting">Kích hoạt Sentry</string>
     <string name="setup_crash_reporting_summary">Báo cáo sự cố và giám sát hiệu suất. Tất cả các báo cáo đều được ẩn danh và bảo mật.</string>
     <string name="setup_custom_repos">Bạn có thể thêm các kho lưu trữ tùy chỉnh sau trong cài đặt.</string>
@@ -352,7 +349,7 @@
     <string name="crash_reporting_pii">Gửi thông tin bổ sung</string>
     <string name="setup_crash_reporting_pii">Gửi thông tin bổ sung trong các báo cáo sự cố.</string>
     <string name="error_creating_cookie_database">Lỗi khi truy cập WebView. Chức năng có thể bị ảnh hưởng.</string>
-    <string name="setup_scroll_down">Để bật nút kết thúc, vui lòng cuộn xuống và xem tất cả các tùy chọn</string>
+    <string name="setup_scroll_down">Để mở khoá nút kết thúc, vui lòng cuộn xuống và xem tất cả các tùy chọn.</string>
     <string name="empty_field">URL là bắt buộc</string>
     <string name="repo_already_added">Kho lưu trữ đã tồn tại.</string>
     <string name="showcase_mode_dialogue_message">Cần khởi động lại ứng dụng để bật chế độ giới thiệu.</string>
@@ -373,7 +370,7 @@
     <string name="zip_intent_module_install">Bạn có thực sự muốn cài đặt mô-đun \"%1$s\" từ tệp ZIP \"%2$s\" không\?
 \n
 \n Đảm bảo rằng bạn tin tưởng vào nguồn của mô-đun này, vì các mô-đun rất mạnh và có thể làm được hầu hết mọi thứ.</string>
-    <string name="contributors">Và tất nhiên, xin cảm ơn tất cả những người đóng góp của chúng tôi, cho dù đó là bản dịch, mã hay chỉ là niềm vui khi đi chơi cùng! Chúng tôi yêu tất cả các bạn.</string>
+    <string name="contributors">Và tất nhiên, xin cảm ơn tất cả những người đóng góp của chúng tôi, cho dù đó là bản dịch, các đoạn mã nguồn, hay chỉ là niềm vui khi ở cùng các bạn! Chúng tôi yêu quí tất cả các bạn.</string>
     <string name="crash_details_copied">Đã sao chép stacktrace vào bộ nhớ tạm!</string>
     <string name="reset_app_confirmation">Thao tác này sẽ xóa hoàn toàn dữ liệu ứng dụng nhưng sẽ không ảnh hưởng đến các mô-đun.</string>
     <string name="update_message">Vui lòng đợi trong khi chúng tôi kiểm tra và cài đặt các bản cập nhật cho FoxMMM. Có thể sẽ mất vài phút</string>
@@ -396,4 +393,15 @@
     <string name="language_not_available">Ngôn ngữ %s chưa được dịch. Giúp dịch nó\?</string>
     <string name="blur_desc">Tạo hiệu ứng mờ phía sau một số hộp thoại và thành phần. Lưu ý rằng tính năng làm mờ có thể không hoạt động tốt trên một số thiết bị và có thể không hoạt động với tất cả mọi người.</string>
     <string name="error_encrypted_shared_preferences">Đã xảy ra lỗi khi đọc tùy chọn được chia sẻ. Vui lòng đặt lại ứng dụng.</string>
+    <string name="notification_update_ignore_version_desc">Bỏ qua một số phiên bản cụ thể khi kiểm tra cập nhật mô-đun. Việc tắt tự động kiểm tra cập nhật cho từng mô-đun riêng sẽ ghi đè thiết lập này!</string>
+    <string name="notification_update_ignore_version_pref">Bỏ qua (các) phiên bản khi kiểm tra cập nhật</string>
+    <string name="background_update_check_excludes_version">Bỏ qua (các) phiên bản khi kiểm tra cập nhật cho các mô-đun</string>
+    <string name="module_version">"Phiên bản: "</string>
+    <string name="module_remote_version">Phiên bản từ máy chủ</string>
+    <string name="background_update_check_excludes_version_hint">Mã phiên bản cần loại trừ</string>
+    <string name="androidacy_thanks_up">Cám ơn bạn đã nâng cấp! Quảng cáo sẽ không xuất hiện khi tải các mô-đun và README, và tốc độ tải sẽ không bị giới hạn. Trong tương lai, bạn sẽ có thể trực tiếp tải mô-đun về chỉ với một lần bấm.</string>
+    <string name="androidacy_thanks_up_title">Bạn đã được nâng cấp rồi!</string>
+    <string name="upgrade_snackbar">Androidacy Premium giúp bạn tải về nhanh hơn, cùng với trải nghiệm không có quảng cáo, và nhiều lợi ích hơn nữa!</string>
+    <string name="upgrade_now">Nâng cấp</string>
+    <string name="background_update_check_excludes_version_summary">Hãy chọn phiên bản mô-đun mà bạn muốn bỏ qua. VUi lòng chỉ sử dụng mã phiên bản. Bạn có thể tìm nó bằng cách ấn giữ vào khu vực chứa thông tin phiên bản trong danh sách mô-đun. Có thể dùng ký tự ^ ở đầu dòng để bỏ qua phiên bản đã nhập và những phiên bản mới hơn. Dùng ký tự $ ở cuối để bỏ qua các phiên bản cũ hơn phiên bản đã nhập.</string>
 </resources>

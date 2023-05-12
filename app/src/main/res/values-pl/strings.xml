@@ -119,7 +119,7 @@
     <string name="restore_module_list">Przywracanie modułów</string>
     <string name="require_internet">Ta operacja wymaga połączenia internetowego</string>
     <string name="androidacy_test_mode_pref">Tryb testowy Androidacy</string>
-    <string name="androidacy_test_mode_desc">Użyj punktu końcowego staging Androidacy zamiast punktu końcowego release. (Spowoduje restart aplikacji)</string>
+    <string name="androidacy_test_mode_desc">Użyj punktu końcowego staging zamiast release. (Spowoduje restart aplikacji)</string>
     <!-- Background Notification translation -->
     <string name="notification_update_title">Dostępne są nowe wersje modułów: %1$d</string>
     <string name="notification_update_title_easter_egg">Wywęszono nowe wersje modułów: %i</string>
@@ -217,7 +217,7 @@
     <string name="setup_androidacy_repo_summary">Oferuje recenzje użytkowników, automatyczne skanowanie wirusów, szybkie aktualizacje, szeroki wybór i jest wspierane przez Androidacy.</string>
     <string name="setup_magisk_alt_repo_summary">Znacznie luźniejsze niż oryginalne. Posiada wiele modułów kosztem pewnego bezpieczeństwa.</string>
     <string name="setup_crash_reporting_summary">Monitorowanie wydajności i rejestracja awarii. Wszystkie raporty są ściśle anonimowe i poufne.</string>
-    <string name="debug_build">Wersja testowa. Spodziewaj się błędów i gorszego działania.</string>
+    <string name="debug_build">Wersja testowa. Spodziewaj się błędów.</string>
     <string name="androidacy_repo_name">Repozytorium Androidacy</string>
     <string name="magisk_alt_repo_name">Repozytorium Magisk Alt</string>
     <string name="repo_enabled_changed">Włączono lub wyłączono repozytorium. Proszę odświeżyć listę modułów lub zrestartować aplikację.</string>
@@ -401,7 +401,7 @@
     <string name="module_version">"Wersja: "</string>
     <string name="module_remote_version">Zdalna wersja</string>
     <string name="background_update_check_excludes_version_hint">Kod wersji do zignorowania</string>
-    <string name="notification_update_ignore_version_desc">Ignoruj określone wersje podczas sprawdzania aktualizacji modułów. Opcja znajdująca się wyżej nadpisuje to ustawienie!</string>
+    <string name="notification_update_ignore_version_desc">Wyklucz określone wersje podczas sprawdzania aktualizacji modułów. Opcja znajdująca się wyżej nadpisuje to ustawienie!</string>
     <string name="background_update_check_excludes_version_summary">Określ wersję aktualizacji modułu, którą chcesz zignorować. Używaj wyłącznie kodu wersji. Możesz go znaleźć, przytrzymując wersję na liście modułów. Użyj ^ na początku, aby dopasować tę wersję i nowsze. Użyj $ na końcu, aby dopasować do tej wersji.</string>
     <string name="androidacy_thanks_up_title">Już masz ulepszenie!</string>
     <string name="upgrade_now">Ulepsz</string>
