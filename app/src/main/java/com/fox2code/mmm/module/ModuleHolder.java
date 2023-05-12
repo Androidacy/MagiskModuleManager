@@ -148,13 +148,15 @@ public final class ModuleHolder implements Comparable<ModuleHolder> {
             // oh, and because i hate myself, i made ^ at the beginning match that version and newer, and $ at the end match that version and older
             Set<String> stringSetT = MainApplication.getSharedPreferences("mmm").getStringSet("pref_background_update_check_excludes_version", new HashSet<>());
             String version = "";
-            Set<String> stringSet = stringSetT;
-            Timber.d(stringSet.toString());
-            if (stringSet.contains(this.moduleInfo.id)) {
-                // get the one matching
-                Timber.d("found mod in ig ver");
-                version = stringSet.stream().filter(s -> s.startsWith(this.moduleInfo.id)).findFirst().orElse("");
-                Timber.d("igV:%s", version);
+            Timber.d(stringSetT.toString());
+            // unfortunately, stringsett.contains() doesn't work for partial matches
+            // so we have to iterate through the set
+            for (String s : stringSetT) {
+                if (s.startsWith(this.moduleInfo.id)) {
+                    version = s;
+                    Timber.d("igV: %s", version);
+                    break;
+                }
             }
             String remoteVersionCode = String.valueOf(moduleInfo.updateVersionCode);
             if (repoModule != null) {
@@ -162,32 +164,34 @@ public final class ModuleHolder implements Comparable<ModuleHolder> {
             }
             if (!version.isEmpty()) {
                 // now, coerce everything into an int
-                int localVersionCode = Integer.parseInt(String.valueOf(moduleInfo.versionCode));
                 int remoteVersionCodeInt = Integer.parseInt(remoteVersionCode);
                 int wantsVersion = Integer.parseInt(version.split(":")[1].replaceAll("[^0-9]", ""));
                 // now find out if user wants up to and including this version, or this version and newer
-                // if it starts with ^, it's this version and newer, if it ends with $, it's this version and older
+                Timber.d("igV start with");
+                version = version.split(":")[1];
+                // this version and newer
                 if (version.startsWith("^")) {
-                    Timber.d("igV start with");
-                    // this version and newer
-                    if (wantsVersion <= remoteVersionCodeInt || wantsVersion <= localVersionCode) {
+                    Timber.d("igV: newer");
+                    // the wantsversion and newer
+                    if (remoteVersionCodeInt >= wantsVersion) {
+                        Timber.d("igV: skipping");
                         // if it is, we skip it
-                        Timber.d("igu true");
                         ignoreUpdate = true;
                     }
                 } else if (version.endsWith("$")) {
-                    Timber.d("igV end with");
-                    // this version and older
-                    if (wantsVersion >= remoteVersionCodeInt || wantsVersion >= localVersionCode) {
+                    Timber.d("igV: older");
+                    // this wantsversion and older
+                    if (remoteVersionCodeInt <= wantsVersion) {
+                        Timber.d("igV: skipping");
                         // if it is, we skip it
-                        Timber.d("igu true");
                         ignoreUpdate = true;
                     }
-                } else if (wantsVersion == remoteVersionCodeInt || wantsVersion == localVersionCode) {
+                } else if (wantsVersion == remoteVersionCodeInt) {
+                    Timber.d("igV: equal");
                     // if it is, we skip it
-                    Timber.d("igu true");
                     ignoreUpdate = true;
                 }
+
             }
             if (ignoreUpdate) {
                 Timber.d("Module %s has update, but is ignored", this.moduleId);

@@ -147,9 +147,12 @@ public class BackgroundUpdateChecker extends Worker {
                     // oh, and because i hate myself, i made ^ at the beginning match that version and newer, and $ at the end match that version and older
                     Set<String> stringSet = MainApplication.getSharedPreferences("mmm").getStringSet("pref_background_update_check_excludes_version", new HashSet<>());
                     String version = "";
-                    if (stringSet.contains(localModuleInfo.id)) {
-                        // get the one matching
-                         version = stringSet.stream().filter(s -> s.startsWith(localModuleInfo.id)).findFirst().orElse("");
+                    for (String s : stringSet) {
+                        if (s.startsWith(localModuleInfo.id)) {
+                            version = s;
+                            Timber.d("igV: %s", version);
+                            break;
+                        }
                     }
                     RepoModule repoModule = repoModules.get(localModuleInfo.id);
                     localModuleInfo.checkModuleUpdate();
@@ -158,24 +161,30 @@ public class BackgroundUpdateChecker extends Worker {
                         remoteVersionCode = String.valueOf(repoModule.moduleInfo.versionCode);
                     }
                     if (!version.isEmpty()) {
-                        int localVersionCode = Integer.parseInt(String.valueOf(localModuleInfo.versionCode));
+                        Timber.d("igV found: %s", version);
                         int remoteVersionCodeInt = Integer.parseInt(remoteVersionCode);
                         int wantsVersion = Integer.parseInt(version.split(":")[1].replaceAll("[^0-9]", ""));
                         // now find out if user wants up to and including this version, or this version and newer
                         // if it starts with ^, it's this version and newer, if it ends with $, it's this version and older
+                        version = version.split(":")[1];
                         if (version.startsWith("^")) {
-                            // this version and newer
-                            if (wantsVersion <= remoteVersionCodeInt || wantsVersion <= localVersionCode) {
+                            Timber.d("igV: newer");
+                            // the wantsversion and newer
+                            if (remoteVersionCodeInt >= wantsVersion) {
+                                Timber.d("igV: skipping");
                                 // if it is, we skip it
                                 continue;
                             }
                         } else if (version.endsWith("$")) {
-                            // this version and older
-                            if (wantsVersion >= remoteVersionCodeInt || wantsVersion >= localVersionCode) {
+                            Timber.d("igV: older");
+                            // this wantsversion and older
+                            if (remoteVersionCodeInt <= wantsVersion) {
+                                Timber.d("igV: skipping");
                                 // if it is, we skip it
                                 continue;
                             }
-                        } else if (wantsVersion == remoteVersionCodeInt || wantsVersion == localVersionCode) {
+                        } else if (wantsVersion == remoteVersionCodeInt) {
+                            Timber.d("igV: equal");
                             // if it is, we skip it
                             continue;
                         }
