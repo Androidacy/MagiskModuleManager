@@ -1,0 +1,4 @@
+Ứng dụng này không được hỗ trợ chính thức bởi Magisk hoặc các nhà phát triển của Magisk.
+
+Những mô-đun được hiển thị trong ứng dụng không có bất kỳ liên kết nào đối với ứng dụng này.
+Vui lòng liên hệ người sở hữu mô-đun khi có thắc mắc.

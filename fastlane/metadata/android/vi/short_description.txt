@@ -1,0 +1,1 @@
+Một trình quản lý mô-đun cho Magisk vì ứng dụng chính thức đã ngừng hỗ trợ nó.
