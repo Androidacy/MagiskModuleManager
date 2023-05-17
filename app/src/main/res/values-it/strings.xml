@@ -405,4 +405,6 @@
     <string name="setup_scroll_down_v2">Per abilitare il pulsante Fine, scorri fino in fondo e conferma di aver letto e accettato l\'EULA e le licenze.</string>
     <string name="reinstall">Reinstalla</string>
     <string name="eula_agree_v2">Accetti di essere vincolato dalla licenza LGPL-3.0 (https://www.gnu.org/licenses/lgpl-3.0.en.html) e dall\'EULA (https://www.androidacy.com/foxmmm-eula/ ), oltre a qualsiasi termine di terze parti, e che gli autori di questa app non si assumono alcuna responsabilità per il suo utilizzo, né offrono alcuna garanzia espressa o implicita.</string>
+    <string name="notification_update_ignore_version_desc">Ignora le versioni specifiche mentre stai cercando nuovi aggiornamenti per i moduli. Se disattivi il controllo per ogni modulo, sovrascriverai questa impostazione!</string>
+    <string name="notification_update_ignore_version_pref">Escludi versione/i dai controlli per i nuovi aggiornamenti</string>
 </resources>
