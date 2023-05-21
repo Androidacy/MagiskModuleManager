@@ -162,6 +162,7 @@ android {
         create("play") {
             dimension = "type"
             applicationIdSuffix = ".play"
+            applicationId = "com.androidacy.mmm"
             // current timestamp of build
             buildConfigField("long", "BUILD_TIME", "$timestamp")
             // debug http requests. do not set this to true if you care about performance!!!!!
@@ -410,7 +411,7 @@ dependencies {
     implementation("dev.rikka.rikkax.insets:insets:1.3.0")
     implementation("com.github.KieronQuinn:MonetCompat:0.4.1")
     implementation("com.github.Fox2Code:FoxCompat:0.2.0")
-    implementation("com.mikepenz:aboutlibraries:10.6.3")
+    implementation("com.mikepenz:aboutlibraries:10.7.0")
 
     // Utils
     implementation("androidx.work:work-runtime:2.8.1")
@@ -425,7 +426,7 @@ dependencies {
     // implementation("com.google.protobuf:protobuf-javalite:3.22.2")
 
     // google guava, maybe fix a bug
-    implementation("com.google.guava:guava:31.1-android")
+    implementation("com.google.guava:guava:31.1-jre")
 
 
     val libsuVersion = "5.0.5"
@@ -442,12 +443,12 @@ dependencies {
     implementation("com.github.Fox2Code:AndroidANSI:1.2.1")
 
     // sentry
-    implementation("io.sentry:sentry-android:6.18.1")
-    implementation("io.sentry:sentry-android-timber:6.18.1")
-    implementation("io.sentry:sentry-android-fragment:6.18.1")
-    implementation("io.sentry:sentry-android-okhttp:6.18.1")
-    implementation("io.sentry:sentry-kotlin-extensions:6.18.1")
-    implementation("io.sentry:sentry-android-ndk:6.18.1")
+    implementation("io.sentry:sentry-android:6.19.1")
+    implementation("io.sentry:sentry-android-timber:6.19.1")
+    implementation("io.sentry:sentry-android-fragment:6.19.1")
+    implementation("io.sentry:sentry-android-okhttp:6.19.1")
+    implementation("io.sentry:sentry-kotlin-extensions:6.19.1")
+    implementation("io.sentry:sentry-android-ndk:6.19.1")
 
     // Markdown
     // TODO: switch to an updated implementation
@@ -458,7 +459,7 @@ dependencies {
     implementation("com.google.net.cronet:cronet-okhttp:0.1.0")
     implementation("com.caverock:androidsvg:1.4")
 
-    implementation("androidx.core:core-ktx:1.10.0")
+    implementation("androidx.core:core-ktx:1.10.1")
 
     // timber
     implementation("com.jakewharton.timber:timber:5.0.1")
@@ -477,7 +478,7 @@ dependencies {
     implementation("org.jetbrains:annotations-java5:24.0.1")
 
     // debugging
-    debugImplementation("com.squareup.leakcanary:leakcanary-android:2.10")
+    debugImplementation("com.squareup.leakcanary:leakcanary-android:2.11")
 
     // desugaring
     coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.0.3")
@@ -487,7 +488,7 @@ dependencies {
 }
 
 android {
-    ndkVersion = "25.2.9519653"
+    ndkVersion = "23.0.7344513"
     dependenciesInfo {
         includeInApk = false
         includeInBundle = false
