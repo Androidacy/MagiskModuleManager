@@ -8,7 +8,7 @@
     <string name="loading">Cargando…</string>
     <string name="updatable">Actualización disponible</string>
     <string name="installed">Instalado</string>
-    <string name="online_repo">Repositorio online</string>
+    <string name="online_repo">Repositorio en linea</string>
     <string name="showcase_mode">La aplicación está en modo Lockdown</string>
     <string name="failed_download">No fue posible descargar el archivo</string>
     <string name="slow_modules">Los módulos tardaron mucho en iniciar, considere eliminar algunos</string>
@@ -148,7 +148,7 @@
     <string name="api_key_summary">Usa una clave API Personalizada para Androidacy. Útil para usuarios premium, para quitar anuncios y más.</string>
     <string name="api_key_not_set">La clave API de Androidacy esta vacia</string>
     <string name="api_key_set">Clave API de Androidacy actual</string>
-    <string name="api_key_invalid">No se pudo validar la clave API. Por favor revisala e intentalo de nuevo.</string>
+    <string name="api_key_invalid">No se pudo validar la clave API. Por favor revisala e inténtalo de nuevo.</string>
     <string name="api_key_valid">La clave API es válida.</string>
     <string name="checking_api_key">Validando clave API…</string>
     <string name="validating_api_key">Validando clave API…</string>
@@ -189,7 +189,7 @@
     <string name="dont_ask_again">No volver a preguntar</string>
     <string name="download_full_app">Descargar la versión completa</string>
     <string name="pref_category_contributors">Colaboradores</string>
-    <string name="fox2code_thanks_desc">Fox2Code es el creador original de esta aplicación. Sin el, esto nunca hubiera sido posible.</string>
+    <string name="fox2code_thanks_desc">Fox2Code es el creador original de esta aplicación. Sin él, esto nunca hubiera sido posible.</string>
     <string name="fox2code_thanks">Creado por Fox2Code</string>
     <string name="search">Buscar</string>
     <string name="setup_androidacy_repo">Activar el repositorio Androidacy</string>
@@ -240,12 +240,12 @@
     <string name="changelog_none">No hay cambios todavía!</string>
     <string name="safe">Seguro</string>
     <string name="modules">Módulos</string>
-    <string name="monet_disabled_summary">Monet no es compatible con tema transparente.</string>
+    <string name="monet_disabled_summary">Monet no es compatible con temas transparentes.</string>
     <string name="setup_background_update_check">Comprobación automática de actualizaciones</string>
     <string name="setup_theme_button">Elige un tema</string>
     <string name="theme_transparent_dark">Oscuro (transparencia)</string>
     <string name="androidacy_update_needed">Esta aplicación esta desactualizada.</string>
-    <string name="androidacy_update_needed_message">Por favor actualice esta aplicación a la ultima versión.</string>
+    <string name="androidacy_update_needed_message">Por favor actualice esta aplicación a la última versión.</string>
     <string name="feedback_name">Nombre (opcional)</string>
     <string name="more_details">Más detalles se pueden encontrar a continuación.</string>
     <string name="notification_channel_category_app_update">Actualizaciones de aplicaciones</string>
@@ -338,7 +338,7 @@
     <string name="transparent_theme_dialogue_message">Los temas transparentes pueden tener algunas inconsistencias y es posible que no funcionen en todas las ROMs. Además, se desactivarán monet y blur. Puede volver a cambiar en cualquier momento.</string>
     <string name="sentry_dialogue_message">Encontramos un error! Ayúdenos a mejorar la aplicación agregando información sobre el error a continuación.
 \nEl nombre y el correo electrónico son opcionales, pero nos permitirán comunicarnos con usted si es necesario para obtener más información.</string>
-    <string name="pref_pkg_info_summary">%1$s v%2$s (%3$d) | %4$s Compilar</string>
+    <string name="pref_pkg_info_summary">%1$s v%2$s (%3$d) | %4$s Compilación</string>
     <string name="api_key_restart">La clave API ha sido cambiada. Reinicie la aplicación para aplicar los cambios.</string>
     <string name="permission_notification_message">Necesitamos el permiso de notificaciones para notificarle sobre actualizaciones de aplicaciones y módulos. Si no concede este permiso, no se ejecutarán las comprobaciones de las actualizaciones automáticas.</string>
     <string name="force_black_theme_desc">Fuerza fondos AMOLED negros cuando se usa un tema oscuro. Tenga en cuenta que esto puede tener problemas de contraste con algunos temas de color.</string>
@@ -359,9 +359,9 @@
     <string name="crash_text">Uh-oh, nos encontramos con un obstáculo!</string>
     <string name="sentry_enable_nag">Parece que los informes de fallas están desactivados. Actívelos para enviar comentarios.</string>
     <string name="crash_icon">Icono de bloqueo</string>
-    <string name="crash_full_stacktrace">Rastreo de pila:
+    <string name="crash_full_stacktrace">Stacktrace:
 \n%1$s</string>
-    <string name="upgraded_summary">Eres bastante increíble! Parece que ya actualizó su suscripción y es compatible con Androidacy.</string>
+    <string name="upgraded_summary">Eres bastante increíble! Parece que ya actualizó su suscripción y estará apoyando a Androidacy.</string>
     <string name="api_key_mismatch">La clave API tiene un formato inválido</string>
     <string name="warning_message">Este módulo tiene indicadores de que puede haber sido instalado sin su conocimiento, o puede estar intentando ocultarse.
 \n
@@ -404,7 +404,7 @@
     <string name="background_update_check_excludes_version_hint">Código de versión para ignorar</string>
     <string name="upgrade_now">Mejora</string>
     <string name="androidacy_thanks_up_title">Ya has actualizado!</string>
-    <string name="zip_intent_module_install">De verdad quieres instalar este módulo\? \"%1$s\" desde el archivo ZIP \"%2$s\"\?
+    <string name="zip_intent_module_install">De verdad quieres instalar este módulo \"%1$s\" desde el archivo ZIP \"%2$s\"\?
 \n
 \nAsegúrese de confiar en la fuente de este módulo, ya que los módulos son muy poderosos y pueden hacer casi cualquier cosa.</string>
     <string name="notification_update_ignore_version_desc">Ignore versiones específicas cuando busque actualizaciones de módulos. Desactivar las comprobaciones de actualización por módulo anterior anula esta configuración!</string>
