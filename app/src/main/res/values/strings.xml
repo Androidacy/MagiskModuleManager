@@ -427,4 +427,5 @@
     <string name="androidacy_thanks_up_title">You\'ve already upgraded!</string>
     <string name="upgrade_snackbar">Androidacy Premium offers faster downloads, an ad-free experience, and more!</string>
     <string name="upgrade_now">Upgrade</string>
+    <string name="crash_details_suggestion">The stacktrace may be found below. However, we <b>strongly</b> recommend you to use the feedback form below to submit feedback instead. This way, instead of manually copying the stacktrace, it will send it to us automatically. It also is deobfuscated that way and additional details are reported automatically.</string>
 </resources>

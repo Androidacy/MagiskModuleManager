@@ -31,14 +31,16 @@
             android:text="@string/crash_text"
             android:textSize="20sp"
             android:textStyle="bold" />
-        <!-- smaller details may be found below header -->
+
+        <!-- textview suggesting user use the submit feedback button instead of manually copying the crash details -->
         <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/crash_details_suggestion"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
-            android:gravity="center"
-            android:text="@string/more_details"
-            android:textSize="16sp" />
+            android:gravity="fill"
+            android:text="@string/crash_details_suggestion"
+            android:textSize="14sp" />
 
         <!-- copyable crash_details body with copy button in top right corner -->
         <FrameLayout

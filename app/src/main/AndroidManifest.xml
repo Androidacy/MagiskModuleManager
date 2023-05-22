@@ -195,11 +195,13 @@
             android:value="false" />
         <meta-data
             android:name="io.sentry.dsn"
-            android:value="https://f35f7f369a254b2ca854cf9593c99da2@sentry.androidacy.com/7" />
+            android:value="https://e199c2a54a1f49b1b5beb3244f2c2358@sentry.androidacy.com/77" />
+        <!-- enable view hierarchy for crashes -->
+        <meta-data android:name="io.sentry.attach-view-hierarchy" android:value="true" />
         <!-- Sane value, but feel free to lower it -->
         <meta-data
             android:name="io.sentry.traces.sample-rate"
-            android:value="0.25" />
+            android:value="0.2" />
         <!-- Doesn't actually monitor anything, just used to get the activities the user went through -->
         <meta-data
             android:name="io.sentry.traces.user-interaction.enable"
@@ -215,7 +217,7 @@
         <!-- Performance profiling -->
         <meta-data
             android:name="io.sentry.traces.profiling.sample-rate"
-            android:value="0.25" />
+            android:value="0.2" />
     </application>
 
 </manifest>
