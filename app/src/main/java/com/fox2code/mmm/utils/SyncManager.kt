@@ -1,79 +1,76 @@
-package com.fox2code.mmm.utils;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
+package com.fox2code.mmm.utils
 
 /**
  * Manager that want both to be thread safe and not to worry about thread safety
- * {@link #scan()} and {@link #update(UpdateListener)} can be called from multiple
- * thread at the same time, {@link #scanInternal(UpdateListener)} will only be
+ * [.scan] and [.update] can be called from multiple
+ * thread at the same time, [.scanInternal] will only be
  * called from one thread at a time only.
  */
-public abstract class SyncManager {
-    private static final UpdateListener NO_OP = value -> {};
-    protected final Object syncLock = new Object();
-    private boolean syncing;
-    private long lastSync;
-
-    public final void scanAsync() {
-        if (!this.syncing) {
-            new Thread(this::scan, "Scan Thread").start();
+abstract class SyncManager {
+    @JvmField
+    protected val syncLock = Any()
+    private var syncing = false
+    private var lastSync: Long = 0
+    fun scanAsync() {
+        if (!syncing) {
+            Thread({ this.scan() }, "Scan Thread").start()
         }
     }
 
-    public final void scan() {
-        this.update(null);
+    fun scan() {
+        update(null)
     }
 
     // MultiThread friendly method
-    public final void update(@Nullable UpdateListener updateListener) {
-        if (updateListener == null) updateListener = NO_OP;
-        if (!this.syncing) {
+    fun update(updateListener: UpdateListener?) {
+        @Suppress("NAME_SHADOWING") var updateListener = updateListener
+        if (updateListener == null) updateListener = NO_OP
+        if (!syncing) {
             // Do scan
-            synchronized (this.syncLock) {
-                if (System.currentTimeMillis() < this.lastSync + 50L)
-                    return; // Skip sync if it was synced too recently
-                this.syncing = true;
+            synchronized(syncLock) {
+                if (System.currentTimeMillis() < lastSync + 50L) return  // Skip sync if it was synced too recently
+                syncing = true
                 try {
-                    this.scanInternal(updateListener);
+                    scanInternal(updateListener)
                 } finally {
-                    this.lastSync = System.currentTimeMillis();
-                    this.syncing = false;
+                    lastSync = System.currentTimeMillis()
+                    syncing = false
                 }
             }
         } else {
             // Wait for current scan
-            synchronized (this.syncLock) {
-                Thread.yield();
-            }
+            synchronized(syncLock) { Thread.yield() }
         }
     }
 
     // Pause execution until the scan is completed if one is currently running
-    public final void afterScan() {
-        if (this.syncing) synchronized (this.syncLock) { Thread.yield(); }
+    fun afterScan() {
+        if (syncing) synchronized(syncLock) { Thread.yield() }
     }
 
-    public final void runAfterScan(Runnable runnable) {
-        synchronized (this.syncLock) {
-            runnable.run();
-        }
+    fun runAfterScan(runnable: Runnable) {
+        synchronized(syncLock) { runnable.run() }
     }
 
-    public final void afterUpdate() {
-        if (this.syncing) synchronized (this.syncLock) { Thread.yield(); }
+    fun afterUpdate() {
+        if (syncing) synchronized(syncLock) { Thread.yield() }
     }
 
-    public final void runAfterUpdate(Runnable runnable) {
-        synchronized (this.syncLock) {
-            runnable.run();
-        }
+    fun runAfterUpdate(runnable: Runnable) {
+        synchronized(syncLock) { runnable.run() }
     }
 
     // This method can't be called twice at the same time.
-    protected abstract void scanInternal(@NonNull UpdateListener updateListener);
+    protected abstract fun scanInternal(updateListener: UpdateListener)
+    interface UpdateListener {
+        fun update(value: Double)
+    }
 
-    public interface UpdateListener {
-        void update(double value);
+    companion object {
+        private val NO_OP: UpdateListener = object : UpdateListener {
+            override fun update(value: Double) {
+
+            }
+        }
     }
 }
