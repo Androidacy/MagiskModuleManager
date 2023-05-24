@@ -315,10 +315,13 @@ public enum Http {
 
     @SuppressWarnings("resource")
     private static Object doHttpPostRaw(String url, String data, boolean allowCache) throws IOException {
+        Timber.d("POST %s", url);
         Response response;
         response = (allowCache ? getHttpClientWithCache() : getHttpClient()).newCall(new Request.Builder().url(url).post(JsonRequestBody.from(data)).header("Content-Type", "application/json").build()).execute();
         if (response.isRedirect()) {
-            return response.request().url().uri().toString();
+            // follow redirect with same method
+            Timber.d("doHttpPostRaw: following redirect: %s", response.header("Location"));
+            response = (allowCache ? getHttpClientWithCache() : getHttpClient()).newCall(new Request.Builder().url(Objects.requireNonNull(response.header("Location"))).post(JsonRequestBody.from(data)).header("Content-Type", "application/json").build()).execute();
         }
         // 200/204 == success, 304 == cache valid
         if (response.code() != 200 && response.code() != 204 && (response.code() != 304 || !allowCache)) {

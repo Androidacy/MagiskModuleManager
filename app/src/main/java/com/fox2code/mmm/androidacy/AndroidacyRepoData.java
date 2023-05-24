@@ -1,8 +1,6 @@
 package com.fox2code.mmm.androidacy;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
@@ -14,17 +12,13 @@ import androidx.annotation.NonNull;
 
 import com.fingerprintjs.android.fingerprint.Fingerprinter;
 import com.fingerprintjs.android.fingerprint.FingerprinterFactory;
-import com.fox2code.foxcompat.app.FoxActivity;
-import com.fox2code.foxcompat.app.internal.FoxCompat;
 import com.fox2code.mmm.BuildConfig;
-import com.fox2code.mmm.MainActivity;
 import com.fox2code.mmm.MainApplication;
 import com.fox2code.mmm.R;
 import com.fox2code.mmm.manager.ModuleInfo;
 import com.fox2code.mmm.repo.RepoData;
 import com.fox2code.mmm.repo.RepoManager;
 import com.fox2code.mmm.repo.RepoModule;
-import com.fox2code.mmm.utils.RuntimeUtils;
 import com.fox2code.mmm.utils.io.PropUtils;
 import com.fox2code.mmm.utils.io.net.Http;
 import com.fox2code.mmm.utils.io.net.HttpException;
@@ -39,12 +33,10 @@ import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
-import java.util.concurrent.atomic.AtomicReference;
 
 import okhttp3.HttpUrl;
 import timber.log.Timber;
@@ -107,7 +99,7 @@ public final class AndroidacyRepoData extends RepoData {
             return deviceIdPref;
         } else {
             Fingerprinter fp = FingerprinterFactory.create(MainApplication.getINSTANCE().getApplicationContext());
-            fp.getFingerprint(Fingerprinter.Version.V_5, fingerprint-> {
+            fp.getFingerprint(Fingerprinter.Version.V_5, fingerprint -> {
                 ANDROIDACY_DEVICE_ID = fingerprint;
                 // use fingerprint
                 // Save the device ID to the shared preferences
@@ -248,7 +240,7 @@ public final class AndroidacyRepoData extends RepoData {
                     memberLevel = jsonObject.getString("role");
                     Timber.d("Member level: %s", memberLevel);
                 } catch (JSONException e) {
-                    Timber.e(e, "Failed to parse token");
+                    Timber.e(e, "Failed to parse token: %s", token);
                     // Show a toast
                     Looper mainLooper = Looper.getMainLooper();
                     Handler handler = new Handler(mainLooper);
