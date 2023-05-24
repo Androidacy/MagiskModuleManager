@@ -1,13 +1,15 @@
-package com.fox2code.mmm.utils
+package com.fox2code.mmm.utils;
 
-class FastException private constructor() : RuntimeException() {
-    @Synchronized
-    override fun fillInStackTrace(): Throwable {
-        return this
-    }
+import androidx.annotation.NonNull;
 
-    companion object {
-        @JvmField
-        val INSTANCE = FastException()
+public final class FastException extends RuntimeException {
+    public static final FastException INSTANCE = new FastException();
+
+    private FastException() {}
+
+    @NonNull
+    @Override
+    public synchronized Throwable fillInStackTrace() {
+        return this;
     }
 }

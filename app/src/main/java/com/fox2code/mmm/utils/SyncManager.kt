@@ -1,76 +1,79 @@
-package com.fox2code.mmm.utils
+package com.fox2code.mmm.utils;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 /**
  * Manager that want both to be thread safe and not to worry about thread safety
- * [.scan] and [.update] can be called from multiple
- * thread at the same time, [.scanInternal] will only be
+ * {@link #scan()} and {@link #update(UpdateListener)} can be called from multiple
+ * thread at the same time, {@link #scanInternal(UpdateListener)} will only be
  * called from one thread at a time only.
  */
-abstract class SyncManager {
-    @JvmField
-    protected val syncLock = Any()
-    private var syncing = false
-    private var lastSync: Long = 0
-    fun scanAsync() {
-        if (!syncing) {
-            Thread({ this.scan() }, "Scan Thread").start()
+public abstract class SyncManager {
+    private static final UpdateListener NO_OP = value -> {};
+    protected final Object syncLock = new Object();
+    private boolean syncing;
+    private long lastSync;
+
+    public final void scanAsync() {
+        if (!this.syncing) {
+            new Thread(this::scan, "Scan Thread").start();
         }
     }
 
-    fun scan() {
-        update(null)
+    public final void scan() {
+        this.update(null);
     }
 
     // MultiThread friendly method
-    fun update(updateListener: UpdateListener?) {
-        @Suppress("NAME_SHADOWING") var updateListener = updateListener
-        if (updateListener == null) updateListener = NO_OP
-        if (!syncing) {
+    public final void update(@Nullable UpdateListener updateListener) {
+        if (updateListener == null) updateListener = NO_OP;
+        if (!this.syncing) {
             // Do scan
-            synchronized(syncLock) {
-                if (System.currentTimeMillis() < lastSync + 50L) return  // Skip sync if it was synced too recently
-                syncing = true
+            synchronized (this.syncLock) {
+                if (System.currentTimeMillis() < this.lastSync + 50L)
+                    return; // Skip sync if it was synced too recently
+                this.syncing = true;
                 try {
-                    scanInternal(updateListener)
+                    this.scanInternal(updateListener);
                 } finally {
-                    lastSync = System.currentTimeMillis()
-                    syncing = false
+                    this.lastSync = System.currentTimeMillis();
+                    this.syncing = false;
                 }
             }
         } else {
             // Wait for current scan
-            synchronized(syncLock) { Thread.yield() }
+            synchronized (this.syncLock) {
+                Thread.yield();
+            }
         }
     }
 
     // Pause execution until the scan is completed if one is currently running
-    fun afterScan() {
-        if (syncing) synchronized(syncLock) { Thread.yield() }
+    public final void afterScan() {
+        if (this.syncing) synchronized (this.syncLock) { Thread.yield(); }
     }
 
-    fun runAfterScan(runnable: Runnable) {
-        synchronized(syncLock) { runnable.run() }
+    public final void runAfterScan(Runnable runnable) {
+        synchronized (this.syncLock) {
+            runnable.run();
+        }
     }
 
-    fun afterUpdate() {
-        if (syncing) synchronized(syncLock) { Thread.yield() }
+    public final void afterUpdate() {
+        if (this.syncing) synchronized (this.syncLock) { Thread.yield(); }
     }
 
-    fun runAfterUpdate(runnable: Runnable) {
-        synchronized(syncLock) { runnable.run() }
+    public final void runAfterUpdate(Runnable runnable) {
+        synchronized (this.syncLock) {
+            runnable.run();
+        }
     }
 
     // This method can't be called twice at the same time.
-    protected abstract fun scanInternal(updateListener: UpdateListener)
-    interface UpdateListener {
-        fun update(value: Double)
-    }
+    protected abstract void scanInternal(@NonNull UpdateListener updateListener);
 
-    companion object {
-        private val NO_OP: UpdateListener = object : UpdateListener {
-            override fun update(value: Double) {
-
-            }
-        }
+    public interface UpdateListener {
+        void update(double value);
     }
 }
