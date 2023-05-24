@@ -21,13 +21,11 @@
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  *
  * */
+package com.fox2code.mmm.utils.io
 
-package com.fox2code.mmm.utils.io;
-
-import android.content.Context;
-import android.content.pm.PackageManager;
-
-import timber.log.Timber;
+import android.content.Context
+import android.content.pm.PackageManager
+import timber.log.Timber
 
 /**
  * Open implementation of ProviderInstaller.installIfNeeded
@@ -35,29 +33,33 @@ import timber.log.Timber;
  */
 // Note: This code is MIT because I took it from another unpublished project I had
 // I might upstream this to MicroG at some point
-public enum GMSProviderInstaller {
+enum class GMSProviderInstaller {
     ;
-    private static boolean called = false;
 
-    public static void installIfNeeded(final Context context) {
-        if (context == null) {
-            throw new NullPointerException("Context must not be null");
-        }
-        if (called)
-            return;
-        called = true;
-        try {
-            // Trust default GMS implementation
-            Context remote = context.createPackageContext("com.google.android.gms", Context.CONTEXT_INCLUDE_CODE | Context.CONTEXT_IGNORE_SECURITY);
-            Class<?> cl = remote.getClassLoader().loadClass("com.google.android.gms.common.security.ProviderInstallerImpl");
-            cl.getDeclaredMethod("insertProvider", Context.class).invoke(null, remote);
-            Timber.i("Installed GMS security providers!");
-        } catch (
-                PackageManager.NameNotFoundException e) {
-            Timber.w("No GMS Implementation are installed on this device");
-        } catch (
-                Exception e) {
-            Timber.w(e);
+    companion object {
+        private var called = false
+        @JvmStatic
+        fun installIfNeeded(context: Context?) {
+            if (context == null) {
+                throw NullPointerException("Context must not be null")
+            }
+            if (called) return
+            called = true
+            try {
+                // Trust default GMS implementation
+                val remote = context.createPackageContext(
+                    "com.google.android.gms",
+                    Context.CONTEXT_INCLUDE_CODE or Context.CONTEXT_IGNORE_SECURITY
+                )
+                val cl =
+                    remote.classLoader.loadClass("com.google.android.gms.common.security.ProviderInstallerImpl")
+                cl.getDeclaredMethod("insertProvider", Context::class.java).invoke(null, remote)
+                Timber.i("Installed GMS security providers!")
+            } catch (e: PackageManager.NameNotFoundException) {
+                Timber.w("No GMS Implementation are installed on this device")
+            } catch (e: Exception) {
+                Timber.w(e)
+            }
         }
     }
 }

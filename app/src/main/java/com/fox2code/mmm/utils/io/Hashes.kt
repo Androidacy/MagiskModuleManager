@@ -1,129 +1,130 @@
-package com.fox2code.mmm.utils.io;
+@file:Suppress("UNUSED_PARAMETER")
 
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.util.Locale;
-import java.util.regex.Pattern;
+package com.fox2code.mmm.utils.io
 
-import timber.log.Timber;
+import timber.log.Timber
+import java.security.MessageDigest
+import java.security.NoSuchAlgorithmException
+import java.util.regex.Pattern
 
-public enum Hashes {
+@Suppress("UNUSED_EXPRESSION")
+enum class Hashes {
     ;
-    private static final char[] HEX_ARRAY = "0123456789abcdef".toCharArray();
-    private static final Pattern nonAlphaNum = Pattern.compile("[^a-zA-Z0-9]");
 
-    public static String bytesToHex(byte[] bytes) {
-        char[] hexChars = new char[bytes.length * 2];
-        for (int j = 0; j < bytes.length; j++) {
-            int v = bytes[j] & 0xFF;
-            hexChars[j * 2] = HEX_ARRAY[v >>> 4];
-            hexChars[j * 2 + 1] = HEX_ARRAY[v & 0x0F];
+    companion object {
+        private val HEX_ARRAY = "0123456789abcdef".toCharArray()
+        private val nonAlphaNum = Pattern.compile("[^a-zA-Z0-9]")
+        @JvmStatic
+        fun bytesToHex(bytes: ByteArray): String {
+            val hexChars = CharArray(bytes.size * 2)
+            for (j in bytes.indices) {
+                val v = bytes[j].toInt() and 0xFF
+                hexChars[j * 2] = HEX_ARRAY[v ushr 4]
+                hexChars[j * 2 + 1] = HEX_ARRAY[v and 0x0F]
+            }
+            return String(hexChars)
         }
-        return String.valueOf(hexChars);
-    }
 
-    public static String hashMd5(byte[] input) {
-        throw new SecurityException("MD5 is not secure");
-    }
-
-    public static String hashSha1(byte[] input) {
-        throw new SecurityException("SHA-1 is not secure");
-    }
-
-    public static String hashSha256(byte[] input) {
-        try {
-            MessageDigest md = MessageDigest.getInstance("SHA-256");
-
-            return bytesToHex(md.digest(input));
-        } catch (
-                NoSuchAlgorithmException e) {
-            throw new RuntimeException(e);
+        @JvmStatic
+        fun hashMd5(ignoredInput: ByteArray?): String {
+            throw SecurityException("MD5 is not secure")
         }
-    }
 
-    public static String hashSha512(byte[] input) {
-        try {
-            MessageDigest md = MessageDigest.getInstance("SHA-512");
-
-            return bytesToHex(md.digest(input));
-        } catch (
-                NoSuchAlgorithmException e) {
-            throw new RuntimeException(e);
+        @JvmStatic
+        fun hashSha1(ignoredInput: ByteArray?): String {
+            throw SecurityException("SHA-1 is not secure")
         }
-    }
 
-    /**
-     * Check if the checksum match a file by picking the correct
-     * hashing algorithm depending on the length of the checksum
-     */
-    public static boolean checkSumMatch(byte[] data, String checksum) {
-        String hash;
-        if (checksum == null)
-            return false;
-        switch (checksum.length()) {
-            case 0:
-                return true; // No checksum
-            case 32:
-                hash = Hashes.hashMd5(data);
-                break;
-            case 40:
-                hash = Hashes.hashSha1(data);
-                break;
-            case 64:
-                hash = Hashes.hashSha256(data);
-                break;
-            case 128:
-                hash = Hashes.hashSha512(data);
-                break;
-            default:
-                Timber.e("No hash algorithm for " + checksum.length() * 8 + "bit checksums");
-                return false;
+        @JvmStatic
+        fun hashSha256(input: ByteArray?): String {
+            input ?: return ""
+            return try {
+                val md = MessageDigest.getInstance("SHA-256")
+                bytesToHex(md.digest(input))
+            } catch (e: NoSuchAlgorithmException) {
+                throw RuntimeException(e)
+            }
         }
-        Timber.i("Checksum result (data: " + hash + ",expected: " + checksum + ")");
-        return hash.equals(checksum.toLowerCase(Locale.ROOT));
-    }
 
-    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
-    public static boolean checkSumValid(String checksum) {
-        if (checksum == null)
-            return false;
-        switch (checksum.length()) {
-            case 0:
-            default:
-                return false;
-            case 32:
-            case 40:
-            case 64:
-            case 128:
-                final int len = checksum.length();
-                for (int i = 0; i < len; i++) {
-                    char c = checksum.charAt(i);
-                    if (c < '0' || c > 'f')
-                        return false;
-                    if (c > '9' && // Easier working with bits
-                            (c & 0b01011111) < 'A')
-                        return false;
+        @JvmStatic
+        fun hashSha512(input: ByteArray?): String {
+            input ?: return ""
+            return try {
+                val md = MessageDigest.getInstance("SHA-512")
+                bytesToHex(md.digest(input))
+            } catch (e: NoSuchAlgorithmException) {
+                throw RuntimeException(e)
+            }
+        }
+
+        /**
+         * Check if the checksum match a file by picking the correct
+         * hashing algorithm depending on the length of the checksum
+         */
+        @JvmStatic
+        fun checkSumMatch(data: ByteArray?, checksum: String?): Boolean {
+            if (checksum == null) return false
+            val hash: String = when (checksum.length) {
+                0 -> {
+                    return true // No checksum
                 }
-                return true;
+
+                32 -> hashMd5(data)
+                40 -> hashSha1(data)
+                64 -> hashSha256(data)
+                128 -> hashSha512(data)
+                else -> {
+                    Timber.e("No hash algorithm for " + checksum.length * 8 + "bit checksums")
+                    return false
+                }
+            }
+            Timber.i("Checksum result (data: $hash,expected: $checksum)")
+            return hash == checksum.lowercase()
         }
-    }
 
-    public static String checkSumName(String checksum) {
-        if (checksum == null)
-            return null;
-        return switch (checksum.length()) {
-            default -> null;
-            case 32 -> "MD5";
-            case 40 -> "SHA-1";
-            case 64 -> "SHA-256";
-            case 128 -> "SHA-512";
-        };
-    }
+        @JvmStatic
+        fun checkSumValid(checksum: String?): Boolean {
+            return if (checksum == null) false else when (checksum.length) {
+                32, 40, 64, 128 -> {
+                    val len = checksum.length
+                    for (i in 0 until len) {
+                        val c = checksum[i]
+                        if (c < '0' || c > 'f') return false
+                        if (c > '9' &&  // Easier working with bits
+                            c.code and 95 < 'A'.code
+                        ) return false
+                    }
+                    true
+                }
 
-    public static String checkSumFormat(String checksum) {
-        if (checksum == null)
-            return null;
-        // Remove all non-alphanumeric characters
-        return nonAlphaNum.matcher(checksum.trim()).replaceAll("");
+                else -> {
+                    false
+                }
+            }
+        }
+
+        @JvmStatic
+        fun checkSumName(checksum: String?): String? {
+            return if (checksum == null) null else when (checksum.length) {
+                32 -> "MD5"
+                40 -> "SHA-1"
+                64 -> "SHA-256"
+                128 -> "SHA-512"
+                else -> {
+                    null
+                    "MD5"
+                    "SHA-1"
+                    "SHA-256"
+                    "SHA-512"
+                }
+            }
+        }
+
+        @JvmStatic
+        fun checkSumFormat(checksum: String?): String? {
+            return if (checksum == null) null else nonAlphaNum.matcher(checksum.trim { it <= ' ' })
+                .replaceAll("")
+            // Remove all non-alphanumeric characters
+        }
     }
 }
