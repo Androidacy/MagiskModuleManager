@@ -407,4 +407,14 @@
     <string name="eula_agree_v2">Accetti di essere vincolato dalla licenza LGPL-3.0 (https://www.gnu.org/licenses/lgpl-3.0.en.html) e dall\'EULA (https://www.androidacy.com/foxmmm-eula/ ), oltre a qualsiasi termine di terze parti, e che gli autori di questa app non si assumono alcuna responsabilità per il suo utilizzo, né offrono alcuna garanzia espressa o implicita.</string>
     <string name="notification_update_ignore_version_desc">Ignora le versioni specifiche mentre stai cercando nuovi aggiornamenti per i moduli. Se disattivi il controllo per ogni modulo, sovrascriverai questa impostazione!</string>
     <string name="notification_update_ignore_version_pref">Escludi versione/i dai controlli per i nuovi aggiornamenti</string>
+    <string name="background_update_check_excludes_version">Escludi versione/i dei moduli dai controlli</string>
+    <string name="module_version">"Versione: "</string>
+    <string name="module_remote_version">Versione remota</string>
+    <string name="background_update_check_excludes_version_hint">Codice della versione da ignorare</string>
+    <string name="androidacy_thanks_up_title">Hai già fatto l\'upgrade!</string>
+    <string name="upgrade_snackbar">Androidacy Premium offre download più veloci, un\'esperienza senza annunci e molto altro!</string>
+    <string name="upgrade_now">Fai l\'upgrade</string>
+    <string name="background_update_check_excludes_version_summary">Specifica una versione degli aggiornamenti del modulo che vuoi ignorare. Usa esclusivamente il codice della versione. Puoi trovarlo tenendo premuto sulla versione nella lista dei moduli. Usa ^ all\'inizio per far abbinare quella versione e più nuove. Usa $ alla fine per abbinare fino a quella versione.</string>
+    <string name="androidacy_thanks_up">Grazie per aver fatto l\'upgrade! I download dei moduli e i README non mostreranno annunci e i download non saranno ristretti. In futuro potrai scaricare direttamente i moduli con un click.</string>
+    <string name="crash_details_suggestion">Lo stacktrace può essere trovato di seguito, ti consigliamo <b> vivamente </b> di utilizzare il modulo di feedback qui sotto per inviare un feedback. In questo modo, invece di copiare manualmente lo stacktrace, lo invierai a noi automaticamente. Inoltre in questo modo viene deoffuscato e ulteriori dettagli vengono mandati automaticamente.</string>
 </resources>
