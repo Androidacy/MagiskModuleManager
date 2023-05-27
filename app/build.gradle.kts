@@ -420,7 +420,7 @@ dependencies {
     // logging interceptor
     implementation("com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.10")
     // Chromium cronet from androidacy
-    implementation("org.chromium.net:cronet-embedded:108.5359.79")
+    implementation("org.chromium.net:cronet-embedded:113.5672.61")
 
     // protobuf - fixes a crash on some devices
     // implementation("com.google.protobuf:protobuf-javalite:3.22.2")
