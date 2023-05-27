@@ -28,7 +28,7 @@
     <string name="setup_button">إنهاء الإعداد</string>
     <string name="setup_background_update_check">التحقق من التحديث تلقائياً</string>
     <string name="setup_androidacy_repo">تفعيل الريبو Androidacy</string>
-    <string name="setup_crash_reporting">تفعيل الحارس</string>
+    <string name="setup_crash_reporting">تفعيل المراقب</string>
     <string name="androidacy_update_needed">هذا التطبيق قديم.</string>
     <string name="androidacy_webview_update_required">عرض الويب الخاص بك قديم! يرجى تحديثه.</string>
     <string name="language_cta">ألا ترى لغتك؟</string>
@@ -58,7 +58,7 @@
     <string name="update_module">تحديث الإضافة</string>
     <string name="changelog">سجل التغييرات</string>
     <string name="website">الموقع</string>
-    <string name="support">دعم</string>
+    <string name="support">الدعم</string>
     <string name="donate">دعم مالي</string>
     <string name="update">تحديث</string>
     <string name="install">تثبيت</string>
@@ -89,7 +89,7 @@
     <string name="enable_monet">تفعيل Monet</string>
     <string name="show_licenses">إظهار التراخيص</string>
     <string name="licenses">التراخيص</string>
-    <string name="show_incompatible_pref">‌عرض الإضافات غير مدعومة</string>
+    <string name="show_incompatible_pref">‌عرض الإضافات الغير مدعومة</string>
     <string name="magisk_outdated">هناك إصدار جديد من Magisk للتثبيت!</string>
     <string name="pref_category_security">الأمان</string>
     <string name="pref_category_appearance">المظهر</string>
@@ -202,7 +202,7 @@
     <string name="repos">ريبوات</string>
     <string name="misc">متنوعه</string>
     <string name="setup_button_skip">تخطي</string>
-    <string name="low_performance_device_dialogue_title">تفعيل التمويه على الجهاز الضعيف</string>
+    <string name="low_performance_device_dialogue_title">تفعيل وضع التمويه على جهاز ضعيف الأداء</string>
     <string name="low_performance_device_dialogue_message">أنت تحاول تفعيل التمويه على جهاز قد لا يعمل بشكل جيد معه.
 \nيمكنك تفعيله، ولكن قد يؤدي ذلك إلى تجربة مستخدم سيئة ونوصيك بعدم القيام بذلك.</string>
     <string name="alt_repo_info">يحتوي هذا الريبو على قيود ومراجعات أقل ، مما قد يؤدي إلى إضافات ذات جودة أقل. جودة أقل و لكن تملك الكثير من الإضافات.</string>
