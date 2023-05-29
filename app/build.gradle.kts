@@ -398,14 +398,14 @@ configurations {
 dependencies {
     // UI
     implementation("androidx.appcompat:appcompat:1.6.1")
-    implementation("androidx.activity:activity-ktx:1.7.1")
+    implementation("androidx.activity:activity-ktx:1.7.2")
     implementation("androidx.emoji2:emoji2:1.3.0")
     implementation("androidx.emoji2:emoji2-views-helper:1.3.0")
     implementation("androidx.preference:preference-ktx:1.2.0")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
     implementation("androidx.recyclerview:recyclerview:1.3.0")
     implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
-    implementation("androidx.webkit:webkit:1.6.1")
+    implementation("androidx.webkit:webkit:1.7.0")
     implementation("com.google.android.material:material:1.9.0")
     implementation("dev.rikka.rikkax.layoutinflater:layoutinflater:1.3.0")
     implementation("dev.rikka.rikkax.insets:insets:1.3.0")
@@ -426,7 +426,7 @@ dependencies {
     // implementation("com.google.protobuf:protobuf-javalite:3.22.2")
 
     // google guava, maybe fix a bug
-    implementation("com.google.guava:guava:31.1-jre")
+    implementation("com.google.guava:guava:32.0.0-jre")
 
 
     val libsuVersion = "5.0.5"
@@ -443,12 +443,12 @@ dependencies {
     implementation("com.github.Fox2Code:AndroidANSI:1.2.1")
 
     // sentry
-    implementation("io.sentry:sentry-android:6.19.1")
-    implementation("io.sentry:sentry-android-timber:6.19.1")
-    implementation("io.sentry:sentry-android-fragment:6.19.1")
-    implementation("io.sentry:sentry-android-okhttp:6.19.1")
-    implementation("io.sentry:sentry-kotlin-extensions:6.19.1")
-    implementation("io.sentry:sentry-android-ndk:6.19.1")
+    implementation("io.sentry:sentry-android:6.20.0")
+    implementation("io.sentry:sentry-android-timber:6.20.0")
+    implementation("io.sentry:sentry-android-fragment:6.20.0")
+    implementation("io.sentry:sentry-android-okhttp:6.20.0")
+    implementation("io.sentry:sentry-kotlin-extensions:6.20.0")
+    implementation("io.sentry:sentry-android-ndk:6.20.0")
 
     // Markdown
     // TODO: switch to an updated implementation
@@ -488,7 +488,7 @@ dependencies {
 }
 
 android {
-    ndkVersion = "23.0.7344513"
+    ndkVersion = "25.2.9519653"
     dependenciesInfo {
         includeInApk = false
         includeInBundle = false
