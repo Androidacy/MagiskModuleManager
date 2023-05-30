@@ -26,14 +26,17 @@ import java.io.IOException
 import java.io.InputStreamReader
 import java.util.zip.ZipFile
 
+
 enum class NotificationType constructor(
-    @field:StringRes @param:StringRes val textId: Int,
-    @field:DrawableRes val iconId: Int,
-    @field:AttrRes val backgroundAttr: Int = androidx.appcompat.R.attr.colorError,
-    @field:AttrRes val foregroundAttr: Int = com.google.android.material.R.attr.colorOnPrimary,
-    val onClickListener: View.OnClickListener? = null,
-    val special: Boolean = false
+    @field:StringRes @param:StringRes @JvmField val textId: Int,
+    @field:DrawableRes @JvmField val iconId: Int,
+    @field:AttrRes @JvmField val backgroundAttr: Int = androidx.appcompat.R.attr.colorError,
+    @field:AttrRes @JvmField val foregroundAttr: Int = com.google.android.material.R.attr.colorOnPrimary,
+    @JvmField val onClickListener: View.OnClickListener? = null,
+    @JvmField var special: Boolean = false
 ) : NotificationTypeCst {
+
+    @JvmStatic
     DEBUG(
         R.string.debug_build,
         R.drawable.ic_baseline_bug_report_24,
@@ -44,6 +47,7 @@ enum class NotificationType constructor(
             return !BuildConfig.DEBUG
         }
     },
+    @JvmStatic
     SHOWCASE_MODE(
         R.string.showcase_mode, R.drawable.ic_baseline_lock_24,
         androidx.appcompat.R.attr.colorPrimary, com.google.android.material.R.attr.colorOnPrimary
@@ -52,6 +56,7 @@ enum class NotificationType constructor(
             return !MainApplication.isShowcaseMode()
         }
     },
+    @JvmStatic
     NO_MAGISK(
         R.string.fail_magisk_missing,
         R.drawable.ic_baseline_numbers_24,
@@ -65,6 +70,7 @@ enum class NotificationType constructor(
             return InstallerInitializer.getErrorNotification() !== this
         }
     },
+    @JvmStatic
     NO_ROOT(R.string.fail_root_magisk, R.drawable.ic_baseline_numbers_24) {
         override fun shouldRemove(): Boolean {
             return InstallerInitializer.getErrorNotification() !== this
@@ -75,6 +81,7 @@ enum class NotificationType constructor(
             return InstallerInitializer.getErrorNotification() !== this
         }
     },
+    @JvmStatic
     MAGISK_OUTDATED(
         R.string.magisk_outdated,
         R.drawable.ic_baseline_update_24,
@@ -90,16 +97,19 @@ enum class NotificationType constructor(
                     Constants.MAGISK_VER_CODE_INSTALL_COMMAND
         }
     },
+    @JvmStatic
     NO_INTERNET(R.string.fail_internet, R.drawable.ic_baseline_cloud_off_24) {
         override fun shouldRemove(): Boolean {
             return RepoManager.getINSTANCE().hasConnectivity()
         }
     },
+    @JvmStatic
     REPO_UPDATE_FAILED(R.string.repo_update_failed, R.drawable.ic_baseline_cloud_off_24) {
         override fun shouldRemove(): Boolean {
             return RepoManager.getINSTANCE().isLastUpdateSuccess
         }
     },
+    @JvmStatic
     NEED_CAPTCHA_ANDROIDACY(
         R.string.androidacy_need_captcha,
         R.drawable.ic_baseline_refresh_24,
@@ -114,11 +124,13 @@ enum class NotificationType constructor(
                     || !Http.needCaptchaAndroidacy())
         }
     },
+    @JvmStatic
     NO_WEB_VIEW(R.string.no_web_view, R.drawable.ic_baseline_android_24) {
         override fun shouldRemove(): Boolean {
             return Http.hasWebView()
         }
     },
+    @JvmStatic
     UPDATE_AVAILABLE(
         R.string.app_update_available,
         R.drawable.ic_baseline_system_update_24,
@@ -136,6 +148,7 @@ enum class NotificationType constructor(
             return !AppUpdateManager.getAppUpdateManager().peekShouldUpdate()
         }
     },
+    @JvmStatic
     INSTALL_FROM_STORAGE(
         R.string.install_from_storage,
         R.drawable.ic_baseline_storage_24,
