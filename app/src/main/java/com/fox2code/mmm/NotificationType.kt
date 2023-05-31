@@ -1,5 +1,5 @@
 @file:Suppress("KotlinConstantConditions", "UNINITIALIZED_ENUM_COMPANION_WARNING",
-    "ktConcatNullable", "BlockingMethodInNonBlockingContext"
+    "ktConcatNullable", "BlockingMethodInNonBlockingContext", "UnusedEquals"
 )
 
 package com.fox2code.mmm
@@ -160,7 +160,7 @@ enum class NotificationType constructor(
                 compatActivity.cacheDir,
                 "installer" + File.separator + "module.zip"
             )
-            IntentHelper.openFileTo(compatActivity, module) { d: File, u: Uri, s: Int ->
+            IntentHelper.openFileTo(compatActivity, module, { d: File, u: Uri, s: Int ->
                 if (s == IntentHelper.RESPONSE_FILE) {
                     try {
                         if (needPatch(d)) {
@@ -202,7 +202,7 @@ enum class NotificationType constructor(
                                 InstallerInitializer.peekMagiskPath() == null
                     )
                 }
-            }
+            })
         },
         false
     ) {

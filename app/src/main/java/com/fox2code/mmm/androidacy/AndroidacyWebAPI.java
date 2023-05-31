@@ -185,7 +185,7 @@ public class AndroidacyWebAPI {
         if (BuildConfig.DEBUG)
             Timber.d("Received openUrl request: %s", url);
         if (Objects.equals(Uri.parse(url).getScheme(), "https")) {
-            IntentHelper.openUrl(this.activity, url);
+            IntentHelper.Companion.openUrl(this.activity, url);
         }
     }
 
@@ -261,7 +261,11 @@ public class AndroidacyWebAPI {
         if (this.effectiveCompatMode < 1) {
             if (!this.canInstall()) {
                 this.downloadMode = true;
-                this.activity.runOnUiThread(() -> this.activity.webView.loadUrl(moduleUrl));
+                this.activity.runOnUiThread(() -> {
+                    if (this.activity.webView != null) {
+                        this.activity.webView.loadUrl(moduleUrl);
+                    }
+                });
             } else {
                 this.openNativeModuleDialogRaw(moduleUrl, moduleId, installTitle, checksum, true);
             }

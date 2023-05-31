@@ -165,9 +165,9 @@ class SetupActivity : FoxActivity(), LanguageActivity {
         // Setup language selector
         val languageSelector = view.findViewById<MaterialButton>(R.id.setup_language_button)
         languageSelector.setOnClickListener { _: View? ->
-            val ls = LanguageSwitcher(Objects.requireNonNull(IntentHelper.getActivity(this)))
-            ls.setSupportedStringLocales(MainApplication.supportedLocales)
-            ls.showChangeLanguageDialog(IntentHelper.getActivity(this) as FragmentActivity)
+            val ls = IntentHelper.getActivity(this)?.let { LanguageSwitcher(it) }
+            ls?.setSupportedStringLocales(MainApplication.supportedLocales)
+            ls?.showChangeLanguageDialog(IntentHelper.getActivity(this) as FragmentActivity)
         }
         // Set up the buttons
         // Setup button

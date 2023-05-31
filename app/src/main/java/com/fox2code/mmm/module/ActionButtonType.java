@@ -235,7 +235,7 @@ public enum ActionButtonType {
                 name = moduleHolder.repoModule.moduleInfo.name;
             }
             TrackHelper.track().event("support_module", name).with(MainApplication.getINSTANCE().getTracker());
-            IntentHelper.openUrl(button.getContext(), moduleHolder.getMainModuleInfo().support);
+            IntentHelper.Companion.openUrl(button.getContext(), Objects.requireNonNull(moduleHolder.getMainModuleInfo().support));
         }
     }, DONATE() {
         @Override
@@ -254,7 +254,7 @@ public enum ActionButtonType {
                 name = moduleHolder.repoModule.moduleInfo.name;
             }
             TrackHelper.track().event("donate_module", name).with(MainApplication.getINSTANCE().getTracker());
-            IntentHelper.openUrl(button.getContext(), moduleHolder.getMainModuleInfo().donate);
+            IntentHelper.Companion.openUrl(button.getContext(), moduleHolder.getMainModuleInfo().donate);
         }
     }, WARNING() {
         @Override

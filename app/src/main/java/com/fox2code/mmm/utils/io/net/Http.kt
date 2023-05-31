@@ -3,13 +3,12 @@
 package com.fox2code.mmm.utils.io.net
 
 import android.annotation.SuppressLint
-import android.app.Activity
 import android.content.Context
 import android.content.SharedPreferences
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
 import android.net.Uri
 import android.os.Build
-import android.os.Handler
-import android.os.Looper
 import android.system.ErrnoException
 import android.system.Os
 import android.webkit.CookieManager
@@ -24,7 +23,6 @@ import com.fox2code.mmm.androidacy.AndroidacyUtil
 import com.fox2code.mmm.installer.InstallerInitializer.Companion.peekMagiskPath
 import com.fox2code.mmm.installer.InstallerInitializer.Companion.peekMagiskVersion
 import com.fox2code.mmm.utils.io.Files.Companion.makeBuffer
-import com.google.android.material.snackbar.Snackbar
 import com.google.net.cronet.okhttptransport.CronetInterceptor
 import okhttp3.Cache
 import okhttp3.Dns
@@ -57,11 +55,9 @@ import java.net.UnknownHostException
 import java.nio.charset.StandardCharsets
 import java.util.Objects
 import java.util.concurrent.TimeUnit
-import javax.net.ssl.SSLException
 import kotlin.system.exitProcess
 
-enum class Http {
-    ;
+enum class Http {;
 
     interface ProgressListener {
         fun onUpdate(downloaded: Int, total: Int, done: Boolean)
@@ -84,8 +80,9 @@ enum class Http {
         init {
             sharedPreferences = context.getSharedPreferences("mmm_dns", Context.MODE_PRIVATE)
             this.parent = parent
-            this.fallbacks = HashSet(listOf(*fallbacks)).toString().replaceAfter("]", "").replace("[", "")
-                .split(",").toHashSet()
+            this.fallbacks =
+                HashSet(listOf(*fallbacks)).toString().replaceAfter("]", "").replace("[", "")
+                    .split(",").toHashSet()
             fallbackCache = HashMap()
         }
 
@@ -103,8 +100,8 @@ enum class Http {
                             hostname
                         )
                         fallbackCache[hostname] = addresses
-                        sharedPreferences.edit().putString(hostname.replace('.', '_'), toString(addresses))
-                            .apply()
+                        sharedPreferences.edit()
+                            .putString(hostname.replace('.', '_'), toString(addresses)).apply()
                     } catch (e: UnknownHostException) {
                         val key = sharedPreferences.getString(hostname.replace('.', '_'), "")
                         if (key!!.isEmpty()) throw e
@@ -180,11 +177,13 @@ enum class Http {
     }
 
     companion object {
+        private var limitedRetries: Int = 0
         private var httpClient: OkHttpClient? = null
         private var httpClientDoH: OkHttpClient? = null
         private var httpClientWithCache: OkHttpClient? = null
         private var httpClientWithCacheDoH: OkHttpClient? = null
         private var fallbackDNS: FallBackDNS? = null
+
         @JvmStatic
         var androidacyUA: String? = null
         private var hasWebView = false
@@ -214,23 +213,18 @@ enum class Http {
             } catch (t: Exception) {
                 Timber.e(t, "No WebView support!")
                 // show a toast
-                val context: Context =
-                    mainApplication.applicationContext
+                val context: Context = mainApplication.applicationContext
                 MainActivity.getFoxActivity(context).runOnUiThread {
                     Toast.makeText(
-                        mainApplication,
-                        R.string.error_creating_cookie_database,
-                        Toast.LENGTH_LONG
+                        mainApplication, R.string.error_creating_cookie_database, Toast.LENGTH_LONG
                     ).show()
                 }
             }
             // get webview version
             var webviewVersion = "0.0.0"
-            val pi =
-                WebViewCompat.getCurrentWebViewPackage(mainApplication)
+            val pi = WebViewCompat.getCurrentWebViewPackage(mainApplication)
             if (pi != null) {
-                webviewVersion =
-                    pi.versionName
+                webviewVersion = pi.versionName
             }
             // webviewVersionMajor is the everything before the first dot
             val webviewVersionCode: Int
@@ -243,14 +237,11 @@ enum class Http {
             } else {
                 // use the first dot
                 webviewVersion.substring(
-                    0,
-                    dot
+                    0, dot
                 ).toInt()
             }
             Timber.d(
-                "Webview version: %s (%d)",
-                webviewVersion,
-                webviewVersionCode
+                "Webview version: %s (%d)", webviewVersion, webviewVersionCode
             )
             hasWebView =
                 cookieManager != null && webviewVersionCode >= 83 // 83 is the first version Androidacy supports due to errors in 82
@@ -317,13 +308,10 @@ enum class Http {
                         )
                     }
                 }
-                if (chain.request()
-                        .header("Accept-Language") == null
-                ) {
+                if (chain.request().header("Accept-Language") == null) {
                     request.header(
                         "Accept-Language",  // Send system language to the server
-                        mainApplication.resources
-                            .configuration.locales.get(0).toLanguageTag()
+                        mainApplication.resources.configuration.locales.get(0).toLanguageTag()
                     )
                 }
                 // add client hints
@@ -331,16 +319,13 @@ enum class Http {
                 request.header("Sec-CH-UA-Mobile", "?1")
                 request.header("Sec-CH-UA-Platform", "Android")
                 request.header(
-                    "Sec-CH-UA-Platform-Version",
-                    Build.VERSION.RELEASE
+                    "Sec-CH-UA-Platform-Version", Build.VERSION.RELEASE
                 )
                 request.header(
-                    "Sec-CH-UA-Arch",
-                    Build.SUPPORTED_ABIS[0]
+                    "Sec-CH-UA-Arch", Build.SUPPORTED_ABIS[0]
                 )
                 request.header(
-                    "Sec-CH-UA-Full-Version",
-                    BuildConfig.VERSION_NAME
+                    "Sec-CH-UA-Full-Version", BuildConfig.VERSION_NAME
                 )
                 request.header("Sec-CH-UA-Model", Build.DEVICE)
                 request.header(
@@ -370,20 +355,17 @@ enum class Http {
                 builder.enableQuic(true)
                 // Cache size is 10MB
                 // Make the directory if it does not exist
-                val cacheDir =
-                    File(mainApplication.cacheDir, "cronet")
+                val cacheDir = File(mainApplication.cacheDir, "cronet")
                 if (!cacheDir.exists()) {
                     if (!cacheDir.mkdirs()) {
                         throw IOException("Failed to create cronet cache directory")
                     }
                 }
                 builder.setStoragePath(
-                    mainApplication.cacheDir
-                        .absolutePath + "/cronet"
+                    mainApplication.cacheDir.absolutePath + "/cronet"
                 )
                 builder.enableHttpCache(
-                    CronetEngine.Builder.HTTP_CACHE_DISK_NO_HTTP,
-                    (10 * 1024 * 1024).toLong()
+                    CronetEngine.Builder.HTTP_CACHE_DISK_NO_HTTP, (10 * 1024 * 1024).toLong()
                 )
                 // Add quic hint
                 builder.addQuicHint("github.com", 443, 443)
@@ -418,32 +400,30 @@ enum class Http {
                 "production-api.androidacy.com"
             )
             httpclientBuilder.dns(Dns.SYSTEM)
-            httpClient =
-                followRedirects(httpclientBuilder, true).build()
+            httpClient = followRedirects(httpclientBuilder, true).build()
             followRedirects(httpclientBuilder, false).build()
             httpclientBuilder.dns(fallbackDNS!!)
-            httpClientDoH =
-                followRedirects(httpclientBuilder, true).build()
+            httpClientDoH = followRedirects(httpclientBuilder, true).build()
             followRedirects(httpclientBuilder, false).build()
             httpclientBuilder.cache(
                 Cache(
                     File(
-                        mainApplication.cacheDir,
-                        "http_cache"
+                        mainApplication.cacheDir, "http_cache"
                     ), 16L * 1024L * 1024L
                 )
             ) // 16Mib of cache
             httpclientBuilder.dns(Dns.SYSTEM)
-            httpClientWithCache =
-                followRedirects(httpclientBuilder, true).build()
+            httpClientWithCache = followRedirects(httpclientBuilder, true).build()
             httpclientBuilder.dns(fallbackDNS!!)
-            httpClientWithCacheDoH =
-                followRedirects(httpclientBuilder, true).build()
+            httpClientWithCacheDoH = followRedirects(httpclientBuilder, true).build()
             Timber.i("Initialized Http successfully!")
             doh = MainApplication.isDohEnabled()
         }
 
-        private fun followRedirects(builder: OkHttpClient.Builder, followRedirects: Boolean): OkHttpClient.Builder {
+        private fun followRedirects(
+            builder: OkHttpClient.Builder,
+            followRedirects: Boolean
+        ): OkHttpClient.Builder {
             return builder.followRedirects(followRedirects).followSslRedirects(followRedirects)
         }
 
@@ -503,8 +483,7 @@ enum class Http {
                 if (response.code != 200 && response.code != 204 && (response.code != 304 || !allowCache)) {
                     Timber.e(
                         "Failed to fetch " + url.replace(
-                            "=[^&]*".toRegex(),
-                            "=****"
+                            "=[^&]*".toRegex(), "=****"
                         ) + " with code " + response.code
                     )
                     checkNeedCaptchaAndroidacy(url, response.code)
@@ -512,6 +491,34 @@ enum class Http {
                     if (response.code == 401 && AndroidacyUtil.isAndroidacyLink(url)) {
                         // Regenerate the token
                         throw HttpException("Androidacy token is invalid", 401)
+                    }
+                    if (response.code == 429) {
+                        val retryAfter = response.header("Retry-After")
+                        if (retryAfter != null) {
+                            try {
+                                val seconds = Integer.parseInt(retryAfter)
+                                Timber.d("Sleeping for $seconds seconds")
+                                Thread.sleep(seconds * 1000L)
+                            } catch (e: NumberFormatException) {
+                                Timber.e(e, "Failed to parse Retry-After header")
+                            } catch (e: InterruptedException) {
+                                Timber.e(e, "Failed to sleep")
+                            }
+                        } else {// start with one second and try up to five times
+                            if (limitedRetries < 5) {
+                                limitedRetries++
+                                Timber.d("Sleeping for 1 second")
+                                try {
+                                    Thread.sleep(1000L * limitedRetries)
+                                } catch (e: InterruptedException) {
+                                    Timber.e(e, "Failed to sleep")
+                                }
+                                return doHttpGet(url, allowCache)
+                            } else {
+                                Timber.e("Failed to fetch " + url + ", code: " + response.code)
+                                throw HttpException(response.code)
+                            }
+                        }
                     }
                     throw HttpException(response.code)
                 }
@@ -566,6 +573,34 @@ enum class Http {
             if (response.code != 200 && response.code != 204 && (response.code != 304 || !allowCache)) {
                 if (BuildConfig.DEBUG_HTTP) Timber.e("Failed to fetch " + url + ", code: " + response.code + ", body: " + response.body.string())
                 checkNeedCaptchaAndroidacy(url, response.code)
+                if (response.code == 429) {
+                    val retryAfter = response.header("Retry-After")
+                    if (retryAfter != null) {
+                        try {
+                            val seconds = Integer.parseInt(retryAfter)
+                            Timber.d("Sleeping for $seconds seconds")
+                            Thread.sleep(seconds * 1000L)
+                        } catch (e: NumberFormatException) {
+                            Timber.e(e, "Failed to parse Retry-After header")
+                        } catch (e: InterruptedException) {
+                            Timber.e(e, "Failed to sleep")
+                        }
+                    } else {// start with one second and try up to five times
+                        if (limitedRetries < 5) {
+                            limitedRetries++
+                            Timber.d("Sleeping for 1 second")
+                            try {
+                                Thread.sleep(1000L * limitedRetries)
+                            } catch (e: InterruptedException) {
+                                Timber.e(e, "Failed to sleep")
+                            }
+                            return doHttpPostRaw(url, data, allowCache)
+                        } else {
+                            Timber.e("Failed to fetch " + url + ", code: " + response.code)
+                            throw HttpException(response.code)
+                        }
+                    }
+                }
                 throw HttpException(response.code)
             }
             var responseBody = response.body
@@ -580,11 +615,40 @@ enum class Http {
         @JvmStatic
         @Throws(IOException::class)
         fun doHttpGet(url: String, progressListener: ProgressListener): ByteArray {
-            val response = getHttpClient()!!
-                .newCall(Request.Builder().url(url).get().build()).execute()
+            val response =
+                getHttpClient()!!.newCall(Request.Builder().url(url).get().build()).execute()
             if (response.code != 200 && response.code != 204) {
                 Timber.e("Failed to fetch " + url + ", code: " + response.code)
                 checkNeedCaptchaAndroidacy(url, response.code)
+                // if error is 429, exponential backoff
+                if (response.code == 429) {
+                    val retryAfter = response.header("Retry-After")
+                    if (retryAfter != null) {
+                        try {
+                            val seconds = Integer.parseInt(retryAfter)
+                            Timber.d("Sleeping for $seconds seconds")
+                            Thread.sleep(seconds * 1000L)
+                        } catch (e: NumberFormatException) {
+                            Timber.e(e, "Failed to parse Retry-After header")
+                        } catch (e: InterruptedException) {
+                            Timber.e(e, "Failed to sleep")
+                        }
+                    } else {// start with one second and try up to five times
+                        if (limitedRetries < 5) {
+                            limitedRetries++
+                            Timber.d("Sleeping for 1 second")
+                            try {
+                                Thread.sleep(1000L * limitedRetries)
+                            } catch (e: InterruptedException) {
+                                Timber.e(e, "Failed to sleep")
+                            }
+                            return doHttpGet(url, progressListener)
+                        } else {
+                            Timber.e("Failed to fetch " + url + ", code: " + response.code)
+                            throw HttpException(response.code)
+                        }
+                    }
+                }
                 throw HttpException(response.code)
             }
             val responseBody = Objects.requireNonNull(response.body)
@@ -611,17 +675,13 @@ enum class Http {
                 if (nextUpdate < currentUpdate) {
                     nextUpdate = currentUpdate + updateInterval
                     progressListener.onUpdate(
-                        (downloaded / divider).toInt(),
-                        (target / divider).toInt(),
-                        false
+                        (downloaded / divider).toInt(), (target / divider).toInt(), false
                     )
                 }
             }
             inputStream.close()
             progressListener.onUpdate(
-                (downloaded / divider).toInt(),
-                (target / divider).toInt(),
-                true
+                (downloaded / divider).toInt(), (target / divider).toInt(), true
             )
             return byteArrayOutputStream.toByteArray()
         }
@@ -654,36 +714,16 @@ enum class Http {
         }
 
         @JvmStatic
-        fun hasConnectivity(): Boolean {
-            // Check if we have internet connection
-            Timber.d("Checking internet connection...")
-            // this url is actually hosted by Cloudflare and is not dependent on Androidacy servers being up
-            val resp: ByteArray = try {
-                doHttpGet("https://production-api.androidacy.com/cdn-cgi/trace", false)
-            } catch (e: Exception) {
-                Timber.e(e, "Failed to check internet connection. Assuming no internet connection.")
-                // check if it's a security or ssl exception
-                if (e is SSLException || e is SecurityException) {
-                    // if it is, user installed a certificate that blocks the connection
-                    // show a snackbar to inform the user
-                    val context: Activity? = MainApplication.getINSTANCE().lastCompatActivity
-                    Handler(Looper.getMainLooper()).post {
-                        if (context != null) {
-                            Snackbar.make(
-                                context.findViewById(android.R.id.content),
-                                R.string.certificate_error,
-                                Snackbar.LENGTH_LONG
-                            ).show()
-                        }
-                    }
-                }
-                return false
-            }
-            // get the response body
-            val response = String(resp, StandardCharsets.UTF_8)
-            // check if the response body contains "visit_scheme=https" and "http/<some number>"
-            // if it does, we have internet connection
-            return response.contains("visit_scheme=https") && response.contains("http/")
+        fun hasConnectivity(context: Context): Boolean {
+            // Check if we have internet connection using connectivity manager
+            val connectivityManager =
+                context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+            // are we connected to a network with internet capabilities?
+            val networkCapabilities =
+                connectivityManager.getNetworkCapabilities(connectivityManager.activeNetwork)
+            return networkCapabilities != null && networkCapabilities.hasCapability(
+                NetworkCapabilities.NET_CAPABILITY_INTERNET
+            )
         }
     }
 }

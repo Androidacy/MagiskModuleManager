@@ -345,7 +345,7 @@ public final class RepoManager extends SyncManager {
     }
 
     public boolean hasConnectivity() {
-        return Http.hasConnectivity();
+        return Http.hasConnectivity(MainApplication.getINSTANCE().getApplicationContext());
     }
 
     private RepoData addRepoData(String url, String fallBackName) {

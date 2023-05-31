@@ -224,16 +224,6 @@ public class SettingsActivity extends FoxActivity implements LanguageActivity {
             // track all non empty values
             SharedPreferences sharedPreferences = dataStore.getSharedPreferences();
             // disabled until EncryptedSharedPreferences fixes getAll()
-           /* StringBuilder keys = new StringBuilder();
-            for (String key : sharedPreferences.getAll().keySet()) {
-                String value = sharedPreferences.getString(key, null);
-                if (value != null) {
-                    keys.append(key).append(",");
-                }
-            }
-            if (keys.length() > 0) {
-                TrackHelper.track().event("prefs_all", keys.toString()).with(MainApplication.getINSTANCE().getTracker());
-            }*/
             // add bottom navigation bar to the settings
             BottomNavigationView bottomNavigationView = requireActivity().findViewById(R.id.bottom_navigation);
             if (bottomNavigationView != null) {
@@ -726,7 +716,7 @@ public class SettingsActivity extends FoxActivity implements LanguageActivity {
                 linkClickable.setOnPreferenceClickListener(p -> {
                     devModeStep = 0;
                     devModeStepFirstBootIgnore = true;
-                    IntentHelper.openUrl(p.getContext(), "https://github.com/Androidacy/MagiskModuleManager/issues");
+                    IntentHelper.Companion.openUrl(p.getContext(), "https://github.com/Androidacy/MagiskModuleManager/issues");
                     return true;
                 });
                 linkClickable.setOnPreferenceLongClickListener(p -> {
@@ -768,7 +758,7 @@ public class SettingsActivity extends FoxActivity implements LanguageActivity {
                     return true;
                 }
                 // build url from BuildConfig.REMOTE_URL and BuildConfig.COMMIT_HASH. May have to remove the .git at the end
-                IntentHelper.openUrl(p.getContext(), finalUserRepo1.replace(".git", "") + "/tree/" + BuildConfig.COMMIT_HASH);
+                IntentHelper.Companion.openUrl(p.getContext(), finalUserRepo1.replace(".git", "") + "/tree/" + BuildConfig.COMMIT_HASH);
                 return true;
             });
             linkClickable.setOnPreferenceLongClickListener(p -> {
@@ -780,7 +770,7 @@ public class SettingsActivity extends FoxActivity implements LanguageActivity {
             // Next, the pref_androidacy_thanks should lead to the androidacy website
             linkClickable = findPreference("pref_androidacy_thanks");
             linkClickable.setOnPreferenceClickListener(p -> {
-                IntentHelper.openUrl(p.getContext(), "https://www.androidacy.com?utm_source=FoxMagiskModuleManager&utm_medium=app&utm_campaign=FoxMagiskModuleManager");
+                IntentHelper.Companion.openUrl(p.getContext(), "https://www.androidacy.com?utm_source=FoxMagiskModuleManager&utm_medium=app&utm_campaign=FoxMagiskModuleManager");
                 return true;
             });
             linkClickable.setOnPreferenceLongClickListener(p -> {
@@ -792,7 +782,7 @@ public class SettingsActivity extends FoxActivity implements LanguageActivity {
             // pref_fox2code_thanks should lead to https://github.com/Fox2Code
             linkClickable = findPreference("pref_fox2code_thanks");
             linkClickable.setOnPreferenceClickListener(p -> {
-                IntentHelper.openUrl(p.getContext(), "https://github.com/Fox2Code");
+                IntentHelper.Companion.openUrl(p.getContext(), "https://github.com/Fox2Code");
                 return true;
             });
             linkClickable.setOnPreferenceLongClickListener(p -> {
@@ -855,7 +845,7 @@ public class SettingsActivity extends FoxActivity implements LanguageActivity {
                     url = url.substring(0, url.length() - 4);
                 }
                 url += "/graphs/contributors";
-                IntentHelper.openUrl(p.getContext(), url);
+                IntentHelper.Companion.openUrl(p.getContext(), url);
                 return true;
             });
             linkClickable.setOnPreferenceLongClickListener(p -> {
@@ -873,7 +863,7 @@ public class SettingsActivity extends FoxActivity implements LanguageActivity {
             linkClickable = findPreference("pref_support");
             linkClickable.setOnPreferenceClickListener(p -> {
                 devModeStep = 0;
-                IntentHelper.openUrl(p.getContext(), "https://t.me/Fox2Code_Chat");
+                IntentHelper.Companion.openUrl(p.getContext(), "https://t.me/Fox2Code_Chat");
                 return true;
             });
             linkClickable.setOnPreferenceLongClickListener(p -> {
@@ -886,7 +876,7 @@ public class SettingsActivity extends FoxActivity implements LanguageActivity {
             linkClickable = findPreference("pref_announcements");
             linkClickable.setOnPreferenceClickListener(p -> {
                 devModeStep = 0;
-                IntentHelper.openUrl(p.getContext(), "https://t.me/androidacy");
+                IntentHelper.Companion.openUrl(p.getContext(), "https://t.me/androidacy");
                 return true;
             });
             linkClickable.setOnPreferenceLongClickListener(p -> {
@@ -923,7 +913,7 @@ public class SettingsActivity extends FoxActivity implements LanguageActivity {
                 }
                 if (ref.versionClicks == 7) {
                     ref.versionClicks = 0;
-                    IntentHelper.openUrl(p.getContext(), "https://www.youtube.com/watch?v=dQw4w9WgXcQ");
+                    IntentHelper.Companion.openUrl(p.getContext(), "https://www.youtube.com/watch?v=dQw4w9WgXcQ");
                 }
                 return true;
             });
@@ -932,7 +922,7 @@ public class SettingsActivity extends FoxActivity implements LanguageActivity {
             if (!BuildConfig.FLAVOR.equals("play")) {
                 pref_donate_fox.setOnPreferenceClickListener(p -> {
                     // open fox
-                    IntentHelper.openUrl(getFoxActivity(this), "https://paypal.me/fox2code");
+                    IntentHelper.Companion.openUrl(getFoxActivity(this), "https://paypal.me/fox2code");
                     return true;
                 });
                 // handle long click on pref_donate_fox
@@ -956,7 +946,7 @@ public class SettingsActivity extends FoxActivity implements LanguageActivity {
                         clipboard.setPrimaryClip(ClipData.newPlainText(toastText, "FOX2CODE"));
                         Toast.makeText(requireContext(), toastText, Toast.LENGTH_SHORT).show();
                         // open androidacy
-                        IntentHelper.openUrl(getFoxActivity(this), "https://www.androidacy.com/membership-join/?utm_source=foxmmm&utm_medium=app&utm_campaign=donate");
+                        IntentHelper.Companion.openUrl(getFoxActivity(this), "https://www.androidacy.com/membership-join/?utm_source=foxmmm&utm_medium=app&utm_campaign=donate");
                         return true;
                     });
                     // handle long click on pref_donate_androidacy
@@ -1480,7 +1470,7 @@ public class SettingsActivity extends FoxActivity implements LanguageActivity {
                         // set website, support, and submitmodule as well as donate
                         if (repoData.getWebsite() != null) {
                             findPreference(preferenceName + "_website").setOnPreferenceClickListener((preference1 -> {
-                                IntentHelper.openUrl(getFoxActivity(this), repoData.getWebsite());
+                                IntentHelper.Companion.openUrl(getFoxActivity(this), repoData.getWebsite());
                                 return true;
                             }));
                         } else {
@@ -1488,7 +1478,7 @@ public class SettingsActivity extends FoxActivity implements LanguageActivity {
                         }
                         if (repoData.getSupport() != null) {
                             findPreference(preferenceName + "_support").setOnPreferenceClickListener((preference1 -> {
-                                IntentHelper.openUrl(getFoxActivity(this), repoData.getSupport());
+                                IntentHelper.Companion.openUrl(getFoxActivity(this), repoData.getSupport());
                                 return true;
                             }));
                         } else {
@@ -1496,7 +1486,7 @@ public class SettingsActivity extends FoxActivity implements LanguageActivity {
                         }
                         if (repoData.getSubmitModule() != null) {
                             findPreference(preferenceName + "_submit").setOnPreferenceClickListener((preference1 -> {
-                                IntentHelper.openUrl(getFoxActivity(this), repoData.getSubmitModule());
+                                IntentHelper.Companion.openUrl(getFoxActivity(this), repoData.getSubmitModule());
                                 return true;
                             }));
                         } else {
@@ -1504,7 +1494,7 @@ public class SettingsActivity extends FoxActivity implements LanguageActivity {
                         }
                         if (repoData.getDonate() != null) {
                             findPreference(preferenceName + "_donate").setOnPreferenceClickListener((preference1 -> {
-                                IntentHelper.openUrl(getFoxActivity(this), repoData.getDonate());
+                                IntentHelper.Companion.openUrl(getFoxActivity(this), repoData.getDonate());
                                 return true;
                             }));
                         } else {
@@ -1543,7 +1533,7 @@ public class SettingsActivity extends FoxActivity implements LanguageActivity {
                 if (!homepage.isEmpty()) {
                     preference.setVisible(true);
                     preference.setOnPreferenceClickListener(p -> {
-                        IntentHelper.openUrl(getFoxActivity(this), homepage);
+                        IntentHelper.Companion.openUrl(getFoxActivity(this), homepage);
                         return true;
                     });
                     ((LongClickablePreference) preference).setOnPreferenceLongClickListener(p -> {
@@ -1563,7 +1553,7 @@ public class SettingsActivity extends FoxActivity implements LanguageActivity {
                     preference.setVisible(true);
                     preference.setIcon(ActionButtonType.supportIconForUrl(supportUrl));
                     preference.setOnPreferenceClickListener(p -> {
-                        IntentHelper.openUrl(getFoxActivity(this), supportUrl);
+                        IntentHelper.Companion.openUrl(getFoxActivity(this), supportUrl);
                         return true;
                     });
                     ((LongClickablePreference) preference).setOnPreferenceLongClickListener(p -> {
@@ -1583,7 +1573,7 @@ public class SettingsActivity extends FoxActivity implements LanguageActivity {
                     preference.setVisible(true);
                     preference.setIcon(ActionButtonType.donateIconForUrl(donateUrl));
                     preference.setOnPreferenceClickListener(p -> {
-                        IntentHelper.openUrl(getFoxActivity(this), donateUrl);
+                        IntentHelper.Companion.openUrl(getFoxActivity(this), donateUrl);
                         return true;
                     });
                     ((LongClickablePreference) preference).setOnPreferenceLongClickListener(p -> {
@@ -1602,7 +1592,7 @@ public class SettingsActivity extends FoxActivity implements LanguageActivity {
                 if (submissionUrl != null && !submissionUrl.isEmpty()) {
                     preference.setVisible(true);
                     preference.setOnPreferenceClickListener(p -> {
-                        IntentHelper.openUrl(getFoxActivity(this), submissionUrl);
+                        IntentHelper.Companion.openUrl(getFoxActivity(this), submissionUrl);
                         return true;
                     });
                     ((LongClickablePreference) preference).setOnPreferenceLongClickListener(p -> {
