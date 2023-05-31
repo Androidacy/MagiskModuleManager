@@ -395,4 +395,11 @@
     <string name="notification_update_ignore_version_pref">Исключить версии из проверки обновлений</string>
     <string name="background_update_check_excludes_version">Исключить версии модулей из проверок</string>
     <string name="module_version">"Версия: "</string>
+    <string name="androidacy_thanks_up">Спасибо за обновление! Загрузка модулей и файлы README не будут показывать рекламу, а загрузка не будет ограничена. В будущем. вы сможете напрямую загружать модули одним щелчком мыши.</string>
+    <string name="upgrade_snackbar">Androidacy Примиум предлагает более быструю загрузку, отсутствие рекламы и многое другое!</string>
+    <string name="crash_details_suggestion">Трассировку стека можно найти ниже. Однако мы <b>настоятельно</b> рекомендуем вам вместо этого использовать форму обратной связи ниже. Таким образом, вместо того, чтобы вручную копировать трассировку стека, он отправит ее нам автоматически. Это также расшифровывает зависимости и дополнительные сведения сообщаются автоматически.</string>
+    <string name="module_remote_version">Удаленная версия</string>
+    <string name="background_update_check_excludes_version_hint">Игнорируемый код версии</string>
+    <string name="androidacy_thanks_up_title">Вы уже обновились!</string>
+    <string name="upgrade_now">Обновить</string>
 </resources>

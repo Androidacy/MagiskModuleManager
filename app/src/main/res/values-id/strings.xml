@@ -8,16 +8,16 @@
     <string name="loading">Memuat…</string>
     <string name="updatable">Dapat diperbarui</string>
     <string name="installed">Terpasang</string>
-    <string name="online_repo">Repo Daring</string>
+    <string name="online_repo">Repo online</string>
     <string name="showcase_mode">Aplikasi dalam mode lockdown</string>
     <string name="failed_download">Gagal mengunduh berkas</string>
     <string name="slow_modules">Modul membutuhkan waktu lebih lama untuk booting, cobalah untuk mematikan beberapa modul</string>
-    <string name="fail_internet">Gak ada internet</string>
-    <string name="no_web_view">WebView sistem gak bisa dibuka</string>
+    <string name="fail_internet">Tidak dapat terhubung ke Internet</string>
+    <string name="no_web_view">Tidak dapat membuka sistem WebView</string>
     <string name="title_activity_settings">SettingsActivity</string>
-    <string name="app_update_available">Pembaruan aplikasi udah ada</string>
+    <string name="app_update_available">Pembaruan aplikasi sudah tersedia</string>
     <string name="app_update">Perbarui aplikasi</string>
-    <string name="no_desc_found">Deskripsi gak ditemukan</string>
+    <string name="no_desc_found">Tidak ada deskripsi yang ditemukan.</string>
     <string name="download_module">Unduh modul</string>
     <string name="install_module">Pasang modul</string>
     <string name="update_module">Perbarui modul</string>
@@ -44,7 +44,7 @@
     <string name="ok" translatable="false">@android:string/ok</string>
     <string name="cancel" translatable="false">@android:string/cancel</string>
     <!-- Module section translation -->
-    <string name="module_last_update">Riwayat pemberitahuan:</string>
+    <string name="module_last_update">Pembaruan terakhir:</string>
     <string name="module_repo">Repo:</string>
     <string name="module_by">oleh</string>
     <string name="module_downloads">Unduhan:</string>
@@ -59,11 +59,11 @@
     <!-- Preference Titles -->
     <!-- Note: Lockdown mode used to be called showcase mode -->
     <string name="manage_repos_pref">Kelola repo</string>
-    <string name="showcase_mode_pref">Mode karantina</string>
-    <string name="showcase_mode_desc">Mode karantina mencegah manager untuk melakukan tindakan terhadap modul</string>
+    <string name="showcase_mode_pref">Mode lockdown</string>
+    <string name="showcase_mode_desc">Mode lockdown mencegah manager untuk melakukan tindakan terhadap modul</string>
     <string name="prevent_reboot_pref">Cegah untuk mulai ulang</string>
     <string name="prevent_reboot_desc">Cegah mulai ulang secara tidak terduga</string>
-    <string name="pref_category_settings">Peraturan</string>
+    <string name="pref_category_settings">Pengaturan</string>
     <string name="enable_monet">Nyalakan Monet</string>
     <string name="pref_category_info">Info</string>
     <string name="show_licenses">Tampilkan lisensi</string>
@@ -85,7 +85,7 @@
     <string name="theme_mode_pref">Mode tema</string>
     <string name="module_id_prefix">ID modul: </string>
     <string name="install_from_storage">Pasang modul dari penyimpanan</string>
-    <string name="invalid_format">Modul yang akan diinstal formatnya tidak valid</string>
+    <string name="invalid_format">Modul yang dipilih memiliki format yang tidak valid</string>
     <string name="low_quality_module">Modul kualitas rendah</string>
     <string name="local_install_title">Pasang via lokal</string>
     <string name="source_code">Sumber kode</string>
@@ -119,7 +119,7 @@
         Tampilkan teks di beberapa baris daripada menempatkan
         semua teks di baris yang sama saat memasang modul.
     </string>
-    <string name="enable_blur_pref">Buram</string>
+    <string name="enable_blur_pref">Blur</string>
     <string name="disable_chips_in_description">Matikan chips di deskripsi</string>
     <string name="repo_enabled">Repo nyala</string>
     <string name="repo_disabled">Repo mati</string>
@@ -136,8 +136,8 @@
     <!-- Background Notification translation -->
     <string name="notification_update_title">Ditemukan pembaruan %1$d modul</string>
     <string name="notification_update_title_easter_egg">Sniffed %i pembaruan modul</string>
-    <string name="notification_update_subtitle">Pencet untuk membuka aplikasi</string>
-    <string name="notification_update_pref">Cek pembaruan modul otomatis</string>
+    <string name="notification_update_subtitle">Klik untuk membuka aplikasi</string>
+    <string name="notification_update_pref">Pemeriksaan pembaruan modul otomatis</string>
     <string name="notification_update_desc">Kemungkinan meningkatkan penggunaan baterai</string>
     <string name="notification_update_debug_pref">Notifikasi tes</string>
     <!-- Set to true in translation file if your language is right to left -->
@@ -147,8 +147,8 @@
     <string name="language_support_outdated">Beberapa translasi untuk bahasa ini sekarang
         kurang diperbarui, mohon pertimbangkan untuk melakukan kontribusi ke translasi aplikasi di GitHub</string>
     <!-- Replace with your own username when translating -->
-    <string name="language_translated_by">Translated by RealEthanPlayzDev (RadiatedExodus)</string>
-    <string name="crash_reporting">Lapor kesalahan dan perfoma ke pengembang secara otomatis</string>
+    <string name="language_translated_by">Diterjemahkan oleh RealEthanPlayzDev (RadiatedExodus), ianperd</string>
+    <string name="crash_reporting">Secara otomatis melaporkan bug dan kinerja kepada pengembang</string>
     <string name="crash_reporting_desc">Jika anda mematikan ini, pengembang tidak akan mendapatkan laporan kesalahan secara otomatis, dan ini kemungkinan akan membuat pemecahan masalah menjadi lebih susah</string>
     <string name="api_key">Kunci API Androidacy</string>
     <string name="api_key_summary">Gunakan sebuah API key custom untuk Androidacy. Berguna untuk subscriber premium, untuk menghilangkan iklan dan lain-lainnya.</string>
@@ -178,24 +178,20 @@
     <string name="api_key_unchanged">API key yang anda masukkan sama seperti sebelumnya.</string>
     <string name="permission_notification_title">Izinkan notifikasi?</string>
     <string name="permission_notification_message">Kita butuh izin notifikasi untuk memberi tahu anda tentang pembaruan aplikasi dan modul. Jika anda tidak mengizinkan izin ini, cek pembaruan otomatis tidak akan berjalan.</string>
-    <string name="permission_notification_grant">Izikan izin</string>
-    <string name="background_update_check_permission_required">Mohon nyalakan notifikasi untuk menyalakan opsi ini.</string>
-    <string name="dont_ask_again">Jangan tanyakan lagi</string>
-    <string name="force_black_theme_desc">Paksa latar belakang hitam AMOLED saat menggunakan tema gelap.
-        Mohon mengetahui bahwa ini mungkin berakibat masalah kontras dengan beberapa warna tema.</string>
+    <string name="permission_notification_grant">Berikan izin</string>
+    <string name="background_update_check_permission_required">Aktifkan pemberitahuan untuk mengaktifkan opsi ini.</string>
+    <string name="dont_ask_again">Jangan tanya lagi</string>
+    <string name="force_black_theme_desc">Paksa latar belakang hitam AMOLED saat menggunakan tema gelap. Perlu diketahui bahwa ini mungkin berakibat masalah kontras dengan beberapa tema warna.</string>
     <string name="force_black_theme_pref">Paksa tema gelap</string>
-    <string name="androidacy_repo_disabled">Repo ini saat ini dimatikan</string>
-    <string name="androidacy_repo_disabled_message">Build ini tidak memiliki client keys untuk
-        Repo Androidacy.
-        Mohon
-        unduh rilis GitHub jika anda ingin memanfaatkan fitur-fitur seperti ulasan modul, pemeriksaan keamanan otomatis, dan lain-lainnya.</string>
-    <string name="download_full_app">Unduh versi penuh</string>
-    <string name="repo_update_failed">Beberapa repo gagal pembaruan</string>
-    <string name="repo_update_failed_extended">Pembaruan dari %1$s gagal. Mohon dicoba lagi nanti.</string>
-    <string name="monet_disabled_summary">Monet tidak kompatibel dengan tema-tema transparen.</string>
-    <string name="blur_disabled_summary">Blur tidak kompatibel dengan tema-tema transparen.</string>
-    <string name="transparent_theme_dialogue_title">Anda menyetel tema yang transparen</string>
-    <string name="transparent_theme_dialogue_message">Tema transparan mungkin beberapa inkonsistensi dan tidak akan berjalan di semua ROM. Selain itu, monet dan blur akan dinonaktifkan. Anda bisa mengubah kembali kapan saja.</string>
+    <string name="androidacy_repo_disabled">Repo ini sedang nonaktif</string>
+    <string name="androidacy_repo_disabled_message">Build ini tidak memiliki client keys untuk Repo Androidacy. Silakan unduh rilis GitHub jika anda ingin memanfaatkan fitur-fitur seperti ulasan modul, pemeriksaan keamanan otomatis, dan lainnya.</string>
+    <string name="download_full_app">Unduh versi lengkap</string>
+    <string name="repo_update_failed">Beberapa repo gagal diperbarui</string>
+    <string name="repo_update_failed_extended">Pembaruan %1$s gagal. Silakan coba lagi nanti.</string>
+    <string name="monet_disabled_summary">Monet tidak kompatibel dengan tema transparan.</string>
+    <string name="blur_disabled_summary">Blur tidak kompatibel dengan tema transparan.</string>
+    <string name="transparent_theme_dialogue_title">Anda menerapkan tema transparan</string>
+    <string name="transparent_theme_dialogue_message">Tema transparan mungkin memiliki beberapa ketidakkonsistenan dan mungkin tidak berfungsi pada semua ROM. Selain itu, monet dan blur akan dinonaktifkan. Anda dapat mengubahnya kembali kapan saja.</string>
     <string name="custom_repo_always_on">Repo custom selalu nyala sampai anda menghapusnya.</string>
     <string name="sentry_dialogue_message">Kami menemukan kesalahan! Mohon bantu kami meningkatkan aplikasi inni
         dengan menambahkan beberapa informasi tentang kesalahan dibawah ini.\nNama dan email tidak perlu diisi tetapi akan
@@ -214,35 +210,36 @@
     <string name="pref_pkg_info_summary">Versi build %1$s v%2$s (%3$d) | %4$s</string>
     <string name="official">Resmi</string>
     <string name="unofficial">Tidak resmi</string>
-    <string name="setup_title">Persiapan pertama kali</string>
-    <string name="setup_message">Selamat datang! Aplikasi ini akan membantu anda memasang dan memanajemen modul-modul Magisk. Untuk mulai, mohon pilih opsi-opsi berikut. Mereka dan lebih banyak lagi bisa dikonfigurasi lewat pengaturan nanti.</string>
-    <string name="setup_button">Selesaikan persiapan</string>
-    <string name="setup_background_update_check">Cek pembaruan otomatis</string>
-    <string name="setup_background_update_check_summary">Membolehkan kita untuk mengcek pembaruan modul dan aplikasi di latar belakang. Fitur ini menggunakan lebih banyak baterai dan data.</string>
-    <string name="setup_androidacy_repo">Nyalakan repo Androidacy</string>
-    <string name="setup_androidacy_repo_summary">Ada fitur ulasan pengguna, pemindaian virus otomatis, pembaruan cepat, sebuah seleksi yang luas, dan didukung oleh Androidacy.</string>
+    <string name="setup_title">Penyiapan pertama kali</string>
+    <string name="setup_message">Selamat datang! Aplikasi ini akan membantu Anda menginstal dan mengelola modul Magisk. Untuk memulai, silakan pilih opsi di bawah ini. Ini dan yang lainnya dapat dikonfigurasi dari pengaturan nanti.</string>
+    <string name="setup_button">Selesaikan penyiapan</string>
+    <string name="setup_background_update_check">Pemeriksaan pembaruan otomatis</string>
+    <string name="setup_background_update_check_summary">Izinkan kami memeriksa pembaruan modul dan aplikasi di latar belakang. Fitur ini mungkin menggunakan lebih banyak baterai dan data.</string>
+    <string name="setup_androidacy_repo">Aktifkan repo Androidacy</string>
+    <string name="setup_androidacy_repo_summary">Dilengkapi dengan ulasan pengguna, pemindaian virus otomatis, pembaruan cepat, banyak pilihan, dan didukung oleh Androidacy.</string>
     <!-- Maybe once alt repo fixes their shit and stops allowing crappy modules or outright
     kanged modules, we'll reword this. -->
-    <string name="setup_magisk_alt_repo">Nyalakan Magisk Alt Repo</string>
-    <string name="setup_magisk_alt_repo_summary">Restriksi lebih ringan dari repo asli. Memiliki banyak modul-modul tetapi mengorbankan keamanan.</string>
-    <string name="setup_crash_reporting">Nyalakan Sentry</string>
-    <string name="setup_crash_reporting_summary">Laporan kerusakan dan pemantauan perfoma. Semua laporan bersifat anonim dan rahasia.</string>
-    <string name="setup_custom_repos">Anda bisa menambah repo custom nanti di pengaturan.</string>
-    <string name="repos">Repos</string>
+    <string name="setup_magisk_alt_repo">Aktifkan Repo Magisk Alt</string>
+    <string name="setup_magisk_alt_repo_summary">Jauh lebih longgar dari aslinya. Memiliki banyak modul dengan mengorbankan beberapa keamanan.</string>
+    <string name="setup_crash_reporting">Aktifkan Penjaga</string>
+    <string name="setup_crash_reporting_summary">Pelaporan kerusakan dan pemantauan kinerja. Semua laporan bersifat anonim dan rahasia.</string>
+    <string name="setup_custom_repos">Anda dapat menambahkan repo khusus nanti di pengaturan.</string>
+    <string name="repos">Repo</string>
     <string name="misc">Lain-lain</string>
     <string name="setup_button_skip">Lewati</string>
-    <string name="low_performance_device_dialogue_title">Menyalakan blur di perangkat kelas rendah</string>
-    <string name="low_performance_device_dialogue_message">Anda mencoba menyalakan blur di perangkat yang kemungkinan tidak berperfoma baik dengan ini.\nAnda bisa menyalakannya, tetapi ini bisa memperburuk pengalaman penggunaan dan sebaiknya anda tidak menyalakannya.</string>
+    <string name="low_performance_device_dialogue_title">Mengaktifkan blur pada perangkat low-end</string>
+    <string name="low_performance_device_dialogue_message">Anda mencoba mengaktifkan blur pada perangkat yang mungkin tidak berfungsi dengan baik.
+\nAnda dapat mengaktifkannya, tetapi ini dapat menyebabkan pengalaman pengguna yang kurang baik dan kami menyarankan Anda untuk tidak mengaktifkannya.</string>
     <string name="alt_repo_info">Repo ini memiliki lebih sedikit batasan dan ulasan, yang memungkinkan terdapat modul-modul berkualitas rendah. Cukup sederhana tetapi memiliki banyak modul.</string>
-    <string name="install_terminal_reboot_now_message">Anda akan memuat ulang perangkat anda. Jika anda sudah menyimpan pekerjaan anda, pencet OK untuk lanjut. Jika tidak, pencet Batal.</string>
-    <string name="install_terminal_config_missing">Package %s tidak mempunyai konfigurasi modul, jadi kami tidak dapat meluncurkannya.</string>
+    <string name="install_terminal_reboot_now_message">Anda akan me-reboot perangkat Anda. Jika Anda telah menyimpan semua pekerjaan Anda, tekan OK untuk melanjutkan. Jika tidak, tekan Batal.</string>
+    <string name="install_terminal_config_missing">Paket %s tidak mempunyai konfigurasi modul, jadi kami tidak dapat meluncurkannya.</string>
     <string name="clear_app_data">Hapus data aplikasi</string>
     <string name="clear_data_dialogue_title">Hapus data aplikasi?</string>
-    <string name="clear_data_dialogue_message">Anda akan menghapus data aplikasi. Tolong memastikan aksi ini.</string>
-    <string name="debug_build">Ini adalah sebuah build debug. Akan ada beberapa kesalahan dan perfoma buruk.</string>
+    <string name="clear_data_dialogue_message">Anda akan menghapus data aplikasi. Mohon pastikan tindakan ini.</string>
+    <string name="debug_build">Ini adalah versi debug. Mungkin akan ada beberapa bug dan kinerja yang kurang baik.</string>
     <string name="androidacy_repo_name">Repo Androidacy</string>
-    <string name="magisk_alt_repo_name">Magisk Alt Repo</string>
-    <string name="repo_enabled_changed">Anda telah menyalakan atau mematikan sebuah modul. Mohon refresh daftar modul atau meluncurkan ulang aplikasi.</string>
+    <string name="magisk_alt_repo_name">Repo Magisk Alt</string>
+    <string name="repo_enabled_changed">Anda telah mengaktifkan atau menonaktifkan repo. Silakan segarkan daftar modul atau mulai ulang aplikasi.</string>
     <string name="finish">Selesai</string>
     <string name="setup_theme">Pilih sebuah tema</string>
     <string name="setup_theme_header">Pilih sebuah tema</string>
@@ -256,8 +253,8 @@
     <string name="theme_system">Sistem</string>
     <string name="theme_dark">Gelap</string>
     <string name="theme_black">Hitam AMOLED</string>
-    <string name="theme_transparent_dark">Gelap (transparen)</string>
-    <string name="theme_transparent_light">Terang (transparen)</string>
+    <string name="theme_transparent_dark">Gelap (transparansi)</string>
+    <string name="theme_transparent_light">Terang (transparansi)</string>
     <string name="theme_light">Terang</string>
     <string name="androidacy_update_needed">Aplikasi ini ketinggalan pembaruan.</string>
     <string name="androidacy_update_needed_message">Mohon memperbarui aplikasi ke versi paling baru.</string>
@@ -269,12 +266,16 @@
     <string name="zip_load_failed">Tidak dapat memuat berkas zip</string>
     <string name="zip_prop_load_failed">Tidak dapat memuat properti modul</string>
     <string name="zip_security_warning">Pasang %s?</string>
-    <string name="zip_intent_module_install">Apakah anda benar-benar mau memasang modul \"%1$s\" dari berkas ZIP \"%2$s\"?\n\nPastikan anda memercaya sumber modul ini, karena modul sangat berkuasa dan hampir bisa melakukan apapun.</string>
+    <string name="zip_intent_module_install">Apakah Anda benar-benar ingin menginstal modul \"%1$s\" dari file ZIP \"%2$s\"\?
+\n
+\nPastikan Anda mempercayai sumber modul ini, karena modul sangat kuat dan dapat melakukan hampir semua hal.</string>
     <string name="androidacy_thanks">Dikembangkan sebagian oleh Androidacy</string>
     <string name="androidacy_thanks_desc">Terima kasih besar kepada Androidacy atas integrasi dan kontribusi mereka kepada aplikasi.</string>
-    <string name="contributors">Dan tentu saja, terima kasih ke semua kontributor kita, maupun itu penerjemahan, kode, atau hanya bergaul dengan senang! Kita mencintai kalian semua.</string>
+    <string name="contributors">Dan tentu saja, terima kasih kepada semua kontributor kami, baik itu terjemahan, kode, atau sekadar bersenang-senang bersama! Kami cinta kalian semua.</string>
     <string name="zip_unpacking">Memeriksa modul…</string>
-    <string name="warning_message">Ada indikasi bahwa modul ini dipasang tanpa sepengetahuan anda, atau kemungkinan mencoba menyembunyikan dirinya.\n\nMenghapus modul ini sangat direkomendasi.</string>
+    <string name="warning_message">Modul ini memiliki indikator yang mungkin telah terinstal tanpa sepengetahuan Anda, atau mungkin berusaha menyembunyikan dirinya sendiri.
+\n
+\nUninstall sangat disarankan.</string>
     <string name="understand">Saya mengerti</string>
     <string name="setup_theme_title">Pilih tema</string>
     <string name="setup_language_button">Pilih bahasa</string>
@@ -282,8 +283,8 @@
     <string name="action_settings">Peraturan</string>
     <string name="repo_update_failed_message">Repo-repo ini gagal memperbarui:\n\n%s</string>
     <string name="reset_api_key">Reset API key</string>
-    <string name="upgrade_androidacy_promo">Perbarui ke premium</string>
-    <string name="upgrade_androidacy_promo_desc">Upgrade ke premium dapat menghapus iklan, captcha, dan pengunduhan untuk Androidacy Repository, serta mendukung Androidacy dan pemilik modul.</string>
+    <string name="upgrade_androidacy_promo">Tingkatkan ke premium</string>
+    <string name="upgrade_androidacy_promo_desc">Meningkatkan ke premium akan menghapus iklan, captcha, dan unduhan untuk Repositori Androidacy, serta mendukung Androidacy dan pembuat modul.</string>
     <string name="pref_category_contributors">Kontributor</string>
     <string name="fox2code_thanks_desc">Fox2Code adalah orang pertama yang membuat aplikasi ini. Tanpa dia, ini tidak akan pernah bisa.</string>
     <string name="fox2code_thanks">Dibuat oleh Fox2Code</string>
@@ -410,4 +411,16 @@
     <string name="promo_code_copied">Gunakan kode yang disalin untuk mendapatkan potongan setengah harga di bulan pertama anda!</string>
     <string name="warning_pls_restart">Harap perhatikan bahwa beberapa setelan mungkin tidak diterapkan sampai anda memulai ulang aplikasi.</string>
     <string name="donate_fox">Donasi untuk Fox2Code</string>
+    <string name="background_update_check_excludes_version_summary">Tentukan versi pembaruan modul yang ingin Anda abaikan. Harap gunakan versi kodenya saja. Anda dapat menemukannya dengan menekan dan menahan versi pada daftar modul. Gunakan ^ di awal untuk mencocokkan versi tersebut dengan versi yang lebih baru. Gunakan $ di akhir untuk mencocokkan hingga versi tersebut.</string>
+    <string name="crash_details_suggestion">Stacktrace dapat ditemukan di bawah ini. Namun, kami <b>sangat</b> menyarankan Anda untuk menggunakan form feedback di bawah ini untuk mengirimkan masukan. Dengan cara ini, daripada menyalin stacktrace secara manual, stacktrace akan dikirimkan kepada kami secara otomatis. Dengan cara ini juga akan dilakukan deobfuscation dan detail tambahan akan dilaporkan secara otomatis.</string>
+    <string name="notification_update_ignore_version_desc">Abaikan versi tertentu saat pemeriksaan pembaruan modul. Menonaktifkan pemeriksaan pembaruan tiap modul di atas akan menggantikan pengaturan ini!</string>
+    <string name="notification_update_ignore_version_pref">Mengecualikan versi dari pembaruan</string>
+    <string name="background_update_check_excludes_version">Mengecualikan versi modul dari pengecekan</string>
+    <string name="module_version">"Versi: "</string>
+    <string name="module_remote_version">Versi remote</string>
+    <string name="background_update_check_excludes_version_hint">Kode versi untuk diabaikan</string>
+    <string name="androidacy_thanks_up">Terima kasih telah melakukan upgrade! Pengunduhan modul dan README tidak akan menampilkan iklan, dan aktivitas pengunduhan tidak akan dibatasi. Kedepannya, Anda akan dapat mengunduh modul secara langsung dengan satu klik.</string>
+    <string name="androidacy_thanks_up_title">Anda sudah meng-upgrade!</string>
+    <string name="upgrade_snackbar">Androidacy Premium menawarkan pengunduhan yang lebih cepat, pengalaman bebas iklan, dan masih banyak lagi!</string>
+    <string name="upgrade_now">Upgrade</string>
 </resources>

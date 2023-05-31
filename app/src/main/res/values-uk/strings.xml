@@ -387,4 +387,16 @@
     <string name="eula_sum">Я погоджуюся з EULA та Ліцензією</string>
     <string name="setup_scroll_down_v2">Щоб увімкнути кнопку «OK», прокрутіть униз і підтвердьте, що ви прочитали та погоджуєтеся з Ліцензійною угодою.</string>
     <string name="eula_agree_v2">Ви погоджуєтеся дотримуватися ліцензії LGPL-3.0 (https://www.gnu.org/licenses/lgpl-3.0.en.html) і EULA (https://www.androidacy.com/foxmmm-eula/ ), на додаток до будь-яких умов третіх сторін, і що автори цієї програми не несуть жодної відповідальності за її використання вами, а також ми не надаємо жодних гарантій, прямих чи непрямих.</string>
+    <string name="background_update_check_excludes_version_summary">Вкажіть версії оновлень модулів, які потрібно ігнорувати. Будь ласка, використовуйте лише код версії. Ви можете дізнатись його утриманням на версії у списку модулів. Використовуйте ^ на початку щоб ігнорувати цю версію і новіше. Використання $ в кінці говорить, що ігнорувати до вказаної версії.</string>
+    <string name="notification_update_ignore_version_desc">Ігноруйте певні версії під час перевірки оновлень модулів. Вимкнення перевірок оновлень для кожного модуля має вищий пріоритет ніж це налаштування!</string>
+    <string name="notification_update_ignore_version_pref">Виключити версії з перевірки оновлень</string>
+    <string name="background_update_check_excludes_version">Виключити версії модулів із перевірок</string>
+    <string name="module_version">"Версія: "</string>
+    <string name="module_remote_version">Віддалена версія</string>
+    <string name="background_update_check_excludes_version_hint">Код версії для ігнорування</string>
+    <string name="androidacy_thanks_up">Дякуємо за оновлення! Завантаження модулів і README не відображатимуть рекламу та завантаження буде розблоковано. В майбутньому Ви зможете завантажувати модулі у один клік.</string>
+    <string name="androidacy_thanks_up_title">Ви вже оновили!</string>
+    <string name="upgrade_snackbar">Androidacy Преміум пропонує швидші завантаження, без реклами та багато іншого!</string>
+    <string name="upgrade_now">Оновити</string>
+    <string name="crash_details_suggestion">Трасування стека можна знайти нижче. Однак ми <b>настійно</b> рекомендуємо вам замість цього використовувати форму зворотнього зв\'язку нижче. Таким чином, замість того, щоб вручну копіювати трасування стека, він відправить його нам автоматично. Це також розшифровує залежності та додаткові відомості повідомляються автоматично.</string>
 </resources>

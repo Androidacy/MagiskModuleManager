@@ -109,10 +109,7 @@
         (No se aplica al WebView)
   </string>
     <string name="disable_extensions_pref">Desactivar extensiones</string>
-    <string name="disable_extensions_desc">
-        Desactiva las extensiones de Fox\'s Mmm, esto previene que los módulos usen
-        extensiones de la terminal, útil si un módulo hace mal uso de las extensiones de Fox\'s Mmm.
-  </string>
+    <string name="disable_extensions_desc">Desactiva las extensiones de FoxMMM, esto previene que los módulos usen extensiones de la terminal, útil si un módulo hace mal uso de las extensiones de FoxMMM.</string>
     <string name="wrap_text_pref">Dividir el texto</string>
     <string name="wrap_text_desc">Divide el texto en una línea nueva en vez de colocar todo el texto en la misma línea durante la instalación de un módulo.</string>
     <string name="enable_blur_pref">Activar desenfoque</string>
@@ -359,7 +356,7 @@
     <string name="crash_text">Uh-oh, nos encontramos con un obstáculo!</string>
     <string name="sentry_enable_nag">Parece que los informes de fallas están desactivados. Actívelos para enviar comentarios.</string>
     <string name="crash_icon">Icono de bloqueo</string>
-    <string name="crash_full_stacktrace">Stacktrace:
+    <string name="crash_full_stacktrace">Seguimiento de pila:
 \n%1$s</string>
     <string name="upgraded_summary">Eres bastante increíble! Parece que ya actualizó su suscripción y estará apoyando a Androidacy.</string>
     <string name="api_key_mismatch">La clave API tiene un formato inválido</string>
@@ -416,4 +413,5 @@
     <string name="background_update_check_excludes_version_summary">Especifique una versión de las actualizaciones del módulo que le gustaría ignorar. Utilice únicamente el código de la versión. Puede encontrar esto manteniendo presionada la versión en la lista de módulos. Use ^ al principio para que coincida con esa versión y más reciente. Use $ al final para hacer coincidir hasta esa versión.</string>
     <string name="eula_agree_v2">Usted acepta estar sujeto a la licencia LGPL-3.0 (https://www.gnu.org/licenses/lgpl-3.0.en.html) y al EULA (https://www.androidacy.com/foxmmm-eula/), además de los términos de terceros, y que los autores de esta aplicación no son responsables del uso que usted haga de ella, ni ofrecemos garantías expresas o implícitas.</string>
     <string name="androidacy_thanks_up">Gracias por actualizar! las descargas de módulos y los archivos READMEs no mostrarán anuncios y las descargas no se acelerarán. En el futuro, podrá descargar módulos directamente con un solo clic.</string>
+    <string name="crash_details_suggestion">El seguimiento de pila se puede encontrar a continuación. Sin embargo, nos <b> fuertemente </b> le recomendamos que utilice el formulario de comentarios a continuación para enviar sus comentarios. De esta forma, en lugar de copiar manualmente el seguimiento de pila, nos lo enviará automáticamente. También se desofusca de esa manera y los detalles adicionales se informan automáticamente.</string>
 </resources>
