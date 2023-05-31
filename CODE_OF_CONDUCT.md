@@ -1,40 +1,56 @@
-# Welcome to Fox's Magisk Module Manager community
+# Androidacy Code of Conduct
 
-These guidelines set forth our expectations for our communities, not limiting but including our GitHub Repository, our Telegram groups, and other affiliated groups/communities. They really boil down to three principles:
+## Introduction
 
-1) Don't be a dick.
-2) A dick do not be.
-3) Review rules 1 and 2.
+At Androidacy, we're committed to fostering an open, inclusive, supportive, and respectful community for everyone who participates in our repositories and communities. This Code of Conduct outlines our expectations for participant behavior as well as the consequences for unacceptable behavior.
 
-We believe in free speech, and freedom of expression, insofar that it doesn't interfere with others' right to the same. Contributors, community members, developers, and users alike are welcome here, but you must extend the same welcome to other members. So long as you can follow those three principles, you are welcome here, whether it's to hand out, lurk, or more directly contribute.
+## Our Pledge
 
-## What we do not allow
+We pledge to act and interact in ways that contribute to an open, welcoming, diverse, inclusive, and healthy community. We value and respect all individuals irrespective of their race, religion, sexual orientation, gender identity, age, nationality, appearance, or technical expertise.
 
-Absolutely no harrassment including, but not limited to, harassment based on the basis of sexuality, gender, race, or other beliefs shall be tolerated. We want everyone to feel safe and welcome here, and when some community members harass others, that is made much harder.
+## Our Standards
 
-Harassment is defined as, as per the english dictionary:
-```
-noun: harassment; plural noun: harassments
-  aggressive pressure or intimidation.
-  "they face daily harassment and assault on the streets"
-```
+### Expected Behavior
 
-We will also not tolerate any illegal activity, including but not limited to, copyright infringement, license infringement, threats, violence, doxxing, or any activity not legal in any team member's or developers home country.
+We expect all participants in Androidacy communities to:
 
-## What we do allow
+- Demonstrate empathy and kindness towards other people.
+- Respect personal identities and experiences, particularly related to LGBTQ+, race, religion, sexuality, and gender.
+- Give and gracefully accept constructive feedback.
+- Focus on what is best not just for us as individuals, but for the overall community.
 
-We believe free speech and discussions are vital to the health of a community. When everyone can speak freely, we all get along much better. Keep in mind, you must extend that same freedom to everyone else. That means to allow others to speak their mind just as you have, without attempting to stifle their same freedom of speech or expression.
+### Unacceptable Behavior
 
-### Specifics for code contributions
+We consider the following behaviors unacceptable:
 
-All code submitted must follow existing code standards, including but not limited to, formatting, licensing, and code style. Code must also be the submitters own work or used under license, and the submitter must make a good faith effort to test and ensure it works correctly.
+- Disrespect or discrimination of any form, particularly related to a person's LGBTQ+ status, race, religion, sexuality, or gender identity.
+- Harassment, public or private.
+- Using this community as a platform for inappropriate content or conduct.
 
-## Enforcement
+### Content Responsibility
 
-While the police will not show up at your house for violating our rules, we reserve the right but not the obligation to issue warnings and/or ban users as we see fit for violations of this Code of Conduct.
+While Androidacy will strive to maintain the community standards, we are not responsible for all community content. However, we'll make a best effort to moderate as per the guidelines, at our discretion.
 
-You are welcome to contact any maintainer privately if you need help or wish to report another member of the community for violation of these rules, and your complaint will be handled fairly and privately.
+## Reporting and Enforcement
 
-By interacting with our community or participating in the same, you acknowledge you understand and accept this Code of Conduct.
+If you are the subject of, or witness any violations of this Code of Conduct, please contact us by emailing community-relations@androidacy.com or via https://t.me/AndroidacySupport on Telegram. If necessary, Androidacy will respond as promptly as we can to address the issue.
 
-<sub><b>Last modified:</b> May 16, 2022</sub>
+We will maintain confidentiality with regard to the reporter of an incident. However, Androidacy reserves the right to moderate, delete, or censor any content or behavior that we find to be in violation of this Code of Conduct, at our discretion. We also have the ultimate say in interpreting and enforcing these rules, with no obligation to act on any report or complaint.
+
+## Intellectual Property
+
+All participants are expected to respect copyrights, trademarks, and other legal rights. Any contributions should be original or free from other license encumbrances.
+
+### Code Contributions
+
+Your submissions should follow existing code styles and be free of bugs and security vulnerabilities. By submitting your code, you grant Androidacy all rights to use and distribute your code, as long as it does not infringe any existing licenses.
+
+## Legal
+
+Androidacy is not liable for any defamation, slander, or other claims arising from the operation of our public communities. Slander against Androidacy under any circumstance is not permissible.
+
+## Conclusion
+
+This Code of Conduct applies to all Androidacy communities and public spaces, both online and off, and also applies when an individual is officially representing Androidacy in public spaces. We hope that our community members will carry these principles with them into their everyday lives, helping make the world a better place for everyone.
+
+By choosing to join and participate in Androidacy communities, you are committing to upholding these standards. Thank you for helping make our community welcoming and friendly to all.
