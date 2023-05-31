@@ -417,7 +417,7 @@ public final class AndroidacyRepoData extends RepoData {
 
     private String injectToken(String url) {
         // Do not inject token for non Androidacy urls
-        if (!AndroidacyUtil.isAndroidacyLink(url)) return url;
+        if (!AndroidacyUtil.Companion.isAndroidacyLink(url)) return url;
         if (this.testMode) {
             if (url.startsWith("https://production-api.androidacy.com/")) {
                 Timber.e("Got non test mode url: %s", AndroidacyUtil.hideToken(url));

@@ -1,49 +1,70 @@
-package com.fox2code.mmm.repo;
+package com.fox2code.mmm.repo
 
-import androidx.annotation.StringRes;
+import androidx.annotation.StringRes
+import com.fox2code.mmm.manager.ModuleInfo
 
-import com.fox2code.mmm.manager.ModuleInfo;
+class RepoModule {
+    @JvmField
+    val repoData: RepoData
+    @JvmField
+    val moduleInfo: ModuleInfo
+    @JvmField
+    val id: String
+    @JvmField
+    var repoName: String? = null
+    @JvmField
+    var lastUpdated: Long = 0
+    @JvmField
+    var propUrl: String? = null
+    @JvmField
+    var zipUrl: String? = null
+    @JvmField
+    var notesUrl: String? = null
+    @JvmField
+    var checksum: String? = null
+    @JvmField
+    var processed = false
 
-public class RepoModule {
-    public final RepoData repoData;
-    public final ModuleInfo moduleInfo;
-    public final String id;
-    public String repoName;
-    public long lastUpdated;
-    public String propUrl;
-    public String zipUrl;
-    public String notesUrl;
-    public String checksum;
-    public boolean processed;
+    @JvmField
     @StringRes
-    public int qualityText;
-    public int qualityValue;
-    public boolean safe;
+    var qualityText = 0
+    @JvmField
+    var qualityValue = 0
+    var safe: Boolean
 
-    public RepoModule(RepoData repoData, String id) {
-        this.repoData = repoData;
-        this.moduleInfo = new ModuleInfo(id);
-        this.id = id;
-        this.moduleInfo.flags |=
-                ModuleInfo.FLAG_METADATA_INVALID;
-        this.safe = this.moduleInfo.safe;
+    constructor(repoData: RepoData, id: String) {
+        this.repoData = repoData
+        moduleInfo = ModuleInfo(id)
+        this.id = id
+        moduleInfo.flags = moduleInfo.flags or ModuleInfo.FLAG_METADATA_INVALID
+        safe = moduleInfo.safe
     }
 
     // allows all fields to be set-
-    public RepoModule(RepoData repoData, String id, String name, String description, String author, String donate, String config, String support, String version, int versionCode) {
-        this.repoData = repoData;
-        this.moduleInfo = new ModuleInfo(id);
-        this.id = id;
-        this.moduleInfo.name = name;
-        this.moduleInfo.description = description;
-        this.moduleInfo.author = author;
-        this.moduleInfo.donate = donate;
-        this.moduleInfo.config = config;
-        this.moduleInfo.support = support;
-        this.moduleInfo.version = version;
-        this.moduleInfo.versionCode = versionCode;
-        this.moduleInfo.flags |=
-                ModuleInfo.FLAG_METADATA_INVALID;
-        this.safe = this.moduleInfo.safe;
+    constructor(
+        repoData: RepoData,
+        id: String,
+        name: String?,
+        description: String?,
+        author: String?,
+        donate: String?,
+        config: String?,
+        support: String?,
+        version: String?,
+        versionCode: Int
+    ) {
+        this.repoData = repoData
+        moduleInfo = ModuleInfo(id)
+        this.id = id
+        moduleInfo.name = name
+        moduleInfo.description = description
+        moduleInfo.author = author
+        moduleInfo.donate = donate
+        moduleInfo.config = config
+        moduleInfo.support = support
+        moduleInfo.version = version
+        moduleInfo.versionCode = versionCode.toLong()
+        moduleInfo.flags = moduleInfo.flags or ModuleInfo.FLAG_METADATA_INVALID
+        safe = moduleInfo.safe
     }
 }

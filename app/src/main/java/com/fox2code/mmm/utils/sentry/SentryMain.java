@@ -121,7 +121,7 @@ public class SentryMain {
                     String url = (String) breadcrumb.getData("url");
                     if (url == null || url.isEmpty()) return breadcrumb;
                     if ("cloudflare-dns.com".equals(Uri.parse(url).getHost())) return null;
-                    if (AndroidacyUtil.isAndroidacyLink(url)) {
+                    if (AndroidacyUtil.Companion.isAndroidacyLink(url)) {
                         breadcrumb.setData("url", AndroidacyUtil.hideToken(url));
                     }
                     return breadcrumb;

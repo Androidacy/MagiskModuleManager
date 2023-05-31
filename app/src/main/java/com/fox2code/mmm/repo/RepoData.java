@@ -268,7 +268,7 @@ public class RepoData extends XRepo {
         if (file.exists()) {
             try {
                 ModuleInfo moduleInfo = repoModule.moduleInfo;
-                PropUtils.readProperties(moduleInfo, file.getAbsolutePath(), repoModule.repoName + "/" + moduleInfo.name, false);
+                PropUtils.Companion.readProperties(moduleInfo, file.getAbsolutePath(), repoModule.repoName + "/" + moduleInfo.name, false);
                 moduleInfo.flags &= ~ModuleInfo.FLAG_METADATA_INVALID;
                 if (moduleInfo.version == null) {
                     moduleInfo.version = "v" + moduleInfo.versionCode;

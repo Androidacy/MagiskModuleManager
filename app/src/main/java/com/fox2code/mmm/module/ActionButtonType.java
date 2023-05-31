@@ -2,6 +2,7 @@ package com.fox2code.mmm.module;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.text.Spanned;
 import android.widget.Button;
@@ -52,7 +53,7 @@ public enum ActionButtonType {
             }
             TrackHelper.track().event("view_notes", name).with(MainApplication.getINSTANCE().getTracker());
             String notesUrl = moduleHolder.repoModule.notesUrl;
-            if (AndroidacyUtil.isAndroidacyLink(notesUrl)) {
+            if (AndroidacyUtil.Companion.isAndroidacyLink(notesUrl)) {
                 IntentHelper.openUrlAndroidacy(button.getContext(), notesUrl, false, moduleHolder.repoModule.moduleInfo.name, moduleHolder.getMainModuleConfig());
             } else {
                 IntentHelper.openMarkdown(button.getContext(), notesUrl, moduleHolder.repoModule.moduleInfo.name, moduleHolder.getMainModuleConfig(), moduleHolder.repoModule.moduleInfo.changeBoot, moduleHolder.repoModule.moduleInfo.needRamdisk, moduleHolder.repoModule.moduleInfo.minMagisk, moduleHolder.repoModule.moduleInfo.minApi, moduleHolder.repoModule.moduleInfo.maxApi);
@@ -94,10 +95,28 @@ public enum ActionButtonType {
                 name = moduleHolder.repoModule.moduleInfo.name;
             }
             TrackHelper.track().event("view_update_install", name).with(MainApplication.getINSTANCE().getTracker());
+            // if icon is reinstall, we need to uninstall first - warn the user but don't proceed
+            if (moduleHolder.moduleInfo != null) {
+                // get icon of the button
+                Drawable icon = button.getChipIcon();
+                if (icon != null && icon.getConstantState() != null) {
+                    Drawable reinstallIcon = button.getContext().getDrawable(R.drawable.ic_baseline_refresh_24);
+                    if (reinstallIcon != null && reinstallIcon.getConstantState() != null) {
+                        if (icon.getConstantState().equals(reinstallIcon.getConstantState())) {
+                            new MaterialAlertDialogBuilder(button.getContext())
+                                    .setTitle(R.string.reinstall)
+                                    .setMessage(R.string.reinstall_warning)
+                                    .setPositiveButton(R.string.reinstall, null)
+                                    .show();
+                            return;
+                        }
+                    }
+                }
+            }
             String updateZipUrl = moduleHolder.getUpdateZipUrl();
             if (updateZipUrl == null) return;
             // Androidacy manage the selection between download and install
-            if (AndroidacyUtil.isAndroidacyLink(updateZipUrl)) {
+            if (AndroidacyUtil.Companion.isAndroidacyLink(updateZipUrl)) {
                 IntentHelper.openUrlAndroidacy(button.getContext(), updateZipUrl, true, moduleInfo.name, moduleInfo.config);
                 return;
             }
@@ -211,7 +230,7 @@ public enum ActionButtonType {
                 name = moduleHolder.repoModule.moduleInfo.name;
             }
             TrackHelper.track().event("config_module", name).with(MainApplication.getINSTANCE().getTracker());
-            if (AndroidacyUtil.isAndroidacyLink(config)) {
+            if (AndroidacyUtil.Companion.isAndroidacyLink(config)) {
                 IntentHelper.openUrlAndroidacy(button.getContext(), config, true);
             } else {
                 IntentHelper.openConfig(button.getContext(), config);

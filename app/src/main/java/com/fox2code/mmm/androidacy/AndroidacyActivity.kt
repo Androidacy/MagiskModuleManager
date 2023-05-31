@@ -202,7 +202,7 @@ class AndroidacyActivity : FoxActivity() {
                     if (downloadMode || backOnResume) return true
                     // sanitize url
                     @Suppress("NAME_SHADOWING") var url = request.url.toString()
-                    url = AndroidacyUtil.hideToken(url).toString()
+                    url = AndroidacyUtil.hideToken(url)
                     Timber.i("Exiting WebView %s", url)
                     IntentHelper.openUri(view.context, request.url.toString())
                     return true

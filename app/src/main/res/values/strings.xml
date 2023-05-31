@@ -428,4 +428,5 @@
     <string name="upgrade_snackbar">Androidacy Premium offers faster downloads, an ad-free experience, and more!</string>
     <string name="upgrade_now">Upgrade</string>
     <string name="crash_details_suggestion">The stacktrace may be found below. However, we <b>strongly</b> recommend you to use the feedback form below to submit feedback instead. This way, instead of manually copying the stacktrace, it will send it to us automatically. It also is deobfuscated that way and additional details are reported automatically.</string>
+    <string name="reinstall_warning">Most modules should be uninstalled, then reinstalled cleanly. For this reason, FoxMMM does not support reinstalling modules while they are installed on the device.</string>
 </resources>

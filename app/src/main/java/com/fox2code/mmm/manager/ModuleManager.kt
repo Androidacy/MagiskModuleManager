@@ -64,7 +64,7 @@ class ModuleManager private constructor() : SyncManager() {
                 // get all dirs under the realms/repos/ dir under app's data dir
                 val cacheRoot =
                     File(MainApplication.getINSTANCE().getDataDirWithPath("realms/repos/").toURI())
-                var moduleListCache: ModuleListCache
+                var moduleListCache: ModuleListCache?
                 for (dir in Objects.requireNonNull<Array<File>>(cacheRoot.listFiles())) {
                     if (dir.isDirectory) {
                         // if the dir name matches the module name, use it as the cache dir
@@ -83,25 +83,27 @@ class ModuleManager private constructor() : SyncManager() {
                         )
                         moduleListCache =
                             realm.where(ModuleListCache::class.java).equalTo("codename", module)
-                                .findFirst()!!
+                                .findFirst()
                         Timber.d("Found cache for %s", module)
                         // get module info from cache
                         if (moduleInfo == null) {
                             moduleInfo = LocalModuleInfo(module)
                         }
-                        moduleInfo.name =
-                            if (moduleListCache.name != "") moduleListCache.name else module
-                        moduleInfo.description =
-                            if (moduleListCache.description != "") moduleListCache.description else null
-                        moduleInfo.author =
-                            if (moduleListCache.author != "") moduleListCache.author else null
-                        moduleInfo.safe = moduleListCache.isSafe == true
-                        moduleInfo.support =
-                            if (moduleListCache.support != "") moduleListCache.support else null
-                        moduleInfo.donate =
-                            if (moduleListCache.donate != "") moduleListCache.donate else null
-                        moduleInfo.flags = moduleInfo.flags or FLAG_MM_REMOTE_MODULE
-                        moduleInfos[module] = moduleInfo
+                        if (moduleListCache != null) {
+                            moduleInfo.name =
+                                if (moduleListCache.name != "") moduleListCache.name else module
+                            moduleInfo.description =
+                                if (moduleListCache.description != "") moduleListCache.description else moduleInfo.description
+                            moduleInfo.author =
+                                if (moduleListCache.author != "") moduleListCache.author else moduleInfo.author
+                            moduleInfo.safe = moduleListCache.isSafe == true
+                            moduleInfo.support =
+                                if (moduleListCache.support != "") moduleListCache.support else null
+                            moduleInfo.donate =
+                                if (moduleListCache.donate != "") moduleListCache.donate else null
+                            moduleInfo.flags = moduleInfo.flags or FLAG_MM_REMOTE_MODULE
+                            moduleInfos[module] = moduleInfo
+                        }
                         realm.close()
                         break
                     }
