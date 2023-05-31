@@ -292,9 +292,9 @@ public class MainActivity extends FoxActivity implements SwipeRefreshLayout.OnRe
                     moduleViewListBuilder.addNotification(NotificationType.MAGISK_OUTDATED);
                 if (!MainApplication.isShowcaseMode())
                     moduleViewListBuilder.addNotification(NotificationType.INSTALL_FROM_STORAGE);
-                ModuleManager.getINSTANCE().scan();
-                ModuleManager.getINSTANCE().runAfterScan(moduleViewListBuilder::appendInstalledModules);
-                ModuleManager.getINSTANCE().runAfterScan(moduleViewListBuilderOnline::appendRemoteModules);
+                Objects.requireNonNull(ModuleManager.getInstance()).scan();
+                ModuleManager.getInstance().runAfterScan(moduleViewListBuilder::appendInstalledModules);
+                ModuleManager.getInstance().runAfterScan(moduleViewListBuilderOnline::appendRemoteModules);
                 this.commonNext();
             }
 
@@ -343,7 +343,7 @@ public class MainActivity extends FoxActivity implements SwipeRefreshLayout.OnRe
 
                 Timber.i("Scanning for modules!");
                 if (BuildConfig.DEBUG) Timber.i("Initialize Update");
-                final int max = ModuleManager.getINSTANCE().getUpdatableModuleCount();
+                final int max = Objects.requireNonNull(ModuleManager.getInstance()).getUpdatableModuleCount();
                 if (RepoManager.getINSTANCE().getCustomRepoManager() != null && RepoManager.getINSTANCE().getCustomRepoManager().needUpdate()) {
                     Timber.w("Need update on create");
                 } else if (RepoManager.getINSTANCE().getCustomRepoManager() == null) {
@@ -382,7 +382,7 @@ public class MainActivity extends FoxActivity implements SwipeRefreshLayout.OnRe
                     if (BuildConfig.DEBUG) Timber.i("Check Json Update");
                     if (max != 0) {
                         int current = 0;
-                        for (LocalModuleInfo localModuleInfo : ModuleManager.getINSTANCE().getModules().values()) {
+                        for (LocalModuleInfo localModuleInfo : ModuleManager.getInstance().getModules().values()) {
                             // if it has updateJson and FLAG_MM_REMOTE_MODULE is not set on flags, check for json update
                             // this is a dirty hack until we better store if it's a remote module
                             // the reasoning is that remote repos are considered "validated" while local modules are not
@@ -535,8 +535,8 @@ public class MainActivity extends FoxActivity implements SwipeRefreshLayout.OnRe
                     moduleViewListBuilder.addNotification(NotificationType.MAGISK_OUTDATED);
                 if (!MainApplication.isShowcaseMode())
                     moduleViewListBuilder.addNotification(NotificationType.INSTALL_FROM_STORAGE);
-                ModuleManager.getINSTANCE().scan();
-                ModuleManager.getINSTANCE().runAfterScan(moduleViewListBuilder::appendInstalledModules);
+                Objects.requireNonNull(ModuleManager.getInstance()).scan();
+                ModuleManager.getInstance().runAfterScan(moduleViewListBuilder::appendInstalledModules);
                 this.commonNext();
             }
 
@@ -598,7 +598,7 @@ public class MainActivity extends FoxActivity implements SwipeRefreshLayout.OnRe
         // this.swipeRefreshLayout.setRefreshing(true); ??
         new Thread(() -> {
             Http.cleanDnsCache(); // Allow DNS reload from network
-            final int max = ModuleManager.getINSTANCE().getUpdatableModuleCount();
+            final int max = Objects.requireNonNull(ModuleManager.getInstance()).getUpdatableModuleCount();
             RepoManager.getINSTANCE().update(value -> runOnUiThread(max == 0 ? () -> progressIndicator.setProgressCompat((int) (value * PRECISION), true) : () -> progressIndicator.setProgressCompat((int) (value * PRECISION * 0.75F), true)));
             NotificationType.NEED_CAPTCHA_ANDROIDACY.autoAdd(moduleViewListBuilder);
             if (!NotificationType.NO_INTERNET.shouldRemove()) {
@@ -614,7 +614,7 @@ public class MainActivity extends FoxActivity implements SwipeRefreshLayout.OnRe
                 if (BuildConfig.DEBUG) Timber.i("Check Json Update");
                 if (max != 0) {
                     int current = 0;
-                    for (LocalModuleInfo localModuleInfo : ModuleManager.getINSTANCE().getModules().values()) {
+                    for (LocalModuleInfo localModuleInfo : ModuleManager.getInstance().getModules().values()) {
                         if (localModuleInfo.updateJson != null && (localModuleInfo.flags & FLAG_MM_REMOTE_MODULE) == 0) {
                             if (BuildConfig.DEBUG) Timber.i(localModuleInfo.id);
                             try {

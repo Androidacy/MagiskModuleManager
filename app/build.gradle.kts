@@ -83,6 +83,13 @@ android {
             versionNameSuffix = "-debug"
             isJniDebuggable = true
             isRenderscriptDebuggable = true
+            isMinifyEnabled = false
+            isShrinkResources = false
+            multiDexEnabled = true
+
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
+            )
 
             // ONLY FOR TESTING SENTRY
             // minifyEnabled true
@@ -410,7 +417,8 @@ dependencies {
     implementation("dev.rikka.rikkax.layoutinflater:layoutinflater:1.3.0")
     implementation("dev.rikka.rikkax.insets:insets:1.3.0")
     implementation("com.github.KieronQuinn:MonetCompat:0.4.1")
-    implementation("com.github.Fox2Code:FoxCompat:0.2.0")
+    implementation("com.github.Fox2Code.FoxCompat:foxcompat:1.2.14")
+    implementation("com.github.Fox2Code.FoxCompat:hiddenapis:1.2.14")
     implementation("com.mikepenz:aboutlibraries:10.7.0")
 
     // Utils
@@ -458,6 +466,11 @@ dependencies {
     implementation("io.noties.markwon:syntax-highlight:4.6.2")
     implementation("com.google.net.cronet:cronet-okhttp:0.1.0")
     implementation("com.caverock:androidsvg:1.4")
+
+    implementation("dev.rikka.rikkax.core:core:1.4.1")
+    implementation("com.github.KieronQuinn:MonetCompat:0.4.1")
+    implementation("org.lsposed.hiddenapibypass:hiddenapibypass:4.3")
+    implementation("com.github.tiann:FreeReflection:3.1.0")
 
     implementation("androidx.core:core-ktx:1.10.1")
 

@@ -102,7 +102,7 @@ public class AndroidacyWebAPI {
             String config = null;
             if (repoModule != null) {
                 config = repoModule.moduleInfo.config;
-                LocalModuleInfo localModuleInfo = ModuleManager.getINSTANCE().getModules().get(repoModule.id);
+                LocalModuleInfo localModuleInfo = Objects.requireNonNull(ModuleManager.getInstance()).getModules().get(repoModule.id);
                 hasUpdate = localModuleInfo != null && repoModule.moduleInfo.versionCode > localModuleInfo.versionCode;
             }
             final String fModuleUrl = moduleUrl, fTitle = title, fConfig = config, fChecksum = checksum;
@@ -269,7 +269,7 @@ public class AndroidacyWebAPI {
             RepoModule repoModule = AndroidacyRepoData.getInstance().moduleHashMap.get(installTitle);
             String config = null;
             boolean mmtReborn = false;
-            if (repoModule != null && repoModule.moduleInfo.name.length() >= 3) {
+            if (repoModule != null && Objects.requireNonNull(repoModule.moduleInfo.name).length() >= 3) {
                 installTitle = repoModule.moduleInfo.name; // Set title to module name
                 config = repoModule.moduleInfo.config;
                 mmtReborn = repoModule.moduleInfo.mmtReborn;
@@ -309,7 +309,7 @@ public class AndroidacyWebAPI {
      */
     @JavascriptInterface
     public boolean isModuleInstalled(String moduleId) {
-        return ModuleManager.getINSTANCE().getModules().get(moduleId) != null;
+        return Objects.requireNonNull(ModuleManager.getInstance()).getModules().get(moduleId) != null;
     }
 
     /**
@@ -317,7 +317,7 @@ public class AndroidacyWebAPI {
      */
     @JavascriptInterface
     public boolean isModuleUpdating(String moduleId) {
-        LocalModuleInfo localModuleInfo = ModuleManager.getINSTANCE().getModules().get(moduleId);
+        LocalModuleInfo localModuleInfo = Objects.requireNonNull(ModuleManager.getInstance()).getModules().get(moduleId);
         return localModuleInfo != null && localModuleInfo.hasFlag(ModuleInfo.FLAG_MODULE_UPDATING);
     }
 
@@ -326,7 +326,7 @@ public class AndroidacyWebAPI {
      */
     @JavascriptInterface
     public String getModuleVersion(String moduleId) {
-        LocalModuleInfo localModuleInfo = ModuleManager.getINSTANCE().getModules().get(moduleId);
+        LocalModuleInfo localModuleInfo = Objects.requireNonNull(ModuleManager.getInstance()).getModules().get(moduleId);
         return localModuleInfo != null ? localModuleInfo.version : null;
     }
 
@@ -335,7 +335,7 @@ public class AndroidacyWebAPI {
      */
     @JavascriptInterface
     public long getModuleVersionCode(String moduleId) {
-        LocalModuleInfo localModuleInfo = ModuleManager.getINSTANCE().getModules().get(moduleId);
+        LocalModuleInfo localModuleInfo = Objects.requireNonNull(ModuleManager.getInstance()).getModules().get(moduleId);
         return localModuleInfo != null ? localModuleInfo.versionCode : -1L;
     }
 
@@ -377,7 +377,7 @@ public class AndroidacyWebAPI {
     @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     @JavascriptInterface
     public boolean isAndroidacyModule(String moduleId) {
-        LocalModuleInfo localModuleInfo = ModuleManager.getINSTANCE().getModules().get(moduleId);
+        LocalModuleInfo localModuleInfo = Objects.requireNonNull(ModuleManager.getInstance()).getModules().get(moduleId);
         return localModuleInfo != null && ("Androidacy".equals(localModuleInfo.author) || AndroidacyUtil.isAndroidacyLink(localModuleInfo.config));
     }
 

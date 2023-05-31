@@ -67,18 +67,18 @@ enum class NotificationType constructor(
             )
         }) {
         override fun shouldRemove(): Boolean {
-            return InstallerInitializer.getErrorNotification() !== this
+            return InstallerInitializer.errorNotification !== this
         }
     },
     @JvmStatic
     NO_ROOT(R.string.fail_root_magisk, R.drawable.ic_baseline_numbers_24) {
         override fun shouldRemove(): Boolean {
-            return InstallerInitializer.getErrorNotification() !== this
+            return InstallerInitializer.errorNotification !== this
         }
     },
     ROOT_DENIED(R.string.fail_root_denied, R.drawable.ic_baseline_numbers_24) {
         override fun shouldRemove(): Boolean {
-            return InstallerInitializer.getErrorNotification() !== this
+            return InstallerInitializer.errorNotification !== this
         }
     },
     @JvmStatic

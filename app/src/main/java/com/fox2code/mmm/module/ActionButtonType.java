@@ -163,7 +163,7 @@ public enum ActionButtonType {
             }
             TrackHelper.track().event("uninstall_module", name).with(MainApplication.getINSTANCE().getTracker());
             Timber.i(Integer.toHexString(moduleHolder.moduleInfo.flags));
-            if (!ModuleManager.getINSTANCE().setUninstallState(moduleHolder.moduleInfo, !moduleHolder.hasFlag(ModuleInfo.FLAG_MODULE_UNINSTALLING))) {
+            if (!Objects.requireNonNull(ModuleManager.getInstance()).setUninstallState(moduleHolder.moduleInfo, !moduleHolder.hasFlag(ModuleInfo.FLAG_MODULE_UNINSTALLING))) {
                 Timber.e("Failed to switch uninstalled state!");
             }
             update(button, moduleHolder);
@@ -178,7 +178,7 @@ public enum ActionButtonType {
             builder.setTitle(R.string.master_delete);
             builder.setPositiveButton(R.string.master_delete_yes, (dialog, which) -> {
                 String moduleId = moduleHolder.moduleInfo.id;
-                if (!ModuleManager.getINSTANCE().masterClear(moduleHolder.moduleInfo)) {
+                if (!Objects.requireNonNull(ModuleManager.getInstance()).masterClear(moduleHolder.moduleInfo)) {
                     Toast.makeText(button.getContext(), R.string.master_delete_fail, Toast.LENGTH_SHORT).show();
                 } else {
                     moduleHolder.moduleInfo = null;

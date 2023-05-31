@@ -192,12 +192,10 @@
 -keepclassmembers class kotlin.SafePublicationLazyImpl {
     java.lang.Object _value;
 }
+
 -keepclassmembers class org.apache.commons.compress.archivers.zip.* { *; }
 
-# fix bug with androidx work and future
-# -keep class androidx.work.impl.utils.futures.* { *; }
-
-# Silence some warnings
+# dontwarn
 -dontwarn android.os.SystemProperties
 -dontwarn android.view.ThreadedRenderer
 -dontwarn cyanogenmod.providers.CMSettings$Secure
@@ -207,22 +205,6 @@
 -dontwarn org.lsposed.hiddenapibypass.HiddenApiBypass
 -dontwarn rikka.core.res.ResourcesCompatLayoutInflaterListener
 -dontwarn rikka.core.util.ResourceUtils
--dontwarn com.afollestad.materialdialogs.MaterialDialog
--dontwarn com.afollestad.materialdialogs.WhichButton
--dontwarn com.afollestad.materialdialogs.actions.DialogActionExtKt
--dontwarn com.afollestad.materialdialogs.callbacks.DialogCallbackExtKt
--dontwarn com.afollestad.materialdialogs.internal.button.DialogActionButton
--dontwarn com.afollestad.materialdialogs.internal.button.DialogActionButtonLayout
--dontwarn com.afollestad.materialdialogs.internal.main.DialogLayout
--dontwarn com.afollestad.materialdialogs.internal.main.DialogTitleLayout
--dontwarn com.afollestad.materialdialogs.internal.message.DialogContentLayout
--dontwarn com.oracle.svm.core.annotate.AutomaticFeature
--dontwarn com.oracle.svm.core.annotate.Delete
--dontwarn com.oracle.svm.core.annotate.Substitute
--dontwarn com.oracle.svm.core.annotate.TargetClass
--dontwarn com.oracle.svm.core.configure.ResourcesRegistry
--dontwarn javax.lang.model.element.Modifier
--dontwarn org.graalvm.nativeimage.ImageSingletons
--dontwarn org.graalvm.nativeimage.hosted.Feature$BeforeAnalysisAccess
--dontwarn org.graalvm.nativeimage.hosted.Feature
--dontwarn io.sentry.compose.gestures.ComposeGestureTargetLocator
+-dontwarn io.sentry.compose.viewhierarchy.ComposeViewHierarchyExporter
+-dontwarn org.commonmark.ext.gfm.strikethrough.Strikethrough
+-dontwarn pl.droidsonroids.gif.GifDrawable

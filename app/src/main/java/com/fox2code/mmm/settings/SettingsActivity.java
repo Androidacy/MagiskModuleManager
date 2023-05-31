@@ -577,7 +577,7 @@ public class SettingsActivity extends FoxActivity implements LanguageActivity {
             });
             // updateCheckExcludes saves to pref_background_update_check_excludes as a stringset. On clicking, it should open a dialog with a list of all installed modules
             updateCheckExcludes.setOnPreferenceClickListener(preference -> {
-                Collection<LocalModuleInfo> localModuleInfos = ModuleManager.getINSTANCE().getModules().values();
+                Collection<LocalModuleInfo> localModuleInfos = ModuleManager.getInstance().getModules().values();
                 // make sure we have modules
                 boolean[] checkedItems;
                 if (!localModuleInfos.isEmpty()) {
@@ -626,7 +626,7 @@ public class SettingsActivity extends FoxActivity implements LanguageActivity {
                 Set<String> stringSet = sharedPreferences.getStringSet("pref_background_update_check_excludes_version", new HashSet<>());
                 Timber.d("stringSet: %s", stringSet);
                 // for every module, add it's name and a text field to the dialog. the text field should accept a comma separated list of versions
-                Collection<LocalModuleInfo> localModuleInfos = ModuleManager.getINSTANCE().getModules().values();
+                Collection<LocalModuleInfo> localModuleInfos = ModuleManager.getInstance().getModules().values();
                 // make sure we have modules
                 if (localModuleInfos.isEmpty()) {
                     new MaterialAlertDialogBuilder(this.requireContext()).setTitle(R.string.background_update_check_excludes).setMessage(R.string.background_update_check_excludes_no_modules).setPositiveButton(R.string.ok, (dialog, which) -> {
@@ -669,11 +669,10 @@ public class SettingsActivity extends FoxActivity implements LanguageActivity {
                         Set<String> stringSetTemp = new HashSet<>();
                         String prevMod = "";
                         for (int i = 0; i < layout.getChildCount(); i++) {
-                            if (layout.getChildAt(i) instanceof MaterialTextView) {
-                                MaterialTextView mv = (MaterialTextView) layout.getChildAt(i);
+                            if (layout.getChildAt(i) instanceof MaterialTextView mv) {
                                 prevMod = mv.getText().toString();
                                 continue;
-                            };
+                            }
                             EditText editText = (EditText) layout.getChildAt(i);
                             String text = editText.getText().toString();
                             if (!text.isEmpty()) {

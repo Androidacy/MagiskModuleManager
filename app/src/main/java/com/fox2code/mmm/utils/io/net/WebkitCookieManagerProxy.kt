@@ -1,124 +1,117 @@
-package com.fox2code.mmm.utils.io.net;
+package com.fox2code.mmm.utils.io.net
 
-import androidx.annotation.NonNull;
+import okhttp3.Cookie
+import okhttp3.CookieJar
+import okhttp3.HttpUrl
+import timber.log.Timber
+import java.io.IOException
+import java.net.CookieManager
+import java.net.CookiePolicy
+import java.net.CookieStore
+import java.net.URI
 
-import java.io.IOException;
-import java.net.CookieManager;
-import java.net.CookiePolicy;
-import java.net.CookieStore;
-import java.net.URI;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+class WebkitCookieManagerProxy internal constructor(
+    @Suppress("UNUSED_PARAMETER") ignoredStore: CookieStore?,
+    cookiePolicy: CookiePolicy?
+) : CookieManager(null, cookiePolicy), CookieJar {
+    private val webkitCookieManager: android.webkit.CookieManager = android.webkit.CookieManager.getInstance()
 
-import okhttp3.Cookie;
-import okhttp3.CookieJar;
-import okhttp3.HttpUrl;
-import timber.log.Timber;
+    constructor() : this(null, null)
 
-public class WebkitCookieManagerProxy extends CookieManager implements CookieJar {
-    private final android.webkit.CookieManager webkitCookieManager;
-
-    public WebkitCookieManagerProxy() {
-        this(null, null);
-    }
-
-    WebkitCookieManagerProxy(CookieStore ignoredStore, CookiePolicy cookiePolicy) {
-        super(null, cookiePolicy);
-        this.webkitCookieManager = android.webkit.CookieManager.getInstance();
-    }
-
-    @Override
-    public void put(URI uri, Map<String, List<String>> responseHeaders)
-            throws IOException {
+    @Throws(IOException::class)
+    override fun put(uri: URI, responseHeaders: Map<String, List<String>>) {
         // make sure our args are valid
-        if ((uri == null) || (responseHeaders == null))
-            return;
 
         // save our url once
-        String url = uri.toString();
+        val url = uri.toString()
 
         // go over the headers
-        for (Map.Entry<String, List<String>> entry : responseHeaders.entrySet()) {
+        for ((key, value) in responseHeaders) {
             // ignore headers which aren't cookie related
-            if ((entry.getKey() == null)
-                    || !(entry.getKey().equalsIgnoreCase("Set-Cookie2") || entry
-                    .getKey().equalsIgnoreCase("Set-Cookie")))
-                continue;
-            for (String headerValue : entry.getValue()) {
-                webkitCookieManager.setCookie(url, headerValue);
+            if (!(key.equals("Set-Cookie2", ignoreCase = true) || key.equals(
+                "Set-Cookie",
+                ignoreCase = true
+            ))
+            ) continue
+            for (headerValue in value) {
+                webkitCookieManager.setCookie(url, headerValue)
             }
         }
     }
 
-    @Override
-    public Map<String, List<String>> get(URI uri,
-                                         Map<String, List<String>> requestHeaders) throws IOException {
+    @Throws(IOException::class)
+    override fun get(
+        uri: URI,
+        requestHeaders: Map<String, List<String>>
+    ): Map<String, List<String>> {
         // make sure our args are valid
-        if ((uri == null) || (requestHeaders == null))
-            throw new IllegalArgumentException("Argument is null");
+        requireNotNull(requestHeaders.isEmpty()) { "Argument is null" }
 
         // save our url once
-        String url = uri.toString();
+        val url = uri.toString()
 
         // prepare our response
-        Map<String, List<String>> res = new java.util.HashMap<>();
+        val res: MutableMap<String, List<String>> = HashMap()
 
         // get the cookie
-        String cookie = webkitCookieManager.getCookie(url);
+        val cookie = webkitCookieManager.getCookie(url)
 
         // return it
         if (cookie != null) {
-            res.put("Cookie", List.of(cookie));
+            res["Cookie"] = mutableListOf(cookie)
         }
-
-        return res;
+        return res
     }
 
-    @Override
-    public CookieStore getCookieStore() {
+    override fun getCookieStore(): CookieStore {
         // we don't want anyone to work with this cookie store directly
-        throw new UnsupportedOperationException();
+        throw UnsupportedOperationException()
     }
 
-    @Override
-    public void saveFromResponse(@NonNull HttpUrl url, List<Cookie> cookies) {
-        HashMap<String, List<String>> generatedResponseHeaders = new HashMap<>();
-        ArrayList<String> cookiesList = new ArrayList<>();
-        for (Cookie c : cookies) {
+    override fun saveFromResponse(url: HttpUrl, cookies: List<Cookie>) {
+        val generatedResponseHeaders = HashMap<String, List<String>>()
+        val cookiesList = ArrayList<String>()
+        for (c in cookies) {
             // toString correctly generates a normal cookie string
-            cookiesList.add(c.toString());
+            cookiesList.add(c.toString())
         }
-
-        generatedResponseHeaders.put("Set-Cookie", cookiesList);
+        generatedResponseHeaders["Set-Cookie"] = cookiesList
         try {
-            put(url.uri(), generatedResponseHeaders);
-        } catch (IOException e) {
-            Timber.e(e, "Error adding cookies through okhttp");
+            put(url.toUri(), generatedResponseHeaders)
+        } catch (e: IOException) {
+            Timber.e(e, "Error adding cookies through okhttp")
         }
     }
 
-    @NonNull
-    @Override
-    public List<Cookie> loadForRequest(HttpUrl url) {
-        ArrayList<Cookie> cookieArrayList = new ArrayList<>();
+    override fun loadForRequest(url: HttpUrl): List<Cookie> {
+        val cookieArrayList = ArrayList<Cookie>()
         try {
-            Map<String, List<String>> cookieList = get(url.uri(), new HashMap<>());
+            val cookieList = get(url.toUri(), HashMap())
             // Format here looks like: "Cookie":["cookie1=val1;cookie2=val2;"]
-            for (List<String> ls : cookieList.values()) {
-                for (String s : ls) {
-                    String[] cookies = s.split(";");
-                    for (String cookie : cookies) {
-                        Cookie c = Cookie.parse(url, cookie);
-                        cookieArrayList.add(c);
+            for (ls in cookieList.values) {
+                for (s in ls) {
+                    val cookies =
+                        s.split(";".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
+                    for (cookie in cookies) {
+                        val c: Cookie = parse(url, cookie)
+                        cookieArrayList.add(c)
                     }
                 }
             }
-        } catch (IOException e) {
-            Timber.e(e, "error making cookie!");
+        } catch (e: IOException) {
+            Timber.e(e, "error making cookie!")
         }
-        return cookieArrayList;
+        return cookieArrayList
     }
 
+    fun parse (url: HttpUrl, cookie: String): Cookie {
+        val cookieParts = cookie.split("=".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
+        val name = cookieParts[0]
+        val value = cookieParts[1]
+        return Cookie.Builder()
+            .name(name)
+            .value(value)
+            .domain(url.host)
+            .build()
+    }
 }

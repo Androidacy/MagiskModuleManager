@@ -1,363 +1,361 @@
-package com.fox2code.mmm.module;
+package com.fox2code.mmm.module
 
-import android.app.Activity;
-import android.os.Build;
+import android.app.Activity
+import android.os.Build
+import android.view.View
+import androidx.recyclerview.widget.RecyclerView
+import com.fox2code.mmm.AppUpdateManager
+import com.fox2code.mmm.BuildConfig
+import com.fox2code.mmm.MainActivity
+import com.fox2code.mmm.MainApplication
+import com.fox2code.mmm.NotificationType
+import com.fox2code.mmm.installer.InstallerInitializer.Companion.peekHasRamdisk
+import com.fox2code.mmm.installer.InstallerInitializer.Companion.peekMagiskPath
+import com.fox2code.mmm.installer.InstallerInitializer.Companion.peekMagiskVersion
+import com.fox2code.mmm.manager.ModuleManager.Companion.instance
+import com.fox2code.mmm.repo.RepoManager
+import timber.log.Timber
+import java.util.EnumSet
 
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
-
-import com.fox2code.mmm.AppUpdateManager;
-import com.fox2code.mmm.BuildConfig;
-import com.fox2code.mmm.MainActivity;
-import com.fox2code.mmm.MainApplication;
-import com.fox2code.mmm.NotificationType;
-import com.fox2code.mmm.installer.InstallerInitializer;
-import com.fox2code.mmm.manager.LocalModuleInfo;
-import com.fox2code.mmm.manager.ModuleInfo;
-import com.fox2code.mmm.manager.ModuleManager;
-import com.fox2code.mmm.repo.RepoManager;
-import com.fox2code.mmm.repo.RepoModule;
-
-import java.util.ArrayList;
-import java.util.EnumSet;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Locale;
-
-import timber.log.Timber;
-
-public class ModuleViewListBuilder {
-    private static final Runnable RUNNABLE = () -> {};
-    private final EnumSet<NotificationType> notifications = EnumSet.noneOf(NotificationType.class);
-    private final HashMap<String, ModuleHolder> mappedModuleHolders = new HashMap<>();
-    private final Object updateLock = new Object();
-    private final Object queryLock = new Object();
-    private final Activity activity;
-    @NonNull
-    private String query = "";
-    private boolean updating;
-    private int headerPx;
-    private int footerPx;
-    private ModuleSorter moduleSorter = ModuleSorter.UPDATE;
-    private Runnable updateInsets = RUNNABLE;
-
-    public ModuleViewListBuilder(Activity activity) {
-        this.activity = activity;
-    }
-
-    private static void notifySizeChanged(ModuleViewAdapter moduleViewAdapter,
-                                          int index, int oldLen, int newLen) {
-        // Timber.i("A: " + index + " " + oldLen + " " + newLen);
-        if (oldLen == newLen) {
-            if (newLen != 0)
-                moduleViewAdapter.notifyItemRangeChanged(index, newLen);
-        } else if (oldLen < newLen) {
-            if (oldLen != 0)
-                moduleViewAdapter.notifyItemRangeChanged(index, oldLen);
-            moduleViewAdapter.notifyItemRangeInserted(
-                    index + oldLen, newLen - oldLen);
-        } else {
-            if (newLen != 0)
-                moduleViewAdapter.notifyItemRangeChanged(index, newLen);
-            moduleViewAdapter.notifyItemRangeRemoved(
-                    index + newLen, oldLen - newLen);
-        }
-    }
-
-    public void addNotification(NotificationType notificationType) {
+class ModuleViewListBuilder(private val activity: Activity) {
+    private val notifications = EnumSet.noneOf(
+        NotificationType::class.java
+    )
+    private val mappedModuleHolders = HashMap<String, ModuleHolder>()
+    private val updateLock = Any()
+    private val queryLock = Any()
+    private var query = ""
+    private var updating = false
+    private var headerPx = 0
+    private var footerPx = 0
+    private var moduleSorter: ModuleSorter = ModuleSorter.UPDATE
+    private var updateInsets = RUNNABLE
+    fun addNotification(notificationType: NotificationType?) {
         if (notificationType == null) {
-            Timber.w("addNotification(null) called!");
-            return;
+            Timber.w("addNotification(null) called!")
+            return
         } else {
-            Timber.i("addNotification(%s) called", notificationType);
+            Timber.i("addNotification(%s) called", notificationType)
         }
-        synchronized (this.updateLock) {
-            this.notifications.add(notificationType);
-        }
+        synchronized(updateLock) { notifications.add(notificationType) }
     }
 
-    public void appendInstalledModules() {
-        synchronized (this.updateLock) {
-            for (ModuleHolder moduleHolder : this.mappedModuleHolders.values()) {
-                moduleHolder.moduleInfo = null;
+    fun appendInstalledModules() {
+        synchronized(updateLock) {
+            for (moduleHolder in mappedModuleHolders.values) {
+                moduleHolder.moduleInfo = null
             }
-            ModuleManager moduleManager = ModuleManager.getINSTANCE();
-            moduleManager.runAfterScan(() -> {
-                Timber.i("A1: %s", moduleManager.getModules().size());
-                for (LocalModuleInfo moduleInfo : moduleManager.getModules().values()) {
+            val moduleManager = instance
+            moduleManager?.runAfterScan {
+                Timber.i("A1: %s", moduleManager.modules.size)
+                for (moduleInfo in moduleManager.modules.values) {
                     // add the local module to the list in MainActivity
-                    MainActivity.localModuleInfoList.add(moduleInfo);
-                    ModuleHolder moduleHolder = this.mappedModuleHolders.get(moduleInfo.id);
+                    MainActivity.localModuleInfoList.add(moduleInfo)
+                    var moduleHolder = mappedModuleHolders[moduleInfo.id]
                     if (moduleHolder == null) {
-                        this.mappedModuleHolders.put(moduleInfo.id,
-                                moduleHolder = new ModuleHolder(moduleInfo.id));
+                        mappedModuleHolders[moduleInfo.id] = ModuleHolder(moduleInfo.id).also {
+                            moduleHolder = it
+                        }
                     }
-                    moduleHolder.moduleInfo = moduleInfo;
+                    moduleHolder!!.moduleInfo = moduleInfo
                 }
-            });
+            }
         }
     }
 
-    public void appendRemoteModules() {
+    fun appendRemoteModules() {
         if (BuildConfig.DEBUG) {
-            Timber.i("appendRemoteModules() called");
+            Timber.i("appendRemoteModules() called")
         }
-        synchronized (this.updateLock) {
-            boolean showIncompatible = MainApplication.isShowIncompatibleModules();
-            for (ModuleHolder moduleHolder : this.mappedModuleHolders.values()) {
-                moduleHolder.repoModule = null;
+        synchronized(updateLock) {
+            val showIncompatible = MainApplication.isShowIncompatibleModules()
+            for (moduleHolder in mappedModuleHolders.values) {
+                moduleHolder.repoModule = null
             }
-            RepoManager repoManager = RepoManager.getINSTANCE();
-            repoManager.runAfterUpdate(() -> {
-                Timber.i("A2: %s", repoManager.getModules().size());
-                boolean no32bitSupport = Build.SUPPORTED_32_BIT_ABIS.length == 0;
-                for (RepoModule repoModule : repoManager.getModules().values()) {
+            val repoManager = RepoManager.getINSTANCE()
+            repoManager.runAfterUpdate {
+                Timber.i("A2: %s", repoManager.modules.size)
+                val no32bitSupport = Build.SUPPORTED_32_BIT_ABIS.isEmpty()
+                for (repoModule in repoManager.modules.values) {
                     // add the remote module to the list in MainActivity
-                    MainActivity.onlineModuleInfoList.add(repoModule);
+                    MainActivity.onlineModuleInfoList.add(repoModule)
                     // if repoData is null, something is wrong
                     if (repoModule.repoData == null) {
-                        Timber.w("RepoData is null for module %s", repoModule.id);
-                        continue;
+                        Timber.w("RepoData is null for module %s", repoModule.id)
+                        continue
                     }
-                    if (!repoModule.repoData.isEnabled()) {
-                        Timber.i("Repo %s is disabled, skipping module %s", repoModule.repoData.id, repoModule.id);
-                        continue;
+                    if (!repoModule.repoData.isEnabled) {
+                        Timber.i(
+                            "Repo %s is disabled, skipping module %s",
+                            repoModule.repoData.id,
+                            repoModule.id
+                        )
+                        continue
                     }
-                    ModuleInfo moduleInfo = repoModule.moduleInfo;
-                    if (!showIncompatible && (moduleInfo.minApi > Build.VERSION.SDK_INT ||
-                            (moduleInfo.maxApi != 0 && moduleInfo.maxApi < Build.VERSION.SDK_INT) ||
-                            // Only check Magisk compatibility if root is present
-                            (InstallerInitializer.peekMagiskPath() != null &&
-                                    repoModule.moduleInfo.minMagisk >
-                                            InstallerInitializer.peekMagiskVersion())) ||
-                            // If 64bit only system, skip 32bit only modules
-                            (no32bitSupport && (AppUpdateManager.getFlagsForModule(repoModule.id)
-                                    & AppUpdateManager.FLAG_COMPAT_NEED_32BIT) != 0) ||
-                            // If module need ramdisk but boot doesn't have one
-                            (repoModule.moduleInfo.needRamdisk &&
-                                    !InstallerInitializer.peekHasRamdisk())
-                    ) continue; // Skip adding incompatible modules
-                    ModuleHolder moduleHolder = this.mappedModuleHolders.get(repoModule.id);
+                    val moduleInfo = repoModule.moduleInfo
+                    if (!showIncompatible && (moduleInfo.minApi > Build.VERSION.SDK_INT || moduleInfo.maxApi != 0 && moduleInfo.maxApi < Build.VERSION.SDK_INT || peekMagiskPath() != null) && repoModule.moduleInfo.minMagisk > peekMagiskVersion() || no32bitSupport && (AppUpdateManager.getFlagsForModule(
+                            repoModule.id
+                        )
+                                and AppUpdateManager.FLAG_COMPAT_NEED_32BIT) != 0 || repoModule.moduleInfo.needRamdisk && !peekHasRamdisk()
+                    ) continue  // Skip adding incompatible modules
+                    var moduleHolder = mappedModuleHolders[repoModule.id]
                     if (moduleHolder == null) {
-                        this.mappedModuleHolders.put(repoModule.id,
-                                moduleHolder = new ModuleHolder(repoModule.id));
+                        mappedModuleHolders[repoModule.id] = ModuleHolder(repoModule.id).also {
+                            moduleHolder = it
+                        }
                     }
-                    moduleHolder.repoModule = repoModule;
+                    moduleHolder!!.repoModule = repoModule
                     // check if local module is installed
                     // iterate over MainActivity.localModuleInfoList until we hit the module with the same id
-                    for (LocalModuleInfo localModuleInfo : MainActivity.localModuleInfoList) {
-                        if (localModuleInfo.id.equals(repoModule.id)) {
-                            moduleHolder.moduleInfo = localModuleInfo;
-                            break;
+                    for (localModuleInfo in MainActivity.localModuleInfoList) {
+                        if (localModuleInfo.id == repoModule.id) {
+                            moduleHolder!!.moduleInfo = localModuleInfo
+                            break
                         }
                     }
                 }
-            });
+            }
         }
     }
 
-    public void refreshNotificationsUI(ModuleViewAdapter moduleViewAdapter) {
-        final int notificationCount = this.notifications.size();
-        notifySizeChanged(moduleViewAdapter, 0,
-                notificationCount, notificationCount);
+    fun refreshNotificationsUI(moduleViewAdapter: ModuleViewAdapter) {
+        val notificationCount = notifications.size
+        notifySizeChanged(
+            moduleViewAdapter, 0,
+            notificationCount, notificationCount
+        )
     }
 
-    private boolean matchFilter(ModuleHolder moduleHolder) {
-        ModuleInfo moduleInfo = moduleHolder.getMainModuleInfo();
-        String query = this.query;
-        String idLw = moduleInfo.id.toLowerCase(Locale.ROOT);
-        String nameLw = moduleInfo.name.toLowerCase(Locale.ROOT);
-        String authorLw = moduleInfo.author == null ? "" :
-                moduleInfo.author.toLowerCase(Locale.ROOT);
-        if (query.isEmpty() || query.equals(idLw) ||
-                query.equals(nameLw) || query.equals(authorLw)) {
-            moduleHolder.filterLevel = 0; // Lower = better
-            return true;
+    private fun matchFilter(moduleHolder: ModuleHolder): Boolean {
+        val moduleInfo = moduleHolder.mainModuleInfo
+        val query = query
+        val idLw = moduleInfo.id.lowercase()
+        var nameLw: String? = null
+        if (moduleInfo.name != null) {
+            nameLw = moduleInfo.name!!.lowercase()
         }
-        if (idLw.contains(query) || nameLw.contains(query)) {
-            moduleHolder.filterLevel = 1;
-            return true;
+        val authorLw = if (moduleInfo.author == null) "" else moduleInfo.author!!.lowercase()
+        if (query.isEmpty() || query == idLw || query == nameLw || query == authorLw) {
+            moduleHolder.filterLevel = 0 // Lower = better
+            return true
         }
-        if (authorLw.contains(query) || (moduleInfo.description != null &&
-                moduleInfo.description.toLowerCase(Locale.ROOT).contains(query))) {
-            moduleHolder.filterLevel = 2;
-            return true;
+        if (nameLw != null && (idLw.contains(query) || nameLw.contains(query))) {
+            moduleHolder.filterLevel = 1
+            return true
         }
-        moduleHolder.filterLevel = 3;
-        return false;
+        if (authorLw.contains(query) || moduleInfo.description != null && moduleInfo.description!!.lowercase()
+                .contains(query)
+        ) {
+            moduleHolder.filterLevel = 2
+            return true
+        }
+        moduleHolder.filterLevel = 3
+        return false
     }
 
-    public void applyTo(final RecyclerView moduleList, final ModuleViewAdapter moduleViewAdapter) {
-        if (this.updating) return;
-        this.updating = true;
-        ModuleManager.getINSTANCE().afterScan();
-        RepoManager.getINSTANCE().afterUpdate();
-        final ArrayList<ModuleHolder> moduleHolders;
-        final int newNotificationsLen;
-        final boolean first;
+    fun applyTo(moduleList: RecyclerView, moduleViewAdapter: ModuleViewAdapter) {
+        if (updating) return
+        updating = true
+        instance!!.afterScan()
+        RepoManager.getINSTANCE().afterUpdate()
+        val moduleHolders: ArrayList<ModuleHolder>
+        val newNotificationsLen: Int
+        val first: Boolean
         try {
-            synchronized (this.updateLock) {
+            synchronized(updateLock) {
+
                 // Build start
-                moduleHolders = new ArrayList<>(Math.min(64,
-                        this.mappedModuleHolders.size() + 5));
-                int special = 0;
+                moduleHolders = ArrayList(
+                    64.coerceAtMost(mappedModuleHolders.size + 5)
+                )
+                var special = 0
                 // add notifications
-                Iterator<NotificationType> notificationTypeIterator = this.notifications.iterator();
+                val notificationTypeIterator = notifications.iterator()
                 while (notificationTypeIterator.hasNext()) {
-                    NotificationType notificationType = notificationTypeIterator.next();
+                    val notificationType = notificationTypeIterator.next()
                     if (notificationType.shouldRemove()) {
-                        notificationTypeIterator.remove();
+                        notificationTypeIterator.remove()
                     } else {
-                        if (notificationType.special) special++;
-                        moduleHolders.add(new ModuleHolder(notificationType));
+                        if (notificationType.special) special++
+                        moduleHolders.add(ModuleHolder(notificationType))
                     }
                 }
-                first = moduleViewAdapter.moduleHolders.isEmpty();
-                newNotificationsLen = this.notifications.size() + 1 - special;
-                EnumSet<ModuleHolder.Type> headerTypes = EnumSet.of(ModuleHolder.Type.SEPARATOR,
-                        ModuleHolder.Type.NOTIFICATION, ModuleHolder.Type.FOOTER);
-                Iterator<ModuleHolder> moduleHolderIterator = this.mappedModuleHolders.values().iterator();
-                synchronized (this.queryLock) {
+                first = moduleViewAdapter.moduleHolders.isEmpty()
+                newNotificationsLen = notifications.size + 1 - special
+                val headerTypes = EnumSet.of(
+                    ModuleHolder.Type.SEPARATOR,
+                    ModuleHolder.Type.NOTIFICATION, ModuleHolder.Type.FOOTER
+                )
+                val moduleHolderIterator = mappedModuleHolders.values.iterator()
+                synchronized(queryLock) {
                     while (moduleHolderIterator.hasNext()) {
-                        ModuleHolder moduleHolder = moduleHolderIterator.next();
+                        val moduleHolder = moduleHolderIterator.next()
                         if (moduleHolder.shouldRemove()) {
-                            moduleHolderIterator.remove();
+                            moduleHolderIterator.remove()
                         } else {
-                            ModuleHolder.Type type = moduleHolder.getType();
+                            val type = moduleHolder.type
                             if (matchFilter(moduleHolder)) {
                                 if (headerTypes.add(type)) {
-                                    ModuleHolder separator = new ModuleHolder(type);
-                                    if (type == ModuleHolder.Type.INSTALLABLE) {
-                                        ModuleSorter moduleSorter = this.moduleSorter;
-                                        separator.filterLevel = this.moduleSorter.icon;
-                                        separator.onClickListener = v -> {
-                                            if (this.updating || this.moduleSorter != moduleSorter)
-                                                return; // Do not allow spams calls
-                                            this.moduleSorter = this.moduleSorter.next();
-                                            new Thread(() -> // Apply async
-                                                    this.applyTo(moduleList, moduleViewAdapter),
-                                                    "Sorter apply Thread").start();
-                                        };
+                                    val separator = ModuleHolder(type)
+                                    if (type === ModuleHolder.Type.INSTALLABLE) {
+                                        val moduleSorter = moduleSorter
+                                        separator.filterLevel = this.moduleSorter.icon
+                                        separator.onClickListener =
+                                            View.OnClickListener { _: View? ->
+                                                if (updating || this.moduleSorter !== moduleSorter) return@OnClickListener   // Do not allow spams calls
+                                                this.moduleSorter = this.moduleSorter.next()!!
+                                                Thread(
+                                                    { // Apply async
+                                                        applyTo(moduleList, moduleViewAdapter)
+                                                    },
+                                                    "Sorter apply Thread"
+                                                ).start()
+                                            }
                                     }
-                                    moduleHolders.add(separator);
+                                    moduleHolders.add(separator)
                                 }
-                                moduleHolders.add(moduleHolder);
+                                moduleHolders.add(moduleHolder)
                             }
                         }
                     }
                 }
-                moduleHolders.sort(this.moduleSorter);
+                moduleHolders.sortWith(moduleSorter)
                 // Header is always first
                 //moduleHolders.add(0, headerFooter[0] =
                 //        new ModuleHolder(this.headerPx / 2, true));
                 // Footer is always last
                 //moduleHolders.add(headerFooter[1] =
                 //        new ModuleHolder(this.footerPx * 2, false));
-                Timber.i("Got " + moduleHolders.size() + " entries!");
-                // Build end
+                Timber.i("Got " + moduleHolders.size + " entries!")
             }
         } finally {
-            this.updating = false;
+            updating = false
         }
-        this.activity.runOnUiThread(() -> {
-            this.updateInsets = RUNNABLE;
-            final EnumSet<NotificationType> oldNotifications =
-                    EnumSet.noneOf(NotificationType.class);
-            boolean isTop = first || !moduleList.canScrollVertically(-1);
-            boolean isBottom = !isTop && !moduleList.canScrollVertically(1);
-            int oldNotificationsLen = 0;
-            int oldOfflineModulesLen = 0;
-            for (ModuleHolder moduleHolder : moduleViewAdapter.moduleHolders) {
-                NotificationType notificationType = moduleHolder.notificationType;
+        activity.runOnUiThread {
+            updateInsets = RUNNABLE
+            val oldNotifications = EnumSet.noneOf(
+                NotificationType::class.java
+            )
+            val isTop = first || !moduleList.canScrollVertically(-1)
+            val isBottom = !isTop && !moduleList.canScrollVertically(1)
+            var oldNotificationsLen = 0
+            var oldOfflineModulesLen = 0
+            for (moduleHolder in moduleViewAdapter.moduleHolders) {
+                val notificationType = moduleHolder.notificationType
                 if (notificationType != null) {
-                    oldNotifications.add(notificationType);
-                    if (!notificationType.special)
-                        oldNotificationsLen++;
+                    oldNotifications.add(notificationType)
+                    if (!notificationType.special) oldNotificationsLen++
                 } else if (moduleHolder.footerPx != -1 &&
-                        moduleHolder.filterLevel == 1)
-                    oldNotificationsLen++; // Fix header
-                if (moduleHolder.separator == ModuleHolder.Type.INSTALLABLE)
-                    break;
-                oldOfflineModulesLen++;
+                    moduleHolder.filterLevel == 1
+                ) oldNotificationsLen++ // Fix header
+                if (moduleHolder.separator === ModuleHolder.Type.INSTALLABLE) break
+                oldOfflineModulesLen++
             }
-            oldOfflineModulesLen -= oldNotificationsLen;
-            int newOfflineModulesLen = 0;
-            for (ModuleHolder moduleHolder : moduleHolders) {
-                if (moduleHolder.separator == ModuleHolder.Type.INSTALLABLE)
-                    break;
-                newOfflineModulesLen++;
+            oldOfflineModulesLen -= oldNotificationsLen
+            var newOfflineModulesLen = 0
+            for (moduleHolder in moduleHolders) {
+                if (moduleHolder.separator === ModuleHolder.Type.INSTALLABLE) break
+                newOfflineModulesLen++
             }
-            newOfflineModulesLen -= newNotificationsLen;
-            moduleViewAdapter.moduleHolders.size();
-            int newLen = moduleHolders.size();
-            int oldLen = moduleViewAdapter.moduleHolders.size();
-            moduleViewAdapter.moduleHolders.clear();
-            moduleViewAdapter.moduleHolders.addAll(moduleHolders);
+            newOfflineModulesLen -= newNotificationsLen
+            moduleViewAdapter.moduleHolders.size
+            val newLen = moduleHolders.size
+            val oldLen = moduleViewAdapter.moduleHolders.size
+            moduleViewAdapter.moduleHolders.clear()
+            moduleViewAdapter.moduleHolders.addAll(moduleHolders)
             if (oldNotificationsLen != newNotificationsLen ||
-                    !oldNotifications.equals(this.notifications)) {
-                notifySizeChanged(moduleViewAdapter, 0,
-                        oldNotificationsLen, newNotificationsLen);
+                oldNotifications != notifications
+            ) {
+                notifySizeChanged(
+                    moduleViewAdapter, 0,
+                    oldNotificationsLen, newNotificationsLen
+                )
             } else {
-                notifySizeChanged(moduleViewAdapter, 0, 1, 1);
+                notifySizeChanged(moduleViewAdapter, 0, 1, 1)
             }
             if (newLen - newNotificationsLen == 0) {
-                notifySizeChanged(moduleViewAdapter, newNotificationsLen,
-                        oldLen - oldNotificationsLen, 0);
+                notifySizeChanged(
+                    moduleViewAdapter, newNotificationsLen,
+                    oldLen - oldNotificationsLen, 0
+                )
             } else {
-                notifySizeChanged(moduleViewAdapter, newNotificationsLen,
-                        oldOfflineModulesLen, newOfflineModulesLen);
-                notifySizeChanged(moduleViewAdapter,
-                        newNotificationsLen + newOfflineModulesLen,
-                        oldLen - oldNotificationsLen - oldOfflineModulesLen,
-                        newLen - newNotificationsLen - newOfflineModulesLen);
+                notifySizeChanged(
+                    moduleViewAdapter, newNotificationsLen,
+                    oldOfflineModulesLen, newOfflineModulesLen
+                )
+                notifySizeChanged(
+                    moduleViewAdapter,
+                    newNotificationsLen + newOfflineModulesLen,
+                    oldLen - oldNotificationsLen - oldOfflineModulesLen,
+                    newLen - newNotificationsLen - newOfflineModulesLen
+                )
             }
-            if (isTop) moduleList.scrollToPosition(0);
-            if (isBottom) moduleList.scrollToPosition(newLen);
-            this.updateInsets = () -> {
-                notifySizeChanged(moduleViewAdapter, 0, 1, 1);
-                notifySizeChanged(moduleViewAdapter,
-                        moduleHolders.size(), 1, 1);
-            };
-        });
-    }
-
-    public void setQuery(String query) {
-        synchronized (this.queryLock) {
-            Timber.i("Query " + this.query + " -> " + query);
-            this.query = query == null ? "" :
-                    query.trim().toLowerCase(Locale.ROOT);
+            if (isTop) moduleList.scrollToPosition(0)
+            if (isBottom) moduleList.scrollToPosition(newLen)
+            updateInsets = Runnable {
+                notifySizeChanged(moduleViewAdapter, 0, 1, 1)
+                notifySizeChanged(
+                    moduleViewAdapter,
+                    moduleHolders.size, 1, 1
+                )
+            }
         }
     }
 
-    public boolean setQueryChange(String query) {
-        synchronized (this.queryLock) {
-            String newQuery = query == null ? "" :
-                    query.trim().toLowerCase(Locale.ROOT);
-            Timber.i("Query change " + this.query + " -> " + newQuery);
-            if (this.query.equals(newQuery))
-                return false;
-            this.query = newQuery;
+    @Suppress("ktConcatNullable")
+    fun setQuery(query: String?) {
+        synchronized(queryLock) {
+            Timber.i("Query " + this.query + " -> " + query)
+            this.query = query?.trim { it <= ' ' }?.lowercase() ?: ""
         }
-        return true;
     }
 
-    public void setHeaderPx(int headerPx) {
+    fun setQueryChange(query: String?): Boolean {
+        synchronized(queryLock) {
+            val newQuery = query?.trim { it <= ' ' }?.lowercase() ?: ""
+            Timber.i("Query change " + this.query + " -> " + newQuery)
+            if (this.query == newQuery) return false
+            this.query = newQuery
+        }
+        return true
+    }
+
+    fun setHeaderPx(headerPx: Int) {
         if (this.headerPx != headerPx) {
-            synchronized (this.updateLock) {
-                this.headerPx = headerPx;
-            }
+            synchronized(updateLock) { this.headerPx = headerPx }
         }
     }
 
-    public void setFooterPx(int footerPx) {
+    fun setFooterPx(footerPx: Int) {
         if (this.footerPx != footerPx) {
-            synchronized (this.updateLock) {
-                this.footerPx = footerPx;
-            }
+            synchronized(updateLock) { this.footerPx = footerPx }
         }
     }
 
-    public void updateInsets() {
-        this.updateInsets.run();
+    fun updateInsets() {
+        updateInsets.run()
+    }
+
+    companion object {
+        private val RUNNABLE = Runnable {}
+        private fun notifySizeChanged(
+            moduleViewAdapter: ModuleViewAdapter,
+            index: Int, oldLen: Int, newLen: Int
+        ) {
+            // Timber.i("A: " + index + " " + oldLen + " " + newLen);
+            if (oldLen == newLen) {
+                if (newLen != 0) moduleViewAdapter.notifyItemRangeChanged(index, newLen)
+            } else if (oldLen < newLen) {
+                if (oldLen != 0) moduleViewAdapter.notifyItemRangeChanged(index, oldLen)
+                moduleViewAdapter.notifyItemRangeInserted(
+                    index + oldLen, newLen - oldLen
+                )
+            } else {
+                if (newLen != 0) moduleViewAdapter.notifyItemRangeChanged(index, newLen)
+                moduleViewAdapter.notifyItemRangeRemoved(
+                    index + newLen, oldLen - newLen
+                )
+            }
+        }
     }
 }
