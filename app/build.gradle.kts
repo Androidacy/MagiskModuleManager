@@ -451,12 +451,12 @@ dependencies {
     implementation("com.github.Fox2Code:AndroidANSI:1.2.1")
 
     // sentry
-    implementation("io.sentry:sentry-android:6.20.0")
-    implementation("io.sentry:sentry-android-timber:6.20.0")
-    implementation("io.sentry:sentry-android-fragment:6.20.0")
-    implementation("io.sentry:sentry-android-okhttp:6.20.0")
-    implementation("io.sentry:sentry-kotlin-extensions:6.20.0")
-    implementation("io.sentry:sentry-android-ndk:6.20.0")
+    implementation("io.sentry:sentry-android:6.21.0")
+    implementation("io.sentry:sentry-android-timber:6.21.0")
+    implementation("io.sentry:sentry-android-fragment:6.21.0")
+    implementation("io.sentry:sentry-android-okhttp:6.21.0")
+    implementation("io.sentry:sentry-kotlin-extensions:6.21.0")
+    implementation("io.sentry:sentry-android-ndk:6.21.0")
 
     // Markdown
     // TODO: switch to an updated implementation
