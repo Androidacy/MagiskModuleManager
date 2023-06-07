@@ -1,143 +1,151 @@
-package com.fox2code.mmm.utils.sentry;
+package com.fox2code.mmm.utils.sentry
 
-import android.annotation.SuppressLint;
-import android.content.Context;
-import android.content.Intent;
-import android.content.SharedPreferences;
-import android.net.Uri;
+import android.annotation.SuppressLint
+import android.content.Context
+import android.content.Intent
+import android.content.SharedPreferences
+import android.net.Uri
+import android.os.Process
+import com.fox2code.mmm.CrashHandler
+import com.fox2code.mmm.MainApplication
+import com.fox2code.mmm.androidacy.AndroidacyUtil.Companion.hideToken
+import com.fox2code.mmm.androidacy.AndroidacyUtil.Companion.isAndroidacyLink
+import io.sentry.Breadcrumb
+import io.sentry.Hint
+import io.sentry.Sentry
+import io.sentry.SentryEvent
+import io.sentry.SentryOptions.BeforeBreadcrumbCallback
+import io.sentry.SentryOptions.BeforeSendCallback
+import io.sentry.android.core.SentryAndroid
+import io.sentry.android.core.SentryAndroidOptions
+import io.sentry.android.fragment.FragmentLifecycleIntegration
+import io.sentry.android.timber.SentryTimberIntegration
+import org.matomo.sdk.extra.TrackHelper
+import timber.log.Timber
 
-import com.fox2code.mmm.CrashHandler;
-import com.fox2code.mmm.MainApplication;
-import com.fox2code.mmm.androidacy.AndroidacyUtil;
-
-import org.matomo.sdk.extra.TrackHelper;
-
-import java.util.Objects;
-
-import io.sentry.Sentry;
-import io.sentry.android.core.SentryAndroid;
-import io.sentry.android.fragment.FragmentLifecycleIntegration;
-import io.sentry.android.timber.SentryTimberIntegration;
-import timber.log.Timber;
-
-public class SentryMain {
-    public static final boolean IS_SENTRY_INSTALLED = true;
-    public static boolean isCrashing = false;
-    private static boolean sentryEnabled = false;
+object SentryMain {
+    const val IS_SENTRY_INSTALLED = true
+    private var isCrashing = false
+    private var isSentryEnabled = false
 
     /**
      * Initialize Sentry
      * Sentry is used for crash reporting and performance monitoring.
      */
-    @SuppressLint({"RestrictedApi", "UnspecifiedImmutableFlag"})
-    public static void initialize(final MainApplication mainApplication) {
-        Thread.setDefaultUncaughtExceptionHandler((thread, throwable) -> {
-            isCrashing = true;
-            TrackHelper.track().exception(throwable).with(MainApplication.getINSTANCE().getTracker());
-            SharedPreferences.Editor editor = MainApplication.getINSTANCE().getSharedPreferences("sentry", Context.MODE_PRIVATE).edit();
-            editor.putString("lastExitReason", "crash");
-            editor.putLong("lastExitTime", System.currentTimeMillis());
-            editor.putString("lastExitReason", "crash");
-            editor.putString("lastExitId", String.valueOf(Sentry.getLastEventId()));
-            editor.apply();
-            Timber.e("Uncaught exception with sentry ID %s and stacktrace %s", Sentry.getLastEventId(), throwable.getStackTrace());
+    @JvmStatic
+    @SuppressLint("RestrictedApi", "UnspecifiedImmutableFlag")
+    fun initialize(mainApplication: MainApplication) {
+        Thread.setDefaultUncaughtExceptionHandler { _: Thread?, throwable: Throwable ->
+            isCrashing = true
+            TrackHelper.track().exception(throwable).with(MainApplication.getINSTANCE().tracker)
+            val editor =
+                MainApplication.getINSTANCE().getSharedPreferences("sentry", Context.MODE_PRIVATE)
+                    .edit()
+            editor.putString("lastExitReason", "crash")
+            editor.putLong("lastExitTime", System.currentTimeMillis())
+            editor.putString("lastExitReason", "crash")
+            editor.putString("lastExitId", Sentry.getLastEventId().toString())
+            editor.apply()
+            Timber.e(
+                "Uncaught exception with sentry ID %s and stacktrace %s",
+                Sentry.getLastEventId(),
+                throwable.stackTrace
+            )
             // open crash handler and exit
-            Intent intent = new Intent(mainApplication, CrashHandler.class);
+            val intent = Intent(mainApplication, CrashHandler::class.java)
             // pass the entire exception to the crash handler
-            intent.putExtra("exception", throwable);
+            intent.putExtra("exception", throwable)
             // add stacktrace as string
-            intent.putExtra("stacktrace", throwable.getStackTrace());
+            intent.putExtra("stacktrace", throwable.stackTrace)
             // put lastEventId in intent (get from preferences)
-            intent.putExtra("lastEventId", String.valueOf(Sentry.getLastEventId()));
+            intent.putExtra("lastEventId", Sentry.getLastEventId().toString())
             // serialize Sentry.captureException and pass it to the crash handler
-            intent.putExtra("sentryException", throwable);
+            intent.putExtra("sentryException", throwable)
             // pass crashReportingEnabled to crash handler
-            intent.putExtra("crashReportingEnabled", isSentryEnabled());
+            intent.putExtra("crashReportingEnabled", isSentryEnabled)
             // add isCrashing to intent
-            intent.putExtra("isCrashing", isCrashing);
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            Timber.e("Starting crash handler");
-            mainApplication.startActivity(intent);
-            Timber.e("Exiting");
-            android.os.Process.killProcess(android.os.Process.myPid());
-        });
-        // If first_launch pref is not false, refuse to initialize Sentry
-        SharedPreferences sharedPreferences = MainApplication.getSharedPreferences("mmm");
-        if (!Objects.equals(sharedPreferences.getString("last_shown_setup", null), "v2")) {
-            return;
+            intent.putExtra("isCrashing", isCrashing)
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+            Timber.e("Starting crash handler")
+            mainApplication.startActivity(intent)
+            Timber.e("Exiting")
+            Process.killProcess(Process.myPid())
         }
-        sentryEnabled = sharedPreferences.getBoolean("pref_crash_reporting_enabled", false);
+        // If first_launch pref is not false, refuse to initialize Sentry
+        val sharedPreferences = MainApplication.getSharedPreferences("mmm")
+        if (sharedPreferences.getString("last_shown_setup", null) != "v2") {
+            return
+        }
+        isSentryEnabled = sharedPreferences.getBoolean("pref_crash_reporting_enabled", false)
         // set sentryEnabled on preference change of pref_crash_reporting_enabled
-        sharedPreferences.registerOnSharedPreferenceChangeListener((sharedPreferences1, s) -> {
-            if (s.equals("pref_crash_reporting_enabled")) {
-                sentryEnabled = sharedPreferences1.getBoolean(s, false);
+        sharedPreferences.registerOnSharedPreferenceChangeListener { sharedPreferences1: SharedPreferences, s: String ->
+            if (s == "pref_crash_reporting_enabled") {
+                isSentryEnabled = sharedPreferences1.getBoolean(s, false)
             }
-        });
-        SentryAndroid.init(mainApplication, options -> {
+        }
+        SentryAndroid.init(mainApplication) { options: SentryAndroidOptions ->
             // If crash reporting is disabled, stop here.
             if (!MainApplication.isCrashReportingEnabled()) {
-                sentryEnabled = false; // Set sentry state to disabled
-                options.setDsn("");
+                isSentryEnabled = false // Set sentry state to disabled
+                options.dsn = ""
             } else {
                 // get pref_crash_reporting_pii pref
-                boolean crashReportingPii = sharedPreferences.getBoolean("crashReportingPii", false);
-                sentryEnabled = true; // Set sentry state to enabled
-                options.addIntegration(new FragmentLifecycleIntegration(mainApplication, true, true));
+                val crashReportingPii = sharedPreferences.getBoolean("crashReportingPii", false)
+                isSentryEnabled = true // Set sentry state to enabled
+                options.addIntegration(FragmentLifecycleIntegration(mainApplication,
+                    enableFragmentLifecycleBreadcrumbs = true,
+                    enableAutoFragmentLifecycleTracing = true
+                ))
                 // Enable automatic activity lifecycle breadcrumbs
-                options.setEnableActivityLifecycleBreadcrumbs(true);
+                options.isEnableActivityLifecycleBreadcrumbs = true
                 // Enable automatic fragment lifecycle breadcrumbs
-                options.addIntegration(new SentryTimberIntegration());
-                options.setCollectAdditionalContext(true);
-                options.setAttachThreads(true);
-                options.setAttachStacktrace(true);
-                options.setEnableNdk(true);
-                options.addInAppInclude("com.fox2code.mmm");
-                options.addInAppInclude("com.fox2code.mmm.debug");
-                options.addInAppInclude("com.fox2code.mmm.fdroid");
-                options.addInAppExclude("com.fox2code.mmm.utils.sentry.SentryMain");
+                options.addIntegration(SentryTimberIntegration())
+                options.isCollectAdditionalContext = true
+                options.isAttachThreads = true
+                options.isAttachStacktrace = true
+                options.isEnableNdk = true
+                options.addInAppInclude("com.fox2code.mmm")
+                options.addInAppInclude("com.fox2code.mmm.debug")
+                options.addInAppInclude("com.fox2code.mmm.fdroid")
+                options.addInAppExclude("com.fox2code.mmm.utils.sentry.SentryMain")
                 // Respect user preference for sending PII. default is true on non fdroid builds, false on fdroid builds
-                options.setSendDefaultPii(crashReportingPii);
-                options.enableAllAutoBreadcrumbs(true);
+                options.isSendDefaultPii = crashReportingPii
+                options.enableAllAutoBreadcrumbs(true)
                 // in-app screenshots are only sent if the app crashes, and it only shows the last activity. so no, we won't see your, ahem, "private" stuff
-                options.setAttachScreenshot(true);
+                options.isAttachScreenshot = true
                 // It just tell if sentry should ping the sentry dsn to tell the app is running. Useful for performance and profiling.
-                options.setEnableAutoSessionTracking(true);
+                options.isEnableAutoSessionTracking = true
                 // disable crash tracking - we handle that ourselves
-                options.setEnableUncaughtExceptionHandler(false);
+                options.isEnableUncaughtExceptionHandler = false
                 // Add a callback that will be used before the event is sent to Sentry.
                 // With this callback, you can modify the event or, when returning null, also discard the event.
-                options.setBeforeSend((event, hint) -> {
+                options.beforeSend = BeforeSendCallback { event: SentryEvent?, _: Hint? ->
                     // in the rare event that crash reporting has been disabled since we started the app, we don't want to send the crash report
-                    if (!sentryEnabled) {
-                        return null;
+                    if (!isSentryEnabled || isCrashing) {
+                        return@BeforeSendCallback null
                     }
-                    if (isCrashing) {
-                        return null;
-                    }
-                    return event;
-                });
+                    event
+                }
                 // Filter breadcrumb content from crash report.
-                options.setBeforeBreadcrumb((breadcrumb, hint) -> {
-                    String url = (String) breadcrumb.getData("url");
-                    if (url == null || url.isEmpty()) return breadcrumb;
-                    if ("cloudflare-dns.com".equals(Uri.parse(url).getHost())) return null;
-                    if (AndroidacyUtil.Companion.isAndroidacyLink(url)) {
-                        breadcrumb.setData("url", AndroidacyUtil.hideToken(url));
+                options.beforeBreadcrumb =
+                    BeforeBreadcrumbCallback { breadcrumb: Breadcrumb, _: Hint? ->
+                        val url = breadcrumb.getData("url") as String?
+                        if (url.isNullOrEmpty()) return@BeforeBreadcrumbCallback null
+                        if ("cloudflare-dns.com" == Uri.parse(url).host) {
+                            return@BeforeBreadcrumbCallback null
+                        }
+                        if (isAndroidacyLink(url)) {
+                            breadcrumb.setData("url", hideToken(url))
+                        }
+                        breadcrumb
                     }
-                    return breadcrumb;
-                });
             }
-        });
-    }
-
-    public static void addSentryBreadcrumb(SentryBreadcrumb sentryBreadcrumb) {
-        if (MainApplication.isCrashReportingEnabled()) {
-            Sentry.addBreadcrumb(sentryBreadcrumb.breadcrumb);
         }
     }
 
-    @SuppressWarnings("unused")
-    public static boolean isSentryEnabled() {
-        return sentryEnabled;
+    fun addSentryBreadcrumb(sentryBreadcrumb: SentryBreadcrumb) {
+        if (MainApplication.isCrashReportingEnabled()) {
+            Sentry.addBreadcrumb(sentryBreadcrumb.breadcrumb)
+        }
     }
 }

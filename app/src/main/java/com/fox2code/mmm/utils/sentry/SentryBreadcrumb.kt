@@ -1,32 +1,29 @@
-package com.fox2code.mmm.utils.sentry;
+package com.fox2code.mmm.utils.sentry
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import io.sentry.Breadcrumb
+import io.sentry.SentryLevel
+import java.util.Objects
 
-import java.util.Objects;
+class SentryBreadcrumb {
+    @JvmField
+    val breadcrumb: Breadcrumb = Breadcrumb()
 
-import io.sentry.Breadcrumb;
-import io.sentry.SentryLevel;
-
-public class SentryBreadcrumb {
-    public final Breadcrumb breadcrumb;
-
-    public SentryBreadcrumb() {
-        breadcrumb = new Breadcrumb();
-        breadcrumb.setLevel(SentryLevel.INFO);
+    init {
+        breadcrumb.level = SentryLevel.INFO
     }
 
-    public void setType(@Nullable String type) {
-        breadcrumb.setType(type);
+    fun setType(type: String?) {
+        breadcrumb.type = type
     }
 
-    public void setData(@NotNull String key, @Nullable Object value) {
-        if (value == null) value = "null";
-        Objects.requireNonNull(key);
-        breadcrumb.setData(key, value);
+    fun setData(key: String, value: Any?) {
+        @Suppress("NAME_SHADOWING") var value = value
+        if (value == null) value = "null"
+        Objects.requireNonNull(key)
+        breadcrumb.setData(key, value)
     }
 
-    public void setCategory(@Nullable String category) {
-        breadcrumb.setCategory(category);
+    fun setCategory(category: String?) {
+        breadcrumb.category = category
     }
 }
