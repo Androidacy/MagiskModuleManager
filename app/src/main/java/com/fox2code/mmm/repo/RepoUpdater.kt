@@ -1,128 +1,147 @@
-package com.fox2code.mmm.repo;
+package com.fox2code.mmm.repo
 
-import com.fox2code.mmm.MainApplication;
-import com.fox2code.mmm.utils.io.net.Http;
-import com.fox2code.mmm.utils.realm.ModuleListCache;
-import com.fox2code.mmm.utils.realm.ReposList;
+import com.fox2code.mmm.MainApplication
+import com.fox2code.mmm.utils.io.net.Http.Companion.doHttpGet
+import com.fox2code.mmm.utils.realm.ModuleListCache
+import com.fox2code.mmm.utils.realm.ReposList
+import io.realm.Realm
+import io.realm.RealmConfiguration
+import org.json.JSONArray
+import org.json.JSONObject
+import timber.log.Timber
+import java.nio.charset.StandardCharsets
+import java.util.concurrent.atomic.AtomicBoolean
 
-import org.json.JSONArray;
-import org.json.JSONObject;
-
-import java.io.File;
-import java.nio.charset.StandardCharsets;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Objects;
-import java.util.concurrent.atomic.AtomicBoolean;
-
-import io.realm.Realm;
-import io.realm.RealmConfiguration;
-import io.realm.RealmResults;
-import timber.log.Timber;
-
-public class RepoUpdater {
-    public final RepoData repoData;
-    public byte[] indexRaw;
-    private List<RepoModule> toUpdate;
-    private Collection<RepoModule> toApply;
-
-    public RepoUpdater(RepoData repoData) {
-        this.repoData = repoData;
-    }
-
-    public int fetchIndex() {
+class RepoUpdater(val repoData: RepoData) {
+    private var indexRaw: ByteArray? = null
+    private var toUpdate: List<RepoModule>? = null
+    private var toApply: Collection<RepoModule>? = null
+    fun fetchIndex(): Int {
         if (!RepoManager.getINSTANCE().hasConnectivity()) {
-            this.indexRaw = null;
-            this.toUpdate = Collections.emptyList();
-            this.toApply = Collections.emptySet();
-            return 0;
+            indexRaw = null
+            toUpdate = emptyList()
+            toApply = emptySet()
+            return 0
         }
-        if (!this.repoData.isEnabled()) {
-            this.indexRaw = null;
-            this.toUpdate = Collections.emptyList();
-            this.toApply = Collections.emptySet();
-            return 0;
+        if (!repoData.isEnabled) {
+            indexRaw = null
+            toUpdate = emptyList()
+            toApply = emptySet()
+            return 0
         }
         // if we shouldn't update, get the values from the ModuleListCache realm
-        if (!this.repoData.shouldUpdate() && Objects.equals(this.repoData.id, "androidacy_repo")) { // for now, only enable cache reading for androidacy repo, until we handle storing module prop file values in cache
-            Timber.d("Fetching index from cache for %s", this.repoData.id);
-            File cacheRoot = MainApplication.getINSTANCE().getDataDirWithPath("realms/repos/" + this.repoData.id);
-            RealmConfiguration realmConfiguration = new RealmConfiguration.Builder().name("ModuleListCache.realm").encryptionKey(MainApplication.getINSTANCE().getKey()).schemaVersion(1).deleteRealmIfMigrationNeeded().allowWritesOnUiThread(true).allowQueriesOnUiThread(true).directory(cacheRoot).build();
-            Realm realm = Realm.getInstance(realmConfiguration);
-            RealmResults<ModuleListCache> results = realm.where(ModuleListCache.class).equalTo("repoId", this.repoData.id).findAll();
+        if (!repoData.shouldUpdate() && repoData.id == "androidacy_repo") { // for now, only enable cache reading for androidacy repo, until we handle storing module prop file values in cache
+            Timber.d("Fetching index from cache for %s", repoData.id)
+            val cacheRoot =
+                MainApplication.getINSTANCE().getDataDirWithPath("realms/repos/" + repoData.id)
+            val realmConfiguration = RealmConfiguration.Builder().name("ModuleListCache.realm")
+                .encryptionKey(MainApplication.getINSTANCE().key).schemaVersion(1)
+                .deleteRealmIfMigrationNeeded().allowWritesOnUiThread(true)
+                .allowQueriesOnUiThread(true).directory(cacheRoot).build()
+            val realm = Realm.getInstance(realmConfiguration)
+            val results = realm.where(
+                ModuleListCache::class.java
+            ).equalTo("repoId", repoData.id).findAll()
             // repos-list realm
-            RealmConfiguration realmConfiguration2 = new RealmConfiguration.Builder().name("ReposList.realm").encryptionKey(MainApplication.getINSTANCE().getKey()).allowQueriesOnUiThread(true).allowWritesOnUiThread(true).directory(MainApplication.getINSTANCE().getDataDirWithPath("realms")).schemaVersion(1).build();
-            Realm realm2 = Realm.getInstance(realmConfiguration2);
-            this.toUpdate = Collections.emptyList();
-            this.toApply = new HashSet<>();
-            for (ModuleListCache moduleListCache : results) {
-                this.toApply.add(new RepoModule(this.repoData, moduleListCache.getCodename(), moduleListCache.getName(), moduleListCache.getDescription(), moduleListCache.getAuthor(), moduleListCache.getDonate(), moduleListCache.getConfig(), moduleListCache.getSupport(), moduleListCache.getVersion(), moduleListCache.getVersionCode()));
+            val realmConfiguration2 = RealmConfiguration.Builder().name("ReposList.realm")
+                .encryptionKey(MainApplication.getINSTANCE().key).allowQueriesOnUiThread(true)
+                .allowWritesOnUiThread(true)
+                .directory(MainApplication.getINSTANCE().getDataDirWithPath("realms"))
+                .schemaVersion(1).build()
+            val realm2 = Realm.getInstance(realmConfiguration2)
+            toUpdate = emptyList()
+            toApply = HashSet()
+            for (moduleListCache in results) {
+                (toApply as HashSet<RepoModule>).add(
+                    RepoModule(
+                        repoData,
+                        moduleListCache.codename,
+                        moduleListCache.name,
+                        moduleListCache.description,
+                        moduleListCache.author,
+                        moduleListCache.donate,
+                        moduleListCache.config,
+                        moduleListCache.support,
+                        moduleListCache.version,
+                        moduleListCache.versionCode
+                    )
+                )
             }
-            Timber.d("Fetched %d modules from cache for %s, from %s records", this.toApply.size(), this.repoData.id, results.size());
+            Timber.d(
+                "Fetched %d modules from cache for %s, from %s records",
+                (toApply as HashSet<RepoModule>).size,
+                repoData.id,
+                results.size
+            )
             // apply the toApply list to the toUpdate list
             try {
-                JSONObject jsonObject = new JSONObject();
-                jsonObject.put("modules", new JSONArray(results.asJSON()));
-                this.toUpdate = this.repoData.populate(jsonObject);
-            } catch (Exception e) {
-                Timber.e(e);
+                val jsonObject = JSONObject()
+                jsonObject.put("modules", JSONArray(results.asJSON()))
+                toUpdate = repoData.populate(jsonObject)
+            } catch (e: Exception) {
+                Timber.e(e)
             }
             // close realm
-            realm.close();
-            realm2.close();
+            realm.close()
+            realm2.close()
             // Since we reuse instances this should work
-            this.toApply = new HashSet<>(this.repoData.moduleHashMap.values());
-            this.toApply.removeAll(this.toUpdate);
+            toApply = HashSet(repoData.moduleHashMap.values)
+            (toApply as HashSet<RepoModule>).removeAll(toUpdate!!.toSet())
             // Return repo to update
-            return this.toUpdate.size();
+            return toUpdate!!.size
         }
-        try {
-            if (!this.repoData.prepare()) {
-                this.indexRaw = null;
-                this.toUpdate = Collections.emptyList();
-                this.toApply = this.repoData.moduleHashMap.values();
-                return 0;
+        return try {
+            if (!repoData.prepare()) {
+                indexRaw = null
+                toUpdate = emptyList()
+                toApply = repoData.moduleHashMap.values
+                return 0
             }
-            this.indexRaw = Http.doHttpGet(this.repoData.getUrl(), false);
-            this.toUpdate = this.repoData.populate(new JSONObject(new String(this.indexRaw, StandardCharsets.UTF_8)));
+            indexRaw = doHttpGet(repoData.getUrl(), false)
+            toUpdate = repoData.populate(JSONObject(String(indexRaw!!, StandardCharsets.UTF_8)))
             // Since we reuse instances this should work
-            this.toApply = new HashSet<>(this.repoData.moduleHashMap.values());
-            this.toApply.removeAll(this.toUpdate);
+            toApply = HashSet(repoData.moduleHashMap.values)
+            (toUpdate as MutableList<RepoModule>?)?.let {
+                (toApply as HashSet<RepoModule>).removeAll(
+                    it.toSet()
+                )
+            }
             // Return repo to update
-            return this.toUpdate.size();
-        } catch (
-                Exception e) {
-            Timber.e(e);
-            this.indexRaw = null;
-            this.toUpdate = Collections.emptyList();
-            this.toApply = Collections.emptySet();
-            return 0;
+            (toUpdate as MutableList<RepoModule>?)!!.size
+        } catch (e: Exception) {
+            Timber.e(e)
+            indexRaw = null
+            toUpdate = emptyList()
+            toApply = emptySet()
+            0
         }
     }
 
-    public List<RepoModule> toUpdate() {
-        return this.toUpdate;
+    fun toUpdate(): List<RepoModule>? {
+        return toUpdate
     }
 
-    public Collection<RepoModule> toApply() {
-        return this.toApply;
+    fun toApply(): Collection<RepoModule>? {
+        return toApply
     }
 
-    public boolean finish() {
-        var success = new AtomicBoolean(false);
+    fun finish(): Boolean {
+        val success = AtomicBoolean(false)
         // If repo is not enabled we don't need to do anything, just return true
-        if (!this.repoData.isEnabled()) {
-            return true;
+        if (!repoData.isEnabled) {
+            return true
         }
-        if (this.indexRaw != null) {
+        if (indexRaw != null) {
             try {
                 // iterate over modules, using this.supportedProperties as a template to attempt to get each property from the module. everything that is not null is added to the module
                 // use realm to insert to
                 // props avail:
-                File cacheRoot = MainApplication.getINSTANCE().getDataDirWithPath("realms/repos/" + this.repoData.id);
-                RealmConfiguration realmConfiguration = new RealmConfiguration.Builder().name("ModuleListCache.realm").encryptionKey(MainApplication.getINSTANCE().getKey()).schemaVersion(1).deleteRealmIfMigrationNeeded().allowWritesOnUiThread(true).allowQueriesOnUiThread(true).directory(cacheRoot).build();
+                val cacheRoot =
+                    MainApplication.getINSTANCE().getDataDirWithPath("realms/repos/" + repoData.id)
+                val realmConfiguration = RealmConfiguration.Builder().name("ModuleListCache.realm")
+                    .encryptionKey(MainApplication.getINSTANCE().key).schemaVersion(1)
+                    .deleteRealmIfMigrationNeeded().allowWritesOnUiThread(true)
+                    .allowQueriesOnUiThread(true).directory(cacheRoot).build()
                 // array with module info default values
                 // supported properties for a module
                 //id=<string>
@@ -147,146 +166,134 @@ public class RepoUpdater {
                 //
                 // all except first six can be null
                 // this.indexRaw is the raw index file (json)
-                JSONObject modules = new JSONObject(new String(this.indexRaw, StandardCharsets.UTF_8));
-                JSONArray modulesArray;
+                val modules = JSONObject(String(indexRaw!!, StandardCharsets.UTF_8))
                 // androidacy repo uses "data" key, others should use "modules" key. Both are JSONArrays
-                if (this.repoData.getName().equals("Androidacy Modules Repo")) {
+                val modulesArray: JSONArray = if (repoData.name == "Androidacy Modules Repo") {
                     // get modules from "data" key. This is a JSONArray so we need to convert it to a JSONObject
-                    modulesArray = modules.getJSONArray("data");
+                    modules.getJSONArray("data")
                 } else {
                     // get modules from "modules" key. This is a JSONArray so we need to convert it to a JSONObject
-                    modulesArray = modules.getJSONArray("modules");
+                    modules.getJSONArray("modules")
                 }
-                Realm realm = Realm.getInstance(realmConfiguration);
+                val realm = Realm.getInstance(realmConfiguration)
                 // drop old data
-                if (realm.isInTransaction()) {
-                    realm.commitTransaction();
+                if (realm.isInTransaction) {
+                    realm.commitTransaction()
                 }
-                realm.beginTransaction();
-                realm.where(ModuleListCache.class).equalTo("repoId", this.repoData.id).findAll().deleteAllFromRealm();
-                realm.commitTransaction();
+                realm.beginTransaction()
+                realm.where(ModuleListCache::class.java).equalTo("repoId", repoData.id).findAll()
+                    .deleteAllFromRealm()
+                realm.commitTransaction()
                 // iterate over modules. pls don't hate me for this, its ugly but it works
-                for (int n = 0; n < modulesArray.length(); n++) {
+                for (n in 0 until modulesArray.length()) {
                     // get module
-                    JSONObject module = modulesArray.getJSONObject(n);
+                    val module = modulesArray.getJSONObject(n)
                     try {
                         // get module id
                         // if codename is present, prefer that over id
-                        String id;
-                        if (module.has("codename") && !module.getString("codename").equals("")) {
-                            id = module.getString("codename");
+                        val id: String? = if (module.has("codename") && module.getString("codename") != "") {
+                            module.getString("codename")
                         } else {
-                            id = module.getString("id");
+                            module.getString("id")
                         }
                         // get module name
-                        String name = module.getString("name");
+                        val name = module.getString("name")
                         // get module version
-                        String version = module.getString("version");
+                        val version = module.getString("version")
                         // get module version code
-                        int versionCode = module.getInt("versionCode");
+                        val versionCode = module.getInt("versionCode")
                         // get module author
-                        String author = module.getString("author");
+                        val author = module.getString("author")
                         // get module description
-                        String description = module.getString("description");
+                        val description = module.getString("description")
                         // get module min api
-                        String minApi;
-                        if (module.has("minApi") && !module.getString("minApi").equals("")) {
-                            minApi = module.getString("minApi");
+                        val minApi: String = if (module.has("minApi") && module.getString("minApi") != "") {
+                            module.getString("minApi")
                         } else {
-                            minApi = "0";
+                            "0"
                         }
                         // coerce min api to int
-                        int minApiInt = Integer.parseInt(minApi);
+                        val minApiInt = minApi.toInt()
                         // get module max api and set to 0 if it's "" or null
-                        String maxApi;
-                        if (module.has("maxApi") && !module.getString("maxApi").equals("")) {
-                            maxApi = module.getString("maxApi");
+                        val maxApi: String = if (module.has("maxApi") && module.getString("maxApi") != "") {
+                            module.getString("maxApi")
                         } else {
-                            maxApi = "0";
+                            "0"
                         }
                         // coerce max api to int
-                        int maxApiInt = Integer.parseInt(maxApi);
+                        val maxApiInt = maxApi.toInt()
                         // get module min magisk
-                        String minMagisk;
-                        if (module.has("minMagisk") && !module.getString("minMagisk").equals("")) {
-                            minMagisk = module.getString("minMagisk");
-                        } else {
-                            minMagisk = "0";
-                        }
+                        val minMagisk: String = if (module.has("minMagisk") && module.getString("minMagisk") != "") {
+                                module.getString("minMagisk")
+                            } else {
+                                "0"
+                            }
                         // coerce min magisk to int
-                        int minMagiskInt = Integer.parseInt(minMagisk);
+                        val minMagiskInt = minMagisk.toInt()
                         // get module need ramdisk
-                        boolean needRamdisk;
-                        if (module.has("needRamdisk")) {
-                            needRamdisk = module.getBoolean("needRamdisk");
+                        val needRamdisk: Boolean = if (module.has("needRamdisk")) {
+                            module.getBoolean("needRamdisk")
                         } else {
-                            needRamdisk = false;
+                            false
                         }
                         // get module support
-                        String support;
-                        if (module.has("support")) {
-                            support = module.getString("support");
+                        val support: String? = if (module.has("support")) {
+                            module.getString("support")
                         } else {
-                            support = "";
+                            ""
                         }
                         // get module donate
-                        String donate;
-                        if (module.has("donate")) {
-                            donate = module.getString("donate");
+                        val donate: String? = if (module.has("donate")) {
+                            module.getString("donate")
                         } else {
-                            donate = "";
+                            ""
                         }
                         // get module config
-                        String config;
-                        if (module.has("config")) {
-                            config = module.getString("config");
+                        val config: String? = if (module.has("config")) {
+                            module.getString("config")
                         } else {
-                            config = "";
+                            ""
                         }
                         // get module change boot
-                        boolean changeBoot;
-                        if (module.has("changeBoot")) {
-                            changeBoot = module.getBoolean("changeBoot");
+                        val changeBoot: Boolean = if (module.has("changeBoot")) {
+                            module.getBoolean("changeBoot")
                         } else {
-                            changeBoot = false;
+                            false
                         }
                         // get module mmt reborn
-                        boolean mmtReborn;
-                        if (module.has("mmtReborn")) {
-                            mmtReborn = module.getBoolean("mmtReborn");
+                        val mmtReborn: Boolean = if (module.has("mmtReborn")) {
+                            module.getBoolean("mmtReborn")
                         } else {
-                            mmtReborn = false;
+                            false
                         }
                         // try to get updated_at or lastUpdate value for lastUpdate
-                        int lastUpdate;
-                        if (module.has("updated_at")) {
-                            lastUpdate = module.getInt("updated_at");
+                        val lastUpdate: Int = if (module.has("updated_at")) {
+                            module.getInt("updated_at")
                         } else if (module.has("lastUpdate")) {
-                            lastUpdate = module.getInt("lastUpdate");
+                            module.getInt("lastUpdate")
                         } else {
-                            lastUpdate = 0;
+                            0
                         }
                         // now downloads or stars
-                        int downloads;
-                        if (module.has("downloads")) {
-                            downloads = module.getInt("downloads");
+                        val downloads: Int = if (module.has("downloads")) {
+                            module.getInt("downloads")
                         } else if (module.has("stars")) {
-                            downloads = module.getInt("stars");
+                            module.getInt("stars")
                         } else {
-                            downloads = 0;
+                            0
                         }
                         // get module repo id
-                        String repoId = this.repoData.id;
+                        val repoId = repoData.id
                         // get module installed
-                        boolean installed = false;
+                        val installed = false
                         // get module installed version code
-                        int installedVersionCode = 0;
+                        val installedVersionCode = 0
                         // get safe property. for now, only supported by androidacy repo and they use "vt_status" key
-                        boolean safe = false;
-                        if (this.repoData.getName().equals("Androidacy Modules Repo")) {
+                        var safe = false
+                        if (repoData.name == "Androidacy Modules Repo") {
                             if (module.has("vt_status")) {
-                                if (module.getString("vt_status").equals("Clean")) {
-                                    safe = true;
+                                if (module.getString("vt_status") == "Clean") {
+                                    safe = true
                                 }
                             }
                         }
@@ -295,70 +302,79 @@ public class RepoUpdater {
                         // then insert to realm
                         // then commit
                         // then close
-                        if (realm.isInTransaction()) {
-                            realm.cancelTransaction();
+                        if (realm.isInTransaction) {
+                            realm.cancelTransaction()
                         }
                         // create a realm object and insert or update it
                         // add everything to the realm object
-                        if (realm.isInTransaction()) {
-                            realm.commitTransaction();
+                        if (realm.isInTransaction) {
+                            realm.commitTransaction()
                         }
-                        realm.beginTransaction();
-                        ModuleListCache moduleListCache = realm.createObject(ModuleListCache.class, id);
-                        moduleListCache.setName(name);
-                        moduleListCache.setVersion(version);
-                        moduleListCache.setVersionCode(versionCode);
-                        moduleListCache.setAuthor(author);
-                        moduleListCache.setDescription(description);
-                        moduleListCache.setMinApi(minApiInt);
-                        moduleListCache.setMaxApi(maxApiInt);
-                        moduleListCache.setMinMagisk(minMagiskInt);
-                        moduleListCache.setNeedRamdisk(needRamdisk);
-                        moduleListCache.setSupport(support);
-                        moduleListCache.setDonate(donate);
-                        moduleListCache.setConfig(config);
-                        moduleListCache.setChangeBoot(changeBoot);
-                        moduleListCache.setMmtReborn(mmtReborn);
-                        moduleListCache.setRepoId(repoId);
-                        moduleListCache.setInstalled(installed);
-                        moduleListCache.setInstalledVersionCode(installedVersionCode);
-                        moduleListCache.setSafe(safe);
-                        moduleListCache.setLastUpdate(lastUpdate);
-                        moduleListCache.setStats(downloads);
-                        realm.copyToRealmOrUpdate(moduleListCache);
-                        realm.commitTransaction();
-                    } catch (
-                            Exception ignored) {
+                        realm.beginTransaction()
+                        val moduleListCache = realm.createObject(
+                            ModuleListCache::class.java, id
+                        )
+                        moduleListCache.name = name
+                        moduleListCache.version = version
+                        moduleListCache.versionCode = versionCode
+                        moduleListCache.author = author
+                        moduleListCache.description = description
+                        moduleListCache.minApi = minApiInt
+                        moduleListCache.maxApi = maxApiInt
+                        moduleListCache.minMagisk = minMagiskInt
+                        moduleListCache.isNeedRamdisk = needRamdisk
+                        moduleListCache.support = support
+                        moduleListCache.donate = donate
+                        moduleListCache.config = config
+                        moduleListCache.isChangeBoot = changeBoot
+                        moduleListCache.isMmtReborn = mmtReborn
+                        moduleListCache.repoId = repoId
+                        moduleListCache.isInstalled = installed
+                        moduleListCache.installedVersionCode = installedVersionCode
+                        moduleListCache.isSafe = safe
+                        moduleListCache.lastUpdate = lastUpdate
+                        moduleListCache.stats = downloads
+                        realm.copyToRealmOrUpdate(moduleListCache)
+                        realm.commitTransaction()
+                    } catch (ignored: Exception) {
                     }
                 }
-                realm.close();
-            } catch (
-                    Exception ignored) {
+                realm.close()
+            } catch (ignored: Exception) {
             }
-            this.indexRaw = null;
-            RealmConfiguration realmConfiguration2 = new RealmConfiguration.Builder().name("ReposList.realm").encryptionKey(MainApplication.getINSTANCE().getKey()).allowQueriesOnUiThread(true).allowWritesOnUiThread(true).directory(MainApplication.getINSTANCE().getDataDirWithPath("realms")).schemaVersion(1).build();
-            Realm realm2 = Realm.getInstance(realmConfiguration2);
-            if (realm2.isInTransaction()) {
-                realm2.cancelTransaction();
+            indexRaw = null
+            val realmConfiguration2 = RealmConfiguration.Builder().name("ReposList.realm")
+                .encryptionKey(MainApplication.getINSTANCE().key).allowQueriesOnUiThread(true)
+                .allowWritesOnUiThread(true)
+                .directory(MainApplication.getINSTANCE().getDataDirWithPath("realms"))
+                .schemaVersion(1).build()
+            val realm2 = Realm.getInstance(realmConfiguration2)
+            if (realm2.isInTransaction) {
+                realm2.cancelTransaction()
             }
             // set lastUpdate
-            realm2.executeTransaction(r -> {
-                ReposList repoListCache = r.where(ReposList.class).equalTo("id", this.repoData.id).findFirst();
+            realm2.executeTransaction { r: Realm ->
+                val repoListCache =
+                    r.where(ReposList::class.java).equalTo("id", repoData.id).findFirst()
                 if (repoListCache != null) {
-                    success.set(true);
+                    success.set(true)
                     // get unix timestamp of current time
-                    int currentTime = (int) (System.currentTimeMillis() / 1000);
-                    Timber.d("Updating lastUpdate for repo %s to %s which is %s seconds ago", this.repoData.id, currentTime, (currentTime - repoListCache.getLastUpdate()));
-                    repoListCache.setLastUpdate(currentTime);
+                    val currentTime = (System.currentTimeMillis() / 1000).toInt()
+                    Timber.d(
+                        "Updating lastUpdate for repo %s to %s which is %s seconds ago",
+                        repoData.id,
+                        currentTime,
+                        currentTime - repoListCache.lastUpdate
+                    )
+                    repoListCache.lastUpdate = currentTime
                 } else {
-                    Timber.w("Failed to update lastUpdate for repo %s", this.repoData.id);
+                    Timber.w("Failed to update lastUpdate for repo %s", repoData.id)
                 }
-            });
-            realm2.close();
+            }
+            realm2.close()
         } else {
-            success.set(true); // assume we're reading from cache. this may be unsafe but it's better than nothing
+            success.set(true) // assume we're reading from cache. this may be unsafe but it's better than nothing
         }
-        return success.get();
+        return success.get()
     }
-
 }

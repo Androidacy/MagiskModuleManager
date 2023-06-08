@@ -1,175 +1,173 @@
-package com.fox2code.mmm;
+package com.fox2code.mmm
 
-import com.fox2code.mmm.utils.io.Files;
-import com.fox2code.mmm.utils.io.net.Http;
-
-import org.json.JSONObject;
-
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.nio.charset.StandardCharsets;
-import java.util.HashMap;
-
-import timber.log.Timber;
+import com.fox2code.mmm.utils.io.Files.Companion.write
+import com.fox2code.mmm.utils.io.net.Http.Companion.doHttpGet
+import org.json.JSONObject
+import timber.log.Timber
+import java.io.BufferedReader
+import java.io.File
+import java.io.FileInputStream
+import java.io.IOException
+import java.io.InputStream
+import java.io.InputStreamReader
+import java.nio.charset.StandardCharsets
 
 // See https://docs.github.com/en/rest/reference/repos#releases
-public class AppUpdateManager {
-    public static final int FLAG_COMPAT_LOW_QUALITY = 0x0001;
-    public static final int FLAG_COMPAT_NO_EXT = 0x0002;
-    public static final int FLAG_COMPAT_MAGISK_CMD = 0x0004;
-    public static final int FLAG_COMPAT_NEED_32BIT = 0x0008;
-    public static final int FLAG_COMPAT_MALWARE = 0x0010;
-    public static final int FLAG_COMPAT_NO_ANSI = 0x0020;
-    public static final int FLAG_COMPAT_FORCE_ANSI = 0x0040;
-    public static final int FLAG_COMPAT_FORCE_HIDE = 0x0080;
-    public static final int FLAG_COMPAT_MMT_REBORN = 0x0100;
-    public static final int FLAG_COMPAT_ZIP_WRAPPER = 0x0200;
-    public static final String RELEASES_API_URL = "https://api.github.com/repos/Androidacy/MagiskModuleManager/releases/latest";
-    private static final AppUpdateManager INSTANCE = new AppUpdateManager();
-    private final HashMap<String, Integer> compatDataId = new HashMap<>();
-    private final Object updateLock = new Object();
-    private final File compatFile;
-    private String latestRelease;
-    private long lastChecked;
+@Suppress("unused")
+class AppUpdateManager private constructor() {
+    private val compatDataId = HashMap<String, Int>()
+    private val updateLock = Any()
+    private val compatFile: File = File(MainApplication.getINSTANCE().filesDir, "compat.txt")
+    private var latestRelease: String?
+    private var lastChecked: Long
 
-    private AppUpdateManager() {
-        this.compatFile = new File(MainApplication.getINSTANCE().getFilesDir(), "compat.txt");
-        this.latestRelease = MainApplication.getBootSharedPreferences().getString("updater_latest_release", BuildConfig.VERSION_NAME);
-        this.lastChecked = 0;
-        if (this.compatFile.isFile()) {
+    init {
+        latestRelease = MainApplication.getBootSharedPreferences()
+            .getString("updater_latest_release", BuildConfig.VERSION_NAME)
+        lastChecked = 0
+        if (compatFile.isFile) {
             try {
-                this.parseCompatibilityFlags(new FileInputStream(this.compatFile));
-            } catch (
-                    IOException ignored) {
+                parseCompatibilityFlags(FileInputStream(compatFile))
+            } catch (ignored: IOException) {
             }
         }
-    }
-
-    public static AppUpdateManager getAppUpdateManager() {
-        return INSTANCE;
-    }
-
-    public static int getFlagsForModule(String moduleId) {
-        return INSTANCE.getCompatibilityFlags(moduleId);
-    }
-
-    public static boolean shouldForceHide(String repoId) {
-        if (BuildConfig.DEBUG || repoId.startsWith("repo_") || repoId.equals("magisk_alt_repo"))
-            return false;
-        return !repoId.startsWith("repo_") && (INSTANCE.getCompatibilityFlags(repoId) & FLAG_COMPAT_FORCE_HIDE) != 0;
     }
 
     // Return true if should show a notification
-    public boolean checkUpdate(boolean force) {
-        if (!BuildConfig.ENABLE_AUTO_UPDATER)
-            return false;
-        if (!force && this.peekShouldUpdate())
-            return true;
-        long lastChecked = this.lastChecked;
-        if (lastChecked != 0 &&
-                // Avoid spam calls by putting a 60 seconds timer
-                lastChecked < System.currentTimeMillis() - 60000L)
-            return force && this.peekShouldUpdate();
-        synchronized (this.updateLock) {
-            if (lastChecked != this.lastChecked)
-                return this.peekShouldUpdate();
+    fun checkUpdate(force: Boolean): Boolean {
+        if (!BuildConfig.ENABLE_AUTO_UPDATER) return false
+        if (!force && peekShouldUpdate()) return true
+        val lastChecked = lastChecked
+        if (lastChecked != 0L &&  // Avoid spam calls by putting a 60 seconds timer
+            lastChecked < System.currentTimeMillis() - 60000L
+        ) return force && peekShouldUpdate()
+        synchronized(updateLock) {
+            if (lastChecked != this.lastChecked) return peekShouldUpdate()
             try {
-                JSONObject release = new JSONObject(new String(Http.doHttpGet(RELEASES_API_URL, false), StandardCharsets.UTF_8));
-                String latestRelease = null;
-                boolean preRelease = false;
+                val release =
+                    JSONObject(String(doHttpGet(RELEASES_API_URL, false), StandardCharsets.UTF_8))
+                var latestRelease: String? = null
+                var preRelease = false
                 // get latest_release from tag_name translated to int
                 if (release.has("tag_name")) {
-                    latestRelease = release.getString("tag_name");
-                    preRelease = release.getBoolean("prerelease");
+                    latestRelease = release.getString("tag_name")
+                    preRelease = release.getBoolean("prerelease")
                 }
-                Timber.d("Latest release: %s, isPreRelease: %s", latestRelease, preRelease);
-                if (latestRelease == null)
-                    return false;
+                Timber.d("Latest release: %s, isPreRelease: %s", latestRelease, preRelease)
+                if (latestRelease == null) return false
                 if (preRelease) {
-                    this.latestRelease = "99999999"; // prevent updating to pre-release
-                    return false;
+                    this.latestRelease = "99999999" // prevent updating to pre-release
+                    return false
                 }
-                this.latestRelease = latestRelease;
-                this.lastChecked = System.currentTimeMillis();
-            } catch (
-                    Exception ioe) {
-                Timber.e(ioe);
+                this.latestRelease = latestRelease
+                this.lastChecked = System.currentTimeMillis()
+            } catch (ioe: Exception) {
+                Timber.e(ioe)
             }
         }
-        return this.peekShouldUpdate();
+        return peekShouldUpdate()
     }
 
-    public void checkUpdateCompat() {
-        compatDataId.clear();
+    fun checkUpdateCompat() {
+        compatDataId.clear()
         try {
-            Files.write(compatFile, new byte[0]);
-        } catch (
-                IOException e) {
-            Timber.e(e);
+            write(compatFile, ByteArray(0))
+        } catch (e: IOException) {
+            Timber.e(e)
         }
         // There once lived an implementation that used a GitHub API to get the compatibility flags. It was removed because it was too slow and the API was rate limited.
-        Timber.w("Remote compatibility data flags are not implemented.");
+        Timber.w("Remote compatibility data flags are not implemented.")
     }
 
-    public boolean peekShouldUpdate() {
-        if (!BuildConfig.ENABLE_AUTO_UPDATER || BuildConfig.DEBUG)
-            return false;
+    fun peekShouldUpdate(): Boolean {
+        if (!BuildConfig.ENABLE_AUTO_UPDATER || BuildConfig.DEBUG) return false
         // Convert both BuildConfig.VERSION_NAME and latestRelease to int
-        int currentVersion = 0, latestVersion = 0;
+        var currentVersion = 0
+        var latestVersion = 0
         try {
-            currentVersion = Integer.parseInt(BuildConfig.VERSION_NAME.replaceAll("\\D", ""));
-            latestVersion = Integer.parseInt(this.latestRelease.replace("v", "").replaceAll("\\D", ""));
-        } catch (
-                NumberFormatException ignored) {
+            currentVersion = BuildConfig.VERSION_NAME.replace("\\D".toRegex(), "").toInt()
+            latestVersion = latestRelease!!.replace("v", "").replace("\\D".toRegex(), "").toInt()
+        } catch (ignored: NumberFormatException) {
         }
-        return currentVersion < latestVersion;
+        return currentVersion < latestVersion
     }
 
-    public boolean peekHasUpdate() {
-        if (!BuildConfig.ENABLE_AUTO_UPDATER || BuildConfig.DEBUG)
-            return false;
-        return this.peekShouldUpdate();
+    fun peekHasUpdate(): Boolean {
+        return if (!BuildConfig.ENABLE_AUTO_UPDATER || BuildConfig.DEBUG) false else peekShouldUpdate()
     }
 
-    private void parseCompatibilityFlags(InputStream inputStream) throws IOException {
-        compatDataId.clear();
-        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8));
-        String line;
-        while ((line = bufferedReader.readLine()) != null) {
-            line = line.trim();
-            if (line.isEmpty() || line.startsWith("#"))
-                continue;
-            int i = line.indexOf('/');
-            if (i == -1)
-                continue;
-            int value = 0;
-            for (String arg : line.substring(i + 1).split(",")) {
-                switch (arg) {
-                    default -> {
+    @Throws(IOException::class)
+    private fun parseCompatibilityFlags(inputStream: InputStream) {
+        compatDataId.clear()
+        val bufferedReader = BufferedReader(InputStreamReader(inputStream, StandardCharsets.UTF_8))
+        var line: String
+        while (bufferedReader.readLine().also { line = it } != null) {
+            line = line.trim { it <= ' ' }
+            if (line.isEmpty() || line.startsWith("#")) continue
+            val i = line.indexOf('/')
+            if (i == -1) continue
+            var value = 0
+            for (arg in line.substring(i + 1).split(",".toRegex()).dropLastWhile { it.isEmpty() }
+                .toTypedArray()) {
+                when (arg) {
+                    "lowQuality" -> value = value or FLAG_COMPAT_LOW_QUALITY
+                    "noExt" -> value = value or FLAG_COMPAT_NO_EXT
+                    "magiskCmd" -> value = value or FLAG_COMPAT_MAGISK_CMD
+                    "need32bit" -> value = value or FLAG_COMPAT_NEED_32BIT
+                    "malware" -> value = value or FLAG_COMPAT_MALWARE
+                    "noANSI" -> value = value or FLAG_COMPAT_NO_ANSI
+                    "forceANSI" -> value = value or FLAG_COMPAT_FORCE_ANSI
+                    "forceHide" -> value = value or FLAG_COMPAT_FORCE_HIDE
+                    "mmtReborn" -> value = value or FLAG_COMPAT_MMT_REBORN
+                    "wrapper" -> value = value or FLAG_COMPAT_ZIP_WRAPPER
+                    else -> {
+                        run {}
+                        value = value or FLAG_COMPAT_LOW_QUALITY
+                        value = value or FLAG_COMPAT_NO_EXT
+                        value = value or FLAG_COMPAT_MAGISK_CMD
+                        value = value or FLAG_COMPAT_NEED_32BIT
+                        value = value or FLAG_COMPAT_MALWARE
+                        value = value or FLAG_COMPAT_NO_ANSI
+                        value = value or FLAG_COMPAT_FORCE_ANSI
+                        value = value or FLAG_COMPAT_FORCE_HIDE
+                        value = value or FLAG_COMPAT_MMT_REBORN
+                        value = value or FLAG_COMPAT_ZIP_WRAPPER
                     }
-                    case "lowQuality" -> value |= FLAG_COMPAT_LOW_QUALITY;
-                    case "noExt" -> value |= FLAG_COMPAT_NO_EXT;
-                    case "magiskCmd" -> value |= FLAG_COMPAT_MAGISK_CMD;
-                    case "need32bit" -> value |= FLAG_COMPAT_NEED_32BIT;
-                    case "malware" -> value |= FLAG_COMPAT_MALWARE;
-                    case "noANSI" -> value |= FLAG_COMPAT_NO_ANSI;
-                    case "forceANSI" -> value |= FLAG_COMPAT_FORCE_ANSI;
-                    case "forceHide" -> value |= FLAG_COMPAT_FORCE_HIDE;
-                    case "mmtReborn" -> value |= FLAG_COMPAT_MMT_REBORN;
-                    case "wrapper" -> value |= FLAG_COMPAT_ZIP_WRAPPER;
                 }
             }
-            compatDataId.put(line.substring(0, i), value);
+            compatDataId[line.substring(0, i)] = value
         }
-        bufferedReader.close();
+        bufferedReader.close()
     }
 
-    public int getCompatibilityFlags(String moduleId) {
-        Integer compatFlags = compatDataId.get(moduleId);
-        return compatFlags == null ? 0 : compatFlags;
+    fun getCompatibilityFlags(moduleId: String): Int {
+        val compatFlags = compatDataId[moduleId]
+        return compatFlags ?: 0
+    }
+
+    companion object {
+        const val FLAG_COMPAT_LOW_QUALITY = 0x0001
+        const val FLAG_COMPAT_NO_EXT = 0x0002
+        const val FLAG_COMPAT_MAGISK_CMD = 0x0004
+        const val FLAG_COMPAT_NEED_32BIT = 0x0008
+        const val FLAG_COMPAT_MALWARE = 0x0010
+        const val FLAG_COMPAT_NO_ANSI = 0x0020
+        const val FLAG_COMPAT_FORCE_ANSI = 0x0040
+        const val FLAG_COMPAT_FORCE_HIDE = 0x0080
+        const val FLAG_COMPAT_MMT_REBORN = 0x0100
+        const val FLAG_COMPAT_ZIP_WRAPPER = 0x0200
+        const val RELEASES_API_URL =
+            "https://api.github.com/repos/Androidacy/MagiskModuleManager/releases/latest"
+        val appUpdateManager = AppUpdateManager()
+        fun getFlagsForModule(moduleId: String): Int {
+            return appUpdateManager.getCompatibilityFlags(moduleId)
+        }
+
+        @JvmStatic
+        fun shouldForceHide(repoId: String): Boolean {
+            return if (BuildConfig.DEBUG || repoId.startsWith("repo_") || repoId == "magisk_alt_repo") false else !repoId.startsWith(
+                "repo_"
+            ) && appUpdateManager.getCompatibilityFlags(repoId) and FLAG_COMPAT_FORCE_HIDE != 0
+        }
     }
 }

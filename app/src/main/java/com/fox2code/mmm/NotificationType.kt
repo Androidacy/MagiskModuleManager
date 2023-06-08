@@ -145,7 +145,7 @@ enum class NotificationType constructor(
         false
     ) {
         override fun shouldRemove(): Boolean {
-            return !AppUpdateManager.getAppUpdateManager().peekShouldUpdate()
+            return !AppUpdateManager.appUpdateManager.peekShouldUpdate()
         }
     },
     @JvmStatic

@@ -276,7 +276,7 @@ class BackgroundUpdateChecker(context: Context, workerParams: WorkerParameters) 
                         .getBoolean("pref_background_update_check_app", false)
                 ) {
                     try {
-                        val shouldUpdate = AppUpdateManager.getAppUpdateManager().checkUpdate(true)
+                        val shouldUpdate = AppUpdateManager.appUpdateManager.checkUpdate(true)
                         if (shouldUpdate) {
                             Timber.d("Found app update")
                             postNotificationForAppUpdate(context)

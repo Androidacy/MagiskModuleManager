@@ -177,7 +177,7 @@ class UpdateActivity : FoxActivity() {
             progressIndicator.isIndeterminate = true
         }
         // check for update
-        val shouldUpdate = AppUpdateManager.getAppUpdateManager().peekShouldUpdate()
+        val shouldUpdate = AppUpdateManager.appUpdateManager.peekShouldUpdate()
         // if shouldUpdate is true, then we have an update
         if (shouldUpdate) {
             runOnUiThread {
