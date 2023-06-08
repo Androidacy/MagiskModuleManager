@@ -438,7 +438,7 @@ class InstallerActivity : FoxActivity() {
                 }
             } catch (ignored: IOException) {
             }
-            val compatFlags = AppUpdateManager.getFlagsForModule(moduleId)
+            val compatFlags = AppUpdateManager.getFlagsForModule(moduleId!!)
             if (compatFlags and AppUpdateManager.FLAG_COMPAT_NEED_32BIT != 0) needs32bit = true
             if (compatFlags and AppUpdateManager.FLAG_COMPAT_NO_EXT != 0) noExtensions = true
             if (moduleId != null && (moduleId!!.isEmpty() || moduleId!!.contains("/") || moduleId!!.contains(
