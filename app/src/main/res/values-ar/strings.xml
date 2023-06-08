@@ -255,7 +255,7 @@
     <string name="pref_category_contributors">الداعمون</string>
     <string name="fox2code_thanks">تم الإنشاء بواسطة Fox2Code</string>
     <string name="error_saving_logs">تعذر حفظ السجلات</string>
-    <string name="share_logs">مشاركة سجلات FoxMMM</string>
+    <string name="share_logs">مشاركة سجلات AMM</string>
     <string name="downloading_update">جاري تنزيل التحديث... %1$d%%</string>
     <string name="update_debug_download_pref">آلية تنزيل التحديثات الاختبارية</string>
     <string name="reset_api_key">إعادة تعيين مفاتيح API</string>
@@ -285,7 +285,7 @@
     <string name="invalid_excludes">إدخال غير صالح</string>
     <string name="title_activity_update">المحدث داخل التطبيق</string>
     <string name="update_title">تحديث التطبيق</string>
-    <string name="update_message">يرجى الانتظار بينما نتحقق من وجود تحديثات ل FoxMMM وتثبيتها. قد يستغرق هذا بضع دقائق</string>
+    <string name="update_message">يرجى الانتظار بينما نتحقق من وجود تحديثات ل AMM وتثبيتها. قد يستغرق هذا بضع دقائق</string>
     <string name="update_button">الرجاء الانتظار…</string>
     <string name="update_cancel_button">إلغاء التحديث</string>
     <string name="notification_update_summary">يمكن تحديث الإضافات التالية:</string>
@@ -311,7 +311,7 @@
     <string name="upgrade_androidacy_promo_desc">ستؤدي الترقية إلى الإصدار المميز إلى إزالة الإعلانات ورموز التحقق والتنزيلات للريبو الخاص ب Androidacy ودعم Androidacy وصناع الإضافات.</string>
     <string name="fox2code_thanks_desc">Fox2Code هو المنشئ الأصلي للتطبيق. بدونه ، لم يكن هذا ممكنا أبدا.</string>
     <string name="save_logs">حفظ السجلات في مساحة التخزين و مشاركتها</string>
-    <string name="not_official_build">هذا الإصدار من FoxMMM غير رسمي.</string>
+    <string name="not_official_build">هذا الإصدار من AMM غير رسمي.</string>
     <string name="crash_text">أوه-لا، لقد تعثرنا!</string>
     <string name="feedback_message">أعطنا المزيد من التفاصيل حول ما كنت تفعله عندما حدث هذا. أكثر ، وأكثر مرحا!</string>
     <string name="sentry_dialogue_disabled">‌تم تعطيل الإبلاغ عن الأعطال. أعد تشغيله لإرسال الملاحظات.</string>
@@ -329,7 +329,7 @@
     <string name="changelog_none">لا تغييرات حتى الآن!</string>
     <string name="invalid_repo_url">عنوان URL الذي أدخلته للريبو غير صالح</string>
     <string name="add_repo_message">يجب تقديم الريبوز عبر HTTPS ، ويجب أن تتبع المواصفات الموضحة في الوثائق.</string>
-    <string name="notification_channel_background_update_description">يقوم FoxMMM بالتحقق من وجود تحديثات في الخلفية.</string>
+    <string name="notification_channel_background_update_description">يقوم AMM بالتحقق من وجود تحديثات في الخلفية.</string>
     <string name="notification_channel_category_background_update_description">عرض إشعار أثناء التحقق من وجود تحديثات حتى لا يتم قتلها بواسطة النظام</string>
     <string name="yer_a_wizard_harry">يا ساحر ، هاري!</string>
     <string name="keep_tapping_to_enter_hogwarts">استمر في النقر للقبول في هوجورتس!</string>
@@ -341,7 +341,7 @@
     <string name="notification_update_app_pref">تحقق من وجود تحديثات للتطبيق</string>
     <string name="notification_channel_category_app_update">تحديثات التطبيق</string>
     <string name="notification_channel_background_update_app">تحديث التطبيق متاح!</string>
-    <string name="notification_channel_background_update_app_description">يتوفر تحديث لـ FoxMMM. انقر هنا للتحديث.</string>
+    <string name="notification_channel_background_update_app_description">يتوفر تحديث لـ AMM. انقر هنا للتحديث.</string>
     <string name="setup_update_check_headline">تحقق من التحديث</string>
     <string name="setup_app_analytics">السماح بتحليلات التطبيق</string>
     <string name="cache_cleared">تم مسح ذاكرة التخزين المؤقت بنجاح</string>
@@ -369,7 +369,7 @@
     <string name="clear_app_cache">مسح ذاكرة التخزين المؤقت للتطبيق</string>
     <string name="clear_app_cache_desc">هذا لا يجب أن يكون ضروريًا بالعادة ولكنه قد يساعد في إصلاح بعض المشاكل.</string>
     <string name="clear_cache_dialogue_message">سيؤدي هذا إلى مسح ذاكرة التخزين المؤقت للتطبيق. سيتم حفظ خصائصك، ولكن قد يستغرق التطبيق وقتًا أطول لإجراء بعض العمليات مؤقتًا.</string>
-    <string name="certificate_error">تعذر التحقق من شهادة الخادم. الرجاء التأكد من عدم وجود شيء يعترض اتصالات HTTPS لـ FoxMMM.</string>
+    <string name="certificate_error">تعذر التحقق من شهادة الخادم. الرجاء التأكد من عدم وجود شيء يعترض اتصالات HTTPS لـ AMM.</string>
     <string name="crash_reporting_pii_desc">السماح بإرسال معلومات إضافية في تقارير الأعطال ، والتي قد يحتوي بعضها على معلومات تعريف شخصية مثل عنوان IP ومعرفات الجهاز.</string>
     <string name="setup_crash_reporting_pii_summary">قد يشمل ذلك معرفات الجهاز وعناوين IP. لن يتم استخدام أي بيانات لأي غرض آخر بخلاف تحليل الأعطال وتحسين الأداء.</string>
     <string name="error_creating_cookie_database">خطأ في الوصول إلى WebView. قد تتأثر الوظيفة.</string>
@@ -399,5 +399,5 @@
     <string name="background_update_check_excludes_version_summary">‍حدد إصدارا من تحديثات الإضافة التي ترغب في تجاهلها. الرجاء استخدام رمز الإصدار فقط. يمكنك العثور على هذا عن طريق الضغط باستمرار على الإصدار في قائمة الإضافات. استخدم ^ في البداية لمطابقة هذا الإصدار والأحدث. استخدم $ في النهاية للمطابقة حتى هذا الإصدار.</string>
     <string name="androidacy_thanks_up">شكرا للترقية! لن تعرض تنزيلات الإضافات و ملفات القراءة (README) إعلانات، وسيتم إلغاء تقييد التنزيلات. في المستقبل. ستتمكن من تنزيل الإضافات مباشرة بنقرة واحدة.</string>
     <string name="crash_details_suggestion">يمكن العثور على تتبع المكدس أدناه. ومع ذلك ، نوصيك <b>بشدة</b> باستخدام نموذج الملاحظات أدناه لإرسال التعليقات بدلا من ذلك. بهذه الطريقة ، بدلا من نسخ تتبع المكدس يدويا ، سيرسله إلينا تلقائيا. كما يتم إزالة التعتيم بهذه الطريقة ويتم الإبلاغ عن تفاصيل إضافية تلقائياً</string>
-    <string name="reinstall_warning">معظم الإضافات يجب إلغاء تثبيتها، ثم إعادة تثبيتها من جديد بشكل نظيف. لهذا السبب ، لا يدعم FoxMMM إعادة تثبيت الإضافات ان كانت مثبته حالياً على هذا الجهاز.</string>
+    <string name="reinstall_warning">معظم الإضافات يجب إلغاء تثبيتها، ثم إعادة تثبيتها من جديد بشكل نظيف. لهذا السبب ، لا يدعم AMM إعادة تثبيت الإضافات ان كانت مثبته حالياً على هذا الجهاز.</string>
 </resources>

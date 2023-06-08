@@ -263,7 +263,7 @@
     <string name="fox2code_thanks">Criado por Fox2Code</string>
     <string name="save_logs">Salvar registros no armazenamento e compartilhar</string>
     <string name="error_saving_logs">Não foi possível salvar os registros</string>
-    <string name="share_logs">Compartilhar registros do FoxMMM</string>
+    <string name="share_logs">Compartilhar registros do AMM</string>
     <string name="yer_a_wizard_harry">Tu é um mago, Harry!</string>
     <string name="keep_tapping_to_enter_hogwarts">Continue pressionando para ser admitido em Hogwarts!</string>
     <string name="modules">Módulos</string>
@@ -277,7 +277,7 @@
     <string name="upgrade_androidacy_promo_desc">Atualizar para premium irá remover anúncios, captchas, e acelerar downloads do repositório Androidacy, e contribuir para o Androidacy e os autores dos módulos.</string>
     <string name="pref_category_contributors">Contribuidores</string>
     <string name="fox2code_thanks_desc">Fox2Code é o desenvolvedor original do aplicativo. Sem ele, isso nunca seria possível.</string>
-    <string name="not_official_build">Este aplicativo é uma compilação não oficial do FoxMMM.</string>
+    <string name="not_official_build">Este aplicativo é uma compilação não oficial do AMM.</string>
     <string name="feedback_submit">Enviar e reinicializar</string>
     <string name="please_feedback">Por favor, ajude-nos dizendo o quê você estava tentando fazer quando isto aconteceu.</string>
     <string name="sentry_dialogue_disabled">O Relatório de falhas está desabilitado. Habilite-o para enviar o feedback.</string>
@@ -299,7 +299,7 @@
     <string name="error_adding">Falha ao adicionar repositório alternativo</string>
     <string name="notification_update_ignore_desc">Lista de módulos a serem excluídos da busca de atualizações</string>
     <string name="invalid_characters_message">A lista de módulos que você concedeu é inválida. Por favor, conceda apenas IDs válidos de módulos, separados por vírgulas</string>
-    <string name="update_message">Por favor, aguarde enquanto buscamos e instalamos atualizações do FoxMMM. Isto pode levar alguns minutos</string>
+    <string name="update_message">Por favor, aguarde enquanto buscamos e instalamos atualizações do AMM. Isto pode levar alguns minutos</string>
     <string name="update_debug_warning">Você parece estar executando uma compilação de depuração. Compilações de depuração devem ser atualizações manualmente, e não suportam atualizações in-app</string>
     <string name="no_file_found">ERRO: Não foi possível encontrar o pacote da atualização.</string>
     <string name="update_debug_download_pref">Testar mecanismo de download de atualizações</string>
@@ -340,7 +340,7 @@
     <string name="notification_update_summary">Os seguintes módulos podem ser atualizados:</string>
     <string name="notification_update_module_template">%1$s para a versão %2$s</string>
     <string name="notification_channel_background_update">Buscando por atualizações…</string>
-    <string name="notification_channel_background_update_description">FoxMMM está buscando por atualizações em segundo plano.</string>
+    <string name="notification_channel_background_update_description">AMM está buscando por atualizações em segundo plano.</string>
     <string name="notification_channel_category_background_update">Estado da atualização em segundo plano</string>
     <string name="notification_update_wifi_desc">Buscar somente via WiFi</string>
     <string name="notification_update_wifi_pref">Exigir wi-fi ou uma conexão ilimitada para buscar por atualizações. É recomendado manter ativo se você possui dados móveis limitados.</string>
@@ -356,7 +356,7 @@
     <string name="notification_channel_category_app_update">Atualizações do aplicativo</string>
     <string name="notification_channel_category_app_update_description">Notifica quando uma atualização do aplicativo está disponível</string>
     <string name="notification_channel_background_update_app">Atualização do aplicativo disponível!</string>
-    <string name="notification_channel_background_update_app_description">Uma atualização do FoxMMM está disponível. Pressione aqui para atualizar.</string>
+    <string name="notification_channel_background_update_app_description">Uma atualização do AMM está disponível. Pressione aqui para atualizar.</string>
     <string name="zip_intent_module_install">Você realmente gostaria de instalar o módulo \"%1$s\" do arquivo zip \"%2$s\"\?
 \n
 \nTenha certeza de que você confia na fonte deste módulo, pois módulos são muito poderosos e podem fazer quase tudo.</string>
@@ -380,7 +380,7 @@
     <string name="error_creating_cookie_database">Erro ao acessar o WebView. A Funcionalidade pode ser afetada.</string>
     <string name="setup_scroll_down">Para habilitar o botão concluir, por favor, deslize para baixo e veja todas as opções.</string>
     <string name="setup_background_update_check_require_wifi">Exigir wifi para buscar por atualizações</string>
-    <string name="certificate_error">O certificado do servidor não pôde ser verificado. Por favor, verifique se não há nada interceptando as conexões HTTPS do FoxMMM.</string>
+    <string name="certificate_error">O certificado do servidor não pôde ser verificado. Por favor, verifique se não há nada interceptando as conexões HTTPS do AMM.</string>
     <string name="blur_desc">Adiciona um efeito de desfoque atrás de alguns diálogos e elementos. Perceba que o desfoque pode funcionar incorretamente em alguns dispositivos e pode não funcionar para todos.</string>
     <string name="setup_background_update_check_require_wifi_summary">Exigir wifi ou uma conexão ilimitada para buscar por atualizações</string>
     <string name="clear_cache_dialogue_message">Isso irá limpar o cache do aplicativo. Suas preferências serão salvas, mas o aplicativo poderá demorar para realizar algumas operações temporariamente.</string>

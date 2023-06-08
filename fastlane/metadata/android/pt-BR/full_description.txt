@@ -1,4 +1,4 @@
 Este aplicativo não é oficialmente suportado pelo Magisk ou seus desenvolvedores.
 
-Os módulos exibidos neste aplicativo não têm afiliação com o Fox's MMM.
+Os módulos exibidos neste aplicativo não têm afiliação com o AMM.
 Por favor, contate os donos dos respectivos repositórios.

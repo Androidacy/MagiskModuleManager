@@ -2,13 +2,15 @@
 
 ### Developed by Androidacy. Find us on the web [here](https://www.androidacy.com/?utm_source=fox-readme&utm_medium=web&utm_campagin=github).
 
-_If you're seeing this at the Fox2Code repo, the new repo is at [Androidacy/AndroidacyModuleManager](https://github.com/Androidacy/AndroidacyModuleManager)! The old repo may not receive consistent updates anymore!_
+<sub>We'd like to thank Fox2Code for his initial work on the app. This app was previously known as Fox's Magisk Module Manager (FoxMMM) and may still be referred to as that. Androidacy thanks Fox2Code for their initial work on this app, and wishes him the best in his future endeavours.</sub>
+
+[![GitHub release (latest by date)](https://img.shields.io/github/v/release/Androidacy/AndroidacyModuleManager?color=neon&label=Latest%20release&style=for-the-badge)](
 
 ## About
 
 The official Magisk Manager app has dropped it's support for downloading online modules, leaving users without a way to easily search for and download them. This app was created to help users download and install modules, and manage their own modules.
 
-**This app is not officially supported by Magisk or its developers**
+**This app is not officially supported by Magisk or its developers, nor by Google**
 
 **The modules shown in this app are not affiliated with this app or Magisk**.
 
@@ -26,14 +28,10 @@ The official Magisk Manager app has dropped it's support for downloading online 
 
 ## Community
 
-[![Telegram Group](https://img.shields.io/endpoint?color=neon&style=flat&url=https%3A%2F%2Ftg.sumanjay.workers.dev%2Fandroidacy_discussions)](https://telegram.dog/androidacy_discussions)
+[![Telegram Group](https://img.shields.io/endpoint?color=neon&style=for-the-badge&url=https%3A%2F%2Ftg.sumanjay.workers.dev%2Fandroidacy_discussions)](https://telegram.dog/androidacy_discussions)
 <a href="https://translate.nift4.org/engage/foxmmm/">
 <img src="https://translate.nift4.org/widgets/foxmmm/-/foxmmm/svg-badge.svg" alt="Translation status" />
 </a>
-
-### We'd like to thank Fox2Code for his initial work on the app.
-
-This app was previously known as Fox's Magisk Module Manager (FoxMMM) and may still be referred to as that. Androidacy thanks Fox2Code for their initial work on this app, and wishes him the best in his future endeavours.
 
 ## Screenshots
 
@@ -72,7 +70,7 @@ installing from them is at the user's own risk. Default repos can be enabled or 
   modules [here](https://www.androidacy.com/module-repository-applications/?utm_source=fox-readme&utm_medium=web&utm_campagin=github)
 - Modules downloadable easily outside the app
 - Rigorously reviewed and tested modules
-- Officially supported by Fox's mmm
+- Officially supported by AMM
 - May show ads to help cover infrastructure costs.
     - [Read more](https://www.androidacycom/doing-it-alone-the-what-the-how-and-the-why/?utm_source=fox-readme&utm_medium=web&utm_campagin=github)
       | [Privacy policy](https://www.androidacy.com/privacy/?utm_source=fox-readme&utm_medium=web&utm_campagin=github)
@@ -81,7 +79,7 @@ installing from them is at the user's own risk. Default repos can be enabled or 
 
 **Support:**
 
-&emsp; [![Telegram Group](https://img.shields.io/endpoint?color=neon&style=flat&url=https%3A%2F%2Ftg.sumanjay.workers.dev%2Fandroidacy_discussions)](https://telegram.dog/androidacy_discussions)
+&emsp; [![Telegram Group](https://img.shields.io/endpoint?color=neon&style=for-the-badge&url=https%3A%2F%2Ftg.sumanjay.workers.dev%2Fandroidacy_discussions)](https://telegram.dog/androidacy_discussions)
 
 #### [Magisk Alt Repo](https://github.com/Magisk-Modules-Alt-Repo)
 
@@ -89,7 +87,7 @@ installing from them is at the user's own risk. Default repos can be enabled or 
 - Less restrictive than the original repo
     - May have lower quality, untested, or otherwise broken modules due to their policies or lack
       thereof.
-- Officially supported by Fox's mmm
+- Officially supported by AMM
 - Disabled by default and no longer recommended. Kept as an alternative for those who want it
 
 **Support:**
@@ -162,7 +160,7 @@ whatsoever for them, outside of direct implementation bugs.
 
 ## License
 
-Fox's Magisk Module Manager, the icon, and names are copyright
+Androidacy Module Manager, the icon, and names are copyright
 2021-present [Fox2Code](https://github.com/Fox2Code). The Androidacy name(s), logo, integration, and
 later portions of the code are copyright
 2022-present [Androidacy](https://www.androidacy.com/?utm_source=fox-repo&utm_medium=web). See

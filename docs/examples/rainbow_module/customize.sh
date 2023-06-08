@@ -1,7 +1,7 @@
 #!/bin/sh
 
 if [ ! "$ANSI_SUPPORT" == "true" ] || [ ! -n "$MMM_EXT_SUPPORT" ]; then
-  abort "! This module need to be executed in Fox's Magisk Module Manager with ANSI support"
+  abort "! This module need to be executed in Androidacy Module Manager with ANSI support"
   exit 1
 fi
 

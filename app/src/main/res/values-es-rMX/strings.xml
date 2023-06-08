@@ -109,7 +109,7 @@
         (No se aplica al WebView)
   </string>
     <string name="disable_extensions_pref">Desactivar extensiones</string>
-    <string name="disable_extensions_desc">Desactiva las extensiones de FoxMMM, esto previene que los módulos usen extensiones de la terminal, útil si un módulo hace mal uso de las extensiones de FoxMMM.</string>
+    <string name="disable_extensions_desc">Desactiva las extensiones de AMM, esto previene que los módulos usen extensiones de la terminal, útil si un módulo hace mal uso de las extensiones de AMM.</string>
     <string name="wrap_text_pref">Dividir el texto</string>
     <string name="wrap_text_desc">Divide el texto en una línea nueva en vez de colocar todo el texto en la misma línea durante la instalación de un módulo.</string>
     <string name="enable_blur_pref">Activar desenfoque</string>
@@ -307,8 +307,8 @@
     <string name="custom_repo_always_on">Los repositorios personalizados siempre están activos hasta que los elimine.</string>
     <string name="transparent_theme_dialogue_title">Esta configurando un tema transparente</string>
     <string name="androidacy_thanks_desc">Un gran agradecimiento a Androidacy por su integración y contribuciones a la aplicación.</string>
-    <string name="share_logs">Compartir registros de FoxMMM</string>
-    <string name="not_official_build">Esta aplicación es una compilación no oficial de FoxMMM.</string>
+    <string name="share_logs">Compartir registros de AMM</string>
+    <string name="not_official_build">Esta aplicación es una compilación no oficial de AMM.</string>
     <string name="error_saving_logs">No se pudieron guardar los registros</string>
     <string name="save_logs">Guardar registros en el almacenamiento y compartir</string>
     <string name="setup_background_update_check_summary">Permítanos buscar actualizaciones de módulos y aplicaciones en segundo plano. Esta característica puede usar más batería y datos.</string>
@@ -326,7 +326,7 @@
     <string name="reset_warning">Si sigues viendo esta pantalla, reiniciar la aplicación puede ayudar. Esto borrará los datos de la aplicación pero no afectará a los módulos instalados.</string>
     <string name="notification_update_ignore_desc">Lista de módulos para excluir de las comprobaciones de actualización</string>
     <string name="notification_channel_category_background_update">Estado de actualización en segundo plano</string>
-    <string name="notification_channel_background_update_description">FoxMMM comprobando actualizaciones en segundo plano.</string>
+    <string name="notification_channel_background_update_description">AMM comprobando actualizaciones en segundo plano.</string>
     <string name="notification_update_app_pref">Comprobar actualizaciones de la aplicación</string>
     <string name="setup_app_analytics">Permitir análisis de aplicación</string>
     <string name="notification_update_app_desc">Active la comprobación automática de las actualizaciones de aplicaciones. Las actualizaciones no se descargarán automáticamente.</string>
@@ -364,12 +364,12 @@
 \n
 \nSe recomienda encarecidamente la desinstalación.</string>
     <string name="invalid_characters_message">La lista de módulos que ingresaste es inválida. Por favor ingresa solo IDs de módulos válidos separados por comas</string>
-    <string name="update_message">Espere mientras buscamos e instalamos actualizaciones de FoxMMM. Esto puede tomar unos pocos minutos</string>
+    <string name="update_message">Espere mientras buscamos e instalamos actualizaciones de AMM. Esto puede tomar unos pocos minutos</string>
     <string name="add_repo_message">Los repositorios deben servirse a través de HTTPS y deben seguir las especificaciones descritas en la documentación.</string>
     <string name="notification_channel_category_background_update_description">Muestra una notificación mientras comprueba actualizaciones para que el sistema no la elimine</string>
     <string name="notification_update_wifi_desc">Solo comprueba WiFi</string>
     <string name="notification_update_module_template">%1$s a versión %2$s</string>
-    <string name="notification_channel_background_update_app_description">Hay una actualización disponible para FoxMMM. Pulsa aquí para actualizar.</string>
+    <string name="notification_channel_background_update_app_description">Hay una actualización disponible para AMM. Pulsa aquí para actualizar.</string>
     <string name="setup_background_update_check_require_wifi">Requiere wifi para comprobaciones de actualización</string>
     <string name="setup_update_check_headline">Comprobaciones de actualización</string>
     <string name="crash_reporting_headline">Informando fallos</string>
@@ -382,7 +382,7 @@
     <string name="safe_message">Este módulo ha sido verificado por el repositorio como seguro, lo que significa que pasa ciertos estándares de calidad y seguridad, y se comprueba en busca de malware.</string>
     <string name="setup_background_update_check_require_wifi_summary">Requiere wifi o una conexión no medida para realizar comprobaciones de actualización</string>
     <string name="clear_cache_dialogue_message">Esto borrará la caché de la aplicación. Sus preferencias se guardarán, pero la aplicación puede tardar más en realizar algunas operaciones temporalmente.</string>
-    <string name="certificate_error">No se pudo verificar el certificado del servidor. Asegúrese de que nada esté interceptando las conexiones HTTPS para FoxMMM.</string>
+    <string name="certificate_error">No se pudo verificar el certificado del servidor. Asegúrese de que nada esté interceptando las conexiones HTTPS para AMM.</string>
     <string name="crash_reporting_pii_desc">Permite enviar información adicional en reportes de fallos, algunos de los cuales pueden contener información de identificación personal, como la dirección IP y los identificadores de dispositivo.</string>
     <string name="setup_crash_reporting_pii_summary">Esto puede incluir identificadores de dispositivo y direcciones IP. No se utilizarán datos para ningún otro propósito que no sea analizar fallas y mejorar el rendimiento.</string>
     <string name="setup_scroll_down">Para activar el botón Finalizar, desplácese hacia abajo y vea todas las opciones.</string>
@@ -414,5 +414,5 @@
     <string name="eula_agree_v2">Usted acepta estar sujeto a la licencia LGPL-3.0 (https://www.gnu.org/licenses/lgpl-3.0.en.html) y al EULA (https://www.androidacy.com/foxmmm-eula/), además de los términos de terceros, y que los autores de esta aplicación no son responsables del uso que usted haga de ella, ni ofrecemos garantías expresas o implícitas.</string>
     <string name="androidacy_thanks_up">Gracias por actualizar! las descargas de módulos y los archivos READMEs no mostrarán anuncios y las descargas no se acelerarán. En el futuro, podrá descargar módulos directamente con un solo clic.</string>
     <string name="crash_details_suggestion">El seguimiento de pila se puede encontrar a continuación. Sin embargo, nos <b> fuertemente </b> le recomendamos que utilice el formulario de comentarios a continuación para enviar sus comentarios. De esta forma, en lugar de copiar manualmente el seguimiento de pila, nos lo enviará automáticamente. También se desofusca de esa manera y los detalles adicionales se informan automáticamente.</string>
-    <string name="reinstall_warning">La mayoría de los módulos deben desinstalarse y luego reinstalarse limpiamente. Por esta razón, FoxMMM no admite la reinstalación de módulos mientras están instalados en el dispositivo.</string>
+    <string name="reinstall_warning">La mayoría de los módulos deben desinstalarse y luego reinstalarse limpiamente. Por esta razón, AMM no admite la reinstalación de módulos mientras están instalados en el dispositivo.</string>
 </resources>

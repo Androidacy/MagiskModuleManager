@@ -214,8 +214,8 @@
     <string name="fox2code_thanks">Criado por Fox2Code</string>
     <string name="save_logs">Salvar registros no armazenamento e compartilhar</string>
     <string name="error_saving_logs">Não foi possível salvar os registros</string>
-    <string name="share_logs">Compartilhar registros do FoxMMM</string>
-    <string name="not_official_build">Este aplicativo é uma compilação não oficial do FoxMMM.</string>
+    <string name="share_logs">Compartilhar registros do AMM</string>
+    <string name="not_official_build">Este aplicativo é uma compilação não oficial do AMM.</string>
     <string name="crash_text">Ah não, algo deu errado!</string>
     <string name="feedback_submit">Enviar e reinicializar</string>
     <string name="please_feedback">Por favor, ajude-nos dizendo o quê você estava tentando fazer quando isto aconteceu.</string>
@@ -261,7 +261,7 @@
     <string name="notification_update_summary">Os seguintes módulos podem ser atualizados:</string>
     <string name="notification_update_module_template">%1$s para a versão %2$s</string>
     <string name="notification_channel_background_update">Buscando por atualizações…</string>
-    <string name="notification_channel_background_update_description">FoxMMM está buscando por atualizações em segundo plano.</string>
+    <string name="notification_channel_background_update_description">AMM está buscando por atualizações em segundo plano.</string>
     <string name="notification_channel_category_background_update">Estado da atualização em segundo plano</string>
     <string name="reset_app_message">Isso irá completamente remover todos os dados do aplicativo e encerrá-lo. Módulos não serão desinstalados.</string>
     <string name="keep_tapping_to_enter_hogwarts">Continue pressionando para ser admitido em Hogwarts!</string>
@@ -290,7 +290,7 @@
     <string name="cache_cleared">Cache limpo com sucesso</string>
     <string name="cache_clear_failed">Falha ao limpar cache</string>
     <string name="clear_cache_dialogue_title">Limpar cache do aplicativo\?</string>
-    <string name="certificate_error">O certificado do servidor não pôde ser verificado. Por favor, verifique se não há nada interceptando as conexões HTTPS do FoxMMM.</string>
+    <string name="certificate_error">O certificado do servidor não pôde ser verificado. Por favor, verifique se não há nada interceptando as conexões HTTPS do AMM.</string>
     <string name="pref_category_privacy">Privacidade</string>
     <string name="crash_reporting_pii">Enviar informações adicionais</string>
     <string name="setup_crash_reporting_pii">Enviar informações adicionais em relatórios de falhas.</string>
@@ -353,14 +353,14 @@
     <string name="sentry_enable_nag">Parece que o relatório de falhas está desabilitado. Habilite-o para enviar o feedback.</string>
     <string name="reset_warning">Se você continuar vendo esta tela, redefinir o aplicativo pode ajudar. Isso irá limpar os dados do aplicativo, mas não irá afetar seus módulos instalados.</string>
     <string name="invalid_characters_message">A lista de módulos que você concedeu é inválida. Por favor, conceda apenas IDs válidos de módulos, separados por vírgulas</string>
-    <string name="update_message">Por favor, aguarde enquanto buscamos e instalamos atualizações do FoxMMM. Isto pode levar alguns minutos</string>
+    <string name="update_message">Por favor, aguarde enquanto buscamos e instalamos atualizações do AMM. Isto pode levar alguns minutos</string>
     <string name="update_debug_warning">Você parece estar executando uma compilação de depuração. Compilações de depuração devem ser atualizações manualmente, e não suportam atualizações in-app</string>
     <string name="update_debug_download_pref">Testar mecanismo de download de atualizações</string>
     <string name="add_repo_message">Repositórios devem ser disponibilizados via HTTPS e devem seguir as especificações descritas na documentação.</string>
     <string name="notification_channel_category_background_update_description">Exibe uma notificação enquanto busca por atualizações para que o sistema não encerre o aplicativo</string>
     <string name="notification_update_wifi_pref">Exigir wi-fi ou uma conexão ilimitada para buscar por atualizações. É recomendado manter ativo se você possui dados móveis limitados.</string>
     <string name="safe_message">Este módulo foi considerado seguro pelo repositório, indicando que condiz com certos padrões de qualidade e segurança e foi verificado contra malwares.</string>
-    <string name="notification_channel_background_update_app_description">Uma atualização do FoxMMM está disponível. Pressione aqui para atualizar.</string>
+    <string name="notification_channel_background_update_app_description">Uma atualização do AMM está disponível. Pressione aqui para atualizar.</string>
     <string name="setup_background_update_check_require_wifi">Exigir wifi para buscar por atualizações</string>
     <string name="clear_app_cache_desc">Isso normalmente não é necessário, mas pode ajudar a consertar alguns problemas.</string>
     <string name="clear_cache_dialogue_message">Isso irá limpar o cache do aplicativo. Suas preferências serão salvas, mas o aplicativo poderá demorar para realizar algumas operações temporariamente.</string>

@@ -103,7 +103,7 @@
     <string name="dns_over_https_pref">DNS przez HTTPS</string>
     <string name="dns_over_https_desc">W niektórych przypadkach może naprawić problemy z połączeniami. (Nie dotyczy WebView.)</string>
     <string name="disable_extensions_pref">Wyłącz rozszerzenia</string>
-    <string name="disable_extensions_desc">Wyłącza rozszerzenia FoxMMM, uniemożliwiając modułom korzystanie z rozszerzeń terminala.
+    <string name="disable_extensions_desc">Wyłącza rozszerzenia AMM, uniemożliwiając modułom korzystanie z rozszerzeń terminala.
 \nPrzydatne, jeśli moduł nadużywa rozszerzeń.</string>
     <string name="wrap_text_pref">Zawijanie tekstu</string>
     <string name="wrap_text_desc">Rozbija jednoliniowy tekst na kilka linii podczas instalacji modułu.</string>
@@ -270,7 +270,7 @@
     <string name="upgrade_androidacy_promo">Ulepsz do wersji premium</string>
     <string name="upgrade_androidacy_promo_desc">Uaktualnienie do premium usunie reklamy, captche, pobrania dla Repozytorium Androidacy i wspomoże Androidacy oraz autorów modułów.</string>
     <string name="share_logs">Udostępnij logi</string>
-    <string name="not_official_build">Używasz nieoficjalną wersję FoxMMM.</string>
+    <string name="not_official_build">Używasz nieoficjalną wersję AMM.</string>
     <string name="pref_category_contributors">Współtwórcy</string>
     <string name="fox2code_thanks_desc">Fox2Code jest oryginalnym twórcą aplikacji. Bez niego nigdy nie byłoby to możliwe.</string>
     <string name="fox2code_thanks">Stworzone przez Fox2Code</string>
@@ -301,7 +301,7 @@
     <string name="background_update_check_excludes">Ignorowane moduły ze sprawdzania aktualizacji</string>
     <string name="title_activity_update">Wbudowany aktualizator</string>
     <string name="update_title">Zaktualizuj aplikację</string>
-    <string name="update_message">Proszę poczekać, aż sprawdzimy i zainstalujemy aktualizacje dla FoxMMM. Może to potrwać kilka minut</string>
+    <string name="update_message">Proszę poczekać, aż sprawdzimy i zainstalujemy aktualizacje dla AMM. Może to potrwać kilka minut</string>
     <string name="update_button">Proszę czekać…</string>
     <string name="reset_app_confirmation">To całkowicie wyczyści dane aplikacji, lecz moduły pozostaną nietknięte.</string>
     <string name="error_no_extras">BŁĄD: Nieprawidłowe dane otrzymane przy uruchomieniu</string>
@@ -332,7 +332,7 @@
     <string name="notification_update_summary">Następujące moduły mogą być uaktualnione:</string>
     <string name="notification_update_module_template">%1$s do wersji %2$s</string>
     <string name="notification_channel_background_update">Wyszukiwanie uaktualnień…</string>
-    <string name="notification_channel_background_update_description">FoxMMM sprawdza w tle aktualizacje.</string>
+    <string name="notification_channel_background_update_description">AMM sprawdza w tle aktualizacje.</string>
     <string name="notification_channel_category_background_update">Stan aktualizacji w tle</string>
     <string name="notification_update_wifi_desc">Sprawdzaj tylko na WiFi</string>
     <string name="notification_update_wifi_pref">Do sprawdzenia aktualizacji wymagane jest WiFi lub sieć bez limitu. Pozostaw włączone, jeśli masz ograniczone dane komórkowe.</string>
@@ -350,7 +350,7 @@
     <string name="notification_update_app_pref">Sprawdzaj aktualizacje aplikacji</string>
     <string name="notification_channel_category_app_update">Aktualizacje aplikacji</string>
     <string name="notification_channel_background_update_app">Dostępna nowa wersja aplikacji!</string>
-    <string name="notification_channel_background_update_app_description">Dostępna jest nowa wersja FoxMMM. Kliknij, aby zaktualizować.</string>
+    <string name="notification_channel_background_update_app_description">Dostępna jest nowa wersja AMM. Kliknij, aby zaktualizować.</string>
     <string name="modules">Moduły</string>
     <string name="no_browser">Nie masz zainstalowanej przeglądarki. Zainstaluj ją, aby kontynuować.</string>
     <string name="search">Szukaj</string>
@@ -371,7 +371,7 @@
     <string name="setup_crash_reporting_pii">Wysyłaj dodatkowe informacje</string>
     <string name="clear_cache_dialogue_title">Wyczyścić pamięć podręczną\?</string>
     <string name="clear_cache_dialogue_message">Spowoduje to wyczyszczenie pamięci podręcznej aplikacji. Twoje preferencje zostaną zachowane, ale aplikacja może potrzebować więcej czasu na wykonanie niektórych operacji.</string>
-    <string name="certificate_error">Certyfikat serwera nie mógł zostać zweryfikowany. Upewnij się, że nic nie przechwytuje połączeń HTTPS dla FoxMMM.</string>
+    <string name="certificate_error">Certyfikat serwera nie mógł zostać zweryfikowany. Upewnij się, że nic nie przechwytuje połączeń HTTPS dla AMM.</string>
     <string name="crash_reporting_pii_desc">Umożliwia wysyłanie dodatkowych informacji w raportach o awariach, które mogą zawierać informacje umożliwiające identyfikację osoby, takie jak adres IP i ID urządzenia.</string>
     <string name="error_creating_cookie_database">Błąd dostępu do WebView. Funkcjonalność może być utrudniona.</string>
     <string name="setup_scroll_down">Aby odblokować przycisk „Zakończ”, przewiń w dół i przejrzyj wszystkie opcje.</string>
@@ -408,5 +408,5 @@
     <string name="androidacy_thanks_up">Dziękujemy za ulepszenie! Opisy i pobieranie modułów będą pozbawione reklam, i nie będą ograniczane. W przyszłości możliwe będzie bezpośrednie pobieranie modułów za pomocą jednego kliknięcia.</string>
     <string name="upgrade_snackbar">Androidacy Premium oferuje szybsze pobieranie, doświadczenia wolne od reklam, i więcej!</string>
     <string name="crash_details_suggestion">Stacktrace można znaleźć poniżej. Jednak <b>zdecydowanie</b> zalecamy skorzystać z poniższego formularza, aby przesłać opinię. W ten sposób, zamiast ręcznie kopiować stacktrace, zostanie on wysłany do nas automatycznie. W ten sposób jest on również deobfuskowany, a dodatkowe szczegóły są zgłaszane automatycznie.</string>
-    <string name="reinstall_warning">Większość modułów powinna zostać odinstalowana, a następnie przeinstalowana na czysto. Z tego powodu FoxMMM nie obsługuje reinstalacji modułów, gdy są zainstalowane na urządzeniu.</string>
+    <string name="reinstall_warning">Większość modułów powinna zostać odinstalowana, a następnie przeinstalowana na czysto. Z tego powodu AMM nie obsługuje reinstalacji modułów, gdy są zainstalowane na urządzeniu.</string>
 </resources>

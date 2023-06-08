@@ -296,8 +296,8 @@
     <string name="fox2code_thanks">Created by Fox2Code</string>
     <string name="save_logs">Save logs to storage and share</string>
     <string name="error_saving_logs">Could not save logs</string>
-    <string name="share_logs">Share FoxMMM logs</string>
-    <string name="not_official_build">This app is an unofficial FoxMMM build.</string>
+    <string name="share_logs">Share AMM logs</string>
+    <string name="not_official_build">This app is an unofficial AMM build.</string>
     <string name="crash_text">Uh-oh, we hit a snag!</string>
     <string name="feedback_message">Give us more details about what you were doing when this happened. The more, the merrier!</string>
     <string name="feedback_submit">Submit and restart</string>
@@ -329,7 +329,7 @@
     <string name="background_update_check_excludes">Modules to exclude from automatic update checks</string>
     <string name="title_activity_update">In-app Updater</string>
     <string name="update_title">Update app</string>
-    <string name="update_message">Please wait while we check for and install updates to FoxMMM. This may take a few minutes</string>
+    <string name="update_message">Please wait while we check for and install updates to AMM. This may take a few minutes</string>
     <string name="update_button">Please wait…</string>
     <string name="error_no_extras">ERROR: Invalid data received on launch</string>
     <string name="update_debug_warning">You appear to be running a debug build. Debug builds must be updated manually, and do not support in-app updates</string>
@@ -352,7 +352,7 @@
     <string name="notification_update_summary">The following modules can be updated:</string>
     <string name="notification_update_module_template">%1$s to version %2$s</string>
     <string name="notification_channel_background_update">Checking for updates…</string>
-    <string name="notification_channel_background_update_description">FoxMMM is checking for updates in the background.</string>
+    <string name="notification_channel_background_update_description">AMM is checking for updates in the background.</string>
     <string name="notification_channel_category_background_update">Background update status</string>
     <string name="notification_channel_category_background_update_description">Shows a notification while checking for updates so the system doesn\'t kill it</string>
     <string name="notification_update_wifi_desc">Only check on WiFi</string>
@@ -370,7 +370,7 @@
     <string name="notification_channel_category_app_update">App updates</string>
     <string name="notification_channel_category_app_update_description">Notifies when an app update is available</string>
     <string name="notification_channel_background_update_app">App update available!</string>
-    <string name="notification_channel_background_update_app_description">An update is available for FoxMMM. Tap here to update.</string>
+    <string name="notification_channel_background_update_app_description">An update is available for AMM. Tap here to update.</string>
     <string name="yer_a_wizard_harry">Yer a wizard, Harry!</string>
     <string name="keep_tapping_to_enter_hogwarts">Keep tapping to be admitted into Hogwarts!</string>
     <string name="modules">Modules</string>
@@ -387,7 +387,7 @@
     <string name="cache_clear_failed">Failed to clear cache</string>
     <string name="clear_cache_dialogue_title">Clear app cache?</string>
     <string name="clear_cache_dialogue_message">This will clear app cache. Your preferences will be saved, but the app may take longer to do some operations temporarily.</string>
-    <string name="certificate_error">The server certificate could not be verified. Please make sure nothing is intercepting HTTPS connections for FoxMMM.</string>
+    <string name="certificate_error">The server certificate could not be verified. Please make sure nothing is intercepting HTTPS connections for AMM.</string>
     <string name="pref_category_privacy">Privacy</string>
     <string name="crash_reporting_pii_desc">Allows sending additional information in crash reports, some of which may contain personally identifiable information such as IP address and device identifiers.</string>
     <string name="crash_reporting_pii">Send additional information</string>
@@ -428,5 +428,5 @@
     <string name="upgrade_snackbar">Androidacy Premium offers faster downloads, an ad-free experience, and more!</string>
     <string name="upgrade_now">Upgrade</string>
     <string name="crash_details_suggestion">The stacktrace may be found below. However, we <b>strongly</b> recommend you to use the feedback form below to submit feedback instead. This way, instead of manually copying the stacktrace, it will send it to us automatically. It also is deobfuscated that way and additional details are reported automatically.</string>
-    <string name="reinstall_warning">Most modules should be uninstalled, then reinstalled cleanly. For this reason, FoxMMM does not support reinstalling modules while they are installed on the device.</string>
+    <string name="reinstall_warning">Most modules should be uninstalled, then reinstalled cleanly. For this reason, AMM does not support reinstalling modules while they are installed on the device.</string>
 </resources>

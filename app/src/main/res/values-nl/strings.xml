@@ -213,7 +213,7 @@
     <string name="background_update_check_excludes">Modules uitgesloten van automatische updatecontroles</string>
     <string name="title_activity_update">In-app Updater</string>
     <string name="update_title">App bijwerken</string>
-    <string name="update_message">Even geduld terwijl we controleren op updates voor FoxMMM en deze installeren. Dit kan enkele minuten duren</string>
+    <string name="update_message">Even geduld terwijl we controleren op updates voor AMM en deze installeren. Dit kan enkele minuten duren</string>
     <string name="update_button">Even geduld…</string>
     <string name="clear_app_data">Verwijder app data</string>
     <string name="clear_data_dialogue_title">App data verwijderen\?</string>
@@ -230,8 +230,8 @@
     <string name="fox2code_thanks">Gemaakt door Fox2Code</string>
     <string name="save_logs">Logboeken opslaan en delen</string>
     <string name="error_saving_logs">Kan logboeken niet opslaan</string>
-    <string name="share_logs">FoxMMM logs delen</string>
-    <string name="not_official_build">Deze app is geen officiële FoxMMM build.</string>
+    <string name="share_logs">AMM logs delen</string>
+    <string name="not_official_build">Deze app is geen officiële AMM build.</string>
     <string name="yer_a_wizard_harry">Je bent een tovenaar, Harry!</string>
     <string name="keep_tapping_to_enter_hogwarts">Blijf tikken om toegelaten te worden tot Zweinstein!</string>
     <string name="modules">Modules</string>
@@ -335,7 +335,7 @@
     <string name="notification_channel_category_app_update">App-updates</string>
     <string name="notification_channel_category_app_update_description">Waarschuwt wanneer een app-update beschikbaar is</string>
     <string name="notification_channel_background_update_app">App-update beschikbaar!</string>
-    <string name="notification_channel_background_update_app_description">Er is een update beschikbaar voor FoxMMM. Tik hier om bij te werken.</string>
+    <string name="notification_channel_background_update_app_description">Er is een update beschikbaar voor AMM. Tik hier om bij te werken.</string>
     <string name="crash_reporting_headline">Crash melding</string>
     <string name="setup_update_check_headline">Update controle</string>
     <string name="setup_background_update_check_require_wifi">Wifi vereist voor updatecontroles</string>
@@ -351,7 +351,7 @@
     <string name="title_activity_setup">Installatiewizard</string>
     <string name="sentry_enable_nag">Het lijkt erop dat crashrapportage is uitgeschakeld. Schakel deze in om feedback te geven.</string>
     <string name="no_file_found">FOUT: Kan updatepakket niet vinden.</string>
-    <string name="notification_channel_background_update_description">FoxMMM controleert op updates in de achtergrond.</string>
+    <string name="notification_channel_background_update_description">AMM controleert op updates in de achtergrond.</string>
     <string name="clear_app_cache">App-cache wissen</string>
     <string name="cache_cleared">Cache gewist</string>
     <string name="cache_clear_failed">Kan de cache niet wissen</string>
@@ -381,7 +381,7 @@
     <string name="donate_fox">Doneer aan Fox2Code</string>
     <string name="crash_reporting_pii_desc">Maakt het verzenden van aanvullende informatie in crashrapporten mogelijk, waarvan sommige persoonlijk identificeerbare informatie kunnen bevatten, zoals IP-adres en apparaat-ID\'s.</string>
     <string name="clear_app_cache_desc">Normaal gesproken zou dit niet nodig moeten zijn, maar het kan sommige problemen helpen oplossen.</string>
-    <string name="certificate_error">Het servercertificaat kan niet worden geverifieerd. Zorg ervoor dat niets HTTPS-verbindingen voor FoxMMM onderschept.</string>
+    <string name="certificate_error">Het servercertificaat kan niet worden geverifieerd. Zorg ervoor dat niets HTTPS-verbindingen voor AMM onderschept.</string>
     <string name="eula_agree_v2">U stemt ermee in gebonden te zijn aan de LGPL-3.0 (https://www.gnu.org/licenses/lgpl-3.0.en.html) licentie en de EULA (https://www.androidacy.com/foxmmm-eula/ ), naast eventuele voorwaarden van derden, en dat de auteurs van deze app geen verantwoordelijkheid dragen voor uw gebruik ervan, noch bieden wij enige expliciete of impliciete garanties.</string>
     <string name="donate_androidacy_sum">Koop een premium abonnement op Androidacy om de app en de repo te ondersteunen.</string>
     <string name="language_not_available">Taal %s is niet vertaald. Helpen met vertalen\?</string>

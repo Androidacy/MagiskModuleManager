@@ -238,8 +238,8 @@
     <string name="fox2code_thanks">Tạo bởi Fox2Code</string>
     <string name="save_logs">Lưu nhật ký vào máy và chia sẻ</string>
     <string name="error_saving_logs">Không thể lưu nhật ký</string>
-    <string name="share_logs">Chia sẻ nhật ký FoxMMM</string>
-    <string name="not_official_build">Ứng dụng này là bản dựng FoxMMM không chính thức.</string>
+    <string name="share_logs">Chia sẻ nhật ký AMM</string>
+    <string name="not_official_build">Ứng dụng này là bản dựng AMM không chính thức.</string>
     <string name="theme_light">Sáng</string>
     <string name="setup_theme_header">Chọn một chủ đề</string>
     <string name="setup_theme_system">Chủ đề hệ thống</string>
@@ -321,7 +321,7 @@
     <string name="notification_update_summary">các mô-đun sau đây có thể được cập nhật:</string>
     <string name="notification_update_module_template">%1$s lên phiên bản %2$s</string>
     <string name="notification_channel_background_update">Đang kiểm tra các bản cập nhật…</string>
-    <string name="notification_channel_background_update_description">FoxMMM đang kiểm tra các bản cập nhật trong nền.</string>
+    <string name="notification_channel_background_update_description">AMM đang kiểm tra các bản cập nhật trong nền.</string>
     <string name="notification_channel_category_background_update_description">Hiển thị thông báo trong khi kiểm tra các bản cập nhật để hệ thống không tắt nó</string>
     <string name="notification_update_wifi_desc">Chỉ kiểm tra khi có WiFi</string>
     <string name="background_update_check_excludes_no_modules">Không có mô-đun nào được cài đặt trên thiết bị</string>
@@ -343,7 +343,7 @@
     <string name="cache_clear_failed">Không thể xóa bộ nhớ cache</string>
     <string name="clear_cache_dialogue_title">Xóa bộ nhớ cache của ứng dụng\?</string>
     <string name="clear_cache_dialogue_message">Điều này sẽ xóa bộ nhớ cache của ứng dụng. Tùy chọn của bạn sẽ được lưu nhưng ứng dụng có thể mất nhiều thời gian hơn để tạm thời thực hiện một số thao tác.</string>
-    <string name="certificate_error">Không thể xác minh chứng chỉ máy chủ. Vui lòng đảm bảo rằng không có gì chặn kết nối HTTPS cho FoxMMM.</string>
+    <string name="certificate_error">Không thể xác minh chứng chỉ máy chủ. Vui lòng đảm bảo rằng không có gì chặn kết nối HTTPS cho AMM.</string>
     <string name="pref_category_privacy">Riêng tư</string>
     <string name="crash_reporting_pii_desc">Cho phép gửi thông tin bổ sung trong báo cáo sự cố, một số trong đó có thể chứa thông tin nhận dạng cá nhân như địa chỉ IP và số nhận dạng thiết bị.</string>
     <string name="crash_reporting_pii">Gửi thông tin bổ sung</string>
@@ -373,7 +373,7 @@
     <string name="contributors">Và tất nhiên, xin cảm ơn tất cả những người đóng góp của chúng tôi, cho dù đó là bản dịch, các đoạn mã nguồn, hay chỉ là niềm vui khi ở cùng các bạn! Chúng tôi yêu quí tất cả các bạn.</string>
     <string name="crash_details_copied">Đã sao chép stacktrace vào bộ nhớ tạm!</string>
     <string name="reset_app_confirmation">Thao tác này sẽ xóa hoàn toàn dữ liệu ứng dụng nhưng sẽ không ảnh hưởng đến các mô-đun.</string>
-    <string name="update_message">Vui lòng đợi trong khi chúng tôi kiểm tra và cài đặt các bản cập nhật cho FoxMMM. Có thể sẽ mất vài phút</string>
+    <string name="update_message">Vui lòng đợi trong khi chúng tôi kiểm tra và cài đặt các bản cập nhật cho AMM. Có thể sẽ mất vài phút</string>
     <string name="update_debug_warning">Có vẻ như bạn đang chạy bản dựng gỡ lỗi. Bản dựng gỡ lỗi phải được cập nhật thủ công và không hỗ trợ cập nhật trong ứng dụng</string>
     <string name="error_download_update">Đã xảy ra lỗi khi tải xuống thông tin cập nhật.</string>
     <string name="check_for_updates">Kiểm tra các bản cập nhật ứng dụng</string>
@@ -382,7 +382,7 @@
     <string name="low_quality_module_desc">Mô-đun này có siêu dữ liệu không hợp lệ hoặc được coi là điểm đánh dấu cho mô-đun chất lượng thấp. Gỡ cài đặt được khuyến khích.</string>
     <string name="safe_message">Mô-đun này đã được kho lưu trữ xác minh là an toàn, nghĩa là nó vượt qua các ngưỡng chất lượng và an toàn nhất định, đồng thời được kiểm tra phần mềm độc hại.</string>
     <string name="notification_update_app_desc">Bật tự động kiểm tra các bản cập nhật ứng dụng. Các bản cập nhật sẽ không tự động tải xuống.</string>
-    <string name="notification_channel_background_update_app_description">Đã có bản cập nhật cho FoxMMM. Nhấn vào đây để cập nhật.</string>
+    <string name="notification_channel_background_update_app_description">Đã có bản cập nhật cho AMM. Nhấn vào đây để cập nhật.</string>
     <string name="setup_crash_reporting_pii_summary">Điều này có thể bao gồm số nhận dạng thiết bị và địa chỉ IP. Sẽ không có dữ liệu nào được sử dụng cho bất kỳ mục đích nào khác ngoài việc phân tích sự cố và cải thiện hiệu suất.</string>
     <string name="eula_agree_v2">Bạn đồng ý bị ràng buộc bởi giấy phép LGPL-3.0 (https://www.gnu.org/licenses/lgpl-3.0.en.html) và EULA (https://www.androidacy.com/foxmmm-eula/), ngoài bất kỳ điều khoản nào của bên thứ ba và tác giả của ứng dụng này không chịu trách nhiệm về việc bạn sử dụng nó, chúng tôi cũng không đưa ra bất kỳ bảo đảm nào, rõ ràng hay ngụ ý.</string>
     <string name="donate_androidacy">Đóng góp cho Androidacy</string>

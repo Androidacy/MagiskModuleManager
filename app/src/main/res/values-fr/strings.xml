@@ -296,8 +296,8 @@
     <string name="fox2code_thanks">Créée par Fox2Code</string>
     <string name="save_logs">Sauvegarder les journeaux dans le stockage et les partager</string>
     <string name="error_saving_logs">Les journeaux n\’ont pas pu être sauvegardés</string>
-    <string name="share_logs">Partager les journeaux FoxMMM</string>
-    <string name="not_official_build">Cette application n\’est pas une fabrication officielle FoxMMM.</string>
+    <string name="share_logs">Partager les journeaux AMM</string>
+    <string name="not_official_build">Cette application n\’est pas une fabrication officielle AMM.</string>
     <string name="crash_text">Uh-oh, on a un problème!</string>
     <string name="feedback_message">Donnez nous plus de détails à propos de ce qui s\’est passé quand c\’est arrivé. Plus on est foue, plus on rit!</string>
     <string name="feedback_submit">Envoyer et redémarrer</string>
@@ -329,7 +329,7 @@
     <string name="background_update_check_excludes">Modules à exclure des vérifications de MàJ automatiques</string>
     <string name="title_activity_update">MàJ dans l\’application</string>
     <string name="update_title">MàJ l\’application</string>
-    <string name="update_message">Merci de patienter pendant que nous vérifions et installons les MàJ pour FoxMMM. Celà peut prendre quelques minutes</string>
+    <string name="update_message">Merci de patienter pendant que nous vérifions et installons les MàJ pour AMM. Celà peut prendre quelques minutes</string>
     <string name="update_button">Merci de patienter...</string>
     <string name="error_no_extras">ERREURE: Donnée invalides reçues au lancement</string>
     <string name="update_debug_warning">Il semblerait que vous soyez en train d\’utiliser une fabrication de débuggage. Les fabrications de débuggage doivent être MàJ manuellement, et les MàJ incorporées ne sont pas supportées</string>
@@ -351,7 +351,7 @@
     <string name="notification_update_summary">Les modules suivants peuvent êtres MàJ:</string>
     <string name="notification_update_module_template">%1$s vers la version %2$s</string>
     <string name="notification_channel_background_update">Vérification des MàJ...</string>
-    <string name="notification_channel_background_update_description">FoxMMM est en train de vérifier les MàJ en tâche de fond.</string>
+    <string name="notification_channel_background_update_description">AMM est en train de vérifier les MàJ en tâche de fond.</string>
     <string name="notification_channel_category_background_update">Statut de la MàJ en arrière-plan</string>
     <string name="notification_channel_category_background_update_description">Afficher une notification lors de la vérification des MàJ pour que le système ne la ferme pas opportunément</string>
     <string name="notification_update_wifi_desc">Vérifier uniquement via le WiFi</string>
@@ -369,7 +369,7 @@
     <string name="notification_channel_category_app_update">MàJs de l\’application</string>
     <string name="notification_channel_category_app_update_description">ÊTre notifié lorsce qu\’une MàJ de l\’application est trouvée</string>
     <string name="notification_channel_background_update_app">MàJ de l\’application disponible!</string>
-    <string name="notification_channel_background_update_app_description">Une MàJ est disponible pour FoxMMM. Appuyer ici pour MàJ.</string>
+    <string name="notification_channel_background_update_app_description">Une MàJ est disponible pour AMM. Appuyer ici pour MàJ.</string>
     <string name="yer_a_wizard_harry">Vous êtes un magicien, Harry!</string>
     <string name="keep_tapping_to_enter_hogwarts">Continuez à toquer pour être admis à Poudlard !</string>
     <string name="modules">Modules</string>
@@ -386,7 +386,7 @@
     <string name="cache_clear_failed">Échec de l\’effacement du cache</string>
     <string name="clear_cache_dialogue_title">Éffacer le cache de l\’application?</string>
     <string name="clear_cache_dialogue_message">Celà effacera le cache de l\’application. Vos réglages seront sauvegardés, mais l\’application pourrait prendre temporairement plus de temps pour effectuer certaines tâches.</string>
-    <string name="certificate_error">Le certificat du serveur n\’a pas pu être vérifié. Veuillez vous assurer que rien n\’intercepte les connexions HTTPS pour FoxMMM.</string>
+    <string name="certificate_error">Le certificat du serveur n\’a pas pu être vérifié. Veuillez vous assurer que rien n\’intercepte les connexions HTTPS pour AMM.</string>
     <string name="pref_category_privacy">Confidentialité</string>
     <string name="crash_reporting_pii_desc">Permettre l\’envoie additionnel d\’information dans les rapports de plantages, certaines d\’entre elles pourraient contenir des informations personelles identifiables telles que les adresses IP et les identifiants du périphérique.</string>
     <string name="crash_reporting_pii">Envoyer les informations additionelles</string>

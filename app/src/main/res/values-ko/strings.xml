@@ -29,7 +29,7 @@
 \n신중하게 켜십시오!</string>
     <string name="dns_over_https_pref">HTTPS를 통한 DNS</string>
     <string name="disable_extensions_pref">Mmm 끄기</string>
-    <string name="disable_extensions_desc">모듈이 터미널 확장을 사용하지 못하도록 Fox Mmm 확장을 끕니다.
+    <string name="disable_extensions_desc">모듈이 터미널 확장을 사용하지 못하도록 AMM 확장을 끕니다.
 \n모듈이 Fox의 Mmm 확장을 잘못 이용하는 경우에 유용합니다.</string>
     <string name="wrap_text_pref">문자열 줄 바꿈</string>
     <string name="enable_blur_pref">흐림</string>

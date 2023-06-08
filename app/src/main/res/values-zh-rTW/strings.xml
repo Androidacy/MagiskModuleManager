@@ -271,8 +271,8 @@
     <string name="fox2code_thanks">製作 by Fox2Code</string>
     <string name="save_logs">儲存日誌到手機上後分享</string>
     <string name="error_saving_logs">無法儲存日誌</string>
-    <string name="share_logs">分享 FoxMMM 日誌</string>
-    <string name="not_official_build">此應用為非官方的 FoxMMM 發行。</string>
+    <string name="share_logs">分享 AMM 日誌</string>
+    <string name="not_official_build">此應用為非官方的 AMM 發行。</string>
     <string name="yer_a_wizard_harry">哈利，你是個巫師！</string>
     <string name="keep_tapping_to_enter_hogwarts">繼續點擊來加入霍格華茲！</string>
     <string name="modules">模組</string>
@@ -308,7 +308,7 @@
     <string name="sentry_enable_nag">看起來錯誤回報被禁止了。請允許後再發送回報。</string>
     <string name="fox2code_thanks_desc">Fox2Code是此應用的原作者。這裡的存在都要歸功於他。</string>
     <string name="title_activity_update">內置更新器</string>
-    <string name="update_message">FoxMMM檢查更新中。這將會持續幾分鐘</string>
+    <string name="update_message">AMM檢查更新中。這將會持續幾分鐘</string>
     <string name="no_file_found">錯誤：找不到更新包。</string>
     <string name="low_quality_module_desc">這個模組的元資料或為無效，又或為低質量模組的徵兆。建議解除安裝。</string>
     <string name="reset_app">重置此應用</string>
@@ -346,7 +346,7 @@
     <string name="notification_update_summary">以下模組可以更新：</string>
     <string name="notification_update_module_template">%1$s 到 版本 %2$s</string>
     <string name="notification_channel_background_update">檢查更新中…</string>
-    <string name="notification_channel_background_update_description">FoxMMM在後台檢查更新中。</string>
+    <string name="notification_channel_background_update_description">AMM在後台檢查更新中。</string>
     <string name="notification_channel_category_background_update">後台更新狀態</string>
     <string name="notification_channel_category_background_update_description">在檢查更新時顯示一個通知，不讓系統自動結束進程</string>
     <string name="notification_update_wifi_desc">只在WiFi連線下檢查</string>
@@ -360,7 +360,7 @@
     <string name="notification_channel_category_app_update">應用程式更新</string>
     <string name="notification_channel_category_app_update_description">當應用程式有更新時通知</string>
     <string name="notification_channel_background_update_app">應用有新的更新！</string>
-    <string name="notification_channel_background_update_app_description">FoxMMM有更新。點擊安裝更新。</string>
+    <string name="notification_channel_background_update_app_description">AMM有更新。點擊安裝更新。</string>
     <string name="crash_reporting_headline">錯誤回報</string>
     <string name="setup_update_check_headline">更新檢查</string>
     <string name="setup_background_update_check_require_wifi">僅透過WiFi來檢查更新</string>
@@ -372,7 +372,7 @@
     <string name="cache_clear_failed">快取清除失敗</string>
     <string name="clear_cache_dialogue_title">清除應用快取？</string>
     <string name="clear_cache_dialogue_message">這將會清除應用快取。你的設定將會被保留，不過其他應用相關功能可能會暫時性的需要更長時間來處理。</string>
-    <string name="certificate_error">伺服器憑證無法被驗證。請確保FoxMMM的HTTPS請求沒有被攔截。</string>
+    <string name="certificate_error">伺服器憑證無法被驗證。請確保AMM的HTTPS請求沒有被攔截。</string>
     <string name="pref_category_privacy">隱私</string>
     <string name="crash_reporting_pii_desc">允許在發生錯誤報告時附帶更多資訊，其中可能包含可個人識別化的資料，例如IP地址以及終端識別碼。</string>
     <string name="crash_reporting_pii">發送詳細資料</string>

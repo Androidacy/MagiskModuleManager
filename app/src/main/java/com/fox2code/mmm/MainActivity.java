@@ -125,7 +125,7 @@ public class MainActivity extends FoxActivity implements SwipeRefreshLayout.OnRe
         realm.close();
         // hide this behind a buildconfig flag for now, but crash the app if it's not an official build and not debug
         if (BuildConfig.ENABLE_PROTECTION && !o && !BuildConfig.DEBUG) {
-            throw new RuntimeException("This is not an official build of FoxMMM");
+            throw new RuntimeException("This is not an official build of AMM");
         } else if (!o && !BuildConfig.DEBUG) {
             Timber.w("You may be running an untrusted build.");
             // Show a toast to warn the user

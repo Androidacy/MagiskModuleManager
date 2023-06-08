@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">Gestor de módulos Magisk de Fox</string>
-    <string name="app_name_short">Fox Mmm</string>
+    <string name="app_name_short">AMM</string>
     <string name="fail_root_magisk">No se pudo acceder a Root o Magisk</string>
     <string name="fail_root_denied">Root ha sido denegado a través de la aplicación Magisk</string>
     <string name="fail_magisk_missing">Magisk no está instalado en este dispositivo</string>
@@ -248,8 +248,8 @@
     <string name="fox2code_thanks">Creado por Fox2Code</string>
     <string name="save_logs">Guarde los registros y compartalos</string>
     <string name="error_saving_logs">No se han podido guardar los registros</string>
-    <string name="share_logs">Compartir registros de FoxMMM</string>
-    <string name="not_official_build">Esta aplicación es una versión no oficial de FoxMMM.</string>
+    <string name="share_logs">Compartir registros de AMM</string>
+    <string name="not_official_build">Esta aplicación es una versión no oficial de AMM.</string>
     <string name="repo_update_failed_message">Los siguientes repositorios no se han actualizado:
 \n
 \n%s</string>
@@ -300,7 +300,7 @@
     <string name="title_activity_update">Actualizador</string>
     <string name="update_title">Actualizar aplicación</string>
     <string name="update_button">Por favor espere…</string>
-    <string name="update_message">Por favor espere mientras comprobamos e instalamos actualizaciones a FoxMMM. Esto puede tardar algunos minutos</string>
+    <string name="update_message">Por favor espere mientras comprobamos e instalamos actualizaciones a AMM. Esto puede tardar algunos minutos</string>
     <string name="source_code_summary"><b>Compromiso</b> %1$s @ %2$s</string>
     <string name="modules">Módulos</string>
     <string name="search">Buscar</string>
@@ -325,7 +325,7 @@
     <string name="notification_update_summary">Los siguientes modulos pueden ser acutalizados:</string>
     <string name="notification_update_module_template">%1$s a la versión %2$s</string>
     <string name="notification_channel_background_update">Comprobando actualizaciones…</string>
-    <string name="notification_channel_background_update_description">FoxMMM está comprobando actualizaciones en segundo plano.</string>
+    <string name="notification_channel_background_update_description">AMM está comprobando actualizaciones en segundo plano.</string>
     <string name="notification_channel_category_background_update">Estado de la actualización en segundo plano</string>
     <string name="notification_channel_category_background_update_description">Muestra una notificación mientras se comprueban las actualizaciones así el sistema no cierra la app</string>
     <string name="notification_update_wifi_desc">Solo comprobar usando WiFi</string>
@@ -341,7 +341,7 @@
     <string name="notification_update_app_pref">Comprobar actualizaciones de la aplicación</string>
     <string name="notification_channel_category_app_update">Actualizaciones de aplicación</string>
     <string name="notification_channel_background_update_app">Actualización disponible!</string>
-    <string name="notification_channel_background_update_app_description">Se ha encontrado una actualización para FoxMMM. Toca aquí para actualizar.</string>
+    <string name="notification_channel_background_update_app_description">Se ha encontrado una actualización para AMM. Toca aquí para actualizar.</string>
     <string name="crash_reporting_headline">Reportes de errores</string>
     <string name="setup_update_check_headline">Comprobación de actualizaciones</string>
     <string name="setup_background_update_check_require_wifi">Se necesita WiFi para comprobar las actualizaciones</string>
@@ -353,7 +353,7 @@
     <string name="cache_clear_failed">Fallo al borrar caché</string>
     <string name="clear_cache_dialogue_title">Desea borrar la caché\?</string>
     <string name="clear_cache_dialogue_message">Esto va a borrar la caché de la aplicación. Tus preferencias van a ser guardadas, pero la aplicación va a tardar más tiempo en hacer algunas operaciones temporalmente.</string>
-    <string name="certificate_error">El certificado del servidor puede no haber sido verificado. Por favor asegúrate de que nada está interceptando las conexiones HTTPS para FoxMMM.</string>
+    <string name="certificate_error">El certificado del servidor puede no haber sido verificado. Por favor asegúrate de que nada está interceptando las conexiones HTTPS para AMM.</string>
     <string name="pref_category_privacy">Privacidad</string>
     <string name="crash_reporting_pii_desc">Permite el mandar información adicional en los reportes de errores, algunos de los cuales pueden contener datos personales identificables, como tu dirección IP e identificadores de dispositivos.</string>
     <string name="crash_reporting_pii">Envía información adicional</string>

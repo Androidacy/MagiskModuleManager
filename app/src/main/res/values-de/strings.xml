@@ -79,8 +79,8 @@
     <string name="theme_mode_pref">Theme Modus</string>
     <string name="dns_over_https_pref">DNS über HTTPS</string>
     <string name="dns_over_https_desc">Kann in einigen Fällen Verbindungsprobleme beheben</string>
-    <string name="disable_extensions_desc">Deaktivieren Sie die FoxMmm-Erweiterungen, um zu verhindern, dass Module Terminalerweiterungen verwenden.
-\nNützlich, wenn ein Modul die FoxMmm-Erweiterungen missbraucht.</string>
+    <string name="disable_extensions_desc">Deaktivieren Sie die AMM-Erweiterungen, um zu verhindern, dass Module Terminalerweiterungen verwenden.
+\nNützlich, wenn ein Modul die AMM-Erweiterungen missbraucht.</string>
     <string name="wrap_text_pref">Textumbruch</string>
     <string name="wrap_text_desc">Zeigen Sie Text in mehreren Zeilen an, anstatt den gesamten Text in derselben Zeile zu platzieren, wenn Sie ein Modul installieren.</string>
     <string name="disable_chips_in_description">Chips in Beschreibung deaktivieren</string>
@@ -268,7 +268,7 @@
     <string name="reset_api_key">API-Schlüssel zurücksetzen</string>
     <string name="upgrade_androidacy_promo">Upgrade auf Premium</string>
     <string name="share_logs">Teile Logs</string>
-    <string name="not_official_build">Diese App ist ein inoffizieller FoxMMM-Build.</string>
+    <string name="not_official_build">Diese App ist ein inoffizieller AMM-Build.</string>
     <string name="feedback_submit">Absenden und neu starten</string>
     <string name="please_feedback">Bitte hilf uns aus, indem du uns erzählst, was du machen wolltest, bevor dies passiert ist.</string>
     <string name="sentry_dialogue_disabled">Fehler-Upload deaktiviert. Aktivieren, um Feedback hochzuladen.</string>

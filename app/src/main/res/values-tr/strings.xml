@@ -283,14 +283,14 @@
     <string name="fox2code_thanks">Fox2Code tarafından oluşturuldu</string>
     <string name="save_logs">Günlükleri depolamaya kaydet ve paylaş</string>
     <string name="error_saving_logs">Günlükler kaydedilemedi</string>
-    <string name="share_logs">FoxMMM günlüklerini paylaş</string>
-    <string name="not_official_build">Bu uygulama resmi olmayan FoxMMM yapımıdır.</string>
+    <string name="share_logs">AMM günlüklerini paylaş</string>
+    <string name="not_official_build">Bu uygulama resmi olmayan AMM yapımıdır.</string>
     <string name="update_button">Lütfen bekleyin...</string>
     <string name="notification_update_ignore_desc">Güncelleme kontrollerinden hariç tutulacak modüllerin listesi</string>
     <string name="background_update_check_excludes">Otomatik güncelleme kontrollerinden hariç tutulacak modüller</string>
     <string name="title_activity_update">Uygulama İçi Güncelleyici</string>
     <string name="update_title">Uygulamayı güncelle</string>
-    <string name="update_message">FoxMMM güncellemelerini kontrol edip yüklerken lütfen bekleyin. Bu işlem birkaç dakika sürebilir</string>
+    <string name="update_message">AMM güncellemelerini kontrol edip yüklerken lütfen bekleyin. Bu işlem birkaç dakika sürebilir</string>
     <string name="crash_text">Uh-oh, bir engele takıldık!</string>
     <string name="feedback_submit">Gönder ve yeniden başlat</string>
     <string name="please_feedback">Lütfen bu olay olduğunda ne yapmaya çalıştığınızı anlatarak bize yardımcı olun.</string>
@@ -339,7 +339,7 @@
     <string name="notification_update_summary">Aşağıdaki modüller güncellenebilir:</string>
     <string name="notification_update_module_template">%1$s sürümünden %2$s sürümüne</string>
     <string name="notification_channel_background_update">Güncellemeler kontrol ediliyor...</string>
-    <string name="notification_channel_background_update_description">FoxMMM arka planda güncellemeleri kontrol ediyor.</string>
+    <string name="notification_channel_background_update_description">AMM arka planda güncellemeleri kontrol ediyor.</string>
     <string name="notification_channel_category_background_update">Arka plan güncelleme durumu</string>
     <string name="notification_channel_category_background_update_description">Güncellemeleri kontrol ederken bir bildirim gösterir, böylece sistem onu öldürmez</string>
     <string name="notification_update_wifi_desc">Sadece WiFi üzerinden kontrol edin</string>
@@ -353,7 +353,7 @@
     <string name="notification_update_app_pref">Uygulama güncellemelerini kontrol edin</string>
     <string name="notification_channel_category_app_update">Uygulama güncellemeleri</string>
     <string name="notification_channel_background_update_app">Uygulama güncellemesi mevcut!</string>
-    <string name="notification_channel_background_update_app_description">FoxMMM için bir güncelleme mevcuttur. Güncellemek için buraya dokunun.</string>
+    <string name="notification_channel_background_update_app_description">AMM için bir güncelleme mevcuttur. Güncellemek için buraya dokunun.</string>
     <string name="feedback_message">Bu olay olduğunda ne yaptığınız hakkında bize daha fazla ayrıntı verin. Ne kadar çok, o kadar iyi!</string>
     <string name="sentry_dialogue_disabled">Çökme raporlama devre dışı. Geri bildirim göndermek için etkinleştirin.</string>
     <string name="sentry_enable_nag">Kilitlenme raporlaması devre dışı gibi görünüyor. Geri bildirim göndermek için lütfen etkinleştirin.</string>

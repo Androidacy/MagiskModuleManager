@@ -252,7 +252,7 @@
     <string name="fox2code_thanks">Vytvořil Fox2Code</string>
     <string name="save_logs">Ukládat protokoly do úložiště a sdílet je</string>
     <string name="error_saving_logs">Protokoly se nedají uložit</string>
-    <string name="share_logs">Sdílet protokoly FoxMMM</string>
+    <string name="share_logs">Sdílet protokoly AMM</string>
     <string name="keep_tapping_to_enter_hogwarts">Pokračujte v klikání, aby vás přijali do Bradavic!</string>
     <string name="modules">Moduly</string>
     <string name="search">Hledat</string>
@@ -269,7 +269,7 @@
     <string name="no_file_found">ERROR: Nelze najít aktualizační balíček.</string>
     <string name="check_for_updates">Skontrolovat aktualizace aplikace</string>
     <string name="update_debug_download_pref">Testovat mechanismus stahování aktualizací</string>
-    <string name="not_official_build">Tato aplikace není oficiální build FoxMMM.</string>
+    <string name="not_official_build">Tato aplikace není oficiální build AMM.</string>
     <string name="repo_update_failed_message">Následující repozitáře se nepovedlo aktualizovat:
 \n
 \n%s</string>
@@ -326,7 +326,7 @@
     <string name="add_repo_message">Repozitáře musí být poskytována přes HTTPS a musí splňovat specifikace uvedené v dokumentaci.</string>
     <string name="notification_update_summary">Následující moduly mohou být aktualizovány:</string>
     <string name="notification_update_module_template">%1$s na verzi %2$s</string>
-    <string name="notification_channel_background_update_description">FoxMMM kontroluje aktualizace na pozadí.</string>
+    <string name="notification_channel_background_update_description">AMM kontroluje aktualizace na pozadí.</string>
     <string name="notification_channel_category_background_update">Stav aktualizací na pozadí</string>
     <string name="notification_channel_category_background_update_description">Zobrazuje upozornění při kontrole aktualizací, aby je systém nezabil</string>
     <string name="notification_update_wifi_desc">Kontrolovat pouze přes WiFi</string>
@@ -343,7 +343,7 @@
     <string name="notification_channel_category_app_update">Aktualizace aplikace</string>
     <string name="notification_channel_category_app_update_description">Upozornit je-li dostupná aktualizace aplikace</string>
     <string name="notification_channel_background_update_app">Je dostupná aktualizace aplikace!</string>
-    <string name="notification_channel_background_update_app_description">Je dostupná aktualizace FoxMMM. Klikněte zde pro aktualizaci.</string>
+    <string name="notification_channel_background_update_app_description">Je dostupná aktualizace AMM. Klikněte zde pro aktualizaci.</string>
     <string name="crash_reporting_headline">Hlášení o selhání</string>
     <string name="setup_update_check_headline">Kontroly aktualizací</string>
     <string name="update_button">Čekejte prosím…</string>
@@ -353,7 +353,7 @@
 \nUjisti se, že věříš zdroji tohoto modulu, neboť moduly jsou velice mocné a mohou udělat skoro cokoli.</string>
     <string name="androidacy_thanks_desc">Obrovské poděkování patří společnosti Androidacy za její integraci a příspěvky do aplikace.</string>
     <string name="reset_app_message">Tím se zcela odstraní všechna data aplikace a aplikaci se zavře. Moduly nebudou odinstalovány.</string>
-    <string name="update_message">Počkejte prosím, než zkontrolujeme a nainstalujeme aktualizace FoxMMM. Může to trvat pár minut</string>
+    <string name="update_message">Počkejte prosím, než zkontrolujeme a nainstalujeme aktualizace AMM. Může to trvat pár minut</string>
     <string name="error_download_update">Při stahování informací o aktualizaci došlo k chybě.</string>
     <string name="low_quality_module_desc">Tento modul obsahuje metadata, která jsou buď neplatná, nebo jsou považována za označení modulu nízké kvality. Doporučuje se odinstalace.</string>
     <string name="yer_a_wizard_harry">Jsi čaroděj, Harry!</string>
@@ -367,7 +367,7 @@
     <string name="cache_clear_failed">Chyba pri mazání cache</string>
     <string name="clear_cache_dialogue_title">Smazat cache aplikace\?</string>
     <string name="clear_cache_dialogue_message">Tím se vymaže cache aplikace. Vaše předvolby budou uloženy, ale aplikace se může dočasně spomalit.</string>
-    <string name="certificate_error">Certifikát serveru se nepodařilo ověřit. Ujistěte se, že nic nezachycuje připojení HTTPS pro FoxMMM.</string>
+    <string name="certificate_error">Certifikát serveru se nepodařilo ověřit. Ujistěte se, že nic nezachycuje připojení HTTPS pro AMM.</string>
     <string name="pref_category_privacy">Soukromí</string>
     <string name="crash_reporting_pii_desc">Umožňuje odesílání dalších informací ve zprávách o selhání, z nichž některé mohou obsahovat osobní údaje, jako je IP adresa nebo identifikátory zařízení.</string>
     <string name="crash_reporting_pii">Zaslat další informace</string>

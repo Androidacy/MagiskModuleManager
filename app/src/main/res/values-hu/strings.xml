@@ -197,9 +197,9 @@
     <string name="fox2code_thanks_desc">Fox2Code az alkalmazás eredeti készítője. Nélküle ez soha nem jöhetett volna létre.</string>
     <string name="fox2code_thanks">Készítette: Fox2Code</string>
     <string name="save_logs">Naplók mentése és megosztása</string>
-    <string name="not_official_build">Vigyázat! Nem hivatalos és ezért nem támogatott FoxMMM buildet futtatsz.</string>
+    <string name="not_official_build">Vigyázat! Nem hivatalos és ezért nem támogatott AMM buildet futtatsz.</string>
     <string name="error_saving_logs">Nem sikerült a naplók mentése</string>
-    <string name="share_logs">FoxMMM naplók megosztása</string>
+    <string name="share_logs">AMM naplók megosztása</string>
     <string name="title_activity_settings">BeállításAktivitás</string>
     <string name="module_by">tőle:</string>
     <string name="module_needs_ramdisk">Ramdiskre van szüksége</string>
@@ -211,8 +211,8 @@
     <string name="use_magisk_install_command_desc">A tesztelés során problémákat okozott a modul telepítési hiba diagnosztikai eszközének, ezért ez az opció a fejlesztői mód mögé van rejtve.
 \nSaját felelősségre kapcsold be!</string>
     <string name="disable_extensions_pref">Nincs Mmm</string>
-    <string name="disable_extensions_desc">Kapcsolja ki a Fox Mmm bővítményeit, megakadályozva ezzel, hogy a modulok terminálbővítményeket használjanak.
-\nHasznos, ha egy modul visszaél a Fox Mmm kiterjesztéseivel.</string>
+    <string name="disable_extensions_desc">Kapcsolja ki a AMM bővítményeit, megakadályozva ezzel, hogy a modulok terminálbővítményeket használjanak.
+\nHasznos, ha egy modul visszaél a AMM kiterjesztéseivel.</string>
     <string name="disable_chips_in_description">Chipek letiltása a leírásban</string>
     <string name="androidacy_repo_info">Ez a repo reklámokat jeleníthet meg a szerver és fejlesztési költségek fedezése érdekében. Ezek között lehetnek vélemények, víruskeresők, egyebek.</string>
     <string name="androidacy_test_mode_pref">Androidacy teszt mód</string>

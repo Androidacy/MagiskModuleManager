@@ -249,8 +249,8 @@
     <string name="fox2code_thanks">Fox2Code が作成しました</string>
     <string name="save_logs">ログをストレージに保存して共有</string>
     <string name="error_saving_logs">ログを保存できませんでした</string>
-    <string name="share_logs">FoxMMM のログをシェア</string>
-    <string name="not_official_build">このアプリは非公式の FoxMMM ビルドです。</string>
+    <string name="share_logs">AMM のログをシェア</string>
+    <string name="not_official_build">このアプリは非公式の AMM ビルドです。</string>
     <string name="repo_update_failed_message">以下のリポジトリのアップデートに失敗しました: 
 \n 
 \n%s</string>
@@ -301,7 +301,7 @@
     <string name="background_update_check_excludes">自動アップデートチェックから除外するモジュール</string>
     <string name="title_activity_update">アプリ内アップデータ</string>
     <string name="update_title">アプリをアップデート</string>
-    <string name="update_message">FoxMMM のアップデートをインストールしています。数分かかることがあります</string>
+    <string name="update_message">AMM のアップデートをインストールしています。数分かかることがあります</string>
     <string name="update_button">お待ちください…</string>
     <string name="error_no_extras">エラー: 起動中に無効なデータを受け取りました</string>
     <string name="update_debug_warning">デバッグ用のビルドで実行しています。アプリが自動で更新されないため、手動で更新してください</string>
@@ -328,7 +328,7 @@
     <string name="notification_update_summary">以下のモジュールがアップデートされます:</string>
     <string name="notification_update_module_template">%1$s をバージョン %2$s へ</string>
     <string name="notification_channel_background_update">アップデートを確認しています…</string>
-    <string name="notification_channel_background_update_description">FoxMMM がバックグラウンドでアップデートを確認しています。</string>
+    <string name="notification_channel_background_update_description">AMM がバックグラウンドでアップデートを確認しています。</string>
     <string name="notification_channel_category_background_update">バックグラウンドアップデートステータス</string>
     <string name="notification_channel_category_background_update_description">通知を表示することでアップデートの確認中にシステムからキルされないようにする</string>
     <string name="notification_update_wifi_desc">WiFi 接続時にのみ確認</string>
@@ -344,7 +344,7 @@
     <string name="notification_channel_category_app_update">アプリアップデート</string>
     <string name="notification_channel_category_app_update_description">アプリのアップデートが利用可能な場合に通知します</string>
     <string name="notification_channel_background_update_app">アプリのアップデートが利用可能です!</string>
-    <string name="notification_channel_background_update_app_description">FoxMMM のアップデートが利用可能です。ここをタップしてアップデートします。</string>
+    <string name="notification_channel_background_update_app_description">AMM のアップデートが利用可能です。ここをタップしてアップデートします。</string>
     <string name="modules">モジュール</string>
     <string name="no_browser">ブラウザーがインストールされていません。続行するにはインストールしてください。</string>
     <string name="search">検索</string>
@@ -363,7 +363,7 @@
     <string name="crash_reporting_pii_desc">追加情報をクラッシュレポートに含めることを許可します。IP アドレスやデバイス情報などの個人情報が含まれることがあります。</string>
     <string name="clear_cache_dialogue_title">アプリキャッシュをクリアしますか\?</string>
     <string name="clear_cache_dialogue_message">アプリキャッシュをクリアします。設定は消去されませんが一部の操作が一時的に遅くなることがあります。</string>
-    <string name="certificate_error">サーバーの証明書が検証されていません。FoxMMM への HTTPS 接続を確認してください。</string>
+    <string name="certificate_error">サーバーの証明書が検証されていません。AMM への HTTPS 接続を確認してください。</string>
     <string name="crash_reporting_pii">追加情報を送信する</string>
     <string name="setup_crash_reporting_pii">クラッシュレポートに追加情報を含めて送信します。</string>
     <string name="setup_crash_reporting_pii_summary">デバイス情報や IP アドレスが送信されることがあります。クラッシュの解析とパフォーマンスの向上以外に使用されることはありません。</string>

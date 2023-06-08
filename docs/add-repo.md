@@ -13,7 +13,7 @@ You have two options:
 
 ### Option 2: Add your repo to the app for everyone:
 
-To add you own repo to Fox's mmm it need to follow theses conditions:
+To add you own repo to AMM it need to follow theses conditions:
 
 - The module repo or at least one of it's owners must be known.
 - Modules in the repo must be monitored, and malicious modules must be removed.

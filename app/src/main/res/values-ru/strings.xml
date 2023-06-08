@@ -268,8 +268,8 @@
     <string name="fox2code_thanks">Создано Fox2Code</string>
     <string name="save_logs">Сохранить журнал логов в хранилище и поделиться</string>
     <string name="error_saving_logs">Не удалось сохранить журнал логов</string>
-    <string name="share_logs">Поделиться с FoxMMM журналом логов</string>
-    <string name="not_official_build">Данное приложение является неофициальной сборкой FoxMMM.</string>
+    <string name="share_logs">Поделиться с AMM журналом логов</string>
+    <string name="not_official_build">Данное приложение является неофициальной сборкой AMM.</string>
     <string name="please_feedback">Пожалуйста, помогите нам, рассказав, что вы делали, прежде чем это произошло.</string>
     <string name="copy_button">Скопировать текст</string>
     <string name="more_details">Более подробную информацию можно найти ниже.</string>
@@ -299,7 +299,7 @@
     <string name="update_title">Обновиться</string>
     <string name="update_button">Подождите…</string>
     <string name="title_activity_update">Обновление из самого приложения</string>
-    <string name="update_message">Подождите, пока мы проверим и установим обновления для FoxMMM. Это может занять несколько минут</string>
+    <string name="update_message">Подождите, пока мы проверим и установим обновления для AMM. Это может занять несколько минут</string>
     <string name="notification_update_ignore_desc">Список модулей для исключения из проверки обновлений</string>
     <string name="notification_update_ignore_pref">Исключить модули</string>
     <string name="pref_category_updates">Обновления</string>
@@ -326,7 +326,7 @@
     <string name="notification_update_summary">Следующие модули могут быть обновлены:</string>
     <string name="notification_update_module_template">С версии %1$s до %2$s</string>
     <string name="notification_channel_background_update">Проверка обновлений…</string>
-    <string name="notification_channel_background_update_description">FoxMMM проверяет наличие обновлений в фоновом режиме.</string>
+    <string name="notification_channel_background_update_description">AMM проверяет наличие обновлений в фоновом режиме.</string>
     <string name="notification_channel_category_background_update">Статус проверки обновлений в фоне</string>
     <string name="notification_update_wifi_desc">Проверять только по Wi-Fi</string>
     <string name="notification_update_wifi_pref">При проверка обновлений использовать только Wi-Fi или безлимитную сеть. Рекомендуется оставить включенным, если у вас лимитный тариф на мобильный Интернет.</string>
@@ -344,7 +344,7 @@
     <string name="notification_channel_category_app_update">Обновления приложений</string>
     <string name="notification_channel_category_app_update_description">Уведомляет, когда доступно обновление приложения</string>
     <string name="notification_channel_background_update_app">Доступно обновление приложения!</string>
-    <string name="notification_channel_background_update_app_description">Доступно обновление для FoxMMM. Нажмите здесь, чтобы обновить.</string>
+    <string name="notification_channel_background_update_app_description">Доступно обновление для AMM. Нажмите здесь, чтобы обновить.</string>
     <string name="modules">Модули</string>
     <string name="search">Поиск</string>
     <string name="yer_a_wizard_harry">Ты волшебник, Гарри!</string>
@@ -361,7 +361,7 @@
     <string name="cache_clear_failed">Ошибка очистки кэша</string>
     <string name="clear_cache_dialogue_title">Очистить кэш приложения\?</string>
     <string name="clear_cache_dialogue_message">Это очистит кэш приложения. Ваши настройки будут сохранены, но приложению может временно потребоваться больше времени для выполнения некоторых операций.</string>
-    <string name="certificate_error">Не удалось проверить сертификат сервера. Пожалуйста, убедитесь, что ничто не перехватывает HTTPS-соединения для FoxMMM.</string>
+    <string name="certificate_error">Не удалось проверить сертификат сервера. Пожалуйста, убедитесь, что ничто не перехватывает HTTPS-соединения для AMM.</string>
     <string name="pref_category_privacy">Конфиденциальность</string>
     <string name="crash_reporting_pii_desc">Позволяет отправлять дополнительную информацию в отчетах о сбоях, некоторые из которых могут содержать личную информацию, такую как IP-адрес и идентификаторы устройств.</string>
     <string name="crash_reporting_pii">Отправить дополнительную информацию</string>
@@ -402,5 +402,5 @@
     <string name="background_update_check_excludes_version_hint">Игнорируемый код версии</string>
     <string name="androidacy_thanks_up_title">Вы уже обновились!</string>
     <string name="upgrade_now">Обновить</string>
-    <string name="reinstall_warning">Большинству модулей требуется удаление и переустановка начисто. По этой причине FoxMMM не поддерживает переустановку модулей, пока они есть на устройстве.</string>
+    <string name="reinstall_warning">Большинству модулей требуется удаление и переустановка начисто. По этой причине AMM не поддерживает переустановку модулей, пока они есть на устройстве.</string>
 </resources>

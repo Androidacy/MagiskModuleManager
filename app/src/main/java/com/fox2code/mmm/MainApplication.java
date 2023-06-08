@@ -390,7 +390,7 @@ public class MainApplication extends FoxApplication implements androidx.work.Con
         SentryMain.initialize(this);
         // Initialize Timber
         TimberUtils.configTimber();
-        Timber.i("Starting FoxMMM version %s (%d) - commit %s", BuildConfig.VERSION_NAME, BuildConfig.VERSION_CODE, BuildConfig.COMMIT_HASH);
+        Timber.i("Starting AMM version %s (%d) - commit %s", BuildConfig.VERSION_NAME, BuildConfig.VERSION_CODE, BuildConfig.COMMIT_HASH);
         // Update SSL Ciphers if update is possible
         GMSProviderInstaller.installIfNeeded(this);
         // get intent. if isCrashing is not present or false, call FileUtils.ensureCacheDirs and FileUtils.ensureURLHandler
@@ -400,9 +400,9 @@ public class MainApplication extends FoxApplication implements androidx.work.Con
             fileUtils.ensureCacheDirs();
             fileUtils.ensureURLHandler(this);
         }
-        Timber.d("Initializing FoxMMM");
+        Timber.d("Initializing AMM");
         Timber.d("Started from background: %s", !isInForeground());
-        Timber.d("FoxMMM is running in debug mode");
+        Timber.d("AMM is running in debug mode");
         Timber.d("Initializing Realm");
         Realm.init(this);
         Timber.d("Initialized Realm");

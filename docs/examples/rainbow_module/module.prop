@@ -1,9 +1,9 @@
 id=fox_mmm_rainbow
-name=Fox's Mmm Rainbow Module
+name=AMM Rainbow Module
 version=v1.0
 versionCode=1
 author=Fox2Code
-description=Fox's Magisk Module Manager rainbow module
+description=Androidacy Module Manager rainbow module
 minApi=21
 minMagisk=19000
 support=https://github.com/Androidacy/MagiskModuleManager

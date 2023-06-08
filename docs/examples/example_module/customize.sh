@@ -7,7 +7,7 @@ if [ -n "$MMM_EXT_SUPPORT" ]; then
   }
 else
   mmm_exec() { true; }
-  abort "! This module need to be executed in Fox's Magisk Module Manager"
+  abort "! This module need to be executed in Androidacy Module Manager"
   exit 1
 fi
 

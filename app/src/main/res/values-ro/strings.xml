@@ -262,8 +262,8 @@
     <string name="fox2code_thanks">Creat de Fox2Code</string>
     <string name="save_logs">Salvați jurnalele în memoria de stocare și partajați</string>
     <string name="error_saving_logs">Nu s-au putut salva jurnalele</string>
-    <string name="share_logs">Share FoxMMM logs</string>
-    <string name="not_official_build">Această aplicație este o versiune neoficială a FoxMMM.</string>
+    <string name="share_logs">Share AMM logs</string>
+    <string name="not_official_build">Această aplicație este o versiune neoficială a AMM.</string>
     <string name="setup_theme">Alege o temă</string>
     <string name="setup_theme_system">Tema de sistem</string>
     <string name="setup_theme_light">Tema luminoasă</string>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Fox Magisk Module Manager</string>
-    <string name="app_name_short">Fox Mmm</string>
+    <string name="app_name_short">AMM</string>
     <string name="fail_root_magisk">Impossibile ottenere l\'accesso root</string>
     <string name="loading">Caricamento…</string>
     <string name="updatable">Aggiornamento disponibile</string>
@@ -109,8 +109,8 @@
     </string>
     <string name="disable_extensions_pref">Niente Mmm</string>
     <string name="disable_extensions_desc">
-        Disattiva le estensioni di Fox Mmm, impedendo ai moduli di usare
-        le estensioni per il terminale.\nUtile se un modulo abusa le estensioni di Fox Mmm.
+        Disattiva le estensioni di AMM, impedendo ai moduli di usare
+        le estensioni per il terminale.\nUtile se un modulo abusa le estensioni di AMM.
     </string>
     <string name="wrap_text_pref">Testo a capo</string>
     <string name="wrap_text_desc">Mostra il testo su più righe invece di mettere tutto il testo in una sola riga quando si installa un modulo.</string>
@@ -269,7 +269,7 @@
     <string name="fox2code_thanks">Creato da Fox2Code</string>
     <string name="save_logs">Salva i log sul dispositivo e condividili</string>
     <string name="error_saving_logs">Impossibile salvare i log</string>
-    <string name="share_logs">Condividi i log di FoxMMM</string>
+    <string name="share_logs">Condividi i log di AMM</string>
     <string name="repo_update_failed_message">Non sono riuscito ad aggiornare i seguenti repository:
 \n
 \n%s</string>
@@ -324,14 +324,14 @@
 \n
 \nAssicurati di fidarti della fonte di questo modulo, i moduli sono molto potenti e possono fare quasi tutto.</string>
     <string name="upgrade_androidacy_promo_desc">Passare a premium rimuoverà le pubblicità, i captcha e i download per il Repository di Androidacy, e supporta Androidacy e gli autori dei moduli.</string>
-    <string name="not_official_build">Quest\'app è una build non ufficiale di FoxMMM.</string>
+    <string name="not_official_build">Quest\'app è una build non ufficiale di AMM.</string>
     <string name="feedback_message">Dacci più dettagli su cosa stavi facendo quando è accaduto. Più sappiamo, meglio è!</string>
     <string name="more_details">Più dettagli potrebbero essere qua sotto.</string>
     <string name="sentry_enable_nag">Sembra che la segnalazione degli arresti anomali sia disabilitata. Perfavore attivala per inviare feedback.</string>
     <string name="reset_app_confirmation">Questa operazione cancellerà completamente i dati delle app, ma non avrà effetto sui moduli.</string>
     <string name="invalid_characters_message">L\'elenco dei moduli inseriti non è valido. Inserire solo id di moduli validi separati da virgole</string>
     <string name="background_update_check_excludes">Moduli da escludere dal controllo automatica degli aggiornamenti</string>
-    <string name="update_message">Si prega di attendere mentre controlliamo e installiamo gli aggiornamenti di FoxMMM. L\'operazione potrebbe richiedere alcuni minuti</string>
+    <string name="update_message">Si prega di attendere mentre controlliamo e installiamo gli aggiornamenti di AMM. L\'operazione potrebbe richiedere alcuni minuti</string>
     <string name="checking_for_update">Cercando aggiornamenti…</string>
     <string name="yer_a_wizard_harry">Sei un mago, Harry!</string>
     <string name="keep_tapping_to_enter_hogwarts">Continua a premere per essere ammesso ad Hogwarts!</string>
@@ -343,7 +343,7 @@
     <string name="add_repo_message">Le repository devono essere su protocollo HTTPS, e devono seguire le specifiche della documentazione.</string>
     <string name="notification_update_module_template">%1$s alla versione %2$s</string>
     <string name="notification_channel_background_update">Controllo aggiornamenti…</string>
-    <string name="notification_channel_background_update_description">FoxMMM sta controllando gli aggiornamenti in background.</string>
+    <string name="notification_channel_background_update_description">AMM sta controllando gli aggiornamenti in background.</string>
     <string name="notification_channel_category_background_update">Stato aggiornamento in background</string>
     <string name="notification_update_wifi_desc">Controlla solo su WiFi</string>
     <string name="notification_update_wifi_pref">Richiede una connessione Wi-Fi o una connessione senza limiti per la ricerca di aggiornamenti. Si consiglia di lasciarlo attivo se hai un piano dati limitato.</string>
@@ -358,7 +358,7 @@
     <string name="notification_channel_category_app_update">Aggiornamenti app</string>
     <string name="notification_channel_category_app_update_description">Notifica quando un aggiornamento dell\'app è disponibile</string>
     <string name="notification_channel_background_update_app">Aggiornamento app disponibile!</string>
-    <string name="notification_channel_background_update_app_description">Un aggiornamento per FoxMMM è disponibile. Clicca qui per aggiornare.</string>
+    <string name="notification_channel_background_update_app_description">Un aggiornamento per AMM è disponibile. Clicca qui per aggiornare.</string>
     <string name="crash_reporting_headline">Segnalazione crash</string>
     <string name="setup_update_check_headline">Ricerca aggiornamenti</string>
     <string name="setup_background_update_check_require_wifi">Ricerca aggiornamenti solo su rete wifi</string>
@@ -377,7 +377,7 @@
     <string name="update_debug_download_pref">Test di aggiornamento</string>
     <string name="changelog_none">Ancora nessuna modifica!</string>
     <string name="setup_crash_reporting_pii_summary">Potrebbe includere ID o indirizzi IP. Nessun dato verrà usato per altri scopi al di fuori di analizzazioni di crash e miglioramenti in performance.</string>
-    <string name="certificate_error">Il certificato del server non può essere verificato. Assicurati che nulla stia impedendo le connessioni HTTPS per FoxMMM.</string>
+    <string name="certificate_error">Il certificato del server non può essere verificato. Assicurati che nulla stia impedendo le connessioni HTTPS per AMM.</string>
     <string name="pref_category_privacy">Privacy</string>
     <string name="crash_reporting_pii_desc">Consente di inviare informazioni aggiuntive in rapporti di crash, dei quali alcuni potrebbero contenere informazioni identificabili, come un indirizzo IP o un ID.</string>
     <string name="crash_reporting_pii">Invia informazioni aggiuntive</string>

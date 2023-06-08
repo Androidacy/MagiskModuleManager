@@ -290,8 +290,8 @@
     <string name="fox2code_thanks">Dibuat oleh Fox2Code</string>
     <string name="save_logs">Simpan log ke penyimpanan dan bagikan</string>
     <string name="error_saving_logs">Tidak dapat menyimpan log</string>
-    <string name="share_logs">Bagikan log FoxMMM</string>
-    <string name="not_official_build">Aplikasi ini adalah build FoxMMM yang tidak resmi.</string>
+    <string name="share_logs">Bagikan log AMM</string>
+    <string name="not_official_build">Aplikasi ini adalah build AMM yang tidak resmi.</string>
     <string name="crash_text">Uh-oh, kita kena sebuah halangan!</string>
     <string name="feedback_message">Beritahu kita detail lebih lanjut dalam apa yang sedang anda lakukan. Semakin banyak, semakin meriah!</string>
     <string name="feedback_submit">Kirim dan luncurkan ulang</string>
@@ -324,7 +324,7 @@
     <string name="background_update_check_excludes">Modul-modul dikecualikan dari cek pembaruan otomatis</string>
     <string name="title_activity_update">Pembaruan dalam aplikasi</string>
     <string name="update_title">Perbarui aplikasi</string>
-    <string name="update_message">Harap menunggu sementara kami mengcek pembaruan dan memasang pembaruan FoxMMM. Ini mungkin akan membutuhkan beberapa menit</string>
+    <string name="update_message">Harap menunggu sementara kami mengcek pembaruan dan memasang pembaruan AMM. Ini mungkin akan membutuhkan beberapa menit</string>
     <string name="update_button">Mohon menunggu…</string>
     <string name="error_no_extras">KESALAHAN: Data tidak valid diterima saat meluncur</string>
     <string name="update_debug_warning">Anda sepertinya menjalankan sebuah build debug. Build debug harus diperbarui secara manual, dan tidak mendukung pembaruan dalam aplikasi</string>
@@ -347,7 +347,7 @@
     <string name="notification_update_summary">Modul-modul berikut bisa diperbarui:</string>
     <string name="notification_update_module_template">%1$s to version %2$s</string>
     <string name="notification_channel_background_update">Mengcek pembaruan…</string>
-    <string name="notification_channel_background_update_description">FoxMMM sedang mengcek pembaruan di latar belakang.</string>
+    <string name="notification_channel_background_update_description">AMM sedang mengcek pembaruan di latar belakang.</string>
     <string name="notification_channel_category_background_update">Status pembaruan di latar belakang</string>
     <string name="notification_channel_category_background_update_description">Menunjukkan notifikasi sehingga sistem tidak menutup aplikasi saat memeriksa pembaruan</string>
     <string name="notification_update_wifi_desc">Hanya cek di WiFi</string>
@@ -365,7 +365,7 @@
     <string name="notification_channel_category_app_update">Pembaruan-pembaruan aplikasi</string>
     <string name="notification_channel_category_app_update_description">Beritahu jika ada pembaruan aplikasi</string>
     <string name="notification_channel_background_update_app">Ada pembaruan aplikasi!</string>
-    <string name="notification_channel_background_update_app_description">Ada sebuah pembaruan untuk FoxMMM. Pencet ini untuk memperbarui.</string>
+    <string name="notification_channel_background_update_app_description">Ada sebuah pembaruan untuk AMM. Pencet ini untuk memperbarui.</string>
     <string name="yer_a_wizard_harry">Kamu adalah penyihir, Harry!</string>
     <string name="keep_tapping_to_enter_hogwarts">Ketuk terus untuk masuk ke dalam Hogwarts!</string>
     <string name="modules">Modul-modul</string>
@@ -381,7 +381,7 @@
     <string name="cache_clear_failed">Gagal membersihkan cache</string>
     <string name="clear_cache_dialogue_title">Bersihkan cache aplikasi\?</string>
     <string name="clear_cache_dialogue_message">Ini akan membersihkan cache aplikasi. Pengaturan anda akan disimpan, tetapi aplikasi untuk sementara mungkin akan membutuhkan waktu lebih lama untuk melakukan beberapa proses.</string>
-    <string name="certificate_error">Sertifikat server tidak dapat diverifikasi. Mohon pastikan tidak ada yang menghalangi koneksi HTTPS untuk FoxMMM.</string>
+    <string name="certificate_error">Sertifikat server tidak dapat diverifikasi. Mohon pastikan tidak ada yang menghalangi koneksi HTTPS untuk AMM.</string>
     <string name="pref_category_privacy">Privasi</string>
     <string name="crash_reporting_pii_desc">Mengizinkan pengiriman informasi tambahan dalam laporan gangguan, beberapa informasi ini mungkin mengandung informasi pribadi seperti alamat IP dan pengidentifikasi perangkat.</string>
     <string name="crash_reporting_pii">Kirim informasi tambahan</string>

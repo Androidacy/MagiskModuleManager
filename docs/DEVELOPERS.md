@@ -1,4 +1,4 @@
-# Fox's Magisk Module Manager (Developer documentation)
+# Androidacy Module Manager (Developer documentation)
 
 Note: This doc assume you already read the
 [official Magisk module developer guide](https://topjohnwu.github.io/Magisk/guides.html)
@@ -68,11 +68,11 @@ versionCode=<int>
 author=<string>
 description=<string>
 ```
-Note: The Fox's mmm will not show the module if theses values are not filled properly
+Note: The AMM will not show the module if theses values are not filled properly
 
 This the manager support these new optional properties
 ```properties
-# Fox's Mmm supported properties
+# AMM supported properties
 minApi=<int>
 maxApi=<int>
 minMagisk=<int>
@@ -99,8 +99,8 @@ Note²: For `minMagisk`, `XX.Y` is parsed as `XXY00`, so you can just put the Ma
 - `mmtReborn` tell the manager to use [MMT-Reborn](https://github.com/iamlooper/MMT-Reborn) logging style  
   (For example `- Hello world` will be transformed to `[*] Hello world`, do not apply to modules installed from storage)
 
-Note: Fox's Mmm use fallback 
-[here](../app/src/main/java/com/fox2code/mmm/utils/io/PropUtils.java#L36)
+Note: AMM will the  use fallback 
+[here](../app/src/main/java/com/fox2code/mmm/utils/io/PropUtils.kt#L36)
 for some modules  
 Theses values are only used if not defined in the `module.prop` files  
 So the original module maker can still override them

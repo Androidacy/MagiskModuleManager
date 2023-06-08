@@ -199,8 +199,8 @@
     <string name="fox2code_thanks">Δημιουργήθηκε από τον Fox2Code</string>
     <string name="save_logs">Αποθήκευση των logs, και κοινοποίηση</string>
     <string name="error_saving_logs">Δεν ήταν δυνατή η αποθήκευση των logs</string>
-    <string name="share_logs">Κοινοποίηση των logs του FoxMMM</string>
-    <string name="not_official_build">Αυτή η εφαρμογή είναι ανεπίσημη κατασκευή του FoxMMM.</string>
+    <string name="share_logs">Κοινοποίηση των logs του AMM</string>
+    <string name="not_official_build">Αυτή η εφαρμογή είναι ανεπίσημη κατασκευή του AMM.</string>
     <string name="androidacy_failed_to_parse_token">Το token δεν ανακτήθηκε από το Androidacy. Παρακαλούμε προσπαθήστε ξανά αργότερα.</string>
     <string name="androidacy_failed_to_validate_token">Το token δεν επικυρώθηκε από το Androidacy. Παρακαλούμε προσπαθήστε ξανά αργότερα.</string>
     <string name="androidacy_server_down">Αδυναμία επικοινωνίας με τον server του Androidacy. Παρακαλούμε ελέγξτε την σύνδεσή σας στο διαδίκτυο και προσπαθήστε ξανά αργότερα.</string>
@@ -245,7 +245,7 @@
     <string name="theme_dark">Σκοτεινό</string>
     <string name="theme_black">Μαύρο AMOLED</string>
     <string name="validating_api_key">Επικύρωση κλειδιού API…</string>
-    <string name="update_message">Περιμένετε μέχρι να ελέγξουμε και να εγκαταστήσουμε ενημερώσεις στο FoxMMM. Αυτό μπορεί να διαρκέσει μερικά λεπτά</string>
+    <string name="update_message">Περιμένετε μέχρι να ελέγξουμε και να εγκαταστήσουμε ενημερώσεις στο AMM. Αυτό μπορεί να διαρκέσει μερικά λεπτά</string>
     <string name="error_no_extras">ΣΦΑΛΜΑ: Λήφθηκαν μη έγκυρα δεδομένα κατά την εκκίνηση</string>
     <string name="error_no_action">ΣΦΑΛΜΑ: Καθορίστηκε μη έγκυρη ενέργεια. Δεν μπορούμε να συνεχίσουμε.</string>
     <string name="update_available">Βρέθηκε ενημέρωση</string>
@@ -311,7 +311,7 @@
     <string name="notification_update_summary">Τα ακόλουθα modules μπορούν να ενημερωθούν:</string>
     <string name="notification_update_module_template">%1$s σε έκδοση %2$s</string>
     <string name="notification_channel_background_update">Έλεγχος για ενημερώσεις…</string>
-    <string name="notification_channel_background_update_description">Το FoxMMM ελέγχει για ενημερώσεις στο παρασκήνιο.</string>
+    <string name="notification_channel_background_update_description">Το AMM ελέγχει για ενημερώσεις στο παρασκήνιο.</string>
     <string name="notification_channel_category_background_update">Κατάσταση ενημέρωσης στο παρασκήνιο</string>
     <string name="notification_channel_category_background_update_description">Δείχνει μια ειδοποίηση όσο διαρκεί ο έλεγχος για ενημερώσεις ώστε να μην διακόψει την εκτέλεση το σύστημα</string>
     <string name="notification_update_wifi_desc">Έλεγχος μόνο σε WiFi</string>
@@ -328,7 +328,7 @@
     <string name="notification_channel_category_app_update">Ενημερώσεις εφαρμογών</string>
     <string name="notification_channel_category_app_update_description">Ειδοποιεί όταν μια ενημέρωση εφαρμογής είναι διαθέσιμη</string>
     <string name="notification_channel_background_update_app">Ενημέρωση εφαρμογής διαθέσιμη!</string>
-    <string name="notification_channel_background_update_app_description">Υπάρχει διαθέσιμη ενημέρωση για το FoxMMM. Πατήστε εδώ για να το ενημερώσετε.</string>
+    <string name="notification_channel_background_update_app_description">Υπάρχει διαθέσιμη ενημέρωση για το AMM. Πατήστε εδώ για να το ενημερώσετε.</string>
     <string name="crash_reporting_headline">Αναφορά crashes</string>
     <string name="setup_update_check_headline">Έλεγχος ενημερώσεων</string>
     <string name="setup_background_update_check_require_wifi">Απαίτησε wifi για τον έλεγχο ενημερώσεων</string>
@@ -340,7 +340,7 @@
     <string name="cache_clear_failed">Αποτυχία εκκαθάρισης της προσωρινής μνήμης</string>
     <string name="clear_cache_dialogue_title">Θέλετε να καθαρίσετε την προσωρινή μνήμη της εφαρμογής;</string>
     <string name="clear_cache_dialogue_message">Αυτό θα διαγράψει την προσωρινή μνήμη της εφαρμογής. Οι προτιμήσεις σας θα αποθηκευτούν, αλλά η εφαρμογή ενδέχεται να χρειαστεί περισσότερο χρόνο για να εκτελέσει ορισμένες λειτουργίες προσωρινά.</string>
-    <string name="certificate_error">Δεν ήταν δυνατή η επαλήθευση του πιστοποιητικού διακομιστή. Βεβαιωθείτε ότι τίποτα δεν παρεμποδίζει τις συνδέσεις HTTPS για το FoxMMM.</string>
+    <string name="certificate_error">Δεν ήταν δυνατή η επαλήθευση του πιστοποιητικού διακομιστή. Βεβαιωθείτε ότι τίποτα δεν παρεμποδίζει τις συνδέσεις HTTPS για το AMM.</string>
     <string name="pref_category_privacy">Ιδιωτικότητα</string>
     <string name="crash_reporting_pii_desc">Επιτρέπει την αποστολή πρόσθετων πληροφοριών σε αναφορές σφαλμάτων, ορισμένες από τις οποίες μπορεί να περιέχουν στοιχεία προσωπικής ταυτοποίησης, όπως διεύθυνση IP και αναγνωριστικά συσκευής.</string>
     <string name="crash_reporting_pii">Στείλτε επιπλέον πληροφορίες</string>
