@@ -14,6 +14,7 @@ import java.util.concurrent.atomic.AtomicBoolean
 
 class RepoUpdater(val repoData: RepoData) {
     private var indexRaw: ByteArray? = null
+    public var repoData = repoData
     private var toUpdate: List<RepoModule>? = null
     private var toApply: Collection<RepoModule>? = null
     fun fetchIndex(): Int {
