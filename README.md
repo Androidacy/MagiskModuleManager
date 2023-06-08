@@ -30,7 +30,7 @@ The official Magisk Manager app has dropped it's support for downloading online 
 
 [![Telegram Group](https://img.shields.io/endpoint?color=neon&style=for-the-badge&url=https%3A%2F%2Ftg.sumanjay.workers.dev%2Fandroidacy_discussions)](https://telegram.dog/androidacy_discussions)
 <a href="https://translate.nift4.org/engage/foxmmm/">
-<img src="https://translate.nift4.org/widgets/foxmmm/-/foxmmm/svg-badge.svg" alt="Translation status" />
+<img src="https://translate.nift4.org/widgets/foxmmm/-/foxmmm/svg-badge.svg?style=for-the-badge&color=neon" alt="Translation status" />
 </a>
 
 ## Screenshots
@@ -92,7 +92,7 @@ installing from them is at the user's own risk. Default repos can be enabled or 
 
 **Support:**
 
-&emsp; [![GitHub issues](https://img.shields.io/github/issues/Magisk-Modules-Alt-Repo/submission)](https://github.com/Magisk-Modules-Alt-Repo/submission/issues)
+&emsp; [![GitHub issues](https://img.shields.io/github/issues/Magisk-Modules-Alt-Repo/submission?style=for-the-badge&color=neon)](https://github.com/Magisk-Modules-Alt-Repo/submission/issues)
 
 **Please do not use GitHub issues for help or questions. GitHub issues are specifically for bug
 reporting and general app feedback.**
