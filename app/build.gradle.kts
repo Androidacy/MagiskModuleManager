@@ -468,7 +468,6 @@ dependencies {
     implementation("com.caverock:androidsvg:1.4")
 
     implementation("dev.rikka.rikkax.core:core:1.4.1")
-    implementation("com.github.KieronQuinn:MonetCompat:0.4.1")
     implementation("org.lsposed.hiddenapibypass:hiddenapibypass:4.3")
     implementation("com.github.tiann:FreeReflection:3.1.0")
 
