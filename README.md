@@ -4,7 +4,7 @@
 
 <sub>We'd like to thank Fox2Code for his initial work on the app. This app was previously known as Fox's Magisk Module Manager (FoxMMM) and may still be referred to as that. Androidacy thanks Fox2Code for their initial work on this app, and wishes him the best in his future endeavours.</sub>
 
-[![GitHub release (latest by date)](https://img.shields.io/github/v/release/Androidacy/AndroidacyModuleManager?color=neon&label=Latest%20release&style=for-the-badge)](
+[![GitHub release (latest by date)](https://img.shields.io/github/v/release/Androidacy/AndroidacyModuleManager?color=neon&label=Latest%20release&style=for-the-badge)](https://www.androidacy.com/downloads/?view=FoxMMM)
 
 ## About
 
