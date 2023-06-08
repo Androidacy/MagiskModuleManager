@@ -686,7 +686,7 @@ public class SettingsActivity extends FoxActivity implements LanguageActivity {
             final LibsBuilder libsBuilder = new LibsBuilder().withShowLoadingProgress(false).withLicenseShown(true).withAboutMinimalDesign(false);
             ClipboardManager clipboard = (ClipboardManager) requireContext().getSystemService(Context.CLIPBOARD_SERVICE);
             LongClickablePreference linkClickable = findPreference("pref_update");
-            linkClickable.setVisible(BuildConfig.ENABLE_AUTO_UPDATER && (BuildConfig.DEBUG || AppUpdateManager.getAppUpdateManager().peekHasUpdate()));
+            linkClickable.setVisible(BuildConfig.ENABLE_AUTO_UPDATER && (BuildConfig.DEBUG || AppUpdateManager.Companion.getAppUpdateManager().peekHasUpdate()));
             linkClickable.setOnPreferenceClickListener(p -> {
                 devModeStep = 0;
                 // open UpdateActivity with CHECK action

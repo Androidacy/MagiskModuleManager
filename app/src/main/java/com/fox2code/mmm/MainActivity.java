@@ -351,7 +351,7 @@ public class MainActivity extends FoxActivity implements SwipeRefreshLayout.OnRe
                 }
                 // update compat metadata
                 if (BuildConfig.DEBUG) Timber.i("Check Update Compat");
-                AppUpdateManager.getAppUpdateManager().checkUpdateCompat();
+                AppUpdateManager.Companion.getAppUpdateManager().checkUpdateCompat();
                 if (BuildConfig.DEBUG) Timber.i("Check Update");
                 // update repos
                 if (Http.hasWebView()) {
@@ -375,7 +375,7 @@ public class MainActivity extends FoxActivity implements SwipeRefreshLayout.OnRe
                         return;
                     }
                     // Compatibility data still needs to be updated
-                    AppUpdateManager appUpdateManager = AppUpdateManager.getAppUpdateManager();
+                    AppUpdateManager appUpdateManager = AppUpdateManager.Companion.getAppUpdateManager();
                     if (BuildConfig.DEBUG) Timber.i("Check App Update");
                     if (BuildConfig.ENABLE_AUTO_UPDATER && appUpdateManager.checkUpdate(true))
                         moduleViewListBuilder.addNotification(NotificationType.UPDATE_AVAILABLE);
@@ -554,7 +554,7 @@ public class MainActivity extends FoxActivity implements SwipeRefreshLayout.OnRe
                     moduleViewListBuilder.addNotification(NotificationType.SHOWCASE_MODE);
                 NotificationType.NEED_CAPTCHA_ANDROIDACY.autoAdd(moduleViewListBuilderOnline);
                 NotificationType.NO_INTERNET.autoAdd(moduleViewListBuilderOnline);
-                if (AppUpdateManager.getAppUpdateManager().checkUpdate(false))
+                if (AppUpdateManager.Companion.getAppUpdateManager().checkUpdate(false))
                     moduleViewListBuilder.addNotification(NotificationType.UPDATE_AVAILABLE);
                 RepoManager.getINSTANCE().updateEnabledStates();
                 if (RepoManager.getINSTANCE().getCustomRepoManager().needUpdate()) {
@@ -607,7 +607,7 @@ public class MainActivity extends FoxActivity implements SwipeRefreshLayout.OnRe
                 moduleViewListBuilder.addNotification(NotificationType.REPO_UPDATE_FAILED);
             } else {
                 // Compatibility data still needs to be updated
-                AppUpdateManager appUpdateManager = AppUpdateManager.getAppUpdateManager();
+                AppUpdateManager appUpdateManager = AppUpdateManager.Companion.getAppUpdateManager();
                 if (BuildConfig.DEBUG) Timber.i("Check App Update");
                 if (BuildConfig.ENABLE_AUTO_UPDATER && appUpdateManager.checkUpdate(true))
                     moduleViewListBuilder.addNotification(NotificationType.UPDATE_AVAILABLE);
