@@ -4,12 +4,10 @@ import com.fox2code.mmm.utils.io.Files.Companion.write
 import com.fox2code.mmm.utils.io.net.Http.Companion.doHttpGet
 import org.json.JSONObject
 import timber.log.Timber
-import java.io.BufferedReader
 import java.io.File
 import java.io.FileInputStream
 import java.io.IOException
 import java.io.InputStream
-import java.io.InputStreamReader
 import java.nio.charset.StandardCharsets
 
 // See https://docs.github.com/en/rest/reference/repos#releases
@@ -96,48 +94,11 @@ class AppUpdateManager private constructor() {
         return if (!BuildConfig.ENABLE_AUTO_UPDATER || BuildConfig.DEBUG) false else peekShouldUpdate()
     }
 
+    @Suppress("UNUSED_PARAMETER")
     @Throws(IOException::class)
     private fun parseCompatibilityFlags(inputStream: InputStream) {
         compatDataId.clear()
-        val bufferedReader = BufferedReader(InputStreamReader(inputStream, StandardCharsets.UTF_8))
-        var line: String
-        while (bufferedReader.readLine().also { line = it } != null) {
-            line = line.trim { it <= ' ' }
-            if (line.isEmpty() || line.startsWith("#")) continue
-            val i = line.indexOf('/')
-            if (i == -1) continue
-            var value = 0
-            for (arg in line.substring(i + 1).split(",".toRegex()).dropLastWhile { it.isEmpty() }
-                .toTypedArray()) {
-                when (arg) {
-                    "lowQuality" -> value = value or FLAG_COMPAT_LOW_QUALITY
-                    "noExt" -> value = value or FLAG_COMPAT_NO_EXT
-                    "magiskCmd" -> value = value or FLAG_COMPAT_MAGISK_CMD
-                    "need32bit" -> value = value or FLAG_COMPAT_NEED_32BIT
-                    "malware" -> value = value or FLAG_COMPAT_MALWARE
-                    "noANSI" -> value = value or FLAG_COMPAT_NO_ANSI
-                    "forceANSI" -> value = value or FLAG_COMPAT_FORCE_ANSI
-                    "forceHide" -> value = value or FLAG_COMPAT_FORCE_HIDE
-                    "mmtReborn" -> value = value or FLAG_COMPAT_MMT_REBORN
-                    "wrapper" -> value = value or FLAG_COMPAT_ZIP_WRAPPER
-                    else -> {
-                        run {}
-                        value = value or FLAG_COMPAT_LOW_QUALITY
-                        value = value or FLAG_COMPAT_NO_EXT
-                        value = value or FLAG_COMPAT_MAGISK_CMD
-                        value = value or FLAG_COMPAT_NEED_32BIT
-                        value = value or FLAG_COMPAT_MALWARE
-                        value = value or FLAG_COMPAT_NO_ANSI
-                        value = value or FLAG_COMPAT_FORCE_ANSI
-                        value = value or FLAG_COMPAT_FORCE_HIDE
-                        value = value or FLAG_COMPAT_MMT_REBORN
-                        value = value or FLAG_COMPAT_ZIP_WRAPPER
-                    }
-                }
-            }
-            compatDataId[line.substring(0, i)] = value
-        }
-        bufferedReader.close()
+        Timber.d("Not implemented")
     }
 
     fun getCompatibilityFlags(moduleId: String): Int {
@@ -145,6 +106,7 @@ class AppUpdateManager private constructor() {
         return compatFlags ?: 0
     }
 
+    @Suppress("MemberVisibilityCanBePrivate")
     companion object {
         const val FLAG_COMPAT_LOW_QUALITY = 0x0001
         const val FLAG_COMPAT_NO_EXT = 0x0002

@@ -50,7 +50,7 @@ class ModuleViewListBuilder(private val activity: Activity) {
                 Timber.i("A1: %s", moduleManager.modules.size)
                 for (moduleInfo in moduleManager.modules.values) {
                     // add the local module to the list in MainActivity
-                    MainActivity.localModuleInfoList.add(moduleInfo)
+                    MainActivity.localModuleInfoList += moduleInfo
                     var moduleHolder = mappedModuleHolders[moduleInfo.id]
                     if (moduleHolder == null) {
                         mappedModuleHolders[moduleInfo.id] = ModuleHolder(moduleInfo.id).also {
@@ -78,8 +78,9 @@ class ModuleViewListBuilder(private val activity: Activity) {
                 val no32bitSupport = Build.SUPPORTED_32_BIT_ABIS.isEmpty()
                 for (repoModule in repoManager.modules.values) {
                     // add the remote module to the list in MainActivity
-                    MainActivity.onlineModuleInfoList.add(repoModule)
+                    MainActivity.onlineModuleInfoList += repoModule
                     // if repoData is null, something is wrong
+                    @Suppress("SENSELESS_COMPARISON")
                     if (repoModule.repoData == null) {
                         Timber.w("RepoData is null for module %s", repoModule.id)
                         continue

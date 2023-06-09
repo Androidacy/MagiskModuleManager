@@ -445,7 +445,7 @@ enum class IntentHelper {;
             openFileTo(compatActivity!!, destination, object : OnFileReceivedCallback {
                 override fun onReceived(target: File?, uri: Uri?, response: Int) {
                     if (response == RESPONSE_ERROR) {
-                        MainActivity.getFoxActivity(compatActivity)?.runOnUiThread {
+                        MainActivity.getFoxActivity(compatActivity).runOnUiThread {
                             Toast.makeText(
                                 compatActivity, R.string.no_file_provided, Toast.LENGTH_SHORT
                             ).show()

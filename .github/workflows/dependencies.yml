@@ -3,9 +3,8 @@ on:
   push:
     branches:
       - master # run the action on your projects default branch
-  pull_request:
-    branches:
-      - master # run the action on your projects default branch
+    paths-ignore:
+      - '**.md'
 
 jobs:
   build:

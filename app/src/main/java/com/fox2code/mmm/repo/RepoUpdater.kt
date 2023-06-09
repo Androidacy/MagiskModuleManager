@@ -12,9 +12,10 @@ import timber.log.Timber
 import java.nio.charset.StandardCharsets
 import java.util.concurrent.atomic.AtomicBoolean
 
-class RepoUpdater(val repoData2: RepoData) {
+class RepoUpdater(repoData2: RepoData) {
     private var indexRaw: ByteArray? = null
-    @JvmField public var repoData: RepoData = repoData2
+    @JvmField
+    var repoData: RepoData = repoData2
     private var toUpdate: List<RepoModule>? = null
     private var toApply: Collection<RepoModule>? = null
     fun fetchIndex(): Int {

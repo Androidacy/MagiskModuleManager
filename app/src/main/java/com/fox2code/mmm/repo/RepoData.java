@@ -103,7 +103,7 @@ public class RepoData extends XRepo {
         this.metaDataCache = null;
         this.moduleHashMap = new HashMap<>();
         this.defaultName = url; // Set url as default name
-        this.forceHide = AppUpdateManager.shouldForceHide(this.id);
+        this.forceHide = AppUpdateManager.Companion.shouldForceHide(getPreferenceId());
         // this.enable is set from the database
         RealmConfiguration realmConfiguration = new RealmConfiguration.Builder().name("ReposList.realm").encryptionKey(MainApplication.getINSTANCE().getKey()).allowQueriesOnUiThread(true).allowWritesOnUiThread(true).directory(MainApplication.getINSTANCE().getDataDirWithPath("realms")).schemaVersion(1).build();
         Realm realm = Realm.getInstance(realmConfiguration);
@@ -334,7 +334,7 @@ public class RepoData extends XRepo {
             return;
         }
         // if repo starts with repo_, it's always enabled bc custom repos can't be disabled without being deleted.
-        this.forceHide = AppUpdateManager.shouldForceHide(this.id);
+        this.forceHide = AppUpdateManager.Companion.shouldForceHide(getPreferenceId());
         // reposlist realm
         RealmConfiguration realmConfiguration2 = new RealmConfiguration.Builder().name("ReposList.realm").encryptionKey(MainApplication.getINSTANCE().getKey()).allowQueriesOnUiThread(true).allowWritesOnUiThread(true).directory(MainApplication.getINSTANCE().getDataDirWithPath("realms")).schemaVersion(1).build();
         Realm realm2 = Realm.getInstance(realmConfiguration2);
