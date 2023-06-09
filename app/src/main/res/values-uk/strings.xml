@@ -381,7 +381,7 @@
     <string name="donate_fox">Донат на Fox2Code</string>
     <string name="donate_androidacy">Дотан на Androidacy</string>
     <string name="donate_androidacy_sum">Придбайте преміальну підписку на Androidacy, щоб підтримувати додаток і репозиторій.</string>
-    <string name="promo_code_copied">Використовуйте скопійований код, щоб отримати половину знижки за перший місяць!</string>
+    <string name="promo_code_copied">Використовуйте скопійований код, щоб отримати 50% знижки за перший місяць!</string>
     <string name="warning_pls_restart">Зверніть увагу, що деякі налаштування можуть не робити, доки ви не перезавантажите додаток.</string>
     <string name="reinstall">Перевстановити</string>
     <string name="eula_sum">Я погоджуюся з EULA та Ліцензією</string>
@@ -399,4 +399,5 @@
     <string name="upgrade_snackbar">Androidacy Преміум пропонує швидші завантаження, без реклами та багато іншого!</string>
     <string name="upgrade_now">Оновити</string>
     <string name="crash_details_suggestion">Трасування стека можна знайти нижче. Однак ми <b>настійно</b> рекомендуємо вам замість цього використовувати форму зворотнього зв\'язку нижче. Таким чином, замість того, щоб вручну копіювати трасування стека, він відправить його нам автоматично. Це також розшифровує залежності та додаткові відомості повідомляються автоматично.</string>
+    <string name="reinstall_warning">Більшості модулів потрібне видалення та переустановка начисто. Через це AMM не підтримує переустановку модулів доки вони встановлені на пристрої.</string>
 </resources>

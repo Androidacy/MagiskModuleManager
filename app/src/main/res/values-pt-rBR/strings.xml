@@ -273,7 +273,7 @@
 \n
 \n%s</string>
     <string name="reset_api_key">Redefinir chaves de API</string>
-    <string name="upgrade_androidacy_promo">Atualize para premium</string>
+    <string name="upgrade_androidacy_promo">Atualizar para premium</string>
     <string name="upgrade_androidacy_promo_desc">Atualizar para premium irá remover anúncios, captchas, e acelerar downloads do repositório Androidacy, e contribuir para o Androidacy e os autores dos módulos.</string>
     <string name="pref_category_contributors">Contribuidores</string>
     <string name="fox2code_thanks_desc">Fox2Code é o desenvolvedor original do aplicativo. Sem ele, isso nunca seria possível.</string>
@@ -396,4 +396,21 @@
     <string name="donate_androidacy_sum">Comprar uma assinatura premium do Androidacy para dar suporte ao aplicativo e ao repositório.</string>
     <string name="promo_code_copied">Utilize o código copiado para obter um desconto de 50% no seu primeiro mês!</string>
     <string name="warning_pls_restart">Por favor, lembre-se que algumas configurações não terão efeito até que reinicie o aplicativo.</string>
+    <string name="reinstall_warning">A maioria dos módulos deve ser desinstalado, e então, reinstalado corretamente. Por este motivo, FoxMMM não oferece suporte á reinstalação dos módulos enquanto estiverem instalados no dispositivo.</string>
+    <string name="eula_agree_v2">Você concorda em estar vinculado à licença LGPL-3.0 (https://www.gnu.org/licenses/lgpl-3.0.en.html) e ao EULA (https://www.androidacy.com/foxmmm-eula/ ), além de quaisquer termos de terceiros, e que os autores deste aplicativo não assumem nenhuma responsabilidade pelo seu uso, e que nem tampouco oferecemos quaisquer garantias expressas ou implícitas.</string>
+    <string name="background_update_check_excludes_version_summary">Especifique uma versão de atualização de módulo que você deseja ignorar. Por favor, utilize apenas o código da versão. Você pode encontrá-lo ao pressionar e segurar o número da versão na lista de módulos. Utilize ^ no início para corresponder á essa versão e posteriores. Utilize $ no final para corresponder até essa versão.</string>
+    <string name="androidacy_thanks_up">Obrigado por atualizar! Downloads de módulos e READMEs não irão conter anúncios, e downloads não serão limitados futuramente. você poderá baixar módulos com apenas um clique.</string>
+    <string name="reinstall">Reinstalar</string>
+    <string name="eula_sum">Eu concordo com o EULA e a Licença</string>
+    <string name="setup_scroll_down_v2">Para habilitar o botão finalizar, desça a página e confirme que leu e concorda com o EULA e a(s) licença(s).</string>
+    <string name="notification_update_ignore_version_desc">Ignorar versões específicas durante a checagem de atualização de módulos. Desabilitar checagens de atualização por módulo sobrescreve esta configuração!</string>
+    <string name="notification_update_ignore_version_pref">Excluir versão(ões) das checagens de atualização</string>
+    <string name="background_update_check_excludes_version">Excluir versão(ões) de módulos das checagens de atualização</string>
+    <string name="module_version">"Versão: "</string>
+    <string name="module_remote_version">Versão remota</string>
+    <string name="background_update_check_excludes_version_hint">Código da versão a ser ignorada</string>
+    <string name="androidacy_thanks_up_title">Você já atualizou!</string>
+    <string name="upgrade_snackbar">Androidacy Premium oferece downloads mais rápidos, uma experiência sem anúncios e muito mais!</string>
+    <string name="upgrade_now">Atualizar</string>
+    <string name="crash_details_suggestion">O registro de falhas pode ser encontrado abaixo. No entanto, nós recomendados <b>fortemente</b> que utilize o formulário de feedback abaixo ao invés disso. Desta forma, ao invesde manualmente copiar o registro de falhas, nos enviará automaticamente. Desta forma também, tudo estará desofuscado e detalhes adicionais serão relatados automaticamente.</string>
 </resources>
