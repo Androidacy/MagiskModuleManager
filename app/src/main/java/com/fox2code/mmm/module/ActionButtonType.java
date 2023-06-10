@@ -120,7 +120,7 @@ public enum ActionButtonType {
                 IntentHelper.openUrlAndroidacy(button.getContext(), updateZipUrl, true, moduleInfo.name, moduleInfo.config);
                 return;
             }
-            boolean hasRoot = InstallerInitializer.peekMagiskPath() != null && !MainApplication.isShowcaseMode();
+            boolean hasRoot = InstallerInitializer.peekMagiskPath() != null && !MainApplication.Companion.isShowcaseMode();
             MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(button.getContext());
             builder.setTitle(moduleInfo.name).setCancelable(true).setIcon(R.drawable.ic_baseline_extension_24);
             CharSequence desc = moduleInfo.description;

@@ -232,7 +232,7 @@ public final class RepoManager extends SyncManager {
         }
         if (BuildConfig.DEBUG) Timber.d("Updating meta-data");
         int updatedModules = 0;
-        boolean allowLowQualityModules = MainApplication.isDisableLowQualityModuleFilter();
+        boolean allowLowQualityModules = MainApplication.Companion.isDisableLowQualityModuleFilter();
         for (int i = 0; i < repoUpdaters.length; i++) {
             // Check if the repo is enabled
             if (!repoUpdaters[i].repoData.isEnabled()) {
@@ -373,7 +373,7 @@ public final class RepoManager extends SyncManager {
     private AndroidacyRepoData addAndroidacyRepoData() {
         // cache dir is actually under app data
         File cacheRoot = this.mainApplication.getDataDirWithPath("realms/repos/androidacy_repo");
-        AndroidacyRepoData repoData = new AndroidacyRepoData(cacheRoot, MainApplication.isAndroidacyTestMode());
+        AndroidacyRepoData repoData = new AndroidacyRepoData(cacheRoot, MainApplication.Companion.isAndroidacyTestMode());
         this.repoData.put(ANDROIDACY_MAGISK_REPO_ENDPOINT, repoData);
         this.repoData.put(ANDROIDACY_TEST_MAGISK_REPO_ENDPOINT, repoData);
         return repoData;

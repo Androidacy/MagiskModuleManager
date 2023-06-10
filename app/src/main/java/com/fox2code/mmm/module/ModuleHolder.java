@@ -225,7 +225,7 @@ public final class ModuleHolder implements Comparable<ModuleHolder> {
         if (this.repoModule != null && this.moduleInfo != null && !hasUpdate()) {
             return true;
         }
-        return this.notificationType != null ? this.notificationType.shouldRemove() : this.footerPx == -1 && this.moduleInfo == null && (this.repoModule == null || !this.repoModule.repoData.isEnabled() || (PropUtils.isLowQualityModule(this.repoModule.moduleInfo) && !MainApplication.isDisableLowQualityModuleFilter()));
+        return this.notificationType != null ? this.notificationType.shouldRemove() : this.footerPx == -1 && this.moduleInfo == null && (this.repoModule == null || !this.repoModule.repoData.isEnabled() || (PropUtils.isLowQualityModule(this.repoModule.moduleInfo) && !MainApplication.Companion.isDisableLowQualityModuleFilter()));
     }
 
     public void getButtons(Context context, List<ActionButtonType> buttonTypeList, boolean showcaseMode) {

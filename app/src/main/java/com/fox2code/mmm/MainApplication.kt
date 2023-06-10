@@ -704,7 +704,8 @@ class MainApplication : FoxApplication(), Configuration.Provider {
             private set
             get() {
                 if (field == null) {
-                    throw IllegalStateException("Application not created yet!")
+                    Timber.w("MainApplication.INSTANCE is null, using fallback!")
+                    return null
                 }
                 return field
             }
