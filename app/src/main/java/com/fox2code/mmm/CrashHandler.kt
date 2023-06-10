@@ -169,7 +169,7 @@ class CrashHandler : FoxActivity() {
             builder.setMessage(R.string.reset_app_confirmation)
             builder.setPositiveButton(R.string.reset) { _: DialogInterface?, _: Int ->
                 // reset the app
-                MainApplication.getINSTANCE().resetApp()
+                MainApplication.INSTANCE!!.resetApp()
             }
             builder.setNegativeButton(R.string.cancel) { _: DialogInterface?, _: Int -> }
             builder.show()

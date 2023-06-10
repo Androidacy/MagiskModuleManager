@@ -5,8 +5,6 @@ import android.animation.AnimatorListenerAdapter
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
-import android.content.SharedPreferences
-import android.content.SharedPreferences.OnSharedPreferenceChangeListener
 import android.content.res.Configuration
 import android.graphics.Color
 import android.os.Build
@@ -99,11 +97,11 @@ class MainActivity : FoxActivity(), OnRefreshListener, SearchView.OnQueryTextLis
         }
         onMainActivityCreate(this)
         super.onCreate(savedInstanceState)
-        TrackHelper.track().screen(this).with(MainApplication.getINSTANCE().tracker)
+        TrackHelper.track().screen(this).with(MainApplication.INSTANCE!!.tracker)
         // track enabled repos
         val realmConfig = RealmConfiguration.Builder().name("ReposList.realm")
-            .encryptionKey(MainApplication.getINSTANCE().key)
-            .directory(MainApplication.getINSTANCE().getDataDirWithPath("realms")).schemaVersion(1)
+            .encryptionKey(MainApplication.INSTANCE!!.key)
+            .directory(MainApplication.INSTANCE!!.getDataDirWithPath("realms")).schemaVersion(1)
             .allowQueriesOnUiThread(true).allowWritesOnUiThread(true).build()
         val realm = Realm.getInstance(realmConfig)
         val enabledRepos = StringBuilder()
@@ -118,7 +116,7 @@ class MainActivity : FoxActivity(), OnRefreshListener, SearchView.OnQueryTextLis
             enabledRepos.setLength(enabledRepos.length - 1)
         }
         TrackHelper.track().event("enabled_repos", enabledRepos.toString())
-            .with(MainApplication.getINSTANCE().tracker)
+            .with(MainApplication.INSTANCE!!.tracker)
         realm.close()
         // hide this behind a buildconfig flag for now, but crash the app if it's not an official build and not debug
         if (BuildConfig.ENABLE_PROTECTION && !MainApplication.o && !BuildConfig.DEBUG) {
@@ -140,7 +138,6 @@ class MainActivity : FoxActivity(), OnRefreshListener, SearchView.OnQueryTextLis
             // ignore status bar space
             this.window.setDecorFitsSystemWindows(false)
         } else {
-            @Suppress("DEPRECATION")
             this.window.setFlags(
                 WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
                 WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS
@@ -243,14 +240,14 @@ class MainActivity : FoxActivity(), OnRefreshListener, SearchView.OnQueryTextLis
             when (item.itemId) {
                 R.id.settings_menu_item -> {
                     TrackHelper.track().event("view_list", "settings")
-                        .with(MainApplication.getINSTANCE().tracker)
+                        .with(MainApplication.INSTANCE!!.tracker)
                     startActivity(Intent(this@MainActivity, SettingsActivity::class.java))
                     overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
                     finish()
                 }
                 R.id.online_menu_item -> {
                     TrackHelper.track().event("view_list", "online_modules")
-                        .with(MainApplication.getINSTANCE().tracker)
+                        .with(MainApplication.INSTANCE!!.tracker)
                     // set module_list_online as visible and module_list as gone. fade in/out
                     moduleListOnline.alpha = 0f
                     moduleListOnline.visibility = View.VISIBLE
@@ -267,7 +264,7 @@ class MainActivity : FoxActivity(), OnRefreshListener, SearchView.OnQueryTextLis
                 }
                 R.id.installed_menu_item -> {
                     TrackHelper.track().event("view_list", "installed_modules")
-                        .with(MainApplication.getINSTANCE().tracker)
+                        .with(MainApplication.INSTANCE!!.tracker)
                     // set module_list_online as gone and module_list as visible. fade in/out
                     moduleList.alpha = 0f
                     moduleList.visibility = View.VISIBLE
@@ -304,14 +301,14 @@ class MainActivity : FoxActivity(), OnRefreshListener, SearchView.OnQueryTextLis
             rootContainer.y = 0f
         }
         // reset update module and update module count in main application
-        MainApplication.getINSTANCE().resetUpdateModule()
+        MainApplication.INSTANCE!!.resetUpdateModule()
         tryGetMagiskPathAsync(object : InstallerInitializer.Callback {
             override fun onPathReceived(path: String?) {
                 Timber.i("Got magisk path: %s", path)
                 if (peekMagiskVersion() < Constants.MAGISK_VER_CODE_INSTALL_COMMAND) moduleViewListBuilder.addNotification(
                     NotificationType.MAGISK_OUTDATED
                 )
-                if (!MainApplication.isShowcaseMode()) moduleViewListBuilder.addNotification(
+                if (!MainApplication.isShowcaseMode) moduleViewListBuilder.addNotification(
                     NotificationType.INSTALL_FROM_STORAGE
                 )
                 instance!!.scan()
@@ -350,7 +347,7 @@ class MainActivity : FoxActivity(), OnRefreshListener, SearchView.OnQueryTextLis
                     return
                 }
                 swipeRefreshBlocker = System.currentTimeMillis() + 5000L
-                if (MainApplication.isShowcaseMode()) moduleViewListBuilder.addNotification(
+                if (MainApplication.isShowcaseMode) moduleViewListBuilder.addNotification(
                     NotificationType.SHOWCASE_MODE
                 )
                 if (!hasWebView()) {
@@ -448,13 +445,13 @@ class MainActivity : FoxActivity(), OnRefreshListener, SearchView.OnQueryTextLis
                 moduleViewListBuilder.applyTo(moduleListOnline, moduleViewAdapterOnline!!)
                 moduleViewListBuilderOnline.applyTo(moduleListOnline, moduleViewAdapterOnline!!)
                 // if moduleViewListBuilderOnline has the upgradeable notification, show a badge on the online repo nav item
-                if (MainApplication.getINSTANCE().modulesHaveUpdates) {
+                if (MainApplication.INSTANCE!!.modulesHaveUpdates) {
                     Timber.i("Applying badge")
                     Handler(Looper.getMainLooper()).post {
                         val badge = bottomNavigationView.getOrCreateBadge(R.id.online_menu_item)
                         badge.isVisible = true
-                        badge.number = MainApplication.getINSTANCE().updateModuleCount
-                        badge.applyTheme(MainApplication.getInitialApplication().theme)
+                        badge.number = MainApplication.INSTANCE!!.updateModuleCount
+                        badge.applyTheme(MainApplication.INSTANCE!!.theme)
                         Timber.i("Badge applied")
                     }
                 }
@@ -480,37 +477,12 @@ class MainActivity : FoxActivity(), OnRefreshListener, SearchView.OnQueryTextLis
         }
         ExternalHelper.INSTANCE.refreshHelper(this)
         initMode = false
-        // add preference listener to set isMatomoAllowed
-        val listener =
-            OnSharedPreferenceChangeListener { sharedPreferences: SharedPreferences, key: String ->
-                if (key == "pref_analytics_enabled") {
-                    MainApplication.getINSTANCE().isMatomoAllowed =
-                        sharedPreferences.getBoolean(key, false)
-                    MainApplication.getINSTANCE().tracker.isOptOut =
-                        MainApplication.getINSTANCE().isMatomoAllowed
-                    Timber.d(
-                        "Matomo is allowed change: %s",
-                        MainApplication.getINSTANCE().isMatomoAllowed
-                    )
-                }
-                if (MainApplication.getINSTANCE().isMatomoAllowed) {
-                    val value = sharedPreferences.getString(key, null)
-                    // then log
-                    if (value != null) {
-                        TrackHelper.track().event("pref_changed", "$key=$value")
-                            .with(MainApplication.getINSTANCE().tracker)
-                    }
-                }
-                Timber.d("Preference changed: %s", key)
-            }
-        MainApplication.getSharedPreferences("mmm")
-            .registerOnSharedPreferenceChangeListener(listener)
     }
 
     private fun cardIconifyUpdate() {
         val iconified = searchView!!.isIconified
         val backgroundAttr =
-            if (iconified) if (MainApplication.isMonetEnabled()) com.google.android.material.R.attr.colorSecondaryContainer else  // Monet is special...
+            if (iconified) if (MainApplication.isMonetEnabled) com.google.android.material.R.attr.colorSecondaryContainer else  // Monet is special...
                 com.google.android.material.R.attr.colorSecondary else com.google.android.material.R.attr.colorPrimarySurface
         val theme = searchCard!!.context.theme
         val value = TypedValue()
@@ -546,7 +518,7 @@ class MainActivity : FoxActivity(), OnRefreshListener, SearchView.OnQueryTextLis
     }
 
     private fun updateBlurState() {
-        if (MainApplication.isBlurEnabled()) {
+        if (MainApplication.isBlurEnabled) {
             // set bottom navigation bar color to transparent blur
             val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottom_navigation)
             if (bottomNavigationView != null) {
@@ -590,7 +562,7 @@ class MainActivity : FoxActivity(), OnRefreshListener, SearchView.OnQueryTextLis
                 if (peekMagiskVersion() < Constants.MAGISK_VER_CODE_INSTALL_COMMAND) moduleViewListBuilder.addNotification(
                     NotificationType.MAGISK_OUTDATED
                 )
-                if (!MainApplication.isShowcaseMode()) moduleViewListBuilder.addNotification(
+                if (!MainApplication.isShowcaseMode) moduleViewListBuilder.addNotification(
                     NotificationType.INSTALL_FROM_STORAGE
                 )
                 instance!!.scan()
@@ -607,7 +579,7 @@ class MainActivity : FoxActivity(), OnRefreshListener, SearchView.OnQueryTextLis
 
             fun commonNext() {
                 Timber.i("Common Before")
-                if (MainApplication.isShowcaseMode()) moduleViewListBuilder.addNotification(
+                if (MainApplication.isShowcaseMode) moduleViewListBuilder.addNotification(
                     NotificationType.SHOWCASE_MODE
                 )
                 NotificationType.NEED_CAPTCHA_ANDROIDACY.autoAdd(moduleViewListBuilderOnline)
@@ -731,7 +703,7 @@ class MainActivity : FoxActivity(), OnRefreshListener, SearchView.OnQueryTextLis
     override fun onQueryTextSubmit(query: String): Boolean {
         searchView!!.clearFocus()
         if (initMode) return false
-        TrackHelper.track().search(query).with(MainApplication.getINSTANCE().tracker)
+        TrackHelper.track().search(query).with(MainApplication.INSTANCE!!.tracker)
         if (moduleViewListBuilder.setQueryChange(query)) {
             Timber.i("Query submit: %s on offline list", query)
             Thread(
@@ -754,7 +726,7 @@ class MainActivity : FoxActivity(), OnRefreshListener, SearchView.OnQueryTextLis
 
     override fun onQueryTextChange(query: String): Boolean {
         if (initMode) return false
-        TrackHelper.track().search(query).with(MainApplication.getINSTANCE().tracker)
+        TrackHelper.track().search(query).with(MainApplication.INSTANCE!!.tracker)
         if (moduleViewListBuilder.setQueryChange(query)) {
             Timber.i("Query submit: %s on offline list", query)
             Thread(

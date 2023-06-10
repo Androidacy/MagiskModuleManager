@@ -191,7 +191,7 @@ enum class Http {;
         private var doh = false
 
         init {
-            val mainApplication = MainApplication.getINSTANCE()
+            val mainApplication = MainApplication.INSTANCE
             if (mainApplication == null) {
                 val error = Error("Initialized Http too soon!")
                 error.fillInStackTrace()
@@ -417,7 +417,7 @@ enum class Http {;
             httpclientBuilder.dns(fallbackDNS!!)
             httpClientWithCacheDoH = followRedirects(httpclientBuilder, true).build()
             Timber.i("Initialized Http successfully!")
-            doh = MainApplication.isDohEnabled()
+            doh = MainApplication.isDohEnabled
         }
 
         private fun followRedirects(

@@ -26,6 +26,12 @@ buildscript {
     }
 }
 
+subprojects {
+    plugins.withType<com.android.build.gradle.api.AndroidBasePlugin> {
+        apply(plugin = "org.gradle.android.cache-fix")
+    }
+}
+
 tasks.register("clean", Delete::class) {
     delete(rootProject.buildDir)
 }

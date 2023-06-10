@@ -53,7 +53,7 @@ enum class NotificationType constructor(
         androidx.appcompat.R.attr.colorPrimary, com.google.android.material.R.attr.colorOnPrimary
     ) {
         override fun shouldRemove(): Boolean {
-            return !MainApplication.isShowcaseMode()
+            return !MainApplication.isShowcaseMode
         }
     },
     @JvmStatic
@@ -208,7 +208,7 @@ enum class NotificationType constructor(
     ) {
         override fun shouldRemove(): Boolean {
             return !BuildConfig.DEBUG &&
-                    (MainApplication.isShowcaseMode() ||
+                    (MainApplication.isShowcaseMode ||
                             InstallerInitializer.peekMagiskPath() == null)
         }
     };

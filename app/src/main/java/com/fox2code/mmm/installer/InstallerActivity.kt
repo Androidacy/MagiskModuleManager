@@ -82,7 +82,7 @@ class InstallerActivity : FoxActivity() {
         moduleCache = File(this.cacheDir, "installer")
         if (!moduleCache!!.exists() && !moduleCache!!.mkdirs()) Timber.e("Failed to mkdir module cache dir!")
         super.onCreate(savedInstanceState)
-        TrackHelper.track().screen(this).with(MainApplication.getINSTANCE().tracker)
+        TrackHelper.track().screen(this).with(MainApplication.INSTANCE!!.tracker)
         setDisplayHomeAsUpEnabled(true)
         setActionBarBackground(null)
         setOnBackPressedCallback { _: FoxActivity? ->
@@ -107,7 +107,7 @@ class InstallerActivity : FoxActivity() {
             target = intent.getStringExtra(Constants.EXTRA_INSTALL_PATH)!!.replace(
                 Regex("(\\.\\.|%2E%2E|%252E%252E|%20)"), ""
             )
-            if (target.isEmpty() || !target.startsWith(MainApplication.getINSTANCE().dataDir.absolutePath) && !target.startsWith(
+            if (target.isEmpty() || !target.startsWith(MainApplication.INSTANCE!!.dataDir.absolutePath) && !target.startsWith(
                     "https://"
                 )
             ) {
@@ -131,7 +131,7 @@ class InstallerActivity : FoxActivity() {
             return
         }
         // Note: Sentry only send this info on crash.
-        if (MainApplication.isCrashReportingEnabled()) {
+        if (MainApplication.isCrashReportingEnabled) {
             val breadcrumb = SentryBreadcrumb()
             breadcrumb.setType("install")
             breadcrumb.setData("target", target)
@@ -143,11 +143,11 @@ class InstallerActivity : FoxActivity() {
         val urlMode = target.startsWith("http://") || target.startsWith("https://")
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
         title = name
-        textWrap = MainApplication.isTextWrapEnabled()
+        textWrap = MainApplication.isTextWrapEnabled
         setContentView(if (textWrap) R.layout.installer_wrap else R.layout.installer)
         val background: Int
         val foreground: Int
-        if (MainApplication.getINSTANCE().isLightTheme && !MainApplication.isForceDarkTerminal()) {
+        if (MainApplication.INSTANCE!!.isLightTheme && !MainApplication.isForceDarkTerminal) {
             background = Color.WHITE
             foreground = Color.BLACK
         } else {
@@ -183,11 +183,11 @@ class InstallerActivity : FoxActivity() {
         prgInd?.visibility = View.VISIBLE
         if (urlMode) installerTerminal!!.addLine("- Downloading $name")
         TrackHelper.track().event("installer_start", name)
-            .with(MainApplication.getINSTANCE().tracker)
+            .with(MainApplication.INSTANCE!!.tracker)
         Thread(Runnable {
 
             // ensure module cache is is in our cache dir
-            if (urlMode && !moduleCache!!.absolutePath.startsWith(MainApplication.getINSTANCE().cacheDir.absolutePath)) throw SecurityException(
+            if (urlMode && !moduleCache!!.absolutePath.startsWith(MainApplication.INSTANCE!!.cacheDir.absolutePath)) throw SecurityException(
                 "Module cache is not in cache dir!"
             )
             toDelete = if (urlMode) File(moduleCache, "module.zip") else File(
@@ -326,6 +326,7 @@ class InstallerActivity : FoxActivity() {
         }, "Module install Thread").start()
     }
 
+    @Suppress("KotlinConstantConditions")
     @Keep
     private fun doInstall(file: File?, noExtensions: Boolean, rootless: Boolean) {
         @Suppress("NAME_SHADOWING") var noExtensions = noExtensions
@@ -492,7 +493,7 @@ class InstallerActivity : FoxActivity() {
                 }
                 installCommand =
                     ashExec + " \"" + installExecutable.absolutePath + "\"" + " 3 1 \"" + file.absolutePath + "\""
-            } else if (InstallerInitializer.peekMagiskVersion() >= Constants.MAGISK_VER_CODE_INSTALL_COMMAND && (compatFlags and AppUpdateManager.FLAG_COMPAT_MAGISK_CMD != 0 || noExtensions || MainApplication.isUsingMagiskCommand())) {
+            } else if (InstallerInitializer.peekMagiskVersion() >= Constants.MAGISK_VER_CODE_INSTALL_COMMAND && (compatFlags and AppUpdateManager.FLAG_COMPAT_MAGISK_CMD != 0 || noExtensions || MainApplication.isUsingMagiskCommand)) {
                 installCommand = "magisk --install-module \"" + file.absolutePath + "\""
                 installExecutable =
                     File(if (mgskPath == "/sbin") "/sbin/magisk" else "/system/bin/magisk")
@@ -544,7 +545,7 @@ class InstallerActivity : FoxActivity() {
                 ).to(installerController, installerMonitor)
             }
             // Note: Sentry only send this info on crash.
-            if (MainApplication.isCrashReportingEnabled()) {
+            if (MainApplication.isCrashReportingEnabled) {
                 val breadcrumb = SentryBreadcrumb()
                 breadcrumb.setType("install")
                 breadcrumb.setData("moduleId", if (moduleId == null) "<null>" else moduleId)

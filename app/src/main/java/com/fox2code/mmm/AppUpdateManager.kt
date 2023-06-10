@@ -15,13 +15,13 @@ import java.nio.charset.StandardCharsets
 class AppUpdateManager private constructor() {
     private val compatDataId = HashMap<String, Int>()
     private val updateLock = Any()
-    private val compatFile: File = File(MainApplication.getINSTANCE().filesDir, "compat.txt")
+    private val compatFile: File = File(MainApplication.INSTANCE!!.filesDir, "compat.txt")
     private var latestRelease: String?
     private var lastChecked: Long
 
     init {
-        latestRelease = MainApplication.getBootSharedPreferences()
-            .getString("updater_latest_release", BuildConfig.VERSION_NAME)
+        latestRelease = MainApplication.bootSharedPreferences
+            ?.getString("updater_latest_release", BuildConfig.VERSION_NAME)
         lastChecked = 0
         if (compatFile.isFile) {
             try {

@@ -25,8 +25,8 @@ import java.util.Objects
 class UpdateActivity : FoxActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        if (MainApplication.getINSTANCE().isMatomoAllowed) {
-            TrackHelper.track().screen(this).with(MainApplication.getINSTANCE().tracker)
+        if (MainApplication.isMatomoAllowed()) {
+            TrackHelper.track().screen(this).with(MainApplication.INSTANCE!!.tracker)
         }
         setContentView(R.layout.activity_update)
         // Get the progress bar and make it indeterminate for now

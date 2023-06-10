@@ -113,13 +113,13 @@ public class SettingsActivity extends FoxActivity implements LanguageActivity {
     public final static int PERFORMANCE_CLASS_AVERAGE = 1;
     public final static int PERFORMANCE_CLASS_HIGH = 2;
     private static final int LANGUAGE_SUPPORT_LEVEL = 1;
-    private static boolean devModeStepFirstBootIgnore = MainApplication.isDeveloper();
+    private static boolean devModeStepFirstBootIgnore = MainApplication.Companion.isDeveloper();
     private static int devModeStep = 0;
     @SuppressLint("RestrictedApi")
     private final NavigationBarView.OnItemSelectedListener onItemSelectedListener = item -> {
         int itemId = item.getItemId();
         if (itemId == R.id.back) {
-            TrackHelper.track().event("view_list", "main_modules").with(MainApplication.getINSTANCE().getTracker());
+            TrackHelper.track().event("view_list", "main_modules").with(Objects.requireNonNull(MainApplication.getINSTANCE()).getTracker());
             startActivity(new Intent(this, MainActivity.class));
             overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
             finish();
@@ -136,7 +136,7 @@ public class SettingsActivity extends FoxActivity implements LanguageActivity {
         int devicePerformanceClass;
         int androidVersion = Build.VERSION.SDK_INT;
         int cpuCount = Runtime.getRuntime().availableProcessors();
-        int memoryClass = ((ActivityManager) MainApplication.getINSTANCE().getSystemService(Context.ACTIVITY_SERVICE)).getMemoryClass();
+        int memoryClass = ((ActivityManager) Objects.requireNonNull(MainApplication.getINSTANCE()).getSystemService(Context.ACTIVITY_SERVICE)).getMemoryClass();
         int totalCpuFreq = 0;
         int freqResolved = 0;
         for (int i = 0; i < cpuCount; i++) {
@@ -169,7 +169,7 @@ public class SettingsActivity extends FoxActivity implements LanguageActivity {
     protected void onCreate(Bundle savedInstanceState) {
         devModeStep = 0;
         super.onCreate(savedInstanceState);
-        TrackHelper.track().screen(this).with(MainApplication.getINSTANCE().getTracker());
+        TrackHelper.track().screen(this).with(Objects.requireNonNull(MainApplication.getINSTANCE()).getTracker());
         setContentView(R.layout.settings_activity);
         setTitle(R.string.app_name);
         //hideActionBar();
@@ -303,8 +303,8 @@ public class SettingsActivity extends FoxActivity implements LanguageActivity {
             // Crash reporting
             TwoStatePreference crashReportingPreference = findPreference("pref_crash_reporting");
             if (!SentryMain.IS_SENTRY_INSTALLED) crashReportingPreference.setVisible(false);
-            crashReportingPreference.setChecked(MainApplication.isCrashReportingEnabled());
-            final Object initialValue = MainApplication.isCrashReportingEnabled();
+            crashReportingPreference.setChecked(MainApplication.Companion.isCrashReportingEnabled());
+            final Object initialValue = MainApplication.Companion.isCrashReportingEnabled();
             crashReportingPreference.setOnPreferenceChangeListener((preference, newValue) -> {
                 devModeStepFirstBootIgnore = true;
                 devModeStep = 0;
@@ -507,8 +507,8 @@ public class SettingsActivity extends FoxActivity implements LanguageActivity {
             Preference debugNotification = findPreference("pref_background_update_check_debug");
             Preference updateCheckExcludes = findPreference("pref_background_update_check_excludes");
             Preference updateCheckVersionExcludes = findPreference("pref_background_update_check_excludes_version");
-            debugNotification.setEnabled(MainApplication.isBackgroundUpdateCheckEnabled());
-            debugNotification.setVisible(MainApplication.isDeveloper() && !MainApplication.isWrapped() && MainApplication.isBackgroundUpdateCheckEnabled());
+            debugNotification.setEnabled(MainApplication.Companion.isBackgroundUpdateCheckEnabled());
+            debugNotification.setVisible(MainApplication.isDeveloper() && !MainApplication.isWrapped && MainApplication.Companion.isBackgroundUpdateCheckEnabled());
             debugNotification.setOnPreferenceClickListener(preference -> {
                 // fake updatable modules hashmap
                 HashMap<String, String> updateableModules = new HashMap<>();
@@ -530,7 +530,7 @@ public class SettingsActivity extends FoxActivity implements LanguageActivity {
                 return true;
             });
             Preference backgroundUpdateCheck = findPreference("pref_background_update_check");
-            backgroundUpdateCheck.setVisible(!MainApplication.isWrapped());
+            backgroundUpdateCheck.setVisible(!MainApplication.isWrapped);
             // Make uncheckable if POST_NOTIFICATIONS permission is not granted
             if (!MainApplication.isNotificationPermissionGranted()) {
                 // Instead of disabling the preference, we make it uncheckable and when the user
@@ -553,13 +553,13 @@ public class SettingsActivity extends FoxActivity implements LanguageActivity {
                 });
                 backgroundUpdateCheck.setSummary(R.string.background_update_check_permission_required);
             }
-            updateCheckExcludes.setVisible(MainApplication.isBackgroundUpdateCheckEnabled() && !MainApplication.isWrapped());
+            updateCheckExcludes.setVisible(MainApplication.Companion.isBackgroundUpdateCheckEnabled() && !MainApplication.isWrapped);
             backgroundUpdateCheck.setOnPreferenceChangeListener((preference, newValue) -> {
                 boolean enabled = Boolean.parseBoolean(String.valueOf(newValue));
                 debugNotification.setEnabled(enabled);
-                debugNotification.setVisible(MainApplication.isDeveloper() && !MainApplication.isWrapped() && enabled);
+                debugNotification.setVisible(MainApplication.isDeveloper() && !MainApplication.isWrapped && enabled);
                 updateCheckExcludes.setEnabled(enabled);
-                updateCheckExcludes.setVisible(enabled && !MainApplication.isWrapped());
+                updateCheckExcludes.setVisible(enabled && !MainApplication.isWrapped);
                 if (!enabled) {
                     BackgroundUpdateChecker.onMainActivityResume(this.requireContext());
                 }
@@ -610,7 +610,7 @@ public class SettingsActivity extends FoxActivity implements LanguageActivity {
                 return true;
             });
             // now handle pref_background_update_check_excludes_version
-            updateCheckVersionExcludes.setVisible(MainApplication.isBackgroundUpdateCheckEnabled() && !MainApplication.isWrapped());
+            updateCheckVersionExcludes.setVisible(MainApplication.Companion.isBackgroundUpdateCheckEnabled() && !MainApplication.isWrapped);
             updateCheckVersionExcludes.setOnPreferenceClickListener(preference -> {
                 // get the stringset pref_background_update_check_excludes_version
                 Set<String> stringSet = sharedPreferences.getStringSet("pref_background_update_check_excludes_version", new HashSet<>());
@@ -703,7 +703,7 @@ public class SettingsActivity extends FoxActivity implements LanguageActivity {
             });
             // for pref_background_update_check_debug_download, do the same as pref_update except with DOWNLOAD action
             Preference debugDownload = findPreference("pref_background_update_check_debug_download");
-            debugDownload.setVisible(MainApplication.isDeveloper() && MainApplication.isBackgroundUpdateCheckEnabled() && !MainApplication.isWrapped());
+            debugDownload.setVisible(MainApplication.isDeveloper() && MainApplication.Companion.isBackgroundUpdateCheckEnabled() && !MainApplication.isWrapped);
             debugDownload.setOnPreferenceClickListener(p -> {
                 devModeStep = 0;
                 Intent intent = new Intent(requireContext(), UpdateActivity.class);

@@ -18,7 +18,7 @@ object TimberUtils {
         if (BuildConfig.DEBUG) {
             plant(Timber.DebugTree())
         } else {
-            if (MainApplication.isCrashReportingEnabled()) {
+            if (MainApplication.isCrashReportingEnabled) {
                 plant(
                     SentryTimberTree(
                         Sentry.getCurrentHub(),

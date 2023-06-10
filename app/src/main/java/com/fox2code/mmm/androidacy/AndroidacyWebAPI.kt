@@ -229,7 +229,7 @@ class AndroidacyWebAPI(
      */
     @get:JavascriptInterface
     val isLightTheme: Boolean
-        get() = MainApplication.getINSTANCE().isLightTheme
+        get() = MainApplication.INSTANCE!!.isLightTheme
 
     /**
      * Check if the manager has received root access
@@ -246,7 +246,7 @@ class AndroidacyWebAPI(
     @JavascriptInterface
     fun canInstall(): Boolean {
         // With lockdown mode enabled or lack of root, install should not have any effect
-        return allowInstall && hasRoot() && !MainApplication.isShowcaseMode()
+        return allowInstall && hasRoot() && !MainApplication.isShowcaseMode
     }
 
     /**

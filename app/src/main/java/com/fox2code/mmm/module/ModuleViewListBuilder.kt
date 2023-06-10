@@ -68,7 +68,7 @@ class ModuleViewListBuilder(private val activity: Activity) {
             Timber.i("appendRemoteModules() called")
         }
         synchronized(updateLock) {
-            val showIncompatible = MainApplication.isShowIncompatibleModules()
+            val showIncompatible = MainApplication.isShowIncompatibleModules
             for (moduleHolder in mappedModuleHolders.values) {
                 moduleHolder.repoModule = null
             }

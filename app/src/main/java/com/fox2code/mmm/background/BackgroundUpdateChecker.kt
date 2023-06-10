@@ -37,7 +37,7 @@ class BackgroundUpdateChecker(context: Context, workerParams: WorkerParameters) 
     Worker(context, workerParams) {
     override fun doWork(): Result {
         if (!NotificationManagerCompat.from(this.applicationContext)
-                .areNotificationsEnabled() || !MainApplication.isBackgroundUpdateCheckEnabled()
+                .areNotificationsEnabled() || !MainApplication.isBackgroundUpdateCheckEnabled
         ) return Result.success()
         synchronized(lock) { doCheck(this.applicationContext) }
         return Result.success()
@@ -98,7 +98,7 @@ class BackgroundUpdateChecker(context: Context, workerParams: WorkerParameters) 
             builder.setContentTitle(context.getString(R.string.notification_channel_background_update_app))
             builder.setContentText(context.getString(R.string.notification_channel_background_update_app_description))
             if (ContextCompat.checkSelfPermission(
-                    MainApplication.getINSTANCE(),
+                    MainApplication.INSTANCE!!.applicationContext,
                     Manifest.permission.POST_NOTIFICATIONS
                 ) == PackageManager.PERMISSION_GRANTED
             ) {
@@ -109,17 +109,17 @@ class BackgroundUpdateChecker(context: Context, workerParams: WorkerParameters) 
         @Suppress("NAME_SHADOWING")
         fun doCheck(context: Context) {
             // first, check if the user has enabled background update checking
-            if (!MainApplication.getSharedPreferences("mmm")
+            if (!MainApplication.getSharedPreferences("mmm")!!
                     .getBoolean("pref_background_update_check", false)
             ) {
                 return
             }
-            if (MainApplication.getINSTANCE().isInForeground) {
+            if (MainApplication.INSTANCE!!.isInForeground) {
                 // don't check if app is in foreground, this is a background check
                 return
             }
             // next, check if user requires wifi
-            if (MainApplication.getSharedPreferences("mmm")
+            if (MainApplication.getSharedPreferences("mmm")!!
                     .getBoolean("pref_background_update_check_wifi", true)
             ) {
                 // check if wifi is connected
@@ -138,7 +138,7 @@ class BackgroundUpdateChecker(context: Context, workerParams: WorkerParameters) 
 
                 // post checking notification if notifications are enabled
                 if (ContextCompat.checkSelfPermission(
-                        MainApplication.getINSTANCE(),
+                        MainApplication.INSTANCE!!.applicationContext,
                         Manifest.permission.POST_NOTIFICATIONS
                     ) == PackageManager.PERMISSION_GRANTED
                 ) {
@@ -187,7 +187,7 @@ class BackgroundUpdateChecker(context: Context, workerParams: WorkerParameters) 
                         // exclude all modules with id's stored in the pref pref_background_update_check_excludes
                         try {
                             if (Objects.requireNonNull(
-                                    MainApplication.getSharedPreferences("mmm").getStringSet(
+                                    MainApplication.getSharedPreferences("mmm")!!.getStringSet(
                                         "pref_background_update_check_excludes",
                                         HashSet()
                                     )
@@ -198,7 +198,7 @@ class BackgroundUpdateChecker(context: Context, workerParams: WorkerParameters) 
                         // now, we just had to make it more fucking complicated, didn't we?
                         // we now have pref_background_update_check_excludes_version, which is a id:version stringset of versions the user may want to "skip"
                         // oh, and because i hate myself, i made ^ at the beginning match that version and newer, and $ at the end match that version and older
-                        val stringSet = MainApplication.getSharedPreferences("mmm").getStringSet(
+                        val stringSet = MainApplication.getSharedPreferences("mmm")!!.getStringSet(
                             "pref_background_update_check_excludes_version",
                             HashSet()
                         )
@@ -272,7 +272,7 @@ class BackgroundUpdateChecker(context: Context, workerParams: WorkerParameters) 
                     }
                 }
                 // check for app updates
-                if (MainApplication.getSharedPreferences("mmm")
+                if (MainApplication.getSharedPreferences("mmm")!!
                         .getBoolean("pref_background_update_check_app", false)
                 ) {
                     try {
@@ -287,7 +287,7 @@ class BackgroundUpdateChecker(context: Context, workerParams: WorkerParameters) 
                 }
                 // remove checking notification
                 if (ContextCompat.checkSelfPermission(
-                        MainApplication.getINSTANCE(),
+                        MainApplication.INSTANCE!!.applicationContext,
                         Manifest.permission.POST_NOTIFICATIONS
                     ) == PackageManager.PERMISSION_GRANTED
                 ) {
@@ -297,9 +297,9 @@ class BackgroundUpdateChecker(context: Context, workerParams: WorkerParameters) 
                 }
             }
             // increment or create counter in shared preferences
-            MainApplication.getSharedPreferences("mmm").edit().putInt(
+            MainApplication.getSharedPreferences("mmm")!!.edit().putInt(
                 "pref_background_update_counter",
-                MainApplication.getSharedPreferences("mmm")
+                MainApplication.getSharedPreferences("mmm")!!
                     .getInt("pref_background_update_counter", 0) + 1
             ).apply()
         }
@@ -354,21 +354,21 @@ class BackgroundUpdateChecker(context: Context, workerParams: WorkerParameters) 
             // set long text to summary so it doesn't get cut off
             builder.setStyle(NotificationCompat.BigTextStyle().bigText(summary))
             if (ContextCompat.checkSelfPermission(
-                    MainApplication.getINSTANCE(),
+                    MainApplication.INSTANCE!!.applicationContext,
                     Manifest.permission.POST_NOTIFICATIONS
                 ) != PackageManager.PERMISSION_GRANTED
             ) {
                 return
             }
             // check if app is in foreground. if so, don't show notification
-            if (MainApplication.getINSTANCE().isInForeground && !test) return
+            if (MainApplication.INSTANCE!!.isInForeground && !test) return
             NotificationManagerCompat.from(context).notify(NOTIFICATION_ID, builder.build())
         }
 
         @JvmStatic
         fun onMainActivityCreate(context: Context) {
             // Refuse to run if first_launch pref is not false
-            if (MainApplication.getSharedPreferences("mmm")
+            if (MainApplication.getSharedPreferences("mmm")!!
                     .getString("last_shown_setup", null) != "v2"
             ) return
             // create notification channel group

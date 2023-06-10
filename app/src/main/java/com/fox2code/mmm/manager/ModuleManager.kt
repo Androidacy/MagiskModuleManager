@@ -25,12 +25,12 @@ import java.util.Objects
 
 class ModuleManager private constructor() : SyncManager() {
     private val moduleInfos: HashMap<String, LocalModuleInfo> = HashMap()
-    private val bootPrefs: SharedPreferences = MainApplication.getBootSharedPreferences()
+    private val bootPrefs: SharedPreferences = MainApplication.bootSharedPreferences!!
     private var updatableModuleCount = 0
 
     override fun scanInternal(updateListener: UpdateListener) {
         // if last_shown_setup is not "v2", then refuse to continue
-        if (MainApplication.getSharedPreferences("mmm").getString("last_shown_setup", "") != "v2") {
+        if (MainApplication.getSharedPreferences("mmm")!!.getString("last_shown_setup", "") != "v2") {
             return
         }
         val firstScan = bootPrefs.getBoolean("mm_first_scan", true)
@@ -63,7 +63,7 @@ class ModuleManager private constructor() : SyncManager() {
                 var realmConfiguration: RealmConfiguration?
                 // get all dirs under the realms/repos/ dir under app's data dir
                 val cacheRoot =
-                    File(MainApplication.getINSTANCE().getDataDirWithPath("realms/repos/").toURI())
+                    File(MainApplication.INSTANCE!!.getDataDirWithPath("realms/repos/").toURI())
                 var moduleListCache: ModuleListCache?
                 for (dir in Objects.requireNonNull<Array<File>>(cacheRoot.listFiles())) {
                     if (dir.isDirectory) {
@@ -72,7 +72,7 @@ class ModuleManager private constructor() : SyncManager() {
                         Timber.d("Looking for cache in %s", tempCacheRoot)
                         realmConfiguration =
                             RealmConfiguration.Builder().name("ModuleListCache.realm")
-                                .encryptionKey(MainApplication.getINSTANCE().key).schemaVersion(1)
+                                .encryptionKey(MainApplication.INSTANCE!!.key).schemaVersion(1)
                                 .deleteRealmIfMigrationNeeded().allowWritesOnUiThread(true)
                                 .allowQueriesOnUiThread(true).directory(tempCacheRoot).build()
                         val realm = Realm.getInstance(realmConfiguration!!)
@@ -164,7 +164,7 @@ class ModuleManager private constructor() : SyncManager() {
         }
         // send list to matomo
         TrackHelper.track().event("installed_modules", modulesList.toString())
-            .with(MainApplication.getINSTANCE().tracker)
+            .with(MainApplication.INSTANCE!!.tracker)
         if (BuildConfig.DEBUG) Timber.d("Scan update")
         val modulesUpdate = SuFile("/data/adb/modules_update").list()
         if (modulesUpdate != null) {

@@ -73,7 +73,7 @@ class AndroidacyActivity : FoxActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         moduleFile = File(this.cacheDir, "module.zip")
         super.onCreate(savedInstanceState)
-        TrackHelper.track().screen(this).with(MainApplication.getINSTANCE().tracker)
+        TrackHelper.track().screen(this).with(MainApplication.INSTANCE!!.tracker)
         val intent = this.intent
         var uri: Uri? = intent.data
         @Suppress("KotlinConstantConditions")
@@ -168,7 +168,7 @@ class AndroidacyActivity : FoxActivity() {
             WebView.setWebContentsDebuggingEnabled(true)
         }
         // if app is in dark mode, force dark mode on webview
-        if (MainApplication.getINSTANCE().isDarkTheme) {
+        if (MainApplication.INSTANCE!!.isDarkTheme) {
             // for api 33, use setAlgorithmicDarkeningAllowed, for api 29-32 use setForceDark, for api 28 and below use setForceDarkStrategy
             if (WebViewFeature.isFeatureSupported(WebViewFeature.ALGORITHMIC_DARKENING)) {
                 WebSettingsCompat.setAlgorithmicDarkeningAllowed(webSettings!!, true)

@@ -8,7 +8,6 @@ import java.util.Properties
 plugins {
     // Gradle doesn't allow conditionally enabling/disabling plugins
     id("com.android.application")
-    id("org.gradle.android.cache-fix")
     id("com.mikepenz.aboutlibraries.plugin")
     kotlin("android")
     kotlin("kapt")

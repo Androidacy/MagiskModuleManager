@@ -9,10 +9,10 @@ import com.fox2code.mmm.utils.io.net.Http
 class BackgroundBootListener : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
         if (BOOT_COMPLETED != intent.action) return
-        if (!MainApplication.isBackgroundUpdateCheckEnabled()) return
+        if (!MainApplication.isBackgroundUpdateCheckEnabled) return
         if (!Http.hasConnectivity(context)) return
         // clear boot shared prefs
-        MainApplication.getBootSharedPreferences().edit().clear().apply()
+        MainApplication.bootSharedPreferences!!.edit().clear().apply()
         synchronized(BackgroundUpdateChecker.lock) {
             Thread {
                 BackgroundUpdateChecker.onMainActivityCreate(context)

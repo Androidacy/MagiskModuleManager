@@ -37,9 +37,9 @@ object SentryMain {
     fun initialize(mainApplication: MainApplication) {
         Thread.setDefaultUncaughtExceptionHandler { _: Thread?, throwable: Throwable ->
             isCrashing = true
-            TrackHelper.track().exception(throwable).with(MainApplication.getINSTANCE().tracker)
+            TrackHelper.track().exception(throwable).with(MainApplication.INSTANCE!!.tracker)
             val editor =
-                MainApplication.getINSTANCE().getSharedPreferences("sentry", Context.MODE_PRIVATE)
+                MainApplication.INSTANCE!!.getSharedPreferences("sentry", Context.MODE_PRIVATE)
                     .edit()
             editor.putString("lastExitReason", "crash")
             editor.putLong("lastExitTime", System.currentTimeMillis())
@@ -72,7 +72,7 @@ object SentryMain {
             Process.killProcess(Process.myPid())
         }
         // If first_launch pref is not false, refuse to initialize Sentry
-        val sharedPreferences = MainApplication.getSharedPreferences("mmm")
+        val sharedPreferences = MainApplication.getSharedPreferences("mmm")!!
         if (sharedPreferences.getString("last_shown_setup", null) != "v2") {
             return
         }
@@ -85,7 +85,7 @@ object SentryMain {
         }
         SentryAndroid.init(mainApplication) { options: SentryAndroidOptions ->
             // If crash reporting is disabled, stop here.
-            if (!MainApplication.isCrashReportingEnabled()) {
+            if (!MainApplication.isCrashReportingEnabled) {
                 isSentryEnabled = false // Set sentry state to disabled
                 options.dsn = ""
             } else {
@@ -144,7 +144,7 @@ object SentryMain {
     }
 
     fun addSentryBreadcrumb(sentryBreadcrumb: SentryBreadcrumb) {
-        if (MainApplication.isCrashReportingEnabled()) {
+        if (MainApplication.isCrashReportingEnabled) {
             Sentry.addBreadcrumb(sentryBreadcrumb.breadcrumb)
         }
     }

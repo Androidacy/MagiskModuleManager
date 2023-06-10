@@ -35,9 +35,9 @@ class RepoUpdater(repoData2: RepoData) {
         if (!repoData.shouldUpdate() && repoData.id == "androidacy_repo") { // for now, only enable cache reading for androidacy repo, until we handle storing module prop file values in cache
             Timber.d("Fetching index from cache for %s", repoData.id)
             val cacheRoot =
-                MainApplication.getINSTANCE().getDataDirWithPath("realms/repos/" + repoData.id)
+                MainApplication.INSTANCE!!.getDataDirWithPath("realms/repos/" + repoData.id)
             val realmConfiguration = RealmConfiguration.Builder().name("ModuleListCache.realm")
-                .encryptionKey(MainApplication.getINSTANCE().key).schemaVersion(1)
+                .encryptionKey(MainApplication.INSTANCE!!.key).schemaVersion(1)
                 .deleteRealmIfMigrationNeeded().allowWritesOnUiThread(true)
                 .allowQueriesOnUiThread(true).directory(cacheRoot).build()
             val realm = Realm.getInstance(realmConfiguration)
@@ -46,9 +46,9 @@ class RepoUpdater(repoData2: RepoData) {
             ).equalTo("repoId", repoData.id).findAll()
             // repos-list realm
             val realmConfiguration2 = RealmConfiguration.Builder().name("ReposList.realm")
-                .encryptionKey(MainApplication.getINSTANCE().key).allowQueriesOnUiThread(true)
+                .encryptionKey(MainApplication.INSTANCE!!.key).allowQueriesOnUiThread(true)
                 .allowWritesOnUiThread(true)
-                .directory(MainApplication.getINSTANCE().getDataDirWithPath("realms"))
+                .directory(MainApplication.INSTANCE!!.getDataDirWithPath("realms"))
                 .schemaVersion(1).build()
             val realm2 = Realm.getInstance(realmConfiguration2)
             toUpdate = emptyList()
@@ -139,9 +139,9 @@ class RepoUpdater(repoData2: RepoData) {
                 // use realm to insert to
                 // props avail:
                 val cacheRoot =
-                    MainApplication.getINSTANCE().getDataDirWithPath("realms/repos/" + repoData.id)
+                    MainApplication.INSTANCE!!.getDataDirWithPath("realms/repos/" + repoData.id)
                 val realmConfiguration = RealmConfiguration.Builder().name("ModuleListCache.realm")
-                    .encryptionKey(MainApplication.getINSTANCE().key).schemaVersion(1)
+                    .encryptionKey(MainApplication.INSTANCE!!.key).schemaVersion(1)
                     .deleteRealmIfMigrationNeeded().allowWritesOnUiThread(true)
                     .allowQueriesOnUiThread(true).directory(cacheRoot).build()
                 // array with module info default values
@@ -346,9 +346,9 @@ class RepoUpdater(repoData2: RepoData) {
             }
             indexRaw = null
             val realmConfiguration2 = RealmConfiguration.Builder().name("ReposList.realm")
-                .encryptionKey(MainApplication.getINSTANCE().key).allowQueriesOnUiThread(true)
+                .encryptionKey(MainApplication.INSTANCE!!.key).allowQueriesOnUiThread(true)
                 .allowWritesOnUiThread(true)
-                .directory(MainApplication.getINSTANCE().getDataDirWithPath("realms"))
+                .directory(MainApplication.INSTANCE!!.getDataDirWithPath("realms"))
                 .schemaVersion(1).build()
             val realm2 = Realm.getInstance(realmConfiguration2)
             if (realm2.isInTransaction) {

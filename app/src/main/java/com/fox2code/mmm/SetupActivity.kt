@@ -45,7 +45,7 @@ class SetupActivity : FoxActivity(), LanguageActivity {
         createFiles()
         disableUpdateActivityForFdroidFlavor()
         // Set theme
-        val prefs = MainApplication.getSharedPreferences("mmm")
+        val prefs = MainApplication.getSharedPreferences("mmm")!!
         when (prefs.getString("theme", "system")) {
             "light" -> setTheme(R.style.Theme_MagiskModuleManager_Monet_Light)
             "dark" -> setTheme(R.style.Theme_MagiskModuleManager_Monet_Dark)
@@ -219,8 +219,8 @@ class SetupActivity : FoxActivity(), LanguageActivity {
             Timber.d("Saving preferences")
             // Set the repos in the ReposList realm db
             val realmConfig = RealmConfiguration.Builder().name("ReposList.realm")
-                .encryptionKey(MainApplication.getINSTANCE().key)
-                .directory(MainApplication.getINSTANCE().getDataDirWithPath("realms"))
+                .encryptionKey(MainApplication.INSTANCE!!.key)
+                .directory(MainApplication.INSTANCE!!.getDataDirWithPath("realms"))
                 .schemaVersion(1).build()
             val androidacyRepo = andRepoView.isChecked
             val magiskAltRepo = magiskAltRepoView.isChecked
@@ -294,7 +294,7 @@ class SetupActivity : FoxActivity(), LanguageActivity {
             return theme
         }
         // Set the theme
-        val prefs = MainApplication.getSharedPreferences("mmm")
+        val prefs = MainApplication.getSharedPreferences("mmm")!!
         when (prefs.getString("pref_theme", "system")) {
             "light" -> {
                 theme.applyStyle(R.style.Theme_MagiskModuleManager_Monet_Light, true)
@@ -346,11 +346,11 @@ class SetupActivity : FoxActivity(), LanguageActivity {
         val startTime = System.currentTimeMillis()
         // create encryption key
         Timber.d("Creating encryption key")
-        val key = MainApplication.getINSTANCE().key
+        val key = MainApplication.INSTANCE!!.key
         // create the realm database for ReposList
         // create the realm configuration
         val config = RealmConfiguration.Builder().name("ReposList.realm")
-            .directory(MainApplication.getINSTANCE().getDataDirWithPath("realms")).schemaVersion(1)
+            .directory(MainApplication.INSTANCE!!.getDataDirWithPath("realms")).schemaVersion(1)
             .encryptionKey(key).build()
         // get the instance
         Realm.getInstanceAsync(config, object : Realm.Callback() {
@@ -440,10 +440,10 @@ class SetupActivity : FoxActivity(), LanguageActivity {
         }
         // we literally only use these to create the http cache folders
         try {
-            FileUtils.forceMkdir(File(MainApplication.getINSTANCE().dataDir.toString() + "/cache/cronet"))
-            FileUtils.forceMkdir(File(MainApplication.getINSTANCE().dataDir.toString() + "/cache/WebView/Default/HTTP Cache/Code Cache/wasm"))
-            FileUtils.forceMkdir(File(MainApplication.getINSTANCE().dataDir.toString() + "/cache/WebView/Default/HTTP Cache/Code Cache/js"))
-            FileUtils.forceMkdir(File(MainApplication.getINSTANCE().dataDir.toString() + "/repos/magiskAltRepo"))
+            FileUtils.forceMkdir(File(MainApplication.INSTANCE!!.dataDir.toString() + "/cache/cronet"))
+            FileUtils.forceMkdir(File(MainApplication.INSTANCE!!.dataDir.toString() + "/cache/WebView/Default/HTTP Cache/Code Cache/wasm"))
+            FileUtils.forceMkdir(File(MainApplication.INSTANCE!!.dataDir.toString() + "/cache/WebView/Default/HTTP Cache/Code Cache/js"))
+            FileUtils.forceMkdir(File(MainApplication.INSTANCE!!.dataDir.toString() + "/repos/magiskAltRepo"))
         } catch (e: IOException) {
             Timber.e(e)
         }

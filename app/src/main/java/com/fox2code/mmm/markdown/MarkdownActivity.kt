@@ -34,7 +34,7 @@ class MarkdownActivity : FoxActivity() {
     private var footer: TextView? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        TrackHelper.track().screen(this).with(MainApplication.getINSTANCE().tracker)
+        TrackHelper.track().screen(this).with(MainApplication.INSTANCE!!.tracker)
         setDisplayHomeAsUpEnabled(true)
         val intent = this.intent
         if (!MainApplication.checkSecret(intent)) {
@@ -104,7 +104,7 @@ class MarkdownActivity : FoxActivity() {
                 Timber.i("Done!")
                 runOnUiThread {
                     footer?.minimumHeight = this.navigationBarHeight
-                    MainApplication.getINSTANCE().markwon.setMarkdown(
+                    MainApplication.INSTANCE!!.markwon!!.setMarkdown(
                         textView,
                         MarkdownUrlLinker.urlLinkify(markdown)
                     )
@@ -122,7 +122,7 @@ class MarkdownActivity : FoxActivity() {
     }
 
     private fun updateBlurState() {
-        if (MainApplication.isBlurEnabled()) {
+        if (MainApplication.isBlurEnabled) {
             // set bottom navigation bar color to transparent blur
             val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottom_navigation)
             if (bottomNavigationView != null) {

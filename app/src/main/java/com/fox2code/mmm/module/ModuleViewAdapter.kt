@@ -172,7 +172,7 @@ class ModuleViewAdapter : RecyclerView.Adapter<ModuleViewAdapter.ViewHolder>() {
             val type = moduleHolder.type
             val vType = moduleHolder.getCompareType(type)
             cardView.visibility = View.VISIBLE
-            val showCaseMode = MainApplication.isShowcaseMode()
+            val showCaseMode = MainApplication.isShowcaseMode
             if (moduleHolder.isModuleHolder) {
                 buttonAction.visibility = View.GONE
                 buttonAction.background = null

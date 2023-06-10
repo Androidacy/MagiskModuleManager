@@ -125,7 +125,7 @@ class RuntimeUtils {
                     }
                     builder.setNegativeButton(R.string.cancel) { dialog, _ ->
                         // Set pref_background_update_check to false and dismiss dialog
-                        val prefs = MainApplication.getSharedPreferences("mmm")
+                        val prefs = MainApplication.getSharedPreferences("mmm")!!
                         prefs.edit().putBoolean("pref_background_update_check", false).apply()
                         dialog.dismiss()
                         MainActivity.doSetupNowRunning = false
@@ -149,7 +149,7 @@ class RuntimeUtils {
     fun checkShowInitialSetup(context: Context, activity: MainActivity) {
         if (BuildConfig.DEBUG) Timber.i("Checking if we need to run setup")
         // Check if context is the first launch using prefs and if doSetupRestarting was passed in the intent
-        val prefs = MainApplication.getSharedPreferences("mmm")
+        val prefs = MainApplication.getSharedPreferences("mmm")!!
         var firstLaunch = prefs.getString("last_shown_setup", null) != "v2"
         // First launch
         // context is intentionally separate from the above if statement, because it needs to be checked even if the first launch check is true due to some weird edge cases
@@ -207,7 +207,7 @@ class RuntimeUtils {
     ) {
         MainActivity.isShowingWeblateSb = true
         // if we haven't shown context snackbar for context version yet
-        val prefs = MainApplication.getSharedPreferences("mmm")
+        val prefs = MainApplication.getSharedPreferences("mmm")!!
         if (prefs.getInt("weblate_snackbar_shown", 0) == BuildConfig.VERSION_CODE) return
         val snackbar: Snackbar = Snackbar.make(
             activity.findViewById(R.id.root_container),
@@ -244,7 +244,7 @@ class RuntimeUtils {
             }, 4500)
             return
         }
-        val prefs = MainApplication.getSharedPreferences("mmm")
+        val prefs = MainApplication.getSharedPreferences("mmm")!!
         // if last shown < 7 days ago
         if (prefs.getLong("ugsns4", 0) > System.currentTimeMillis() - 604800000) return
         val snackbar: Snackbar = Snackbar.make(

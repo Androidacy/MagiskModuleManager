@@ -14,9 +14,9 @@ class FileUtils {
 
     fun ensureCacheDirs() {
         try {
-            FileUtils.forceMkdir(File((MainApplication.getINSTANCE().dataDir.toString() + "/cache/WebView/Default/HTTP Cache/Code Cache/wasm").replace("//".toRegex(), "/")))
-            FileUtils.forceMkdir(File((MainApplication.getINSTANCE().dataDir.toString() + "/cache/WebView/Default/HTTP Cache/Code Cache/js").replace("//".toRegex(), "/")))
-            FileUtils.forceMkdir(File((MainApplication.getINSTANCE().dataDir.toString() + "/cache/cronet").replace("//".toRegex(), "/")))
+            FileUtils.forceMkdir(File((MainApplication.INSTANCE!!.dataDir.toString() + "/cache/WebView/Default/HTTP Cache/Code Cache/wasm").replace("//".toRegex(), "/")))
+            FileUtils.forceMkdir(File((MainApplication.INSTANCE!!.dataDir.toString() + "/cache/WebView/Default/HTTP Cache/Code Cache/js").replace("//".toRegex(), "/")))
+            FileUtils.forceMkdir(File((MainApplication.INSTANCE!!.dataDir.toString() + "/cache/cronet").replace("//".toRegex(), "/")))
         } catch (e: IOException) {
             Timber.e("Could not create cache dirs")
         }
