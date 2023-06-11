@@ -129,8 +129,10 @@ class MainActivity : FoxActivity(), OnRefreshListener, SearchView.OnQueryTextLis
         val ts = Timestamp(System.currentTimeMillis() - 30L * 24 * 60 * 60 * 1000)
         // check if this build has expired
         val buildTime = Timestamp(BuildConfig.BUILD_TIME)
-        // if the build time is more than 30 days ago, throw an exception
-        check(ts.time < buildTime.time) { "This build has expired. Please download a stable build or update to the latest version." }
+        // if the build is a debug build and the build time exceeds 30 days, throw an exception
+        if (BuildConfig.DEBUG) {
+            check(ts.time < buildTime.time) { "This build has expired. Please download a stable build or update to the latest version." }
+        }
         setContentView(R.layout.activity_main)
         this.setTitle(R.string.app_name)
         // set window flags to ignore status bar
