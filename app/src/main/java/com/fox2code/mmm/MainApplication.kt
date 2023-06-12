@@ -87,7 +87,7 @@ class MainApplication : FoxApplication(), Configuration.Provider {
     private var markwonThemeContext: FoxThemeWrapper? = null
     @JvmField
     var markwon: Markwon? = null
-    private var existingKey: ByteArray? = byteArrayOf(0)
+    private var existingKey: ByteArray? = null
     @JvmField
     var tracker: Tracker? = null
     private var makingNewKey = false
@@ -450,7 +450,7 @@ class MainApplication : FoxApplication(), Configuration.Provider {
                 }
             }
             // attempt to read the existingKey property
-            if (existingKey != null) {
+            if (existingKey != null && existingKey!!.isNotEmpty()) {
                 return existingKey as ByteArray
             }
             // check if we have a key already
@@ -563,14 +563,17 @@ class MainApplication : FoxApplication(), Configuration.Provider {
                 ).apply()
             Timber.d("Saved the encrypted key in shared preferences.")
             makingNewKey = false
+            Timber.d("Returning the new key. Key length: %d", realmKey.size)
             return realmKey // pass to a realm configuration via encryptionKey()
         }
 
     // Access the encrypted key in the keystore, decrypt it with the secret,
     // and use it to open and read from the realm again
     fun getExistingKey(): ByteArray {
+        Timber.v("Getting existing key.")
         // attempt to read the existingKey property
         if (existingKey != null) {
+            Timber.v("Existing key found in memory.")
             return existingKey as ByteArray
         }
         // open a connection to the android keystore

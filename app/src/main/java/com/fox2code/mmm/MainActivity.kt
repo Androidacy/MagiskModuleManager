@@ -130,7 +130,15 @@ class MainActivity : FoxActivity(), OnRefreshListener, SearchView.OnQueryTextLis
         // check if this build has expired
         val buildTime = Timestamp(BuildConfig.BUILD_TIME)
         // if the build time is more than 30 days ago, throw an exception
-        check(ts.time < buildTime.time) { "This build has expired. Please download a stable build or update to the latest version." }
+        if (BuildConfig.DEBUG) {
+            check(ts.time < buildTime.time) { getString(R.string.build_expired) }
+        } else {
+            // non-debug builds expire after 1 year but only show a toast
+            val ts2 = Timestamp(System.currentTimeMillis() - 365L * 24 * 60 * 60 * 1000)
+            if (ts2.time > buildTime.time) {
+                Toast.makeText(this, R.string.build_expired, Toast.LENGTH_LONG).show()
+            }
+        }
         setContentView(R.layout.activity_main)
         this.setTitle(R.string.app_name)
         // set window flags to ignore status bar
@@ -245,6 +253,7 @@ class MainActivity : FoxActivity(), OnRefreshListener, SearchView.OnQueryTextLis
                     overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
                     finish()
                 }
+
                 R.id.online_menu_item -> {
                     TrackHelper.track().event("view_list", "online_modules")
                         .with(MainApplication.INSTANCE!!.tracker)
@@ -262,6 +271,7 @@ class MainActivity : FoxActivity(), OnRefreshListener, SearchView.OnQueryTextLis
                     searchView.setQuery("", false)
                     searchView.clearFocus()
                 }
+
                 R.id.installed_menu_item -> {
                     TrackHelper.track().event("view_list", "installed_modules")
                         .with(MainApplication.INSTANCE!!.tracker)
@@ -377,13 +387,11 @@ class MainActivity : FoxActivity(), OnRefreshListener, SearchView.OnQueryTextLis
                     RepoManager.getINSTANCE().update { value: Double ->
                         runOnUiThread(if (max == 0) Runnable {
                             progressIndicator.setProgressCompat(
-                                (value * PRECISION).toInt(),
-                                true
+                                (value * PRECISION).toInt(), true
                             )
                         } else Runnable {
                             progressIndicator.setProgressCompat(
-                                (value * PRECISION * 0.75f).toInt(),
-                                true
+                                (value * PRECISION * 0.75f).toInt(), true
                             )
                         })
                     }
@@ -597,8 +605,7 @@ class MainActivity : FoxActivity(), OnRefreshListener, SearchView.OnQueryTextLis
                     RepoManager.getINSTANCE().update { value: Double ->
                         runOnUiThread {
                             progressIndicator!!.setProgressCompat(
-                                (value * PRECISION).toInt(),
-                                true
+                                (value * PRECISION).toInt(), true
                             )
                         }
                     }
@@ -639,13 +646,11 @@ class MainActivity : FoxActivity(), OnRefreshListener, SearchView.OnQueryTextLis
             RepoManager.getINSTANCE().update { value: Double ->
                 runOnUiThread(if (max == 0) Runnable {
                     progressIndicator!!.setProgressCompat(
-                        (value * PRECISION).toInt(),
-                        true
+                        (value * PRECISION).toInt(), true
                     )
                 } else Runnable {
                     progressIndicator!!.setProgressCompat(
-                        (value * PRECISION * 0.75f).toInt(),
-                        true
+                        (value * PRECISION * 0.75f).toInt(), true
                     )
                 })
             }
@@ -716,8 +721,7 @@ class MainActivity : FoxActivity(), OnRefreshListener, SearchView.OnQueryTextLis
             Timber.i("Query submit: %s on online list", query)
             Thread({
                 moduleViewListBuilderOnline.applyTo(
-                    moduleListOnline!!,
-                    moduleViewAdapterOnline!!
+                    moduleListOnline!!, moduleViewAdapterOnline!!
                 )
             }, "Query update thread").start()
         }
@@ -739,8 +743,7 @@ class MainActivity : FoxActivity(), OnRefreshListener, SearchView.OnQueryTextLis
             Timber.i("Query submit: %s on online list", query)
             Thread({
                 moduleViewListBuilderOnline.applyTo(
-                    moduleListOnline!!,
-                    moduleViewAdapterOnline!!
+                    moduleListOnline!!, moduleViewAdapterOnline!!
                 )
             }, "Query update thread").start()
         }
@@ -759,8 +762,7 @@ class MainActivity : FoxActivity(), OnRefreshListener, SearchView.OnQueryTextLis
         if (moduleViewListBuilderOnline.setQueryChange(null)) {
             Thread({
                 moduleViewListBuilderOnline.applyTo(
-                    moduleListOnline!!,
-                    moduleViewAdapterOnline!!
+                    moduleListOnline!!, moduleViewAdapterOnline!!
                 )
             }, "Query update thread").start()
         }
@@ -789,9 +791,7 @@ class MainActivity : FoxActivity(), OnRefreshListener, SearchView.OnQueryTextLis
                 }
                 i++
             }
-            if (AndroidacyRepoData.getInstance()
-                    .isEnabled && AndroidacyRepoData.getInstance().memberLevel == null
-            ) {
+            if (AndroidacyRepoData.getInstance().isEnabled && AndroidacyRepoData.getInstance().memberLevel == null) {
                 Timber.d("Member level is null, waiting for it to be initialized")
                 i = 0
                 while (AndroidacyRepoData.getInstance().memberLevel == null && i < 20) {
@@ -804,14 +804,10 @@ class MainActivity : FoxActivity(), OnRefreshListener, SearchView.OnQueryTextLis
                 }
             }
             // if it's still null, but it's enabled, throw an error
-            if (AndroidacyRepoData.getInstance()
-                    .isEnabled && AndroidacyRepoData.getInstance().memberLevel == null
-            ) {
+            if (AndroidacyRepoData.getInstance().isEnabled && AndroidacyRepoData.getInstance().memberLevel == null) {
                 Timber.e("AndroidacyRepoData is enabled, but member level is null")
             }
-            if (AndroidacyRepoData.getInstance() != null && AndroidacyRepoData.getInstance()
-                    .isEnabled && AndroidacyRepoData.getInstance().memberLevel == "Guest"
-            ) {
+            if (AndroidacyRepoData.getInstance() != null && AndroidacyRepoData.getInstance().isEnabled && AndroidacyRepoData.getInstance().memberLevel == "Guest") {
                 runtimeUtils!!.showUpgradeSnackbar(this, this)
             } else {
                 if (!AndroidacyRepoData.getInstance().isEnabled) {
@@ -825,9 +821,7 @@ class MainActivity : FoxActivity(), OnRefreshListener, SearchView.OnQueryTextLis
                     Timber.i("Unknown error, not showing upgrade snackbar 1")
                 }
             }
-        } else if (AndroidacyRepoData.getInstance()
-                .isEnabled && AndroidacyRepoData.getInstance().memberLevel == "Guest"
-        ) {
+        } else if (AndroidacyRepoData.getInstance().isEnabled && AndroidacyRepoData.getInstance().memberLevel == "Guest") {
             runtimeUtils!!.showUpgradeSnackbar(this, this)
         } else {
             if (!AndroidacyRepoData.getInstance().isEnabled) {
@@ -853,6 +847,7 @@ class MainActivity : FoxActivity(), OnRefreshListener, SearchView.OnQueryTextLis
         }
 
         private const val PRECISION = 10000
+
         @JvmField
         var doSetupNowRunning = true
         var doSetupRestarting = false

@@ -282,28 +282,18 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="4dp"
                 android:layout_marginVertical="12dp"
-                android:text="@string/other_section"
+                android:text="@string/eula_agree_v2_headline"
                 android:textAppearance="@android:style/TextAppearance.Material.Headline" />
 
-            <com.google.android.material.materialswitch.MaterialSwitch
+            <com.google.android.material.checkbox.MaterialCheckBox
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:checked="false"
                 android:id="@+id/setup_agree_eula"
                 android:layout_marginHorizontal="2dp"
                 android:layout_marginVertical="4dp"
-                android:text="@string/eula_sum"
-                android:textAppearance="@android:style/TextAppearance.Material.Small"
-                android:drawableStart="@drawable/baseline_library_add_check_24"
-                android:drawablePadding="8dp" />
-
-            <com.google.android.material.textview.MaterialTextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:autoLink="web"
-                android:textColorLink="@color/blue"
                 android:text="@string/eula_agree_v2"
-                android:textAppearance="@android:style/TextAppearance.Material.Small" />
+                android:textAppearance="@style/TextAppearance.Material3.LabelSmall" />
 
         </LinearLayout>
 

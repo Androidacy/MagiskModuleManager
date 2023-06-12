@@ -127,7 +127,9 @@ enum class PropUtils {
             ).use { bufferedReader ->
                 var line: String
                 var lineNum = 0
-                while (bufferedReader.readLine().also { line = it } != null) {
+                val iterator = bufferedReader.lineSequence().iterator()
+                while (iterator.hasNext()) {
+                    line = iterator.next()
                     if (lineNum == 0 && line.startsWith("\u0000")) {
                         while (line.startsWith("\u0000")) line = line.substring(1)
                     }
