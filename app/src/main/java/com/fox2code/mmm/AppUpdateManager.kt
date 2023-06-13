@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2023 to present Androidacy and contributors. Names, logos, icons, and the Androidacy name are all trademarks of Androidacy and may not be used without license. See LICENSE for more information.
+ */
+
 package com.fox2code.mmm
 
 import com.fox2code.mmm.androidacy.AndroidacyRepoData
@@ -10,7 +14,6 @@ import java.io.FileInputStream
 import java.io.IOException
 import java.io.InputStream
 
-// See https://docs.github.com/en/rest/reference/repos#releases
 @Suppress("unused")
 class AppUpdateManager private constructor() {
     var changes: String? = null
@@ -43,7 +46,7 @@ class AppUpdateManager private constructor() {
         synchronized(updateLock) {
             Timber.d("Checking for app updates")
             if (lastChecked != this.lastChecked) return peekShouldUpdate()
-            // make a request to https://production-api.androidacy.com/ammm/updates/check with appVersionCode and token/device_id/client_id
+            // make a request to https://production-api.androidacy.com/amm/updates/check with appVersionCode and token/device_id/client_id
             var token = AndroidacyRepoData.token
             if (!AndroidacyRepoData.getInstance().isValidToken(token)) {
                 Timber.w("Invalid token, not checking for updates")
@@ -51,7 +54,7 @@ class AppUpdateManager private constructor() {
             }
             val deviceId = AndroidacyRepoData.generateDeviceId()
             val clientId = BuildConfig.ANDROIDACY_CLIENT_ID
-            val url = "https://production-api.androidacy.com/ammm/updates/check?appVersionCode=${BuildConfig.VERSION_CODE}&token=$token&device_id=$deviceId&client_id=$clientId"
+            val url = "https://production-api.androidacy.com/amm/updates/check?appVersionCode=${BuildConfig.VERSION_CODE}&token=$token&device_id=$deviceId&client_id=$clientId"
             val response = doHttpGet(url, false)
             // convert response to string
             val responseString = String(response, Charsets.UTF_8)

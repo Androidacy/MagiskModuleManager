@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2023 to present Androidacy and contributors. Names, logos, icons, and the Androidacy name are all trademarks of Androidacy and may not be used without license. See LICENSE for more information.
+ */
+
 package com.fox2code.mmm
 
 import android.annotation.SuppressLint
@@ -5,7 +9,12 @@ import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.view.View
+import android.webkit.CookieManager
+import android.webkit.WebSettings
+import android.webkit.WebView
 import androidx.core.content.FileProvider
+import androidx.webkit.WebSettingsCompat
+import androidx.webkit.WebViewFeature
 import com.fox2code.foxcompat.app.FoxActivity
 import com.fox2code.mmm.androidacy.AndroidacyRepoData
 import com.fox2code.mmm.utils.io.net.Http
@@ -13,9 +22,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationItemView
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.progressindicator.LinearProgressIndicator
 import com.google.android.material.textview.MaterialTextView
-import io.noties.markwon.Markwon
 import org.json.JSONException
-import org.json.JSONObject
 import org.matomo.sdk.extra.TrackHelper
 import timber.log.Timber
 import java.io.File
@@ -24,12 +31,54 @@ import java.io.IOException
 import java.util.Objects
 
 class UpdateActivity : FoxActivity() {
+    private var chgWv: WebView? = null
+    private var url: String = String()
+    @SuppressLint("RestrictedApi", "SetJavaScriptEnabled")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_update)
+        chgWv = findViewById(R.id.changelog_webview)
         if (MainApplication.isMatomoAllowed()) {
             TrackHelper.track().screen(this).with(MainApplication.INSTANCE!!.tracker)
         }
-        setContentView(R.layout.activity_update)
+        val changelogWebView = chgWv!!
+        val webSettings = changelogWebView.settings
+        webSettings.userAgentString = Http.androidacyUA
+        val cookieManager = CookieManager.getInstance()
+        cookieManager.setAcceptCookie(true)
+        cookieManager.setAcceptThirdPartyCookies(changelogWebView, true)
+        webSettings.domStorageEnabled = true
+        webSettings.javaScriptEnabled = true
+        webSettings.cacheMode = WebSettings.LOAD_DEFAULT
+        webSettings.allowFileAccess = false
+        webSettings.allowContentAccess = false
+        webSettings.mediaPlaybackRequiresUserGesture = false
+        // enable webview debugging on debug builds
+        if (BuildConfig.DEBUG) {
+            WebView.setWebContentsDebuggingEnabled(true)
+        }
+        // if app is in dark mode, force dark mode on webview
+        if (MainApplication.INSTANCE!!.isDarkTheme) {
+            // for api 33, use setAlgorithmicDarkeningAllowed, for api 29-32 use setForceDark, for api 28 and below use setForceDarkStrategy
+            if (WebViewFeature.isFeatureSupported(WebViewFeature.ALGORITHMIC_DARKENING)) {
+                WebSettingsCompat.setAlgorithmicDarkeningAllowed(webSettings, true)
+            } else if (WebViewFeature.isFeatureSupported(WebViewFeature.FORCE_DARK)) {
+                @Suppress("DEPRECATION")
+                WebSettingsCompat.setForceDark(webSettings, WebSettingsCompat.FORCE_DARK_ON)
+            } else if (WebViewFeature.isFeatureSupported(WebViewFeature.FORCE_DARK_STRATEGY)) {
+                @Suppress("DEPRECATION")
+                WebSettingsCompat.setForceDarkStrategy(
+                    webSettings,
+                    WebSettingsCompat.DARK_STRATEGY_WEB_THEME_DARKENING_ONLY
+                )
+            }
+        }
+        // Attempt at fixing CloudFlare captcha.
+        if (WebViewFeature.isFeatureSupported(WebViewFeature.REQUESTED_WITH_HEADER_ALLOW_LIST)) {
+            val allowList: MutableSet<String> = HashSet()
+            allowList.add("https://*.androidacy.com")
+            WebSettingsCompat.setRequestedWithHeaderOriginAllowList(webSettings, allowList)
+        }
         // Get the progress bar and make it indeterminate for now
         val progressIndicator = findViewById<LinearProgressIndicator>(R.id.update_progress)
         progressIndicator.isIndeterminate = true
@@ -179,6 +228,14 @@ class UpdateActivity : FoxActivity() {
         }
         // check for update
         val shouldUpdate = AppUpdateManager.appUpdateManager.checkUpdate(true)
+        var token = AndroidacyRepoData.token
+        if (!AndroidacyRepoData.getInstance().isValidToken(token)) {
+            Timber.w("Invalid token, not checking for updates")
+            token = AndroidacyRepoData.getInstance().requestNewToken()
+        }
+        val deviceId = AndroidacyRepoData.generateDeviceId()
+        val clientId = BuildConfig.ANDROIDACY_CLIENT_ID
+        url = "https://production-api.androidacy.com/amm/updates/check?appVersionCode=${BuildConfig.VERSION_CODE}&token=$token&device_id=$deviceId&client_id=$clientId"
         // if shouldUpdate is true, then we have an update
         if (shouldUpdate) {
             runOnUiThread {
@@ -190,24 +247,14 @@ class UpdateActivity : FoxActivity() {
                     button.tooltipText = getString(R.string.download_update)
                 }
                 button.isEnabled = true
-                // set changelog text. changelog could be markdown, so we need to convert it
-                val changelogTextView = findViewById<MaterialTextView>(R.id.update_changelog)
-                val markwon = Markwon.create(this@UpdateActivity)
-                markwon.setMarkdown(changelogTextView,
-                    AppUpdateManager.appUpdateManager.changes.toString()
-                )
             }
             // return
         } else {
             runOnUiThread {
                 // set status text to no update available
                 statusTextView.setText(R.string.no_update_available)
-                // set changelog text. changelog could be markdown, so we need to convert it
-                val changelogTextView = findViewById<MaterialTextView>(R.id.update_changelog)
-                val markwon = Markwon.create(this@UpdateActivity)
-                markwon.setMarkdown(changelogTextView,
-                    AppUpdateManager.appUpdateManager.changes.toString()
-                )
+                val changelogWebView = chgWv!!
+                changelogWebView.loadUrl(url.replace("updates/check", "changelog"))
             }
         }
         runOnUiThread {
@@ -223,10 +270,6 @@ class UpdateActivity : FoxActivity() {
         runOnUiThread { progressIndicator.isIndeterminate = true }
         // get status text view
         val statusTextView = findViewById<MaterialTextView>(R.id.update_progress_text)
-        val lastestJSON: ByteArray?
-        // get changelog from
-        // make a request to https://production-api.androidacy.com/ammm/updates/check with appVersionCode and token/device_id/client_id
-        // and the changelog is the json string in changelog
         var token = AndroidacyRepoData.token
         if (!AndroidacyRepoData.getInstance().isValidToken(token)) {
             Timber.w("Invalid token, not checking for updates")
@@ -234,27 +277,10 @@ class UpdateActivity : FoxActivity() {
         }
         val deviceId = AndroidacyRepoData.generateDeviceId()
         val clientId = BuildConfig.ANDROIDACY_CLIENT_ID
-        val url = "https://production-api.androidacy.com/ammm/updates/check?appVersionCode=${BuildConfig.VERSION_CODE}&token=$token&device_id=$deviceId&client_id=$clientId"
-        try {
-            lastestJSON = Http.doHttpGet(url, false)
-        } catch (e: Exception) {
-            // when logging, REMOVE the json from the log
-            Timber.e(e, "Error downloading update info")
-            runOnUiThread {
-                progressIndicator.isIndeterminate = false
-                progressIndicator.setProgressCompat(100, false)
-                statusTextView.setText(R.string.error_download_update)
-            }
-            return
-        }
-        // convert to JSON
-        val latestJSON = JSONObject(String(lastestJSON))
-        val changelog = latestJSON.getString("changelog")
+        url = "https://production-api.androidacy.com/amm/updates/check?appVersionCode=${BuildConfig.VERSION_CODE}&token=$token&device_id=$deviceId&client_id=$clientId"
         runOnUiThread {
-            // set changelog text. changelog could be markdown, so we need to convert it
-            val changelogTextView = findViewById<MaterialTextView>(R.id.update_changelog)
-            val markwon = Markwon.create(this@UpdateActivity)
-            markwon.setMarkdown(changelogTextView, changelog)
+            val changelogWebView = chgWv!!
+            changelogWebView.loadUrl(url.replace("updates/check", "changelog"))
         }
         // get the download url
         var downloadUrl = url.replace("check", "download")

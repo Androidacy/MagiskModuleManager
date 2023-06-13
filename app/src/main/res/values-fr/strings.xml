@@ -1,3 +1,7 @@
+<!--
+  ~ Copyright (c) 2023 to present Androidacy and contributors. Names, logos, icons, and the Androidacy name are all trademarks of Androidacy and may not be used without license. See LICENSE for more information.
+  -->
+
 <resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">Gestionnaire de modules Magisk de Fox</string>
     <string name="app_name_short">Gestionnaire de Fox</string>

@@ -1,6 +1,13 @@
+<!--
+  ~ Copyright (c) 2023 to present Androidacy and contributors. Names, logos, icons, and the Androidacy name are all trademarks of Androidacy and may not be used without license. See LICENSE for more information.
+  -->
+
 <resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">Fox\'s Magisk Module Manager</string>
+    <!-- redesign name -->
+    <string name="app_name_v2">Androidacy Module Manager</string>
     <string name="app_name_short">Fox\'s Mmm</string>
+    <string name="app_name_short_v2">AndroidacyMM</string>
     <string name="fail_root_magisk">Could not access either Root or Magisk</string>
     <string name="fail_root_denied">Root has been denied via the Magisk app</string>
     <string name="fail_magisk_missing">Magisk is not installed on this device</string>

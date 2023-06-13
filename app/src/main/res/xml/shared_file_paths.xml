@@ -1,4 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2023 to present Androidacy and contributors. Names, logos, icons, and the Androidacy name are all trademarks of Androidacy and may not be used without license. See LICENSE for more information.
+  -->
+
 <paths>
     <!-- Share folder under internal cache folder. The base folder is context.getCacheDir() -->
     <cache-path name="internal_cache" path="/" />
