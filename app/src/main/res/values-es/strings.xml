@@ -314,7 +314,7 @@
     <string name="download_update">Descargar actualización</string>
     <string name="error_download_update">Ha ocurrido un error mientras se descargaba la información de la actualización.</string>
     <string name="error_no_asset">ERROR: Ocurrió un fallo al analizar la información de la actualización</string>
-    <string name="downloading_update">Descargando actualización... %1$d%%</string>
+    <string name="downloading_update">Descargando actualización… %1$d%%</string>
     <string name="installing_update">Instalando actualización…</string>
     <string name="no_file_found">ERROR: No se ha podido encontrar el paquete de actualización.</string>
     <string name="update_available">Actualización disponible</string>

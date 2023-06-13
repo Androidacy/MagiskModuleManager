@@ -310,7 +310,7 @@
     <string name="background_update_check_excludes">Moduli koji se neće automatski provjeravati za ažuriranja</string>
     <string name="title_activity_update">Ažuriranje u aplikaciji</string>
     <string name="update_title">Ažuriraj aplikaciju</string>
-    <string name="update_button">Molimo pričekajte...</string>
+    <string name="update_button">Molimo pričekajte…</string>
     <string name="invalid_repo_url">URL koji ste unijeli za repositorij nije važeći</string>
     <string name="add_repo_message">Repositoriji moraju biti posluženi preko HTTPS, i moraju pratiti specifikaciju označenu u dokumentaciji.</string>
     <string name="update_message">Molimo pričekajte dok provjerimo i instaliramo ažuriranja za Fox-ov MMU. Ovo možda potraje par minuta</string>
@@ -319,7 +319,7 @@
     <string name="notification_channel_background_update_description">FoxMMU provjerava za ažuriranja u pozadini.</string>
     <string name="notification_update_summary">Sljedeći moduli se mogu ažurirati:</string>
     <string name="notification_update_module_template">%1$s na verziju %2$s</string>
-    <string name="notification_channel_background_update">Provjera ažuriranja...</string>
+    <string name="notification_channel_background_update">Provjera ažuriranja…</string>
     <string name="notification_channel_category_background_update">Status ažuriranja u pozadini</string>
     <string name="notification_update_wifi_desc">Provjerite samo na WiFi</string>
     <string name="notification_update_wifi_pref">Zahtijevaj wi-fi ili neograničenu mrežu za provjere ažuriranja. Preporučuje se da ovo ostavite uključeno ako imate ograničene mobilne podatke.</string>

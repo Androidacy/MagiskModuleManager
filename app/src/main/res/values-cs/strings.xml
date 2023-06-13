@@ -268,7 +268,7 @@
     <string name="no_update_available">Používáte nejnovější verzi!</string>
     <string name="download_update">Stáhnout aktualizaci</string>
     <string name="error_no_asset">CHYBA: Nepovedlo se analyzovat informace o aktualizaci</string>
-    <string name="downloading_update">Stahování aktualizace...%1$d%%</string>
+    <string name="downloading_update">Stahování aktualizace…%1$d%%</string>
     <string name="installing_update">Aktualizace se instaluje…</string>
     <string name="no_file_found">ERROR: Nelze najít aktualizační balíček.</string>
     <string name="check_for_updates">Skontrolovat aktualizace aplikace</string>

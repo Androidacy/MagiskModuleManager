@@ -255,7 +255,7 @@
     <string name="no_update_available">Já está atualizado!</string>
     <string name="download_update">Baixar atualização</string>
     <string name="error_no_asset">ERRO: Falha ao processar informações da atualização</string>
-    <string name="downloading_update">Baixando atualização... %1$d%%</string>
+    <string name="downloading_update">Baixando atualização… %1$d%%</string>
     <string name="installing_update">Instalando atualização…</string>
     <string name="no_file_found">ERRO: Não foi possível encontrar o pacote da atualização.</string>
     <string name="check_for_updates">Buscar por atualizações do aplicativo</string>

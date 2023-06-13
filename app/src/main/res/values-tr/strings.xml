@@ -289,7 +289,7 @@
     <string name="error_saving_logs">Günlükler kaydedilemedi</string>
     <string name="share_logs">AMM günlüklerini paylaş</string>
     <string name="not_official_build">Bu uygulama resmi olmayan AMM yapımıdır.</string>
-    <string name="update_button">Lütfen bekleyin...</string>
+    <string name="update_button">Lütfen bekleyin…</string>
     <string name="notification_update_ignore_desc">Güncelleme kontrollerinden hariç tutulacak modüllerin listesi</string>
     <string name="background_update_check_excludes">Otomatik güncelleme kontrollerinden hariç tutulacak modüller</string>
     <string name="title_activity_update">Uygulama İçi Güncelleyici</string>
@@ -324,7 +324,7 @@
     <string name="download_update">Güncellemeyi indirin</string>
     <string name="error_download_update">Güncelleme bilgileri indirilirken bir hata oluştu.</string>
     <string name="error_no_asset">HATA: Güncelleme bilgileri ayrıştırılamadı</string>
-    <string name="downloading_update">Güncelleme indiriliyor... %1$d%%</string>
+    <string name="downloading_update">Güncelleme indiriliyor… %1$d%%</string>
     <string name="installing_update">Güncelleme yükleniyor…</string>
     <string name="no_file_found">HATA: Güncelleme paketi bulunamadı.</string>
     <string name="check_for_updates">Uygulama güncellemelerini kontrol edin</string>
@@ -342,7 +342,7 @@
     <string name="notification_update_wifi_pref">Güncelleme kontrolleri için wi-fi veya ölçülmemiş bir ağ gerektirir. Sınırlı mobil veriniz varsa açık bırakmanız önerilir.</string>
     <string name="notification_update_summary">Aşağıdaki modüller güncellenebilir:</string>
     <string name="notification_update_module_template">%1$s sürümünden %2$s sürümüne</string>
-    <string name="notification_channel_background_update">Güncellemeler kontrol ediliyor...</string>
+    <string name="notification_channel_background_update">Güncellemeler kontrol ediliyor…</string>
     <string name="notification_channel_background_update_description">AMM arka planda güncellemeleri kontrol ediyor.</string>
     <string name="notification_channel_category_background_update">Arka plan güncelleme durumu</string>
     <string name="notification_channel_category_background_update_description">Güncellemeleri kontrol ederken bir bildirim gösterir, böylece sistem onu öldürmez</string>

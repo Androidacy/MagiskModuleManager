@@ -317,7 +317,7 @@
     <string name="download_update">Pobierz aktualizację</string>
     <string name="error_download_update">Wystąpił błąd podczas pobierania informacji o aktualizacji.</string>
     <string name="error_no_asset">BŁĄD: nie udało się przeanalizować informacji o aktualizacji</string>
-    <string name="downloading_update">Pobieranie aktualizacji... %1$d%%</string>
+    <string name="downloading_update">Pobieranie aktualizacji… %1$d%%</string>
     <string name="installing_update">Instalowanie aktualizacji…</string>
     <string name="check_for_updates">Sprawdź aktualizacje aplikacji</string>
     <string name="error_adding">Nie udało się dodać własnego repo</string>

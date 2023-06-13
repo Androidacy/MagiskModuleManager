@@ -334,7 +334,7 @@
     <string name="title_activity_update">MàJ dans l\’application</string>
     <string name="update_title">MàJ l\’application</string>
     <string name="update_message">Merci de patienter pendant que nous vérifions et installons les MàJ pour AMM. Celà peut prendre quelques minutes</string>
-    <string name="update_button">Merci de patienter...</string>
+    <string name="update_button">Merci de patienter…</string>
     <string name="error_no_extras">ERREURE: Donnée invalides reçues au lancement</string>
     <string name="update_debug_warning">Il semblerait que vous soyez en train d\’utiliser une fabrication de débuggage. Les fabrications de débuggage doivent être MàJ manuellement, et les MàJ incorporées ne sont pas supportées</string>
     <string name="error_no_action">ERREURE: Action spécifiée invalide. Refus de continuer.</string><string name="update_available">MàJ trouvée</string>
@@ -354,7 +354,7 @@
     <string name="add_repo_message">Les dépôts doivent êtres distribués via HTTPS, et doivent répondrent aux spécificités décrites dans la documentation.</string>
     <string name="notification_update_summary">Les modules suivants peuvent êtres MàJ:</string>
     <string name="notification_update_module_template">%1$s vers la version %2$s</string>
-    <string name="notification_channel_background_update">Vérification des MàJ...</string>
+    <string name="notification_channel_background_update">Vérification des MàJ…</string>
     <string name="notification_channel_background_update_description">AMM est en train de vérifier les MàJ en tâche de fond.</string>
     <string name="notification_channel_category_background_update">Statut de la MàJ en arrière-plan</string>
     <string name="notification_channel_category_background_update_description">Afficher une notification lors de la vérification des MàJ pour que le système ne la ferme pas opportunément</string>

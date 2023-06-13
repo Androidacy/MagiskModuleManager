@@ -341,7 +341,7 @@
     <string name="pref_category_updates">更新</string>
     <string name="invalid_excludes">無效輸入</string>
     <string name="invalid_characters_message">輸入的模組列表無效。請輸入模組ID並用逗點隔開複數模組</string>
-    <string name="downloading_update">下載更新中... %1$d%%</string>
+    <string name="downloading_update">下載更新中… %1$d%%</string>
     <string name="update_debug_download_pref">測試更新下載機制</string>
     <string name="changelog_none">沒有任何修改！</string>
     <string name="update_cancel_button">取消更新</string>

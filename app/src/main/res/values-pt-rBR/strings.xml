@@ -97,7 +97,7 @@
     <string name="file_picker_failure">Seu gerenciador de arquivos não pôde acessar o arquivo.</string>
     <string name="remote_install_title">Instalação remota</string>
     <string name="file_picker_wierd">Seu gerenciador de arquivos retornou uma resposta inesperada.</string>
-    <string name="use_magisk_install_command_pref">Utilize o comando \"magisk --install-module\"</string>
+    <string name="use_magisk_install_command_pref">Utilize o comando \"magisk —install-module\"</string>
     <string name="use_magisk_install_command_desc">Durante testes, esta opção causou problemas na ferramenta de diagnósticos de erros em instalações de módulos, então esta opção está escondida no modo de desenvolvedor.
 \nHabilite por sua conta e risco!</string>
     <string name="dev_mode_enabled">Modo desenvolvedor habilitado</string>
@@ -323,7 +323,7 @@
     <string name="download_update">Baixar atualização</string>
     <string name="error_download_update">Um erro ocorreu ao baixar as informações da atualização.</string>
     <string name="error_no_asset">ERRO: Falha ao processar informações da atualização</string>
-    <string name="downloading_update">Baixando atualização... %1$d%%</string>
+    <string name="downloading_update">Baixando atualização… %1$d%%</string>
     <string name="installing_update">Instalando atualização…</string>
     <string name="check_for_updates">Buscar por atualizações do aplicativo</string>
     <string name="language_cta_desc">Ajude-nos traduzindo-o! Pressione aqui para saber mais.</string>

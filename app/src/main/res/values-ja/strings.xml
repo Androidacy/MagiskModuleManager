@@ -316,7 +316,7 @@
     <string name="download_update">アップデートをダウンロード</string>
     <string name="error_download_update">アップデート情報のダウンロード中にエラーが発生しました。</string>
     <string name="error_no_asset">エラー: アップデート情報を取得できませんでした</string>
-    <string name="downloading_update">アップデートをダウンロードしています... %1$d%%</string>
+    <string name="downloading_update">アップデートをダウンロードしています… %1$d%%</string>
     <string name="installing_update">アップデートをインストールしています…</string>
     <string name="no_file_found">エラー: アップデートパッケージが見つかりません。</string>
     <string name="check_for_updates">アプリのアップデートを確認</string>

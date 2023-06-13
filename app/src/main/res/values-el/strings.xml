@@ -257,7 +257,7 @@
     <string name="no_update_available">Είσαι ενημερωμένος!</string>
     <string name="download_update">Λήψη ενημέρωσης</string>
     <string name="error_no_asset">ΣΦΑΛΜΑ: Αποτυχία ανάλυσης των πληροφοριών ενημέρωσης</string>
-    <string name="downloading_update">Λήψη ενημέρωσης... %1$d%%</string>
+    <string name="downloading_update">Λήψη ενημέρωσης… %1$d%%</string>
     <string name="installing_update">Εγκατάσταση ενημέρωσης…</string>
     <string name="no_file_found">ΣΦΑΛΜΑ: Δεν βρέθηκε το πακέτο ενημέρωσης.</string>
     <string name="check_for_updates">Έλεγχος για ενημερώσεις εφαρμογής</string>

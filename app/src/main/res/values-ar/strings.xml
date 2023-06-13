@@ -260,7 +260,7 @@
     <string name="fox2code_thanks">تم الإنشاء بواسطة Fox2Code</string>
     <string name="error_saving_logs">تعذر حفظ السجلات</string>
     <string name="share_logs">مشاركة سجلات AMM</string>
-    <string name="downloading_update">جاري تنزيل التحديث... %1$d%%</string>
+    <string name="downloading_update">جاري تنزيل التحديث… %1$d%%</string>
     <string name="update_debug_download_pref">آلية تنزيل التحديثات الاختبارية</string>
     <string name="reset_api_key">إعادة تعيين مفاتيح API</string>
     <string name="upgrade_androidacy_promo">الترقية إلى مميز</string>

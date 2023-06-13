@@ -355,7 +355,7 @@
 \nPuede activarlo, pero esto puede conducir a una mala experiencia de usuario y le recomendamos que no lo haga.</string>
     <string name="error_no_extras">ERROR: datos inválidos recibidos en el lanzamiento</string>
     <string name="update_debug_warning">Parece que está ejecutando una compilación de depuración. Las compilaciones de depuración deben actualizarse manualmente y no admiten actualizaciones en la aplicación</string>
-    <string name="downloading_update">Descargando actualización... %1$d%%</string>
+    <string name="downloading_update">Descargando actualización… %1$d%%</string>
     <string name="upgrade_androidacy_promo_desc">La actualización a premium eliminará anuncios, captchas y descargas para el repositorio de Androidacy y admitirá a Androidacy y los autores del módulo.</string>
     <string name="crash_text">Uh-oh, nos encontramos con un obstáculo!</string>
     <string name="sentry_enable_nag">Parece que los informes de fallas están desactivados. Actívelos para enviar comentarios.</string>
