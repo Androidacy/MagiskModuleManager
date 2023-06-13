@@ -23,6 +23,7 @@ import com.fox2code.rosettax.LanguageActivity
 import com.fox2code.rosettax.LanguageSwitcher
 import com.google.android.material.bottomnavigation.BottomNavigationItemView
 import com.google.android.material.button.MaterialButton
+import com.google.android.material.checkbox.MaterialCheckBox
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.materialswitch.MaterialSwitch
 import com.topjohnwu.superuser.internal.UiThreadHandler
@@ -173,7 +174,7 @@ class SetupActivity : FoxActivity(), LanguageActivity {
         // Setup button
         val setupButton = view.findViewById<BottomNavigationItemView>(R.id.setup_finish)
         // on clicking setup_agree_eula, enable the setup button if it's checked, if it's not, disable it
-        val agreeEula = view.findViewById<MaterialSwitch>(R.id.setup_agree_eula)
+        val agreeEula = view.findViewById<MaterialCheckBox>(R.id.setup_agree_eula)
         agreeEula.setOnCheckedChangeListener { _: CompoundButton?, isChecked: Boolean ->
             setupButton.isEnabled = isChecked
         }

@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.core.content.FileProvider
 import com.fox2code.foxcompat.app.FoxActivity
+import com.fox2code.mmm.androidacy.AndroidacyRepoData
 import com.fox2code.mmm.utils.io.net.Http
 import com.google.android.material.bottomnavigation.BottomNavigationItemView
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -177,11 +178,10 @@ class UpdateActivity : FoxActivity() {
             progressIndicator.isIndeterminate = true
         }
         // check for update
-        val shouldUpdate = AppUpdateManager.appUpdateManager.peekShouldUpdate()
+        val shouldUpdate = AppUpdateManager.appUpdateManager.checkUpdate(true)
         // if shouldUpdate is true, then we have an update
         if (shouldUpdate) {
             runOnUiThread {
-
                 // set status text to update available
                 statusTextView.setText(R.string.update_available)
                 // set button text to download
@@ -190,15 +190,25 @@ class UpdateActivity : FoxActivity() {
                     button.tooltipText = getString(R.string.download_update)
                 }
                 button.isEnabled = true
+                // set changelog text. changelog could be markdown, so we need to convert it
+                val changelogTextView = findViewById<MaterialTextView>(R.id.update_changelog)
+                val markwon = Markwon.create(this@UpdateActivity)
+                markwon.setMarkdown(changelogTextView,
+                    AppUpdateManager.appUpdateManager.changes.toString()
+                )
             }
             // return
         } else {
             runOnUiThread {
                 // set status text to no update available
                 statusTextView.setText(R.string.no_update_available)
+                // set changelog text. changelog could be markdown, so we need to convert it
+                val changelogTextView = findViewById<MaterialTextView>(R.id.update_changelog)
+                val markwon = Markwon.create(this@UpdateActivity)
+                markwon.setMarkdown(changelogTextView,
+                    AppUpdateManager.appUpdateManager.changes.toString()
+                )
             }
-            // set progress bar to error
-            // return
         }
         runOnUiThread {
             progressIndicator.isIndeterminate = false
@@ -213,9 +223,20 @@ class UpdateActivity : FoxActivity() {
         runOnUiThread { progressIndicator.isIndeterminate = true }
         // get status text view
         val statusTextView = findViewById<MaterialTextView>(R.id.update_progress_text)
-        var lastestJSON: ByteArray? = ByteArray(0)
+        val lastestJSON: ByteArray?
+        // get changelog from
+        // make a request to https://production-api.androidacy.com/ammm/updates/check with appVersionCode and token/device_id/client_id
+        // and the changelog is the json string in changelog
+        var token = AndroidacyRepoData.token
+        if (!AndroidacyRepoData.getInstance().isValidToken(token)) {
+            Timber.w("Invalid token, not checking for updates")
+            token = AndroidacyRepoData.getInstance().requestNewToken()
+        }
+        val deviceId = AndroidacyRepoData.generateDeviceId()
+        val clientId = BuildConfig.ANDROIDACY_CLIENT_ID
+        val url = "https://production-api.androidacy.com/ammm/updates/check?appVersionCode=${BuildConfig.VERSION_CODE}&token=$token&device_id=$deviceId&client_id=$clientId"
         try {
-            lastestJSON = Http.doHttpGet(AppUpdateManager.RELEASES_API_URL, false)
+            lastestJSON = Http.doHttpGet(url, false)
         } catch (e: Exception) {
             // when logging, REMOVE the json from the log
             Timber.e(e, "Error downloading update info")
@@ -224,46 +245,34 @@ class UpdateActivity : FoxActivity() {
                 progressIndicator.setProgressCompat(100, false)
                 statusTextView.setText(R.string.error_download_update)
             }
-        }
-        // convert to JSON
-        val latestJSON = JSONObject(String(lastestJSON!!))
-        val changelog = latestJSON.getString("body")
-        // set changelog text. changelog could be markdown, so we need to convert it to HTML
-        val changelogTextView = findViewById<MaterialTextView>(R.id.update_changelog)
-        val markwon = Markwon.builder(this).build()
-        runOnUiThread { markwon.setMarkdown(changelogTextView, changelog) }
-        // we already know that there is an update, so we can get the latest version of our architecture. We're going to have to iterate through the assets to find the one we want
-        val assets = latestJSON.getJSONArray("assets")
-        // get the asset we want
-        var asset: JSONObject? = null
-        // iterate through assets until we find the one that contains Build.SUPPORTED_ABIS[0]
-        while (Objects.isNull(asset)) {
-            for (i in 0 until assets.length()) {
-                val asset1 = assets.getJSONObject(i)
-                if (asset1.getString("name").contains(Build.SUPPORTED_ABIS[0])) {
-                    asset = asset1
-                    break
-                }
-            }
-        }
-        // if asset is null, then we are in a bad state
-        if (Objects.isNull(asset)) {
-            // set status text to error
-            runOnUiThread {
-                statusTextView.setText(R.string.error_no_asset)
-                // set progress bar to error
-                progressIndicator.isIndeterminate = false
-                progressIndicator.setProgressCompat(100, false)
-            }
-            // return
             return
         }
-        // get the download url
-        val downloadUrl = asset?.getString("browser_download_url")
-        // get the download size
-        val downloadSize = asset?.getLong("size")
+        // convert to JSON
+        val latestJSON = JSONObject(String(lastestJSON))
+        val changelog = latestJSON.getString("changelog")
         runOnUiThread {
-
+            // set changelog text. changelog could be markdown, so we need to convert it
+            val changelogTextView = findViewById<MaterialTextView>(R.id.update_changelog)
+            val markwon = Markwon.create(this@UpdateActivity)
+            markwon.setMarkdown(changelogTextView, changelog)
+        }
+        // get the download url
+        var downloadUrl = url.replace("check", "download")
+        // append arch to download url. coerce anything like arm64-* or aarch64-* to arm64 and anything like arm-* or armeabi-* to arm
+        downloadUrl += if (Build.SUPPORTED_ABIS[0].contains("arm64") || Build.SUPPORTED_ABIS[0].contains("aarch64")) {
+            "&arch=arm64"
+        } else if (Build.SUPPORTED_ABIS[0].contains("arm") || Build.SUPPORTED_ABIS[0].contains("armeabi")) {
+            "&arch=arm"
+        } else if (Build.SUPPORTED_ABIS[0].contains("x86_64")) {
+            "&arch=x86_64"
+        } else if (Build.SUPPORTED_ABIS[0].contains("x86")) {
+            "&arch=x86"
+        } else {
+            // assume universal and hope for the best, because we don't know what to do
+            Timber.w("Unknown arch ${Build.SUPPORTED_ABIS[0]} when downloading update, assuming universal")
+            "&arch=universal"
+        }
+        runOnUiThread {
             // set status text to downloading update
             statusTextView.text = getString(R.string.downloading_update, 0)
             // set progress bar to 0
@@ -273,9 +282,8 @@ class UpdateActivity : FoxActivity() {
         // download the update
         var update = ByteArray(0)
         try {
-            update = Http.doHttpGet(downloadUrl!!) { downloaded: Int, total: Int, _: Boolean ->
+            update = Http.doHttpGet(downloadUrl) { downloaded: Int, total: Int, _: Boolean ->
                 runOnUiThread {
-
                     // update progress bar
                     progressIndicator.setProgressCompat(
                         (downloaded.toFloat() / total.toFloat() * 100).toInt(),
@@ -297,19 +305,6 @@ class UpdateActivity : FoxActivity() {
         }
         // if update is null, then we are in a bad state
         if (Objects.isNull(update)) {
-            runOnUiThread {
-
-                // set status text to error
-                statusTextView.setText(R.string.error_download_update)
-                // set progress bar to error
-                progressIndicator.isIndeterminate = false
-                progressIndicator.setProgressCompat(100, false)
-            }
-            // return
-            return
-        }
-        // if update is not the same size as the download size, then we are in a bad state
-        if (update.size.toLong() != downloadSize) {
             runOnUiThread {
 
                 // set status text to error

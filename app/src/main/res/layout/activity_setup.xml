@@ -293,7 +293,7 @@
                 android:layout_marginHorizontal="2dp"
                 android:layout_marginVertical="4dp"
                 android:text="@string/eula_agree_v2"
-                android:textAppearance="@style/TextAppearance.Material3.LabelSmall" />
+                android:textAppearance="@style/TextAppearance.Material3.BodySmall" />
 
         </LinearLayout>
 

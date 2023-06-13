@@ -44,7 +44,7 @@ import timber.log.Timber;
 @SuppressWarnings("KotlinInternalInJava")
 public final class AndroidacyRepoData extends RepoData {
     public static String ANDROIDACY_DEVICE_ID = null;
-    public static String token = MainApplication.getSharedPreferences("androidacy").getString("pref_androidacy_api_token", null);
+    public static String token = Objects.requireNonNull(MainApplication.getSharedPreferences("androidacy")).getString("pref_androidacy_api_token", null);
 
     static {
         HttpUrl.Builder OK_HTTP_URL_BUILDER = new HttpUrl.Builder().scheme("https");
@@ -93,12 +93,12 @@ public final class AndroidacyRepoData extends RepoData {
         }
         // Try to get the device ID from the shared preferences
         SharedPreferences sharedPreferences = MainApplication.getSharedPreferences("androidacy");
-        String deviceIdPref = sharedPreferences.getString("device_id_v2", null);
+        String deviceIdPref = Objects.requireNonNull(sharedPreferences).getString("device_id_v2", null);
         if (deviceIdPref != null) {
             ANDROIDACY_DEVICE_ID = deviceIdPref;
             return deviceIdPref;
         } else {
-            Fingerprinter fp = FingerprinterFactory.create(MainApplication.getINSTANCE().getApplicationContext());
+            Fingerprinter fp = FingerprinterFactory.create(Objects.requireNonNull(MainApplication.getINSTANCE()).getApplicationContext());
             fp.getFingerprint(Fingerprinter.Version.V_5, fingerprint -> {
                 ANDROIDACY_DEVICE_ID = fingerprint;
                 // use fingerprint
@@ -142,7 +142,7 @@ public final class AndroidacyRepoData extends RepoData {
             if (e.getErrorCode() == 401) {
                 Timber.w("Invalid token, resetting...");
                 // Remove saved preference
-                SharedPreferences.Editor editor = MainApplication.getSharedPreferences("androidacy").edit();
+                SharedPreferences.Editor editor = Objects.requireNonNull(MainApplication.getSharedPreferences("androidacy")).edit();
                 editor.remove("pref_androidacy_api_token");
                 editor.apply();
                 return false;
@@ -153,11 +153,28 @@ public final class AndroidacyRepoData extends RepoData {
             Timber.w("Invalid token, resetting...");
             Timber.w(e);
             // Remove saved preference
-            SharedPreferences.Editor editor = MainApplication.getSharedPreferences("androidacy").edit();
+            SharedPreferences.Editor editor = Objects.requireNonNull(MainApplication.getSharedPreferences("androidacy")).edit();
             editor.remove("pref_androidacy_api_token");
             editor.apply();
             return false;
         }
+    }
+
+    /**
+     * Request a new token from the server and save it to the shared preferences
+     * @return String token
+     */
+    public String requestNewToken() throws IOException, JSONException {
+        String deviceId = generateDeviceId();
+        byte[] resp = Http.doHttpGet("https://" + this.host + "/auth/register?device_id=" + deviceId + "&client_id=" + BuildConfig.ANDROIDACY_CLIENT_ID, false);
+        // response is JSON
+        JSONObject jsonObject = new JSONObject(new String(resp));
+        String token = jsonObject.getString("token");
+        // Save the token to the shared preferences
+        SharedPreferences.Editor editor = Objects.requireNonNull(MainApplication.getSharedPreferences("androidacy")).edit();
+        editor.putString("pref_androidacy_api_token", token);
+        editor.apply();
+        return token;
     }
 
     @SuppressLint({"RestrictedApi", "BinaryOperationInTimber"})
@@ -165,7 +182,7 @@ public final class AndroidacyRepoData extends RepoData {
     protected boolean prepare() {
         // If ANDROIDACY_CLIENT_ID is not set or is empty, disable this repo and return
         if (Objects.equals(BuildConfig.ANDROIDACY_CLIENT_ID, "")) {
-            SharedPreferences.Editor editor = MainApplication.getSharedPreferences("mmm").edit();
+            SharedPreferences.Editor editor = Objects.requireNonNull(MainApplication.getSharedPreferences("mmm")).edit();
             editor.putBoolean("pref_androidacy_repo_enabled", false);
             editor.apply();
             Timber.w("ANDROIDACY_CLIENT_ID is empty, disabling AndroidacyRepoData 2");
@@ -183,7 +200,7 @@ public final class AndroidacyRepoData extends RepoData {
                 // If it's a 400, the app is probably outdated. Show a snackbar suggesting user update app and webview
                 if (connection.getResponseCode() == 400) {
                     // Show a dialog using androidacy_update_needed string
-                    new MaterialAlertDialogBuilder(MainApplication.getINSTANCE()).setTitle(R.string.androidacy_update_needed).setMessage(R.string.androidacy_update_needed_message).setPositiveButton(R.string.update, (dialog, which) -> {
+                    new MaterialAlertDialogBuilder(Objects.requireNonNull(MainApplication.getINSTANCE())).setTitle(R.string.androidacy_update_needed).setMessage(R.string.androidacy_update_needed_message).setPositiveButton(R.string.update, (dialog, which) -> {
                         // Open the app's page on the Play Store
                         Intent intent = new Intent(Intent.ACTION_VIEW);
                         intent.setData(Uri.parse("https://www.androidacy.com/downloads/?view=FoxMMM&utm_source=foxmnm&utm_medium=app&utm_campaign=android-app"));
@@ -197,14 +214,13 @@ public final class AndroidacyRepoData extends RepoData {
             Timber.e(e, "Failed to ping server");
             return false;
         }
-        String deviceId = generateDeviceId();
         long time = System.currentTimeMillis();
         if (this.androidacyBlockade > time) return true; // fake it till you make it. Basically,
         // don't fail just because we're rate limited. API and web rate limits are different.
         this.androidacyBlockade = time + 30_000L;
         try {
             if (token == null) {
-                token = MainApplication.getSharedPreferences("androidacy").getString("pref_androidacy_api_token", null);
+                token = Objects.requireNonNull(MainApplication.getSharedPreferences("androidacy")).getString("pref_androidacy_api_token", null);
                 if (token != null && !this.isValidToken(token)) {
                     Timber.i("Token expired or invalid, requesting new one...");
                     token = null;
@@ -229,7 +245,7 @@ public final class AndroidacyRepoData extends RepoData {
             try {
                 Timber.i("Requesting new token...");
                 // POST json request to https://production-api.androidacy.com/auth/register
-                token = new String(Http.doHttpPost("https://" + this.host + "/auth/register?client_id=" + BuildConfig.ANDROIDACY_CLIENT_ID, "{\"device_id\":\"" + deviceId + "\"}", false));
+                token = requestNewToken();
                 // Parse token
                 try {
                     JSONObject jsonObject = new JSONObject(token);
@@ -257,7 +273,7 @@ public final class AndroidacyRepoData extends RepoData {
                     return false;
                 } else {
                     // Save token to shared preference
-                    SharedPreferences.Editor editor = MainApplication.getSharedPreferences("androidacy").edit();
+                    SharedPreferences.Editor editor = Objects.requireNonNull(MainApplication.getSharedPreferences("androidacy")).edit();
                     editor.putString("pref_androidacy_api_token", token);
                     editor.apply();
                     Timber.i("Token saved to shared preference");

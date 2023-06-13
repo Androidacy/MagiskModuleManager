@@ -1,5 +1,6 @@
 package com.fox2code.mmm
 
+import com.fox2code.mmm.androidacy.AndroidacyRepoData
 import com.fox2code.mmm.utils.io.Files.Companion.write
 import com.fox2code.mmm.utils.io.net.Http.Companion.doHttpGet
 import org.json.JSONObject
@@ -8,20 +9,20 @@ import java.io.File
 import java.io.FileInputStream
 import java.io.IOException
 import java.io.InputStream
-import java.nio.charset.StandardCharsets
 
 // See https://docs.github.com/en/rest/reference/repos#releases
 @Suppress("unused")
 class AppUpdateManager private constructor() {
+    var changes: String? = null
     private val compatDataId = HashMap<String, Int>()
     private val updateLock = Any()
     private val compatFile: File = File(MainApplication.INSTANCE!!.filesDir, "compat.txt")
-    private var latestRelease: String?
+    private var latestRelease: Int?
     private var lastChecked: Long
 
     init {
         latestRelease = MainApplication.bootSharedPreferences
-            ?.getString("updater_latest_release", BuildConfig.VERSION_NAME)
+            ?.getInt("latest_vcode", BuildConfig.VERSION_CODE)
         lastChecked = 0
         if (compatFile.isFile) {
             try {
@@ -40,27 +41,29 @@ class AppUpdateManager private constructor() {
             lastChecked < System.currentTimeMillis() - 60000L
         ) return force && peekShouldUpdate()
         synchronized(updateLock) {
+            Timber.d("Checking for app updates")
             if (lastChecked != this.lastChecked) return peekShouldUpdate()
-            try {
-                val release =
-                    JSONObject(String(doHttpGet(RELEASES_API_URL, false), StandardCharsets.UTF_8))
-                var latestRelease: String? = null
-                var preRelease = false
-                // get latest_release from tag_name translated to int
-                if (release.has("tag_name")) {
-                    latestRelease = release.getString("tag_name")
-                    preRelease = release.getBoolean("prerelease")
+            // make a request to https://production-api.androidacy.com/ammm/updates/check with appVersionCode and token/device_id/client_id
+            var token = AndroidacyRepoData.token
+            if (!AndroidacyRepoData.getInstance().isValidToken(token)) {
+                Timber.w("Invalid token, not checking for updates")
+                token = AndroidacyRepoData.getInstance().requestNewToken()
+            }
+            val deviceId = AndroidacyRepoData.generateDeviceId()
+            val clientId = BuildConfig.ANDROIDACY_CLIENT_ID
+            val url = "https://production-api.androidacy.com/ammm/updates/check?appVersionCode=${BuildConfig.VERSION_CODE}&token=$token&device_id=$deviceId&client_id=$clientId"
+            val response = doHttpGet(url, false)
+            // convert response to string
+            val responseString = String(response, Charsets.UTF_8)
+            Timber.d("Response: $responseString")
+            // json response has a boolean shouldUpdate and an int latestVersion
+            JSONObject(responseString).let {
+                if (it.getBoolean("shouldUpdate")) {
+                    latestRelease = it.getInt("latestVersion")
+                    MainApplication.bootSharedPreferences?.edit()
+                        ?.putInt("latest_vcode", latestRelease!!)?.apply()
                 }
-                Timber.d("Latest release: %s, isPreRelease: %s", latestRelease, preRelease)
-                if (latestRelease == null) return false
-                if (preRelease) {
-                    this.latestRelease = "99999999" // prevent updating to pre-release
-                    return false
-                }
-                this.latestRelease = latestRelease
-                this.lastChecked = System.currentTimeMillis()
-            } catch (ioe: Exception) {
-                Timber.e(ioe)
+                this.changes = it.getString("changelog")
             }
         }
         return peekShouldUpdate()
@@ -83,8 +86,8 @@ class AppUpdateManager private constructor() {
         var currentVersion = 0
         var latestVersion = 0
         try {
-            currentVersion = BuildConfig.VERSION_NAME.replace("\\D".toRegex(), "").toInt()
-            latestVersion = latestRelease!!.replace("v", "").replace("\\D".toRegex(), "").toInt()
+            currentVersion = BuildConfig.VERSION_CODE
+            latestVersion = latestRelease!!
         } catch (ignored: NumberFormatException) {
         }
         return currentVersion < latestVersion
