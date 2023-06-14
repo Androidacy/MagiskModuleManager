@@ -104,13 +104,13 @@ enum class NotificationType constructor(
     @JvmStatic
     NO_INTERNET(R.string.fail_internet, R.drawable.ic_baseline_cloud_off_24) {
         override fun shouldRemove(): Boolean {
-            return RepoManager.getINSTANCE().hasConnectivity()
+            return RepoManager.getINSTANCE()!!.hasConnectivity()
         }
     },
     @JvmStatic
     REPO_UPDATE_FAILED(R.string.repo_update_failed, R.drawable.ic_baseline_cloud_off_24) {
         override fun shouldRemove(): Boolean {
-            return RepoManager.getINSTANCE().isLastUpdateSuccess
+            return RepoManager.getINSTANCE()!!.isLastUpdateSuccess
         }
     },
     @JvmStatic
@@ -124,7 +124,7 @@ enum class NotificationType constructor(
             )
         }) {
         override fun shouldRemove(): Boolean {
-            return (!RepoManager.isAndroidacyRepoEnabled()
+            return (!RepoManager.isAndroidacyRepoEnabled
                     || !Http.needCaptchaAndroidacy())
         }
     },

@@ -86,7 +86,7 @@ class AndroidacyWebAPI(
             return
         }
         downloadMode = false
-        val repoModule = AndroidacyRepoData.getInstance().moduleHashMap[installTitle]
+        val repoModule = AndroidacyRepoData.instance.moduleHashMap[installTitle]
         val title: String?
         var description: String?
         var mmtReborn = false
@@ -293,7 +293,7 @@ class AndroidacyWebAPI(
                 openNativeModuleDialogRaw(moduleUrl, moduleId, installTitle, checksum, true)
             }
         } else {
-            val repoModule = AndroidacyRepoData.getInstance().moduleHashMap[installTitle]
+            val repoModule = AndroidacyRepoData.instance.moduleHashMap[installTitle]
             var config: String? = null
             var mmtReborn = false
             if (repoModule != null && Objects.requireNonNull<String?>(repoModule.moduleInfo.name).length >= 3) {
@@ -545,7 +545,7 @@ class AndroidacyWebAPI(
 
     @JavascriptInterface
     fun setAndroidacyToken(token: String?) {
-        AndroidacyRepoData.getInstance().setToken(token)
+        AndroidacyRepoData.instance.setToken(token)
     }
 
     // Androidacy feature level declaration method

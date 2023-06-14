@@ -387,7 +387,7 @@ androidComponents {
                 // Assigns the new version code to output.versionCode, which changes the version code
                 // for only the output APK, not for the variant itself.
                 val versioCode = output.versionCode.get() as Int
-                output.versionCode.set(baseAbiCode * 1000 + versioCode)
+                output.versionCode.set((baseAbiCode * 1000) + versioCode)
             }
         }
     }
@@ -438,7 +438,7 @@ dependencies {
     // implementation("com.google.protobuf:protobuf-javalite:3.22.2")
 
     // google guava, maybe fix a bug
-    implementation("com.google.guava:guava:32.0.0-jre")
+    implementation("com.google.guava:guava:32.0.1-jre")
 
 
     val libsuVersion = "5.0.5"
@@ -455,12 +455,12 @@ dependencies {
     implementation("com.github.Fox2Code:AndroidANSI:1.2.1")
 
     // sentry
-    implementation("io.sentry:sentry-android:6.21.0")
-    implementation("io.sentry:sentry-android-timber:6.21.0")
-    implementation("io.sentry:sentry-android-fragment:6.21.0")
-    implementation("io.sentry:sentry-android-okhttp:6.21.0")
-    implementation("io.sentry:sentry-kotlin-extensions:6.21.0")
-    implementation("io.sentry:sentry-android-ndk:6.21.0")
+    implementation("io.sentry:sentry-android:6.22.0")
+    implementation("io.sentry:sentry-android-timber:6.22.0")
+    implementation("io.sentry:sentry-android-fragment:6.22.0")
+    implementation("io.sentry:sentry-android-okhttp:6.22.0")
+    implementation("io.sentry:sentry-kotlin-extensions:6.22.0")
+    implementation("io.sentry:sentry-android-ndk:6.22.0")
 
     // Markdown
     // TODO: switch to an updated implementation

@@ -23,7 +23,7 @@ class RepoUpdater(repoData2: RepoData) {
     private var toUpdate: List<RepoModule>? = null
     private var toApply: Collection<RepoModule>? = null
     fun fetchIndex(): Int {
-        if (!RepoManager.getINSTANCE().hasConnectivity()) {
+        if (!RepoManager.getINSTANCE()!!.hasConnectivity()) {
             indexRaw = null
             toUpdate = emptyList()
             toApply = emptySet()
@@ -36,10 +36,10 @@ class RepoUpdater(repoData2: RepoData) {
             return 0
         }
         // if we shouldn't update, get the values from the ModuleListCache realm
-        if (!repoData.shouldUpdate() && repoData.id == "androidacy_repo") { // for now, only enable cache reading for androidacy repo, until we handle storing module prop file values in cache
-            Timber.d("Fetching index from cache for %s", repoData.id)
+        if (!repoData.shouldUpdate() && repoData.preferenceId == "androidacy_repo") { // for now, only enable cache reading for androidacy repo, until we handle storing module prop file values in cache
+            Timber.d("Fetching index from cache for %s", repoData.preferenceId)
             val cacheRoot =
-                MainApplication.INSTANCE!!.getDataDirWithPath("realms/repos/" + repoData.id)
+                MainApplication.INSTANCE!!.getDataDirWithPath("realms/repos/" + repoData.preferenceId)
             val realmConfiguration = RealmConfiguration.Builder().name("ModuleListCache.realm")
                 .encryptionKey(MainApplication.INSTANCE!!.key).schemaVersion(1)
                 .deleteRealmIfMigrationNeeded().allowWritesOnUiThread(true)
@@ -47,7 +47,7 @@ class RepoUpdater(repoData2: RepoData) {
             val realm = Realm.getInstance(realmConfiguration)
             val results = realm.where(
                 ModuleListCache::class.java
-            ).equalTo("repoId", repoData.id).findAll()
+            ).equalTo("repoId", repoData.preferenceId).findAll()
             // repos-list realm
             val realmConfiguration2 = RealmConfiguration.Builder().name("ReposList.realm")
                 .encryptionKey(MainApplication.INSTANCE!!.key).allowQueriesOnUiThread(true)
@@ -76,7 +76,7 @@ class RepoUpdater(repoData2: RepoData) {
             Timber.d(
                 "Fetched %d modules from cache for %s, from %s records",
                 (toApply as HashSet<RepoModule>).size,
-                repoData.id,
+                repoData.preferenceId,
                 results.size
             )
             // apply the toApply list to the toUpdate list
@@ -103,7 +103,7 @@ class RepoUpdater(repoData2: RepoData) {
                 toApply = repoData.moduleHashMap.values
                 return 0
             }
-            indexRaw = doHttpGet(repoData.getUrl(), false)
+            indexRaw = repoData.getUrl()?.let { doHttpGet(it, false) }
             toUpdate = repoData.populate(JSONObject(String(indexRaw!!, StandardCharsets.UTF_8)))
             // Since we reuse instances this should work
             toApply = HashSet(repoData.moduleHashMap.values)
@@ -143,7 +143,7 @@ class RepoUpdater(repoData2: RepoData) {
                 // use realm to insert to
                 // props avail:
                 val cacheRoot =
-                    MainApplication.INSTANCE!!.getDataDirWithPath("realms/repos/" + repoData.id)
+                    MainApplication.INSTANCE!!.getDataDirWithPath("realms/repos/" + repoData.preferenceId)
                 val realmConfiguration = RealmConfiguration.Builder().name("ModuleListCache.realm")
                     .encryptionKey(MainApplication.INSTANCE!!.key).schemaVersion(1)
                     .deleteRealmIfMigrationNeeded().allowWritesOnUiThread(true)
@@ -187,7 +187,7 @@ class RepoUpdater(repoData2: RepoData) {
                     realm.commitTransaction()
                 }
                 realm.beginTransaction()
-                realm.where(ModuleListCache::class.java).equalTo("repoId", repoData.id).findAll()
+                realm.where(ModuleListCache::class.java).equalTo("repoId", repoData.preferenceId).findAll()
                     .deleteAllFromRealm()
                 realm.commitTransaction()
                 // iterate over modules. pls don't hate me for this, its ugly but it works
@@ -289,7 +289,7 @@ class RepoUpdater(repoData2: RepoData) {
                             0
                         }
                         // get module repo id
-                        val repoId = repoData.id
+                        val repoId = repoData.preferenceId
                         // get module installed
                         val installed = false
                         // get module installed version code
@@ -361,20 +361,20 @@ class RepoUpdater(repoData2: RepoData) {
             // set lastUpdate
             realm2.executeTransaction { r: Realm ->
                 val repoListCache =
-                    r.where(ReposList::class.java).equalTo("id", repoData.id).findFirst()
+                    r.where(ReposList::class.java).equalTo("id", repoData.preferenceId).findFirst()
                 if (repoListCache != null) {
                     success.set(true)
                     // get unix timestamp of current time
                     val currentTime = (System.currentTimeMillis() / 1000).toInt()
                     Timber.d(
                         "Updating lastUpdate for repo %s to %s which is %s seconds ago",
-                        repoData.id,
+                        repoData.preferenceId,
                         currentTime,
                         currentTime - repoListCache.lastUpdate
                     )
                     repoListCache.lastUpdate = currentTime
                 } else {
-                    Timber.w("Failed to update lastUpdate for repo %s", repoData.id)
+                    Timber.w("Failed to update lastUpdate for repo %s", repoData.preferenceId)
                 }
             }
             realm2.close()

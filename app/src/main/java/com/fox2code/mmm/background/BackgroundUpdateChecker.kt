@@ -180,10 +180,10 @@ class BackgroundUpdateChecker(context: Context, workerParams: WorkerParameters) 
                     Timber.d("Not posting notification because of missing permission")
                 }
                 ModuleManager.instance!!.scanAsync()
-                RepoManager.getINSTANCE().update(null)
+                RepoManager.getINSTANCE()!!.update(null)
                 ModuleManager.instance!!.runAfterScan {
                     var moduleUpdateCount = 0
-                    val repoModules = RepoManager.getINSTANCE().modules
+                    val repoModules = RepoManager.getINSTANCE()!!.modules
                     // hashmap of updateable modules names
                     val updateableModules = HashMap<String, String>()
                     for (localModuleInfo in ModuleManager.instance!!.modules.values) {

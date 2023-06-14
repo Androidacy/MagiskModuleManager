@@ -65,16 +65,16 @@ enum class XHooks {
 
         @Keep
         fun addXRepo(url: String?, fallbackName: String?): XRepo {
-            return RepoManager.getINSTANCE_UNSAFE().addOrGet(url, fallbackName)
+            return url?.let { RepoManager.iNSTANCE_UNSAFE?.addOrGet(it, fallbackName) }!!
         }
 
         @Keep
         fun getXRepo(url: String?): XRepo {
-            return RepoManager.getINSTANCE_UNSAFE()[url]
+            return RepoManager.iNSTANCE_UNSAFE?.get(url) ?: throw NullPointerException("Repo not found!")
         }
 
         @get:Keep
         val xRepos: Collection<XRepo>
-            get() = RepoManager.getINSTANCE_UNSAFE().xRepos
+            get() = RepoManager.iNSTANCE_UNSAFE!!.xRepos
     }
 }

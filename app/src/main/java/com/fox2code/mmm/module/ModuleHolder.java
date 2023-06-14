@@ -86,7 +86,7 @@ public final class ModuleHolder implements Comparable<ModuleHolder> {
     }
 
     public String getUpdateZipRepo() {
-        return this.moduleInfo == null || (this.repoModule != null && this.moduleInfo.updateVersionCode < this.repoModule.moduleInfo.versionCode) ? this.repoModule.repoData.id : "update_json";
+        return this.moduleInfo == null || (this.repoModule != null && this.moduleInfo.updateVersionCode < this.repoModule.moduleInfo.versionCode) ? this.repoModule.repoData.preferenceId : "update_json";
     }
 
     public String getUpdateZipChecksum() {
@@ -143,17 +143,17 @@ public final class ModuleHolder implements Comparable<ModuleHolder> {
         } else if (this.moduleInfo.versionCode < this.moduleInfo.updateVersionCode || (this.repoModule != null && this.moduleInfo.versionCode < this.repoModule.moduleInfo.versionCode)) {
             boolean ignoreUpdate = false;
             try {
-                if (Objects.requireNonNull(MainApplication.getSharedPreferences("mmm").getStringSet("pref_background_update_check_excludes", new HashSet<>())).contains(moduleInfo.id))
+                if (Objects.requireNonNull(Objects.requireNonNull(MainApplication.getSharedPreferences("mmm")).getStringSet("pref_background_update_check_excludes", new HashSet<>())).contains(moduleInfo.id))
                     ignoreUpdate = true;
             } catch (Exception ignored) {
             }
             // now, we just had to make it more fucking complicated, didn't we?
             // we now have pref_background_update_check_excludes_version, which is a id:version stringset of versions the user may want to "skip"
             // oh, and because i hate myself, i made ^ at the beginning match that version and newer, and $ at the end match that version and older
-            Set<String> stringSetT = MainApplication.getSharedPreferences("mmm").getStringSet("pref_background_update_check_excludes_version", new HashSet<>());
+            Set<String> stringSetT = Objects.requireNonNull(MainApplication.getSharedPreferences("mmm")).getStringSet("pref_background_update_check_excludes_version", new HashSet<>());
             String version = "";
             Timber.d(stringSetT.toString());
-            // unfortunately, stringsett.contains() doesn't work for partial matches
+            // unfortunately, stringset.contains() doesn't work for partial matches
             // so we have to iterate through the set
             for (String s : stringSetT) {
                 if (s.startsWith(this.moduleInfo.id)) {
@@ -201,7 +201,7 @@ public final class ModuleHolder implements Comparable<ModuleHolder> {
                 Timber.d("Module %s has update, but is ignored", this.moduleId);
                 return Type.INSTALLABLE;
             } else {
-                MainApplication.getINSTANCE().modulesHaveUpdates = true;
+                Objects.requireNonNull(MainApplication.getINSTANCE()).modulesHaveUpdates = true;
                 if (!MainApplication.getINSTANCE().updateModules.contains(this.moduleId)) {
                     MainApplication.getINSTANCE().updateModules.add(this.moduleId);
                     MainApplication.getINSTANCE().updateModuleCount++;

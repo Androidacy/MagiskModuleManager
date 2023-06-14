@@ -229,9 +229,9 @@ class UpdateActivity : FoxActivity() {
         // check for update
         val shouldUpdate = AppUpdateManager.appUpdateManager.checkUpdate(true)
         var token = AndroidacyRepoData.token
-        if (!AndroidacyRepoData.getInstance().isValidToken(token)) {
+        if (!AndroidacyRepoData.instance.isValidToken(token)) {
             Timber.w("Invalid token, not checking for updates")
-            token = AndroidacyRepoData.getInstance().requestNewToken()
+            token = AndroidacyRepoData.instance.requestNewToken()
         }
         val deviceId = AndroidacyRepoData.generateDeviceId()
         val clientId = BuildConfig.ANDROIDACY_CLIENT_ID
@@ -271,9 +271,9 @@ class UpdateActivity : FoxActivity() {
         // get status text view
         val statusTextView = findViewById<MaterialTextView>(R.id.update_progress_text)
         var token = AndroidacyRepoData.token
-        if (!AndroidacyRepoData.getInstance().isValidToken(token)) {
+        if (!AndroidacyRepoData.instance.isValidToken(token)) {
             Timber.w("Invalid token, not checking for updates")
-            token = AndroidacyRepoData.getInstance().requestNewToken()
+            token = AndroidacyRepoData.instance.requestNewToken()
         }
         val deviceId = AndroidacyRepoData.generateDeviceId()
         val clientId = BuildConfig.ANDROIDACY_CLIENT_ID

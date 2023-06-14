@@ -346,7 +346,7 @@ class MainActivity : FoxActivity(), OnRefreshListener, SearchView.OnQueryTextLis
                 NotificationType.NO_INTERNET.autoAdd(moduleViewListBuilderOnline)
                 val progressIndicator = progressIndicator!!
                 // hide progress bar is repo-manager says we have no internet
-                if (!RepoManager.getINSTANCE().hasConnectivity()) {
+                if (!RepoManager.getINSTANCE()!!.hasConnectivity()) {
                     Timber.i("No connection, hiding progress")
                     runOnUiThread {
                         progressIndicator.visibility = View.GONE
@@ -377,9 +377,9 @@ class MainActivity : FoxActivity(), OnRefreshListener, SearchView.OnQueryTextLis
                 Timber.i("Scanning for modules!")
                 if (BuildConfig.DEBUG) Timber.i("Initialize Update")
                 val max = instance!!.getUpdatableModuleCount()
-                if (RepoManager.getINSTANCE().customRepoManager != null && RepoManager.getINSTANCE().customRepoManager.needUpdate()) {
+                if (RepoManager.getINSTANCE()!!.customRepoManager != null && RepoManager.getINSTANCE()!!.customRepoManager!!.needUpdate()) {
                     Timber.w("Need update on create")
-                } else if (RepoManager.getINSTANCE().customRepoManager == null) {
+                } else if (RepoManager.getINSTANCE()!!.customRepoManager == null) {
                     Timber.w("CustomRepoManager is null")
                 }
                 // update compat metadata
@@ -388,7 +388,7 @@ class MainActivity : FoxActivity(), OnRefreshListener, SearchView.OnQueryTextLis
                 if (BuildConfig.DEBUG) Timber.i("Check Update")
                 // update repos
                 if (hasWebView()) {
-                    RepoManager.getINSTANCE().update { value: Double ->
+                    RepoManager.getINSTANCE()!!.update { value: Double ->
                         runOnUiThread(if (max == 0) Runnable {
                             progressIndicator.setProgressCompat(
                                 (value * PRECISION).toInt(), true
@@ -452,7 +452,7 @@ class MainActivity : FoxActivity(), OnRefreshListener, SearchView.OnQueryTextLis
                 }
                 if (BuildConfig.DEBUG) Timber.i("Apply")
                 RepoManager.getINSTANCE()
-                    .runAfterUpdate { moduleViewListBuilderOnline.appendRemoteModules() }
+                    ?.runAfterUpdate { moduleViewListBuilderOnline.appendRemoteModules() }
                 moduleViewListBuilder.applyTo(moduleList, moduleViewAdapter!!)
                 moduleViewListBuilder.applyTo(moduleListOnline, moduleViewAdapterOnline!!)
                 moduleViewListBuilderOnline.applyTo(moduleListOnline, moduleViewAdapterOnline!!)
@@ -599,14 +599,14 @@ class MainActivity : FoxActivity(), OnRefreshListener, SearchView.OnQueryTextLis
                 if (appUpdateManager.checkUpdate(false)) moduleViewListBuilder.addNotification(
                     NotificationType.UPDATE_AVAILABLE
                 )
-                RepoManager.getINSTANCE().updateEnabledStates()
-                if (RepoManager.getINSTANCE().customRepoManager.needUpdate()) {
+                RepoManager.getINSTANCE()!!.updateEnabledStates()
+                if (RepoManager.getINSTANCE()!!.customRepoManager!!.needUpdate()) {
                     runOnUiThread {
                         progressIndicator!!.isIndeterminate = false
                         progressIndicator!!.max = PRECISION
                     }
                     if (BuildConfig.DEBUG) Timber.i("Check Update")
-                    RepoManager.getINSTANCE().update { value: Double ->
+                    RepoManager.getINSTANCE()!!.update { value: Double ->
                         runOnUiThread {
                             progressIndicator!!.setProgressCompat(
                                 (value * PRECISION).toInt(), true
@@ -620,7 +620,7 @@ class MainActivity : FoxActivity(), OnRefreshListener, SearchView.OnQueryTextLis
                 }
                 if (BuildConfig.DEBUG) Timber.i("Apply")
                 RepoManager.getINSTANCE()
-                    .runAfterUpdate { moduleViewListBuilderOnline.appendRemoteModules() }
+                    ?.runAfterUpdate { moduleViewListBuilderOnline.appendRemoteModules() }
                 Timber.i("Common Before applyTo")
                 moduleViewListBuilder.applyTo(moduleList!!, moduleViewAdapter!!)
                 moduleViewListBuilderOnline.applyTo(moduleListOnline!!, moduleViewAdapterOnline!!)
@@ -647,7 +647,7 @@ class MainActivity : FoxActivity(), OnRefreshListener, SearchView.OnQueryTextLis
         Thread({
             cleanDnsCache() // Allow DNS reload from network
             val max = instance!!.getUpdatableModuleCount()
-            RepoManager.getINSTANCE().update { value: Double ->
+            RepoManager.getINSTANCE()!!.update { value: Double ->
                 runOnUiThread(if (max == 0) Runnable {
                     progressIndicator!!.setProgressCompat(
                         (value * PRECISION).toInt(), true
@@ -699,11 +699,11 @@ class MainActivity : FoxActivity(), OnRefreshListener, SearchView.OnQueryTextLis
                 swipeRefreshLayout!!.isRefreshing = false
             }
             NotificationType.NEED_CAPTCHA_ANDROIDACY.autoAdd(moduleViewListBuilder)
-            RepoManager.getINSTANCE().updateEnabledStates()
+            RepoManager.getINSTANCE()!!.updateEnabledStates()
             RepoManager.getINSTANCE()
-                .runAfterUpdate { moduleViewListBuilder.appendInstalledModules() }
+                ?.runAfterUpdate { moduleViewListBuilder.appendInstalledModules() }
             RepoManager.getINSTANCE()
-                .runAfterUpdate { moduleViewListBuilderOnline.appendRemoteModules() }
+                ?.runAfterUpdate { moduleViewListBuilderOnline.appendRemoteModules() }
             moduleViewListBuilder.applyTo(moduleList!!, moduleViewAdapter!!)
             moduleViewListBuilderOnline.applyTo(moduleListOnline!!, moduleViewAdapterOnline!!)
         }, "Repo update thread").start()
@@ -784,21 +784,13 @@ class MainActivity : FoxActivity(), OnRefreshListener, SearchView.OnQueryTextLis
     }
 
     fun maybeShowUpgrade() {
-        if (AndroidacyRepoData.getInstance() == null || AndroidacyRepoData.getInstance().memberLevel == null) {
+        if (AndroidacyRepoData.instance.memberLevel == null) {
             // wait for up to 10 seconds for AndroidacyRepoData to be initialized
-            var i = 0
-            while (AndroidacyRepoData.getInstance() == null && i < 10) {
-                try {
-                    Thread.sleep(1000)
-                } catch (e: InterruptedException) {
-                    Timber.e(e)
-                }
-                i++
-            }
-            if (AndroidacyRepoData.getInstance().isEnabled && AndroidacyRepoData.getInstance().memberLevel == null) {
+            var i: Int
+            if (AndroidacyRepoData.instance.isEnabled && AndroidacyRepoData.instance.memberLevel == null) {
                 Timber.d("Member level is null, waiting for it to be initialized")
                 i = 0
-                while (AndroidacyRepoData.getInstance().memberLevel == null && i < 20) {
+                while (AndroidacyRepoData.instance.memberLevel == null && i < 20) {
                     i++
                     try {
                         Thread.sleep(500)
@@ -808,32 +800,32 @@ class MainActivity : FoxActivity(), OnRefreshListener, SearchView.OnQueryTextLis
                 }
             }
             // if it's still null, but it's enabled, throw an error
-            if (AndroidacyRepoData.getInstance().isEnabled && AndroidacyRepoData.getInstance().memberLevel == null) {
+            if (AndroidacyRepoData.instance.isEnabled && AndroidacyRepoData.instance.memberLevel == null) {
                 Timber.e("AndroidacyRepoData is enabled, but member level is null")
             }
-            if (AndroidacyRepoData.getInstance() != null && AndroidacyRepoData.getInstance().isEnabled && AndroidacyRepoData.getInstance().memberLevel == "Guest") {
+            if (AndroidacyRepoData.instance.isEnabled && AndroidacyRepoData.instance.memberLevel == "Guest") {
                 runtimeUtils!!.showUpgradeSnackbar(this, this)
             } else {
-                if (!AndroidacyRepoData.getInstance().isEnabled) {
+                if (!AndroidacyRepoData.instance.isEnabled) {
                     Timber.i("AndroidacyRepoData is disabled, not showing upgrade snackbar 1")
-                } else if (AndroidacyRepoData.getInstance().memberLevel != "Guest") {
+                } else if (AndroidacyRepoData.instance.memberLevel != "Guest") {
                     Timber.i(
                         "AndroidacyRepoData is not Guest, not showing upgrade snackbar 1. Level: %s",
-                        AndroidacyRepoData.getInstance().memberLevel
+                        AndroidacyRepoData.instance.memberLevel
                     )
                 } else {
                     Timber.i("Unknown error, not showing upgrade snackbar 1")
                 }
             }
-        } else if (AndroidacyRepoData.getInstance().isEnabled && AndroidacyRepoData.getInstance().memberLevel == "Guest") {
+        } else if (AndroidacyRepoData.instance.isEnabled && AndroidacyRepoData.instance.memberLevel == "Guest") {
             runtimeUtils!!.showUpgradeSnackbar(this, this)
         } else {
-            if (!AndroidacyRepoData.getInstance().isEnabled) {
+            if (!AndroidacyRepoData.instance.isEnabled) {
                 Timber.i("AndroidacyRepoData is disabled, not showing upgrade snackbar 2")
-            } else if (AndroidacyRepoData.getInstance().memberLevel != "Guest") {
+            } else if (AndroidacyRepoData.instance.memberLevel != "Guest") {
                 Timber.i(
                     "AndroidacyRepoData is not Guest, not showing upgrade snackbar 2. Level: %s",
-                    AndroidacyRepoData.getInstance().memberLevel
+                    AndroidacyRepoData.instance.memberLevel
                 )
             } else {
                 Timber.i("Unknown error, not showing upgrade snackbar 2")

@@ -1320,7 +1320,7 @@ public class SettingsActivity extends FoxActivity implements LanguageActivity {
                             realm.commitTransaction();
                         }
                         realm.beginTransaction();
-                        Objects.requireNonNull(realm.where(ReposList.class).equalTo("id", repoData.id).findFirst()).deleteFromRealm();
+                        Objects.requireNonNull(realm.where(ReposList.class).equalTo("id", repoData.preferenceId).findFirst()).deleteFromRealm();
                         realm.commitTransaction();
                         customRepoManager.removeRepo(index);
                         updateCustomRepoList(false);
@@ -1447,7 +1447,7 @@ public class SettingsActivity extends FoxActivity implements LanguageActivity {
 
         private void setRepoData(String url) {
             final RepoData repoData = RepoManager.getINSTANCE().get(url);
-            setRepoData(repoData, "pref_" + (repoData == null ? RepoManager.internalIdOfUrl(url) : repoData.getPreferenceId()));
+            setRepoData(repoData, "pref_" + (repoData == null ? RepoManager.internalIdOfUrl(url) : repoData.preferenceId));
         }
 
         private void setRepoData(final RepoData repoData, String preferenceName) {
@@ -1460,14 +1460,13 @@ public class SettingsActivity extends FoxActivity implements LanguageActivity {
                 if (repoData != null) {
                     RealmConfiguration realmConfiguration = new RealmConfiguration.Builder().name("ReposList.realm").encryptionKey(MainApplication.getINSTANCE().getKey()).allowQueriesOnUiThread(true).allowWritesOnUiThread(true).directory(MainApplication.getINSTANCE().getDataDirWithPath("realms")).schemaVersion(1).build();
                     Realm realm = Realm.getInstance(realmConfiguration);
-                    RealmResults<ReposList> repoDataRealmResults = realm.where(ReposList.class).equalTo("id", repoData.id).findAll();
+                    RealmResults<ReposList> repoDataRealmResults = realm.where(ReposList.class).equalTo("id", repoData.preferenceId).findAll();
                     Timber.d("Setting preference " + preferenceName + " because it is not the Androidacy repo or the Magisk Alt Repo");
                     if (repoData.isForceHide() || repoDataRealmResults.isEmpty()) {
                         Timber.d("Hiding preference " + preferenceName + " because it is null or force hidden");
                         hideRepoData(preferenceName);
                         return;
                     } else {
-                        //noinspection ConstantConditions
                         Timber.d("Showing preference %s because the forceHide status is %s and the RealmResults is %s", preferenceName, repoData.isForceHide(), repoDataRealmResults.toString());
                         preference.setTitle(repoData.getName());
                         preference.setVisible(true);

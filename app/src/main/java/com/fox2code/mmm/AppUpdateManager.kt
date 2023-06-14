@@ -48,9 +48,9 @@ class AppUpdateManager private constructor() {
             if (lastChecked != this.lastChecked) return peekShouldUpdate()
             // make a request to https://production-api.androidacy.com/amm/updates/check with appVersionCode and token/device_id/client_id
             var token = AndroidacyRepoData.token
-            if (!AndroidacyRepoData.getInstance().isValidToken(token)) {
+            if (!AndroidacyRepoData.instance.isValidToken(token)) {
                 Timber.w("Invalid token, not checking for updates")
-                token = AndroidacyRepoData.getInstance().requestNewToken()
+                token = AndroidacyRepoData.instance.requestNewToken()
             }
             val deviceId = AndroidacyRepoData.generateDeviceId()
             val clientId = BuildConfig.ANDROIDACY_CLIENT_ID

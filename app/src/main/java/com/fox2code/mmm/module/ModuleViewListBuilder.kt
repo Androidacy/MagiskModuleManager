@@ -77,7 +77,7 @@ class ModuleViewListBuilder(private val activity: Activity) {
                 moduleHolder.repoModule = null
             }
             val repoManager = RepoManager.getINSTANCE()
-            repoManager.runAfterUpdate {
+            repoManager?.runAfterUpdate {
                 Timber.i("A2: %s", repoManager.modules.size)
                 val no32bitSupport = Build.SUPPORTED_32_BIT_ABIS.isEmpty()
                 for (repoModule in repoManager.modules.values) {
@@ -92,7 +92,7 @@ class ModuleViewListBuilder(private val activity: Activity) {
                     if (!repoModule.repoData.isEnabled) {
                         Timber.i(
                             "Repo %s is disabled, skipping module %s",
-                            repoModule.repoData.id,
+                            repoModule.repoData.preferenceId,
                             repoModule.id
                         )
                         continue
@@ -162,7 +162,7 @@ class ModuleViewListBuilder(private val activity: Activity) {
         if (updating) return
         updating = true
         instance!!.afterScan()
-        RepoManager.getINSTANCE().afterUpdate()
+        RepoManager.getINSTANCE()!!.afterUpdate()
         val moduleHolders: ArrayList<ModuleHolder>
         val newNotificationsLen: Int
         val first: Boolean
