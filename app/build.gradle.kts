@@ -48,7 +48,31 @@ android {
             useSupportLibrary = true
         }
         multiDexEnabled = true
-        resourceConfigurations.addAll(listOf("ar", "bs", "cs", "de", "es-rMX", "fr", "hu", "id", "ja", "hu", "nl", "pl", "pt", "pt-rBR", "ro", "ru", "tr", "uk", "zh", "zh-rTW", "en"))
+        resourceConfigurations.addAll(
+            listOf(
+                "ar",
+                "bs",
+                "cs",
+                "de",
+                "es-rMX",
+                "fr",
+                "hu",
+                "id",
+                "ja",
+                "hu",
+                "nl",
+                "pl",
+                "pt",
+                "pt-rBR",
+                "ro",
+                "ru",
+                "tr",
+                "uk",
+                "zh",
+                "zh-rTW",
+                "en"
+            )
+        )
     }
 
     splits {
@@ -504,6 +528,12 @@ dependencies {
 }
 
 android {
+    sourceSets {
+        this.getByName("main") {
+            this.java.srcDir("src/main/kotlin")
+        }
+    }
+
     ndkVersion = "25.2.9519653"
     dependenciesInfo {
         includeInApk = false

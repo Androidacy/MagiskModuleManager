@@ -34,6 +34,7 @@ subprojects {
     plugins.withType<com.android.build.gradle.api.AndroidBasePlugin> {
         apply(plugin = "org.gradle.android.cache-fix")
     }
+
 }
 
 tasks.register("clean", Delete::class) {
@@ -46,4 +47,3 @@ afterEvaluate {
         targetCompatibility = JavaVersion.VERSION_17.toString()
     }
 }
-
