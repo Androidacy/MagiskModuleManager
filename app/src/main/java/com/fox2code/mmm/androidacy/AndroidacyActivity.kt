@@ -60,14 +60,17 @@ import java.io.IOException
  */
 class AndroidacyActivity : FoxActivity() {
     private var moduleFile: File? = null
+
     @JvmField
     var webView: WebView? = null
     var webViewNote: TextView? = null
     private var androidacyWebAPI: AndroidacyWebAPI? = null
     var progressIndicator: LinearProgressIndicator? = null
+
     @JvmField
     var backOnResume = false
     var downloadMode = false
+
     @SuppressLint(
         "SetJavaScriptEnabled",
         "JavascriptInterface",
@@ -469,7 +472,8 @@ class AndroidacyActivity : FoxActivity() {
             module = doHttpGet(
                 url!!, ({ downloaded: Int, total: Int, _: Boolean ->
                     progressIndicator!!.setProgressCompat(
-                        downloaded * 100 / total, true)
+                        downloaded * 100 / total, true
+                    )
 
                 } as Http.ProgressListener?)!!)
             FileOutputStream(moduleFile).use { fileOutputStream -> fileOutputStream.write(module) }

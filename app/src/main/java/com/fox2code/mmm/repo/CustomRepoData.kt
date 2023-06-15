@@ -15,6 +15,7 @@ class CustomRepoData internal constructor(url: String?, cacheRoot: File?) : Repo
 ) {
     @JvmField
     var loadedExternal = false
+
     @JvmField
     var override: String? = null
     override val isEnabledByDefault: Boolean

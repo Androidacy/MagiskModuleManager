@@ -40,6 +40,14 @@ public class ReposList extends RealmObject {
     public ReposList() {
     }
 
+    // get metadata for a repo
+    public static ReposList getRepo(String id) {
+        Realm realm = Realm.getDefaultInstance();
+        ReposList repo = realm.where(ReposList.class).equalTo("id", id).findFirst();
+        realm.close();
+        return repo;
+    }
+
     public boolean isEnabled() {
         return enabled;
     }
@@ -78,14 +86,6 @@ public class ReposList extends RealmObject {
 
     public void setSupport(String support) {
         this.support = support;
-    }
-
-    // get metadata for a repo
-    public static ReposList getRepo(String id) {
-        Realm realm = Realm.getDefaultInstance();
-        ReposList repo = realm.where(ReposList.class).equalTo("id", id).findFirst();
-        realm.close();
-        return repo;
     }
 
     public String getSubmitModule() {

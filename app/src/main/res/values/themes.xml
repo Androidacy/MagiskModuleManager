@@ -175,7 +175,7 @@
 
     <style name="Theme.MagiskModuleManager" parent="Theme.MagiskModuleManager.Light" />
 
-    <style name="Theme.MagiskModuleManager.NoActionBar" parent="Theme.MagiskModuleManager" >
+    <style name="Theme.MagiskModuleManager.NoActionBar" parent="Theme.MagiskModuleManager">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
         <item name="android:windowActionBar">false</item>
@@ -185,7 +185,6 @@
     <style name="Theme.MagiskModuleManager.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="Theme.MagiskModuleManager.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
-
 
 
     <style name="Theme.MagiskModuleManager.AlertDialog" parent="ThemeOverlay.Material3.MaterialAlertDialog">

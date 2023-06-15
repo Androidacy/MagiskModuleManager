@@ -3,6 +3,6 @@
   -->
 
 <resources>
-    <style name="Theme.MagiskModuleManager"
-        parent="Theme.MagiskModuleManager.Dark" />
+
+    <style name="Theme.MagiskModuleManager" parent="Theme.MagiskModuleManager.Dark" />
 </resources>

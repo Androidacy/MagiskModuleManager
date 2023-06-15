@@ -14,7 +14,8 @@ import androidx.annotation.Nullable;
  * called from one thread at a time only.
  */
 public abstract class SyncManager {
-    private static final UpdateListener NO_OP = value -> {};
+    private static final UpdateListener NO_OP = value -> {
+    };
     protected final Object syncLock = new Object();
     private boolean syncing;
     private long lastSync;
@@ -55,7 +56,9 @@ public abstract class SyncManager {
 
     // Pause execution until the scan is completed if one is currently running
     public final void afterScan() {
-        if (this.syncing) synchronized (this.syncLock) { Thread.yield(); }
+        if (this.syncing) synchronized (this.syncLock) {
+            Thread.yield();
+        }
     }
 
     public final void runAfterScan(Runnable runnable) {
@@ -65,7 +68,9 @@ public abstract class SyncManager {
     }
 
     public final void afterUpdate() {
-        if (this.syncing) synchronized (this.syncLock) { Thread.yield(); }
+        if (this.syncing) synchronized (this.syncLock) {
+            Thread.yield();
+        }
     }
 
     public final void runAfterUpdate(Runnable runnable) {

@@ -28,34 +28,48 @@ import java.util.concurrent.atomic.AtomicBoolean
 open class RepoData(url: String, cacheRoot: File) : XRepo() {
     private val supportedProperties = JSONObject()
     private val populateLock = Any()
+
     @JvmField
     var url: String
+
     @JvmField
     var preferenceId: String? = null
+
     @JvmField
     var cacheRoot: File
+
     @JvmField
     var moduleHashMap: HashMap<String, RepoModule>
     private var metaDataCache: JSONObject?
+
     @JvmField
     var lastUpdate
-    : Long = 0
+            : Long = 0
+
     @JvmField
     var website: String? = null
+
     @JvmField
     var support: String? = null
+
     @JvmField
     var donate: String? = null
+
     @JvmField
     var submitModule: String? = null
+
     @JvmField
     var defaultName: String
+
     @JvmField
     var defaultWebsite: String
+
     @JvmField
     protected var defaultSupport: String? = null
+
     @JvmField
     protected var defaultDonate: String? = null
+
     @JvmField
     var defaultSubmitModule: String? = null
 
@@ -180,20 +194,20 @@ open class RepoData(url: String, cacheRoot: File) : XRepo() {
                 } else {
                     // get everything from ReposList realm database
                     name = realm.where(
-                            ReposList::class.java
-                        ).equalTo("id", preferenceId).findFirst()?.name
+                        ReposList::class.java
+                    ).equalTo("id", preferenceId).findFirst()?.name
                     website = realm.where(
                         ReposList::class.java
                     ).equalTo("id", preferenceId).findFirst()?.website
                     support = realm.where(
-                            ReposList::class.java
-                        ).equalTo("id", preferenceId).findFirst()?.support
+                        ReposList::class.java
+                    ).equalTo("id", preferenceId).findFirst()?.support
                     donate = realm.where(
-                            ReposList::class.java
-                        ).equalTo("id", preferenceId).findFirst()?.donate
+                        ReposList::class.java
+                    ).equalTo("id", preferenceId).findFirst()?.donate
                     submitModule = realm.where(
-                            ReposList::class.java
-                        ).equalTo("id", preferenceId).findFirst()?.submitModule
+                        ReposList::class.java
+                    ).equalTo("id", preferenceId).findFirst()?.submitModule
                 }
             } catch (e: Exception) {
                 Timber.w("Failed to load repo metadata from database: " + e.message + ". If this is a first time run, this is normal.")

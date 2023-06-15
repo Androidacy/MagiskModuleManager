@@ -81,17 +81,21 @@ class MainApplication : FoxApplication(), Configuration.Provider {
 
     @JvmField
     var modulesHaveUpdates = false
+
     @JvmField
     var updateModuleCount = 0
+
     @JvmField
     var updateModules: List<String> = ArrayList()
 
     @StyleRes
     private var managerThemeResId = R.style.Theme_MagiskModuleManager
     private var markwonThemeContext: FoxThemeWrapper? = null
+
     @JvmField
     var markwon: Markwon? = null
     private var existingKey: ByteArray? = null
+
     @JvmField
     var tracker: Tracker? = null
     private var makingNewKey = false
@@ -697,6 +701,7 @@ class MainApplication : FoxApplication(), Configuration.Provider {
         @JvmField
         val isWrapped = !FoxProcessExt.isRootLoader()
         private val callers = ArrayList<String>()
+
         @JvmField
         var o = false
         private var SHOWCASE_MODE_TRUE: String? = null
@@ -858,6 +863,7 @@ class MainApplication : FoxApplication(), Configuration.Provider {
         val isBlurEnabled: Boolean
             get() = getSharedPreferences("mmm")!!
                 .getBoolean("pref_enable_blur", false)
+
         @JvmStatic
         val isDeveloper: Boolean
             get() {
@@ -872,6 +878,7 @@ class MainApplication : FoxApplication(), Configuration.Provider {
                 "mmm"
             )!!
                 .getBoolean("pref_use_magisk_install_command", false) && isDeveloper
+
         @JvmStatic
         val isBackgroundUpdateCheckEnabled: Boolean
             get() {

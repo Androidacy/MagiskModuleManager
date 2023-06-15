@@ -54,7 +54,8 @@ class AppUpdateManager private constructor() {
             }
             val deviceId = AndroidacyRepoData.generateDeviceId()
             val clientId = BuildConfig.ANDROIDACY_CLIENT_ID
-            val url = "https://production-api.androidacy.com/amm/updates/check?appVersionCode=${BuildConfig.VERSION_CODE}&token=$token&device_id=$deviceId&client_id=$clientId"
+            val url =
+                "https://production-api.androidacy.com/amm/updates/check?appVersionCode=${BuildConfig.VERSION_CODE}&token=$token&device_id=$deviceId&client_id=$clientId"
             val response = doHttpGet(url, false)
             // convert response to string
             val responseString = String(response, Charsets.UTF_8)

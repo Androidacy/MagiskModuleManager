@@ -287,7 +287,7 @@
     <string name="androidacy_thanks">Developed in part by Androidacy</string>
     <string name="androidacy_thanks_desc">Huge shoutout to Androidacy for their integration and contributions to the app.</string>
     <string name="contributors">And of course, thanks to all of our contributors, whether it\'s translations, code, or just being fun to hang out with! We love you all.</string>
-	<string name="zip_unpacking">Inspecting module…</string>
+    <string name="zip_unpacking">Inspecting module…</string>
     <string name="warning_message">This module has indicators it may have been installed without your knowledge, or may be attempting to hide itself.\n\nUninstall is strongly recommended.</string>
     <string name="understand">I understand</string>
     <string name="setup_theme_title">Choose theme</string>
@@ -331,7 +331,8 @@
     <string name="api_key_mismatch">API key is in an invalid format</string>
     <string name="notification_update_ignore_desc">List of modules to exclude from update checks</string>
     <string name="notification_update_ignore_pref">Exclude modules</string>
-    <string name="pref_category_updates">Updates</string><string name="invalid_excludes">Invalid input</string>
+    <string name="pref_category_updates">Updates</string>
+    <string name="invalid_excludes">Invalid input</string>
     <string name="invalid_characters_message">The list of modules you input is invalid. Please only input valid module id\'s separated by commas</string>
     <string name="background_update_check_excludes">Modules to exclude from automatic update checks</string>
     <string name="title_activity_update">In-app Updater</string>

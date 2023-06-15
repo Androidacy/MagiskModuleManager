@@ -80,6 +80,7 @@ class InstallerActivity : FoxActivity() {
     private var canceled = false
     private var warnReboot = false
     private var wakeLock: WakeLock? = null
+
     @SuppressLint("RestrictedApi")
     override fun onCreate(savedInstanceState: Bundle?) {
         warnReboot = false
@@ -211,7 +212,8 @@ class InstallerActivity : FoxActivity() {
                     )
                 )
                 if (urlMode) {
-                    rawModule = Http.doHttpGet(target
+                    rawModule = Http.doHttpGet(
+                        target
                     ) ProgressListener@{ progress: Int, max: Int, _: Boolean ->
                         if (max <= 0 && prgInd!!.isIndeterminate) return@ProgressListener
                         runOnUiThread {
@@ -642,10 +644,10 @@ class InstallerActivity : FoxActivity() {
                     builder.setTitle(R.string.install_terminal_reboot_now)
                         .setMessage(R.string.install_terminal_reboot_now_message)
                         .setCancelable(false).setIcon(
-                        R.drawable.ic_reboot_24
-                    ).setPositiveButton(R.string.ok) { _: DialogInterface?, _: Int ->
-                        Shell.cmd(rbtCmd).submit()
-                    }
+                            R.drawable.ic_reboot_24
+                        ).setPositiveButton(R.string.ok) { _: DialogInterface?, _: Int ->
+                            Shell.cmd(rbtCmd).submit()
+                        }
                         .setNegativeButton(R.string.no) { x: DialogInterface, _: Int -> x.dismiss() }
                         .show()
                 } else {

@@ -231,6 +231,7 @@ class MarkdownActivity : FoxActivity() {
     companion object {
         private val redirects = HashMap<String, String>(4)
         private val variants = arrayOf("readme.md", "README.MD", ".github/README.md")
+
         @Throws(IOException::class)
         private fun getRawMarkdown(url: String): ByteArray {
             var newUrl = redirects[url]

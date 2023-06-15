@@ -18,6 +18,7 @@ enum class Hashes {
     companion object {
         private val HEX_ARRAY = "0123456789abcdef".toCharArray()
         private val nonAlphaNum = Pattern.compile("[^a-zA-Z0-9]")
+
         @JvmStatic
         fun bytesToHex(bytes: ByteArray): String {
             val hexChars = CharArray(bytes.size * 2)

@@ -38,6 +38,7 @@ class InstallerInitializer : Shell.Initializer() {
         const val ERROR_NO_PATH = 1
         const val ERROR_NO_SU = 2
         const val ERROR_OTHER = 3
+
         @JvmStatic
         val errorNotification: NotificationType?
             get() {

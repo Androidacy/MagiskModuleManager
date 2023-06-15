@@ -34,7 +34,9 @@ class ModuleManager private constructor() : SyncManager() {
 
     override fun scanInternal(updateListener: UpdateListener) {
         // if last_shown_setup is not "v2", then refuse to continue
-        if (MainApplication.getSharedPreferences("mmm")!!.getString("last_shown_setup", "") != "v2") {
+        if (MainApplication.getSharedPreferences("mmm")!!
+                .getString("last_shown_setup", "") != "v2"
+        ) {
             return
         }
         val firstScan = bootPrefs.getBoolean("mm_first_scan", true)
@@ -318,6 +320,7 @@ class ModuleManager private constructor() : SyncManager() {
             FLAG_MM_UNPROCESSED or ModuleInfo.FLAGS_MODULE_ACTIVE or ModuleInfo.FLAG_MODULE_UPDATING_ONLY
         private const val FLAGS_RESET_UPDATE = FLAG_MM_INVALID or FLAG_MM_UNPROCESSED
         private var instAnce: ModuleManager? = null
+
         @JvmStatic
         val instance: ModuleManager?
             get() {

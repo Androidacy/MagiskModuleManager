@@ -18,6 +18,7 @@ import java.util.concurrent.atomic.AtomicBoolean
 
 class RepoUpdater(repoData2: RepoData) {
     private var indexRaw: ByteArray? = null
+
     @JvmField
     var repoData: RepoData = repoData2
     private var toUpdate: List<RepoModule>? = null
@@ -187,7 +188,8 @@ class RepoUpdater(repoData2: RepoData) {
                     realm.commitTransaction()
                 }
                 realm.beginTransaction()
-                realm.where(ModuleListCache::class.java).equalTo("repoId", repoData.preferenceId).findAll()
+                realm.where(ModuleListCache::class.java).equalTo("repoId", repoData.preferenceId)
+                    .findAll()
                     .deleteAllFromRealm()
                 realm.commitTransaction()
                 // iterate over modules. pls don't hate me for this, its ugly but it works
@@ -197,11 +199,12 @@ class RepoUpdater(repoData2: RepoData) {
                     try {
                         // get module id
                         // if codename is present, prefer that over id
-                        val id: String? = if (module.has("codename") && module.getString("codename") != "") {
-                            module.getString("codename")
-                        } else {
-                            module.getString("id")
-                        }
+                        val id: String? =
+                            if (module.has("codename") && module.getString("codename") != "") {
+                                module.getString("codename")
+                            } else {
+                                module.getString("id")
+                            }
                         // get module name
                         val name = module.getString("name")
                         // get module version
@@ -213,23 +216,26 @@ class RepoUpdater(repoData2: RepoData) {
                         // get module description
                         val description = module.getString("description")
                         // get module min api
-                        val minApi: String = if (module.has("minApi") && module.getString("minApi") != "") {
-                            module.getString("minApi")
-                        } else {
-                            "0"
-                        }
+                        val minApi: String =
+                            if (module.has("minApi") && module.getString("minApi") != "") {
+                                module.getString("minApi")
+                            } else {
+                                "0"
+                            }
                         // coerce min api to int
                         val minApiInt = minApi.toInt()
                         // get module max api and set to 0 if it's "" or null
-                        val maxApi: String = if (module.has("maxApi") && module.getString("maxApi") != "") {
-                            module.getString("maxApi")
-                        } else {
-                            "0"
-                        }
+                        val maxApi: String =
+                            if (module.has("maxApi") && module.getString("maxApi") != "") {
+                                module.getString("maxApi")
+                            } else {
+                                "0"
+                            }
                         // coerce max api to int
                         val maxApiInt = maxApi.toInt()
                         // get module min magisk
-                        val minMagisk: String = if (module.has("minMagisk") && module.getString("minMagisk") != "") {
+                        val minMagisk: String =
+                            if (module.has("minMagisk") && module.getString("minMagisk") != "") {
                                 module.getString("minMagisk")
                             } else {
                                 "0"

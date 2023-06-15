@@ -3,6 +3,7 @@
  */
 
 package com.fox2code.mmm.utils
+
 import com.fox2code.mmm.BuildConfig
 import com.fox2code.mmm.MainApplication
 import com.fox2code.mmm.MainApplication.ReleaseTree

@@ -3,5 +3,7 @@
   -->
 
 <full-backup-content>
-    <include domain="sharedpref" path="mmm.xml"/>
+    <include
+        domain="sharedpref"
+        path="mmm.xml" />
 </full-backup-content>

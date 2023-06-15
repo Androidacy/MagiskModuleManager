@@ -62,7 +62,7 @@ enum class BudgetProgressDialog {
         }
 
         @JvmStatic
-		fun build(context: Context, title: Int, message: Int): AlertDialog {
+        fun build(context: Context, title: Int, message: Int): AlertDialog {
             return build(context, title, context.getString(message))
         }
     }

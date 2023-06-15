@@ -33,6 +33,7 @@ import java.util.Objects
 class UpdateActivity : FoxActivity() {
     private var chgWv: WebView? = null
     private var url: String = String()
+
     @SuppressLint("RestrictedApi", "SetJavaScriptEnabled")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -128,6 +129,7 @@ class UpdateActivity : FoxActivity() {
                     ACTIONS.CHECK -> {
                         checkForUpdate()
                     }
+
                     ACTIONS.DOWNLOAD -> {
                         try {
                             downloadUpdate()
@@ -142,6 +144,7 @@ class UpdateActivity : FoxActivity() {
                             }
                         }
                     }
+
                     ACTIONS.INSTALL -> {
                         // ensure path was passed and points to a file within our cache directory. replace .. and url encoded characters
                         val path =
@@ -233,7 +236,8 @@ class UpdateActivity : FoxActivity() {
             Timber.w("Invalid token, not checking for updates")
             token = AndroidacyRepoData.instance.requestNewToken()
         }
-        url = "https://production-api.androidacy.com/amm/updates/check?appVersionCode=${BuildConfig.VERSION_CODE}&token=$token&device_id=$deviceId&client_id=$clientId"
+        url =
+            "https://production-api.androidacy.com/amm/updates/check?appVersionCode=${BuildConfig.VERSION_CODE}&token=$token&device_id=$deviceId&client_id=$clientId"
         runOnUiThread {
             // set status text to no update available
             statusTextView.setText(R.string.no_update_available)
@@ -280,7 +284,8 @@ class UpdateActivity : FoxActivity() {
         }
         val deviceId = AndroidacyRepoData.generateDeviceId()
         val clientId = BuildConfig.ANDROIDACY_CLIENT_ID
-        url = "https://production-api.androidacy.com/amm/updates/check?appVersionCode=${BuildConfig.VERSION_CODE}&token=$token&device_id=$deviceId&client_id=$clientId"
+        url =
+            "https://production-api.androidacy.com/amm/updates/check?appVersionCode=${BuildConfig.VERSION_CODE}&token=$token&device_id=$deviceId&client_id=$clientId"
         runOnUiThread {
             val changelogWebView = chgWv!!
             changelogWebView.loadUrl(url.replace("updates/check", "changelog"))
@@ -288,7 +293,10 @@ class UpdateActivity : FoxActivity() {
         // get the download url
         var downloadUrl = url.replace("check", "download")
         // append arch to download url. coerce anything like arm64-* or aarch64-* to arm64 and anything like arm-* or armeabi-* to arm
-        downloadUrl += if (Build.SUPPORTED_ABIS[0].contains("arm64") || Build.SUPPORTED_ABIS[0].contains("aarch64")) {
+        downloadUrl += if (Build.SUPPORTED_ABIS[0].contains("arm64") || Build.SUPPORTED_ABIS[0].contains(
+                "aarch64"
+            )
+        ) {
             "&arch=arm64"
         } else if (Build.SUPPORTED_ABIS[0].contains("arm") || Build.SUPPORTED_ABIS[0].contains("armeabi")) {
             "&arch=arm"

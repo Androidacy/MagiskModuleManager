@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright (c) 2023 to present Androidacy and contributors. Names, logos, icons, and the Androidacy name are all trademarks of Androidacy and may not be used without license. See LICENSE for more information.
   -->
 
@@ -14,9 +13,9 @@
 
     <item
         android:id="@+id/action_update"
+        android:enabled="false"
         android:icon="@drawable/ic_baseline_refresh_24"
         android:title="@string/update_button"
         android:visible="true"
-        android:enabled="false"
         app:showAsAction="ifRoom" />
 </menu>

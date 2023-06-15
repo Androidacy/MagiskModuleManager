@@ -259,7 +259,8 @@ class RuntimeUtils {
         )
         snackbar.setAction(R.string.upgrade_now) {
             val intent = Intent(Intent.ACTION_VIEW)
-            intent.data = Uri.parse("https://androidacy.com/membership-join/#utm_source=foxmmm&utm_medium=app&utm_campaign=upgrade_snackbar")
+            intent.data =
+                Uri.parse("https://androidacy.com/membership-join/#utm_source=foxmmm&utm_medium=app&utm_campaign=upgrade_snackbar")
             activity.startActivity(intent)
         }
         snackbar.setAnchorView(R.id.bottom_navigation)

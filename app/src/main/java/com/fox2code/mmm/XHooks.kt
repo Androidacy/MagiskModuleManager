@@ -70,7 +70,8 @@ enum class XHooks {
 
         @Keep
         fun getXRepo(url: String?): XRepo {
-            return RepoManager.iNSTANCE_UNSAFE?.get(url) ?: throw NullPointerException("Repo not found!")
+            return RepoManager.iNSTANCE_UNSAFE?.get(url)
+                ?: throw NullPointerException("Repo not found!")
         }
 
         @get:Keep

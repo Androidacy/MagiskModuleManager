@@ -3,9 +3,9 @@
   -->
 
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-      xmlns:app="http://schemas.android.com/apk/res-auto"
-      xmlns:tools="http://schemas.android.com/tools"
-      tools:context="com.fox2code.mmm.SetupActivity">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.fox2code.mmm.SetupActivity">
     <item
         android:id="@+id/action_settings"
         android:orderInCategory="100"

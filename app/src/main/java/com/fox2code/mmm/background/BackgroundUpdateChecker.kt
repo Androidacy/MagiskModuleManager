@@ -57,6 +57,7 @@ class BackgroundUpdateChecker(context: Context, workerParams: WorkerParameters) 
         private const val NOTIFICATION_ID_ONGOING = 2
         private const val NOTIFICATION_CHANNEL_ID_ONGOING = "mmm_background_update"
         private const val NOTIFICATION_ID_APP = 3
+
         @SuppressLint("RestrictedApi")
         private fun postNotificationForAppUpdate(context: Context) {
             // create the notification channel if not already created
@@ -415,7 +416,9 @@ class BackgroundUpdateChecker(context: Context, workerParams: WorkerParameters) 
             // schedule periodic check for updates every 6 hours (6 * 60 * 60 = 21600) and not on low battery
             Timber.d("Scheduling periodic background check")
             WorkManager.getInstance(context).enqueueUniquePeriodicWork(
-                "background_checker", ExistingPeriodicWorkPolicy.UPDATE, PeriodicWorkRequest.Builder(
+                "background_checker",
+                ExistingPeriodicWorkPolicy.UPDATE,
+                PeriodicWorkRequest.Builder(
                     BackgroundUpdateChecker::class.java, 21600, TimeUnit.SECONDS
                 ).setConstraints(
                     Constraints.Builder().setRequiresBatteryNotLow(true).build()

@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright (c) 2023 to present Androidacy and contributors. Names, logos, icons, and the Androidacy name are all trademarks of Androidacy and may not be used without license. See LICENSE for more information.
   -->
 
@@ -20,14 +19,14 @@
         android:id="@+id/card_view"
         style="@style/Widget.Material3.CardView.Elevated"
         android:layout_width="match_parent"
-        android:padding="1dp"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:padding="1dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="4dp"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:padding="4dp">
 
             <LinearLayout
                 android:id="@+id/main_card_text"
@@ -61,10 +60,10 @@
                         android:id="@+id/title_text"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
                         android:layout_weight="1"
                         android:maxLines="2"
                         android:paddingStart="4dp"
-                        android:layout_gravity="center_vertical"
                         android:text="@string/loading"
                         android:textSize="19sp" />
 
@@ -101,8 +100,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginVertical="2dp"
-                    android:padding="4dp"
                     android:autoLink="all"
+                    android:padding="4dp"
                     android:text="@string/loading"
                     android:textAppearance="?attr/textAppearanceBodyMedium"
                     android:textColor="?android:attr/textColorSecondary"
@@ -134,9 +133,9 @@
                 android:id="@+id/module_options_holder"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginHorizontal="4dp"
                 android:scrollbars="none"
                 android:visibility="gone"
-                android:layout_marginHorizontal="4dp"
                 app:layout_constraintBottom_toBottomOf="@id/module_layout_helper">
 
                 <com.google.android.material.chip.ChipGroup

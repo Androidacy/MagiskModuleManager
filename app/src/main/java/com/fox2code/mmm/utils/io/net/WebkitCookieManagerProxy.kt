@@ -18,7 +18,8 @@ class WebkitCookieManagerProxy internal constructor(
     @Suppress("UNUSED_PARAMETER") ignoredStore: CookieStore?,
     cookiePolicy: CookiePolicy?
 ) : CookieManager(null, cookiePolicy), CookieJar {
-    private val webkitCookieManager: android.webkit.CookieManager = android.webkit.CookieManager.getInstance()
+    private val webkitCookieManager: android.webkit.CookieManager =
+        android.webkit.CookieManager.getInstance()
 
     constructor() : this(null, null)
 
@@ -33,9 +34,9 @@ class WebkitCookieManagerProxy internal constructor(
         for ((key, value) in responseHeaders) {
             // ignore headers which aren't cookie related
             if (!(key.equals("Set-Cookie2", ignoreCase = true) || key.equals(
-                "Set-Cookie",
-                ignoreCase = true
-            ))
+                    "Set-Cookie",
+                    ignoreCase = true
+                ))
             ) continue
             for (headerValue in value) {
                 webkitCookieManager.setCookie(url, headerValue)
@@ -108,7 +109,7 @@ class WebkitCookieManagerProxy internal constructor(
         return cookieArrayList
     }
 
-    fun parse (url: HttpUrl, cookie: String): Cookie {
+    fun parse(url: HttpUrl, cookie: String): Cookie {
         val cookieParts = cookie.split("=".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
         val name = cookieParts[0]
         val value = cookieParts[1]

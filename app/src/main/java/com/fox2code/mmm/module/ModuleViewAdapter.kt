@@ -78,6 +78,7 @@ class ModuleViewAdapter : RecyclerView.Adapter<ModuleViewAdapter.ViewHolder>() {
         private val updateText: TextView
         private val actionsButtons: Array<Chip?>
         private val actionButtonsTypes: ArrayList<ActionButtonType?>
+
         @Suppress("MemberVisibilityCanBePrivate")
         var moduleHolder: ModuleHolder? = null
         var background: Drawable

@@ -50,8 +50,10 @@ class AndroidacyRepoData(cacheRoot: File?, testMode: Boolean) : RepoData(
     private val clientID = BuildConfig.ANDROIDACY_CLIENT_ID
     private val testMode: Boolean
     private val host: String
+
     @JvmField
     var userInfo = arrayOf(arrayOf("role", null), arrayOf("permissions", null))
+
     @JvmField
     var memberLevel: String? = null
 
@@ -154,7 +156,8 @@ class AndroidacyRepoData(cacheRoot: File?, testMode: Boolean) : RepoData(
                 // If it's a 400, the app is probably outdated. Show a snackbar suggesting user update app and webview
                 if (connection.responseCode == 400) {
                     // Show a dialog using androidacy_update_needed string
-                    INSTANCE?.let { MaterialAlertDialogBuilder(it) }!!.setTitle(R.string.androidacy_update_needed)
+                    INSTANCE?.let { MaterialAlertDialogBuilder(it) }!!
+                        .setTitle(R.string.androidacy_update_needed)
                         .setMessage(
                             R.string.androidacy_update_needed_message
                         )
@@ -179,7 +182,8 @@ class AndroidacyRepoData(cacheRoot: File?, testMode: Boolean) : RepoData(
         androidacyBlockade = time + 30000L
         try {
             if (token == null) {
-                token = getSharedPreferences("androidacy")?.getString("pref_androidacy_api_token", null)
+                token =
+                    getSharedPreferences("androidacy")?.getString("pref_androidacy_api_token", null)
                 if (token != null && !isValidToken(token)) {
                     Timber.i("Token expired or invalid, requesting new one...")
                     token = null
@@ -459,10 +463,12 @@ class AndroidacyRepoData(cacheRoot: File?, testMode: Boolean) : RepoData(
 
     companion object {
         private var ANDROIDACY_DEVICE_ID: String? = null
-        var token = getSharedPreferences("androidacy")!!.getString("pref_androidacy_api_token", null)
+        var token =
+            getSharedPreferences("androidacy")!!.getString("pref_androidacy_api_token", null)
 
         init {
-            @Suppress("LocalVariableName") val OK_HTTP_URL_BUILDER: Builder = Builder().scheme("https")
+            @Suppress("LocalVariableName") val OK_HTTP_URL_BUILDER: Builder =
+                Builder().scheme("https")
             // Using HttpUrl.Builder.host(String) crash the app
             OK_HTTP_URL_BUILDER.host("production-api.androidacy.com")
             OK_HTTP_URL_BUILDER.build()

@@ -96,10 +96,13 @@ object SentryMain {
                 // get pref_crash_reporting_pii pref
                 val crashReportingPii = sharedPreferences.getBoolean("crashReportingPii", false)
                 isSentryEnabled = true // Set sentry state to enabled
-                options.addIntegration(FragmentLifecycleIntegration(mainApplication,
-                    enableFragmentLifecycleBreadcrumbs = true,
-                    enableAutoFragmentLifecycleTracing = true
-                ))
+                options.addIntegration(
+                    FragmentLifecycleIntegration(
+                        mainApplication,
+                        enableFragmentLifecycleBreadcrumbs = true,
+                        enableAutoFragmentLifecycleTracing = true
+                    )
+                )
                 // Enable automatic activity lifecycle breadcrumbs
                 options.isEnableActivityLifecycleBreadcrumbs = true
                 // Enable automatic fragment lifecycle breadcrumbs

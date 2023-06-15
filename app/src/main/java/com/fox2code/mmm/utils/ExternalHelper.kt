@@ -29,12 +29,17 @@ class ExternalHelper private constructor() {
         val intent = Intent(FOX_MMM_OPEN_EXTERNAL, Uri.parse("https://fox2code.com/module.zip"))
         val resolveInfos =
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                context.packageManager.queryIntentActivities(intent, PackageManager.ResolveInfoFlags.of(
-                    PackageManager.MATCH_DEFAULT_ONLY.toLong()
-                ))
+                context.packageManager.queryIntentActivities(
+                    intent, PackageManager.ResolveInfoFlags.of(
+                        PackageManager.MATCH_DEFAULT_ONLY.toLong()
+                    )
+                )
             } else {
                 @Suppress("DEPRECATION")
-                context.packageManager.queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY)
+                context.packageManager.queryIntentActivities(
+                    intent,
+                    PackageManager.MATCH_DEFAULT_ONLY
+                )
             }
         if (resolveInfos.isEmpty()) {
             Timber.i("No external provider installed!")
@@ -54,7 +59,11 @@ class ExternalHelper private constructor() {
     fun openExternal(context: Context, uri: Uri?, repoId: String?): Boolean {
         if (label == null) return false
         val param =
-            ActivityOptionsCompat.makeCustomAnimation(context, rikka.core.R.anim.fade_in, rikka.core.R.anim.fade_out)
+            ActivityOptionsCompat.makeCustomAnimation(
+                context,
+                rikka.core.R.anim.fade_in,
+                rikka.core.R.anim.fade_out
+            )
                 .toBundle()
         var intent = Intent(FOX_MMM_OPEN_EXTERNAL, uri)
         intent.flags = IntentHelper.FLAG_GRANT_URI_PERMISSION

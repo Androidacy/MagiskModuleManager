@@ -42,6 +42,7 @@ import java.util.Objects
 class SetupActivity : FoxActivity(), LanguageActivity {
     private var cachedTheme = 0
     private var realmDatabasesCreated = false
+
     @SuppressLint("ApplySharedPref", "RestrictedApi")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -77,8 +78,10 @@ class SetupActivity : FoxActivity(), LanguageActivity {
             assert((Objects.requireNonNull<Any>(view.findViewById(R.id.setup_crash_reporting)) as MaterialSwitch).isChecked == BuildConfig.DEFAULT_ENABLE_CRASH_REPORTING)
         }
         // Repos are a little harder, as the enabled_repos build config is an arraylist
-        val andRepoView = Objects.requireNonNull<Any>(view.findViewById(R.id.setup_androidacy_repo)) as MaterialSwitch
-        val magiskAltRepoView = Objects.requireNonNull<Any>(view.findViewById(R.id.setup_magisk_alt_repo)) as MaterialSwitch
+        val andRepoView =
+            Objects.requireNonNull<Any>(view.findViewById(R.id.setup_androidacy_repo)) as MaterialSwitch
+        val magiskAltRepoView =
+            Objects.requireNonNull<Any>(view.findViewById(R.id.setup_magisk_alt_repo)) as MaterialSwitch
         andRepoView.isChecked = BuildConfig.ENABLED_REPOS.contains("androidacy_repo")
         magiskAltRepoView.isChecked = BuildConfig.ENABLED_REPOS.contains("magisk_alt_repo")
         // On debug builds, log when a switch is toggled
@@ -242,8 +245,10 @@ class SetupActivity : FoxActivity(), LanguageActivity {
             }
             realm.executeTransactionAsync { r: Realm ->
                 Timber.d("Realm transaction started")
-                r.where(ReposList::class.java).equalTo("id", "androidacy_repo").findFirst()!!.isEnabled = androidacyRepo
-                r.where(ReposList::class.java).equalTo("id", "magisk_alt_repo").findFirst()!!.isEnabled = magiskAltRepo
+                r.where(ReposList::class.java).equalTo("id", "androidacy_repo")
+                    .findFirst()!!.isEnabled = androidacyRepo
+                r.where(ReposList::class.java).equalTo("id", "magisk_alt_repo")
+                    .findFirst()!!.isEnabled = magiskAltRepo
                 Timber.d("Realm transaction committing")
                 // commit the changes
                 r.commitTransaction()

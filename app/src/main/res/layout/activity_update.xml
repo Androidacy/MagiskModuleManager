@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright (c) 2023 to present Androidacy and contributors. Names, logos, icons, and the Androidacy name are all trademarks of Androidacy and may not be used without license. See LICENSE for more information.
   -->
 
@@ -16,9 +15,9 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:gravity="center"
-        app:layout_constraintTop_toTopOf="parent"
+        android:orientation="vertical"
         app:layout_constraintBottom_toTopOf="@id/bottom_navigation"
-        android:orientation="vertical">
+        app:layout_constraintTop_toTopOf="parent">
 
         <!-- Activity used to download and install app updates -->
         <!-- first, upgrade icon -->
@@ -86,9 +85,9 @@
             android:orientation="vertical">
 
             <WebView
+                android:id="@+id/changelog_webview"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:id="@+id/changelog_webview"
                 android:layout_margin="4dp" />
 
         </LinearLayout>
@@ -107,4 +106,4 @@
         app:layout_constraintTop_toBottomOf="@id/update_container"
         app:menu="@menu/update_nav" />
 
-</androidx.constraintlayout.widget.ConstraintLayout >
+</androidx.constraintlayout.widget.ConstraintLayout>

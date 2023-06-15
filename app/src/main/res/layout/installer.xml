@@ -1,10 +1,8 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright (c) 2023 to present Androidacy and contributors. Names, logos, icons, and the Androidacy name are all trademarks of Androidacy and may not be used without license. See LICENSE for more information.
   -->
 
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -13,37 +11,39 @@
     tools:context=".installer.InstallerActivity">
 
     <HorizontalScrollView
-        android:layout_width="match_parent"
         android:id="@+id/install_horizontal_scroller"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
         android:background="@color/black"
         android:overScrollMode="never"
         app:layout_constraintBottom_toTopOf="@id/bottom_nav_installer"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" android:layout_height="0dp">
+        app:layout_constraintTop_toTopOf="parent">
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/install_terminal"
-            android:background="@null"
-            android:fontFamily="@font/jetbrainsmono"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
+            android:background="@null"
+            android:fontFamily="@font/jetbrainsmono"
             android:textSize="16sp" />
     </HorizontalScrollView>
 
     <com.google.android.material.progressindicator.LinearProgressIndicator
         android:id="@+id/progress_bar"
-        android:layout_height="wrap_content"
         android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:indeterminate="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottom_nav_installer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:id="@+id/bottom_nav_installer"
         app:layout_constraintTop_toBottomOf="@id/install_horizontal_scroller"
         app:menu="@menu/bottom_nav_install" />
 

@@ -10,28 +10,38 @@ import com.fox2code.mmm.manager.ModuleInfo
 class RepoModule {
     @JvmField
     val repoData: RepoData
+
     @JvmField
     val moduleInfo: ModuleInfo
+
     @JvmField
     val id: String
+
     @JvmField
     var repoName: String? = null
+
     @JvmField
     var lastUpdated: Long = 0
+
     @JvmField
     var propUrl: String? = null
+
     @JvmField
     var zipUrl: String? = null
+
     @JvmField
     var notesUrl: String? = null
+
     @JvmField
     var checksum: String? = null
+
     @JvmField
     var processed = false
 
     @JvmField
     @StringRes
     var qualityText = 0
+
     @JvmField
     var qualityValue = 0
     var safe: Boolean

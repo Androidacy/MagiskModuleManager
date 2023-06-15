@@ -51,6 +51,7 @@ enum class IntentHelper {;
         interface OnFileReceivedCallback {
             fun onReceived(target: File?, uri: Uri?, response: Int)
         }
+
         private const val EXTRA_TAB_SESSION = "android.support.customtabs.extra.SESSION"
         private const val EXTRA_TAB_COLOR_SCHEME = "androidx.browser.customtabs.extra.COLOR_SCHEME"
         private const val EXTRA_TAB_COLOR_SCHEME_DARK = 2
@@ -177,10 +178,10 @@ enum class IntentHelper {;
                         Shell.getShell().newJob().add(
                             "am start -a android.intent.action.MAIN " + "-c org.lsposed.manager.LAUNCH_MANAGER " + "com.android.shell/.BugreportWarningActivity"
                         ).to(object : CallbackList<String?>() {
-                                override fun onAddElement(str: String?) {
-                                    Timber.i("LSPosed: %s", str)
-                                }
-                            }).submit()
+                            override fun onAddElement(str: String?) {
+                                Timber.i("LSPosed: %s", str)
+                            }
+                        }).submit()
                         return
                     }
                     intent = Intent("android.intent.action.APPLICATION_PREFERENCES")

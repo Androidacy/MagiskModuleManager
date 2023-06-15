@@ -2,7 +2,8 @@
  * Copyright (c) 2023 to present Androidacy and contributors. Names, logos, icons, and the Androidacy name are all trademarks of Androidacy and may not be used without license. See LICENSE for more information.
  */
 
-@file:Suppress("KotlinConstantConditions", "UNINITIALIZED_ENUM_COMPANION_WARNING",
+@file:Suppress(
+    "KotlinConstantConditions", "UNINITIALIZED_ENUM_COMPANION_WARNING",
     "ktConcatNullable", "BlockingMethodInNonBlockingContext", "UnusedEquals"
 )
 
@@ -51,6 +52,7 @@ enum class NotificationType constructor(
             return !BuildConfig.DEBUG
         }
     },
+
     @JvmStatic
     SHOWCASE_MODE(
         R.string.showcase_mode, R.drawable.ic_baseline_lock_24,
@@ -60,6 +62,7 @@ enum class NotificationType constructor(
             return !MainApplication.isShowcaseMode
         }
     },
+
     @JvmStatic
     NO_MAGISK(
         R.string.fail_magisk_missing,
@@ -74,6 +77,7 @@ enum class NotificationType constructor(
             return InstallerInitializer.errorNotification !== this
         }
     },
+
     @JvmStatic
     NO_ROOT(R.string.fail_root_magisk, R.drawable.ic_baseline_numbers_24) {
         override fun shouldRemove(): Boolean {
@@ -85,6 +89,7 @@ enum class NotificationType constructor(
             return InstallerInitializer.errorNotification !== this
         }
     },
+
     @JvmStatic
     MAGISK_OUTDATED(
         R.string.magisk_outdated,
@@ -101,18 +106,21 @@ enum class NotificationType constructor(
                     Constants.MAGISK_VER_CODE_INSTALL_COMMAND
         }
     },
+
     @JvmStatic
     NO_INTERNET(R.string.fail_internet, R.drawable.ic_baseline_cloud_off_24) {
         override fun shouldRemove(): Boolean {
             return RepoManager.getINSTANCE()!!.hasConnectivity()
         }
     },
+
     @JvmStatic
     REPO_UPDATE_FAILED(R.string.repo_update_failed, R.drawable.ic_baseline_cloud_off_24) {
         override fun shouldRemove(): Boolean {
             return RepoManager.getINSTANCE()!!.isLastUpdateSuccess
         }
     },
+
     @JvmStatic
     NEED_CAPTCHA_ANDROIDACY(
         R.string.androidacy_need_captcha,
@@ -128,12 +136,14 @@ enum class NotificationType constructor(
                     || !Http.needCaptchaAndroidacy())
         }
     },
+
     @JvmStatic
     NO_WEB_VIEW(R.string.no_web_view, R.drawable.ic_baseline_android_24) {
         override fun shouldRemove(): Boolean {
             return Http.hasWebView()
         }
     },
+
     @JvmStatic
     UPDATE_AVAILABLE(
         R.string.app_update_available,
@@ -152,6 +162,7 @@ enum class NotificationType constructor(
             return !AppUpdateManager.appUpdateManager.peekShouldUpdate()
         }
     },
+
     @JvmStatic
     INSTALL_FROM_STORAGE(
         R.string.install_from_storage,
