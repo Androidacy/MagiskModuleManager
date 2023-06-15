@@ -226,16 +226,26 @@ class UpdateActivity : FoxActivity() {
             // set progress bar to indeterminate
             progressIndicator.isIndeterminate = true
         }
-        // check for update
-        val shouldUpdate = AppUpdateManager.appUpdateManager.checkUpdate(true)
+        val deviceId = AndroidacyRepoData.generateDeviceId()
+        val clientId = BuildConfig.ANDROIDACY_CLIENT_ID
         var token = AndroidacyRepoData.token
         if (!AndroidacyRepoData.instance.isValidToken(token)) {
             Timber.w("Invalid token, not checking for updates")
             token = AndroidacyRepoData.instance.requestNewToken()
         }
-        val deviceId = AndroidacyRepoData.generateDeviceId()
-        val clientId = BuildConfig.ANDROIDACY_CLIENT_ID
         url = "https://production-api.androidacy.com/amm/updates/check?appVersionCode=${BuildConfig.VERSION_CODE}&token=$token&device_id=$deviceId&client_id=$clientId"
+        runOnUiThread {
+            // set status text to no update available
+            statusTextView.setText(R.string.no_update_available)
+            val changelogWebView = chgWv!!
+            changelogWebView.loadUrl(url.replace("updates/check", "changelog"))
+            // execute javascript to make #rfrsh-btn just reload the page
+            changelogWebView.evaluateJavascript(
+                "(function() { document.getElementById('rfrsh-btn').onclick = function() { location.reload(); }; })();"
+            ) { }
+        }
+        // check for update
+        val shouldUpdate = AppUpdateManager.appUpdateManager.checkUpdate(true)
         // if shouldUpdate is true, then we have an update
         if (shouldUpdate) {
             runOnUiThread {
@@ -249,13 +259,6 @@ class UpdateActivity : FoxActivity() {
                 button.isEnabled = true
             }
             // return
-        } else {
-            runOnUiThread {
-                // set status text to no update available
-                statusTextView.setText(R.string.no_update_available)
-                val changelogWebView = chgWv!!
-                changelogWebView.loadUrl(url.replace("updates/check", "changelog"))
-            }
         }
         runOnUiThread {
             progressIndicator.isIndeterminate = false

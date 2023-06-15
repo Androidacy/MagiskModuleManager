@@ -811,6 +811,8 @@ public class SettingsActivity extends FoxActivity implements LanguageActivity {
                     fileOutputStream.write(("Device: " + Build.MANUFACTURER + " " + Build.MODEL + " (" + Build.DEVICE + ")\n").getBytes());
                     fileOutputStream.write(("Magisk version: " + InstallerInitializer.peekMagiskVersion() + "\n").getBytes());
                     fileOutputStream.write(("Has internet: " + (RepoManager.getINSTANCE().hasConnectivity() ? "Yes" : "No") + "\n").getBytes());
+                    fileOutputStream.write(("Beginning of logs:\n").getBytes());
+
                     // read our logcat but format the output to be more readable
                     Process process = Runtime.getRuntime().exec("logcat -d -v tag");
                     BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(process.getInputStream()));
