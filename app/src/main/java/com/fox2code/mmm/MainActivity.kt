@@ -51,6 +51,7 @@ import com.fox2code.mmm.repo.RepoModule
 import com.fox2code.mmm.settings.SettingsActivity
 import com.fox2code.mmm.utils.ExternalHelper
 import com.fox2code.mmm.utils.RuntimeUtils
+import com.fox2code.mmm.utils.SyncManager
 import com.fox2code.mmm.utils.io.net.Http.Companion.cleanDnsCache
 import com.fox2code.mmm.utils.io.net.Http.Companion.hasWebView
 import com.fox2code.mmm.utils.realm.ReposList
@@ -388,17 +389,20 @@ class MainActivity : FoxActivity(), OnRefreshListener, SearchView.OnQueryTextLis
                 if (BuildConfig.DEBUG) Timber.i("Check Update")
                 // update repos
                 if (hasWebView()) {
-                    RepoManager.getINSTANCE()!!.update { value: Double ->
-                        runOnUiThread(if (max == 0) Runnable {
-                            progressIndicator.setProgressCompat(
-                                (value * PRECISION).toInt(), true
-                            )
-                        } else Runnable {
-                            progressIndicator.setProgressCompat(
-                                (value * PRECISION * 0.75f).toInt(), true
-                            )
-                        })
+                    val updateListener: SyncManager.UpdateListener = object : SyncManager.UpdateListener {
+                        override fun update(value: Double) {
+                            runOnUiThread(if (max == 0) Runnable {
+                                progressIndicator.setProgressCompat(
+                                    (value * PRECISION).toInt(), true
+                                )
+                            } else Runnable {
+                                progressIndicator.setProgressCompat(
+                                    (value * PRECISION * 0.75f).toInt(), true
+                                )
+                            })
+                        }
                     }
+                    RepoManager.getINSTANCE()!!.update(updateListener)
                 }
                 // various notifications
                 NotificationType.NEED_CAPTCHA_ANDROIDACY.autoAdd(moduleViewListBuilder)
@@ -606,13 +610,16 @@ class MainActivity : FoxActivity(), OnRefreshListener, SearchView.OnQueryTextLis
                         progressIndicator!!.max = PRECISION
                     }
                     if (BuildConfig.DEBUG) Timber.i("Check Update")
-                    RepoManager.getINSTANCE()!!.update { value: Double ->
-                        runOnUiThread {
-                            progressIndicator!!.setProgressCompat(
-                                (value * PRECISION).toInt(), true
-                            )
+                    val updateListener: SyncManager.UpdateListener = object : SyncManager.UpdateListener {
+                        override fun update(value: Double) {
+                            runOnUiThread {
+                                progressIndicator!!.setProgressCompat(
+                                    (value * PRECISION).toInt(), true
+                                )
+                            }
                         }
                     }
+                    RepoManager.getINSTANCE()!!.update(updateListener)
                     runOnUiThread {
                         progressIndicator!!.setProgressCompat(PRECISION, true)
                         progressIndicator!!.visibility = View.GONE
@@ -647,17 +654,20 @@ class MainActivity : FoxActivity(), OnRefreshListener, SearchView.OnQueryTextLis
         Thread({
             cleanDnsCache() // Allow DNS reload from network
             val max = instance!!.getUpdatableModuleCount()
-            RepoManager.getINSTANCE()!!.update { value: Double ->
-                runOnUiThread(if (max == 0) Runnable {
-                    progressIndicator!!.setProgressCompat(
-                        (value * PRECISION).toInt(), true
-                    )
-                } else Runnable {
-                    progressIndicator!!.setProgressCompat(
-                        (value * PRECISION * 0.75f).toInt(), true
-                    )
-                })
+            val updateListener: SyncManager.UpdateListener = object : SyncManager.UpdateListener {
+                override fun update(value: Double) {
+                    runOnUiThread(if (max == 0) Runnable {
+                        progressIndicator!!.setProgressCompat(
+                            (value * PRECISION).toInt(), true
+                        )
+                    } else Runnable {
+                        progressIndicator!!.setProgressCompat(
+                            (value * PRECISION * 0.75f).toInt(), true
+                        )
+                    })
+                }
             }
+            RepoManager.getINSTANCE()!!.update(updateListener)
             NotificationType.NEED_CAPTCHA_ANDROIDACY.autoAdd(moduleViewListBuilder)
             if (!NotificationType.NO_INTERNET.shouldRemove()) {
                 moduleViewListBuilderOnline.addNotification(NotificationType.NO_INTERNET)
