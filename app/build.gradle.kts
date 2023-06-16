@@ -15,6 +15,7 @@ plugins {
     id("com.mikepenz.aboutlibraries.plugin")
     kotlin("android")
     kotlin("kapt")
+    id("com.google.devtools.ksp") version "1.8.22-1.0.11"
     id("io.sentry.android.gradle")
 }
 
@@ -479,12 +480,12 @@ dependencies {
     implementation("com.github.Fox2Code:AndroidANSI:1.2.1")
 
     // sentry
-    implementation("io.sentry:sentry-android:6.22.0")
-    implementation("io.sentry:sentry-android-timber:6.22.0")
-    implementation("io.sentry:sentry-android-fragment:6.22.0")
-    implementation("io.sentry:sentry-android-okhttp:6.22.0")
-    implementation("io.sentry:sentry-kotlin-extensions:6.22.0")
-    implementation("io.sentry:sentry-android-ndk:6.22.0")
+    implementation("io.sentry:sentry-android:6.23.0")
+    implementation("io.sentry:sentry-android-timber:6.23.0")
+    implementation("io.sentry:sentry-android-fragment:6.23.0")
+    implementation("io.sentry:sentry-android-okhttp:6.23.0")
+    implementation("io.sentry:sentry-kotlin-extensions:6.23.0")
+    implementation("io.sentry:sentry-android-ndk:6.23.0")
 
     // Markdown
     // TODO: switch to an updated implementation
@@ -525,6 +526,15 @@ dependencies {
 
     // yes
     implementation("com.github.fingerprintjs:fingerprint-android:2.0.0")
+
+    // room
+    implementation("androidx.room:room-runtime:2.5.1")
+
+    // To use Kotlin Symbol Processing (KSP)
+    ksp("androidx.room:room-compiler:2.5.1")
+
+    // optional - Kotlin Extensions and Coroutines support for Room
+    implementation("androidx.room:room-ktx:2.5.1")
 }
 
 android {
