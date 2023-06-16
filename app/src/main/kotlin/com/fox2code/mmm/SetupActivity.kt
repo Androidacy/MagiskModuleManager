@@ -20,7 +20,6 @@ import android.widget.Toast
 import androidx.fragment.app.FragmentActivity
 import com.fox2code.foxcompat.app.FoxActivity
 import com.fox2code.mmm.databinding.ActivitySetupBinding
-import com.fox2code.mmm.repo.RepoManager
 import com.fox2code.mmm.utils.IntentHelper
 import com.fox2code.mmm.utils.realm.ReposList
 import com.fox2code.rosettax.LanguageActivity
@@ -346,91 +345,9 @@ class SetupActivity : FoxActivity(), LanguageActivity {
         }
     }
 
-    // creates the realm database
-    private fun createRealmDatabase() {
-        if (realmDatabasesCreated) {
-            Timber.d("Realm databases already created")
-            return
-        }
-        Timber.d("Creating Realm databases")
-        val startTime = System.currentTimeMillis()
-        // create encryption key
-        Timber.d("Creating encryption key")
-        val key = MainApplication.INSTANCE!!.key
-        // create the realm database for ReposList
-        // create the realm configuration
-        val config = RealmConfiguration.Builder().name("ReposList.realm")
-            .directory(MainApplication.INSTANCE!!.getDataDirWithPath("realms")).schemaVersion(1)
-            .encryptionKey(key).build()
-        // get the instance
-        Realm.getInstanceAsync(config, object : Realm.Callback() {
-            override fun onSuccess(realm: Realm) {
-                Timber.d("Realm instance: %s", realm)
-                realm.beginTransaction()
-                // create the ReposList realm database
-                Timber.d("Creating ReposList realm database")
-                if (realm.where(ReposList::class.java).equalTo("id", "androidacy_repo")
-                        .findFirst() == null
-                ) {
-                    Timber.d("Creating androidacyRepo")
-                    // create the androidacyRepo row
-                    // cant use createObject because it crashes because reasons. use copyToRealm instead
-                    val androidacyRepo =
-                        realm.createObject(ReposList::class.java, "androidacy_repo")
-                    Timber.d("Created androidacyRepo object")
-                    androidacyRepo.name = "Androidacy Repo"
-                    Timber.d("Set androidacyRepo name")
-                    androidacyRepo.donate =
-                        "https://www.androidacy.com/membership-account/membership-join/?utm_source=fox-app&utm_medium=app&utm_campaign=app"
-                    Timber.d("Set androidacyRepo donate")
-                    androidacyRepo.support = "https://t.me/androidacy_discussions"
-                    Timber.d("Set androidacyRepo support")
-                    androidacyRepo.submitModule =
-                        "https://www.androidacy.com/module-repository-applications/?utm_source=fox-app&utm_medium=app&utm_campaign=app"
-                    Timber.d("Set androidacyRepo submit module")
-                    androidacyRepo.url = RepoManager.ANDROIDACY_MAGISK_REPO_ENDPOINT
-                    Timber.d("Set androidacyRepo url")
-                    androidacyRepo.isEnabled = true
-                    Timber.d("Set androidacyRepo enabled")
-                    androidacyRepo.lastUpdate = 0
-                    Timber.d("Set androidacyRepo last update")
-                    androidacyRepo.website = RepoManager.ANDROIDACY_MAGISK_REPO_HOMEPAGE
-                    Timber.d("Set androidacyRepo website")
-                    // now copy the data from the data class to the realm object using copyToRealmOrUpdate
-                    Timber.d("Copying data to realm object")
-                    realm.copyToRealmOrUpdate(androidacyRepo)
-                    Timber.d("Created androidacyRepo")
-                }
-                // create magiskAltRepo
-                if (realm.where(ReposList::class.java).equalTo("id", "magisk_alt_repo")
-                        .findFirst() == null
-                ) {
-                    Timber.d("Creating magiskAltRepo")
-                    val magiskAltRepo =
-                        realm.createObject(ReposList::class.java, "magisk_alt_repo")
-                    Timber.d("Created magiskAltRepo object")
-                    magiskAltRepo.name = "Magisk Alt Repo"
-                    magiskAltRepo.donate = null
-                    magiskAltRepo.website = RepoManager.MAGISK_ALT_REPO_HOMEPAGE
-                    magiskAltRepo.support = null
-                    magiskAltRepo.isEnabled = true
-                    magiskAltRepo.url = RepoManager.MAGISK_ALT_REPO_JSDELIVR
-                    magiskAltRepo.submitModule =
-                        "${RepoManager.MAGISK_ALT_REPO_HOMEPAGE}/submission"
-                    magiskAltRepo.lastUpdate = 0
-                    // commit the changes
-                    Timber.d("Copying data to realm object")
-                    realm.copyToRealmOrUpdate(magiskAltRepo)
-                    Timber.d("Created magiskAltRepo")
-                }
-                realm.commitTransaction()
-                realm.close()
-                realmDatabasesCreated = true
-                Timber.d("Realm transaction finished")
-                val endTime = System.currentTimeMillis()
-                Timber.d("Realm databases created in %d ms", endTime - startTime)
-            }
-        })
+    // creates the room database
+    private fun createDatabases() {
+        val appContext = MainApplication.INSTANCE!!.applicationContext
     }
 
     private fun createFiles() {
@@ -457,7 +374,7 @@ class SetupActivity : FoxActivity(), LanguageActivity {
         } catch (e: IOException) {
             Timber.e(e)
         }
-        createRealmDatabase()
+        createDatabases()
     }
 
     @Suppress("KotlinConstantConditions")
