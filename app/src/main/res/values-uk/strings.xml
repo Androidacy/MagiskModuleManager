@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright (c) 2023 to present Androidacy and contributors. Names, logos, icons, and the Androidacy name are all trademarks of Androidacy and may not be used without license. See LICENSE for more information.
-  -->
-
-<resources xmlns:tools="http://schemas.android.com/tools">
+  --><resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name_short">Fox\'s Mmm</string>
     <string name="fail_root_magisk">Не вдалося отримати доступ до root-прав або Magisk-у</string>
     <string name="loading">Завантаження…</string>
@@ -403,4 +401,8 @@
     <string name="upgrade_now">Оновити</string>
     <string name="crash_details_suggestion">Трасування стека можна знайти нижче. Однак ми <b>настійно</b> рекомендуємо вам замість цього використовувати форму зворотнього зв\'язку нижче. Таким чином, замість того, щоб вручну копіювати трасування стека, він відправить його нам автоматично. Це також розшифровує залежності та додаткові відомості повідомляються автоматично.</string>
     <string name="reinstall_warning">Більшості модулів потрібне видалення та переустановка начисто. Через це AMM не підтримує переустановку модулів доки вони встановлені на пристрої.</string>
+    <string name="eula_agree_v2_headline">EULA та угоди</string>
+    <string name="build_expired">Поточна версія застаріла. Оновіть до останньої версії.</string>
+    <string name="app_name_v2">Менеджер модулів Androidacy</string>
+    <string name="app_name_short_v2">AMM</string>
 </resources>

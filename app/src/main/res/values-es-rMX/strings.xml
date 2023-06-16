@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright (c) 2023 to present Androidacy and contributors. Names, logos, icons, and the Androidacy name are all trademarks of Androidacy and may not be used without license. See LICENSE for more information.
-  -->
-
-<resources>
+  --><resources>
     <string name="app_name">Fox Magisk Module Manager</string>
     <string name="app_name_short">Fox\'s Mmm</string>
     <string name="fail_root_magisk">No fue posible obtener acceso root o Magisk</string>
@@ -418,4 +416,8 @@
     <string name="androidacy_thanks_up">Gracias por actualizar! las descargas de módulos y los archivos READMEs no mostrarán anuncios y las descargas no se acelerarán. En el futuro, podrá descargar módulos directamente con un solo clic.</string>
     <string name="crash_details_suggestion">El seguimiento de pila se puede encontrar a continuación. Sin embargo, nos <b> fuertemente </b> le recomendamos que utilice el formulario de comentarios a continuación para enviar sus comentarios. De esta forma, en lugar de copiar manualmente el seguimiento de pila, nos lo enviará automáticamente. También se desofusca de esa manera y los detalles adicionales se informan automáticamente.</string>
     <string name="reinstall_warning">La mayoría de los módulos deben desinstalarse y luego reinstalarse limpiamente. Por esta razón, AMM no admite la reinstalación de módulos mientras están instalados en el dispositivo.</string>
+    <string name="eula_agree_v2_headline">EULA y Términos</string>
+    <string name="build_expired">Esta compilación ha caducado. Por favor actualice a la última versión.</string>
+    <string name="app_name_v2">Administrador de módulos Androidacy</string>
+    <string name="app_name_short_v2">AMM</string>
 </resources>

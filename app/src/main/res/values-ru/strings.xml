@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright (c) 2023 to present Androidacy and contributors. Names, logos, icons, and the Androidacy name are all trademarks of Androidacy and may not be used without license. See LICENSE for more information.
-  -->
-
-<resources xmlns:tools="http://schemas.android.com/tools">
+  --><resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">Менеджер модулей Magisk Fox’а</string>
     <string name="app_name_short">МмM Fox’а</string>
     <string name="fail_root_magisk">Не удалось получить доступ к root-правам или Magisk</string>
@@ -406,4 +404,8 @@
     <string name="androidacy_thanks_up_title">Вы уже обновились!</string>
     <string name="upgrade_now">Обновить</string>
     <string name="reinstall_warning">Большинству модулей требуется удаление и переустановка начисто. По этой причине AMM не поддерживает переустановку модулей пока они установлены на устройстве.</string>
+    <string name="eula_agree_v2_headline">EULA и соглашения</string>
+    <string name="build_expired">Текущая версия устарела. Обновите до последней версии.</string>
+    <string name="app_name_v2">Менеджер модулей Androidacy</string>
+    <string name="app_name_short_v2">AMM</string>
 </resources>
