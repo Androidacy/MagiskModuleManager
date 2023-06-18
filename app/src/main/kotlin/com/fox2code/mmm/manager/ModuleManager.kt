@@ -7,25 +7,24 @@
 package com.fox2code.mmm.manager
 
 import android.content.SharedPreferences
+import androidx.room.Room
 import com.fox2code.mmm.BuildConfig
 import com.fox2code.mmm.MainApplication
 import com.fox2code.mmm.installer.InstallerInitializer.Companion.peekModulesPath
 import com.fox2code.mmm.utils.SyncManager
 import com.fox2code.mmm.utils.io.PropUtils
-import com.fox2code.mmm.utils.realm.ModuleListCache
+import com.fox2code.mmm.utils.room.ModuleListCache
+import com.fox2code.mmm.utils.room.ModuleListCacheDao
+import com.fox2code.mmm.utils.room.ModuleListCacheDatabase
 import com.topjohnwu.superuser.Shell
 import com.topjohnwu.superuser.io.SuFile
 import com.topjohnwu.superuser.io.SuFileInputStream
-import io.realm.Realm
-import io.realm.RealmConfiguration
 import org.matomo.sdk.extra.TrackHelper
 import timber.log.Timber
 import java.io.BufferedReader
-import java.io.File
 import java.io.IOException
 import java.io.InputStreamReader
 import java.nio.charset.StandardCharsets
-import java.util.Objects
 
 class ModuleManager private constructor() : SyncManager() {
     private val moduleInfos: HashMap<String, LocalModuleInfo> = HashMap()
@@ -33,9 +32,9 @@ class ModuleManager private constructor() : SyncManager() {
     private var updatableModuleCount = 0
 
     override fun scanInternal(updateListener: UpdateListener) {
-        // if last_shown_setup is not "v2", then refuse to continue
+        // if last_shown_setup is not "v3", then refuse to continue
         if (MainApplication.getSharedPreferences("mmm")!!
-                .getString("last_shown_setup", "") != "v2"
+                .getString("last_shown_setup", "") != "v3"
         ) {
             return
         }
@@ -65,60 +64,36 @@ class ModuleManager private constructor() : SyncManager() {
             for (module in modules) {
                 if (!SuFile("/data/adb/modules/$module").isDirectory) continue  // Ignore non directory files inside modules folder
                 var moduleInfo = moduleInfos[module]
-                // next, merge the module info with a record from ModuleListCache if it exists
-                var realmConfiguration: RealmConfiguration?
-                // get all dirs under the realms/repos/ dir under app's data dir
-                val cacheRoot =
-                    File(MainApplication.INSTANCE!!.getDataDirWithPath("realms/repos/").toURI())
-                var moduleListCache: ModuleListCache?
-                for (dir in Objects.requireNonNull<Array<File>>(cacheRoot.listFiles())) {
-                    if (dir.isDirectory) {
-                        // if the dir name matches the module name, use it as the cache dir
-                        val tempCacheRoot = File(dir.toString())
-                        Timber.d("Looking for cache in %s", tempCacheRoot)
-                        realmConfiguration =
-                            RealmConfiguration.Builder().name("ModuleListCache.realm")
-                                .encryptionKey(MainApplication.INSTANCE!!.key).schemaVersion(1)
-                                .deleteRealmIfMigrationNeeded().allowWritesOnUiThread(true)
-                                .allowQueriesOnUiThread(true).directory(tempCacheRoot).build()
-                        val realm = Realm.getInstance(realmConfiguration!!)
-                        Timber.d(
-                            "Looking for cache for %s out of %d", module, realm.where(
-                                ModuleListCache::class.java
-                            ).count()
-                        )
-                        moduleListCache =
-                            realm.where(ModuleListCache::class.java).equalTo("codename", module)
-                                .findFirst()
-                        Timber.d("Found cache for %s", module)
-                        // get module info from cache
-                        if (moduleInfo == null) {
-                            moduleInfo = LocalModuleInfo(module)
-                        }
-                        if (moduleListCache != null) {
-                            moduleInfo.name =
-                                if (moduleListCache.name != "") moduleListCache.name else module
-                            moduleInfo.description =
-                                if (moduleListCache.description != "") moduleListCache.description else moduleInfo.description
-                            moduleInfo.author =
-                                if (moduleListCache.author != "") moduleListCache.author else moduleInfo.author
-                            moduleInfo.safe = moduleListCache.isSafe == true
-                            moduleInfo.support =
-                                if (moduleListCache.support != "") moduleListCache.support else null
-                            moduleInfo.donate =
-                                if (moduleListCache.donate != "") moduleListCache.donate else null
-                            moduleInfo.flags = moduleInfo.flags or FLAG_MM_REMOTE_MODULE
-                            moduleInfos[module] = moduleInfo
-                        }
-                        realm.close()
-                        break
-                    }
-                }
+                // next, merge the module info with a record from ModuleListCache room db if it exists
+                // initialize modulelistcache db
+                // DO NOT USE REALM ANYMORE
+                val db = Room.databaseBuilder(
+                    MainApplication.INSTANCE!!,
+                    ModuleListCacheDatabase::class.java,
+                    "ModuleListCache"
+                ).build()
+                // get module info from cache
+                val moduleListCacheDao: ModuleListCacheDao = db.moduleListCacheDao()
+                Timber.d("Found cache for %s", module)
+                // get module info from cache
                 if (moduleInfo == null) {
                     moduleInfo = LocalModuleInfo(module)
+                }
+                if (moduleListCacheDao.exists(module)) {
+                    val moduleListCache: ModuleListCache = moduleListCacheDao.getByCodename(module)
+                    moduleInfo.name =
+                        if (moduleListCache.name != "") moduleListCache.name else module
+                    moduleInfo.description =
+                        if (moduleListCache.description != "") moduleListCache.description else moduleInfo.description
+                    moduleInfo.author =
+                        if (moduleListCache.author != "") moduleListCache.author else moduleInfo.author
+                    moduleInfo.safe = moduleListCache.safe == true
+                    moduleInfo.support =
+                        if (moduleListCache.support != "") moduleListCache.support else null
+                    moduleInfo.donate =
+                        if (moduleListCache.donate != "") moduleListCache.donate else null
+                    moduleInfo.flags = moduleInfo.flags or FLAG_MM_REMOTE_MODULE
                     moduleInfos[module] = moduleInfo
-                    // This should not really happen, but let's handles theses cases anyway
-                    moduleInfo.flags = moduleInfo.flags or ModuleInfo.FLAG_MODULE_UPDATING_ONLY
                 }
                 moduleInfo.flags = moduleInfo.flags and FLAGS_RESET_UPDATE.inv()
                 if (SuFile("/data/adb/modules/$module/disable").exists()) {
@@ -131,8 +106,7 @@ class ModuleManager private constructor() : SyncManager() {
                     moduleInfo.flags = moduleInfo.flags or ModuleInfo.FLAG_MODULE_UNINSTALLING
                 }
                 if (firstScan && !needFallback && SuFile(
-                        modulesPath,
-                        module
+                        modulesPath, module
                     ).exists() || bootPrefs.getBoolean("module_" + moduleInfo.id + "_active", false)
                 ) {
                     moduleInfo.flags = moduleInfo.flags or ModuleInfo.FLAG_MODULE_ACTIVE
@@ -152,9 +126,7 @@ class ModuleManager private constructor() : SyncManager() {
                 }
                 try {
                     PropUtils.readProperties(
-                        moduleInfo,
-                        "/data/adb/modules/$module/module.prop",
-                        true
+                        moduleInfo, "/data/adb/modules/$module/module.prop", true
                     )
                 } catch (e: Exception) {
                     if (BuildConfig.DEBUG) Timber.d(e)
@@ -186,9 +158,7 @@ class ModuleManager private constructor() : SyncManager() {
                 moduleInfo.flags = moduleInfo.flags or ModuleInfo.FLAG_MODULE_UPDATING
                 try {
                     PropUtils.readProperties(
-                        moduleInfo,
-                        "/data/adb/modules_update/$module/module.prop",
-                        true
+                        moduleInfo, "/data/adb/modules_update/$module/module.prop", true
                     )
                 } catch (e: Exception) {
                     if (BuildConfig.DEBUG) Timber.d(e)

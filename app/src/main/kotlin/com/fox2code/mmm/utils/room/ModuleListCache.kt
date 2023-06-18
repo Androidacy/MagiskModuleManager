@@ -24,7 +24,9 @@ class ModuleListCache (
     var changeBoot: Boolean,
     var mmtReborn: Boolean,
     var repoId: String,
-    var lastUpdate: Long
+    var lastUpdate: Long,
+    val name: String,
+    var safe: Boolean
 ) {
     // functions:
     // getAll(): List<ModuleListCache>

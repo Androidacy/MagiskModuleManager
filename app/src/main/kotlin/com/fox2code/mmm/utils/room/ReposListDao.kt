@@ -27,7 +27,7 @@ interface ReposListDao {
     fun getById(id: String): ReposList
 
     @Query("INSERT INTO ReposList VALUES (:id, :url, :enabled, :donate, :support, :submitModule, :lastUpdate, :name, :website)")
-    fun insert(id: String, url: String, enabled: Boolean, donate: String, support: String, submitModule: String, lastUpdate: Long, name: String, website: String)
+    fun insert(id: String, url: String, enabled: Boolean, donate: String?, support: String?, submitModule: String?, lastUpdate: Long, name: String, website: String?)
 
     @Query("UPDATE ReposList SET url = :url, enabled = :enabled, donate = :donate, support = :support, submitModule = :submitModule, lastUpdate = :lastUpdate, name = :name, website = :website WHERE id = :id")
     fun update(id: String, url: String, enabled: Boolean, donate: String, support: String, submitModule: String, lastUpdate: Long, name: String, website: String)

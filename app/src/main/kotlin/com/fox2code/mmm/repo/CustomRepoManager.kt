@@ -3,23 +3,21 @@
  */
 package com.fox2code.mmm.repo
 
+import androidx.room.Room
 import com.fox2code.mmm.MainApplication
 import com.fox2code.mmm.MainApplication.Companion.INSTANCE
 import com.fox2code.mmm.MainApplication.Companion.getSharedPreferences
 import com.fox2code.mmm.utils.io.Hashes.Companion.hashSha256
 import com.fox2code.mmm.utils.io.PropUtils.Companion.isNullString
 import com.fox2code.mmm.utils.io.net.Http.Companion.doHttpGet
-import com.fox2code.mmm.utils.realm.ReposList
-import io.realm.Realm
-import io.realm.RealmConfiguration
+import com.fox2code.mmm.utils.room.ReposListDatabase
 import org.json.JSONObject
 import timber.log.Timber
 import java.nio.charset.StandardCharsets
 
 @Suppress("UNUSED_PARAMETER", "MemberVisibilityCanBePrivate")
 class CustomRepoManager internal constructor(
-    mainApplication: MainApplication?,
-    private val repoManager: RepoManager
+    mainApplication: MainApplication?, private val repoManager: RepoManager
 ) {
     private val customRepos: Array<String?> = arrayOfNulls(MAX_CUSTOM_REPOS)
 
@@ -31,34 +29,24 @@ class CustomRepoManager internal constructor(
     init {
         repoCount = 0
         // refuse to load if setup is not complete
-        if (getSharedPreferences("mmm")!!.getString("last_shown_setup", "") != "") {
-            val realmConfiguration =
-                RealmConfiguration.Builder().name("ReposList.realm").encryptionKey(
-                    INSTANCE!!.key
-                ).allowQueriesOnUiThread(true).allowWritesOnUiThread(true).directory(
-                    INSTANCE!!.getDataDirWithPath("realms")
-                ).schemaVersion(1).build()
-            val realm = Realm.getInstance(realmConfiguration)
-            if (realm.isInTransaction) {
-                realm.commitTransaction()
-            }
+        if (getSharedPreferences("mmm")!!.getString("last_shown_setup", "") == "v3") {
             val i = 0
             val lastFilled = intArrayOf(0)
-            realm.executeTransaction { realm1: Realm ->
-                // find all repos that are not built-in
-                for (reposList in realm1.where(ReposList::class.java)
-                    .notEqualTo("id", "androidacy_repo").and().notEqualTo("id", "magisk_alt_repo")
-                    .and()
-                    .notEqualTo("id", "magisk_official_repo").findAll()) {
-                    val repo = reposList.url
-                    if (!isNullString(repo) && !RepoManager.isBuiltInRepo(repo)) {
-                        lastFilled[0] = i
-                        val index = if (AUTO_RECOMPILE) repoCount else i
-                        customRepos[index] = repo
-                        repoCount++
-                        (repoManager.addOrGet(repo) as CustomRepoData).override =
-                            "custom_repo_$index"
-                    }
+            // now the same as above but for room database
+            val applicationContext = mainApplication!!.applicationContext
+            val db = Room.databaseBuilder(
+                applicationContext, ReposListDatabase::class.java, "reposlist.db"
+            ).build()
+            val reposListDao = db.reposListDao()
+            val reposListList = reposListDao.getAll()
+            for (reposList in reposListList) {
+                val repo = reposList.url
+                if (!isNullString(repo) && !RepoManager.isBuiltInRepo(repo)) {
+                    lastFilled[0] = i
+                    val index = if (AUTO_RECOMPILE) repoCount else i
+                    customRepos[index] = repo
+                    repoCount++
+                    (repoManager.addOrGet(repo) as CustomRepoData).override = "custom_repo_$index"
                 }
             }
         }
@@ -119,29 +107,13 @@ class CustomRepoManager internal constructor(
             null
         }
         val id = "repo_" + hashSha256(repo.toByteArray(StandardCharsets.UTF_8))
-        val realmConfiguration = RealmConfiguration.Builder().name("ReposList.realm").encryptionKey(
-            INSTANCE!!.key
-        ).allowQueriesOnUiThread(true).allowWritesOnUiThread(true).directory(
-            INSTANCE!!.getDataDirWithPath("realms")
-        ).schemaVersion(1).build()
-        val realm = Realm.getInstance(realmConfiguration)
-        realm.executeTransaction { realm1: Realm ->
-            // find the matching entry for repo_0, repo_1, etc.
-            var reposList =
-                realm1.where(ReposList::class.java).equalTo("id", id).findFirst()
-            if (reposList == null) {
-                reposList = realm1.createObject(ReposList::class.java, id)
-            }
-            reposList!!.url = repo
-            reposList.name = name
-            reposList.website = website
-            reposList.support = support
-            reposList.donate = donate
-            reposList.submitModule = submitModule
-            reposList.isEnabled = true
-            // save the object
-            realm1.copyToRealmOrUpdate(reposList)
-        }
+        // now the same as above but for room database
+        val applicationContext = INSTANCE!!.applicationContext
+        val db = Room.databaseBuilder(
+            applicationContext, ReposListDatabase::class.java, "reposlist.db"
+        ).build()
+        val reposListDao = db.reposListDao()
+        reposListDao.insert(id, repo, true, donate, support, submitModule, 0, name, website)
         repoCount++
         dirty = true
         val customRepoData = repoManager.addOrGet(repo) as CustomRepoData
@@ -155,7 +127,6 @@ class CustomRepoManager internal constructor(
         // Set the enabled state to true
         customRepoData.isEnabled = true
         customRepoData.updateEnabledState()
-        realm.close()
         return customRepoData
     }
 

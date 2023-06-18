@@ -18,10 +18,13 @@ import android.webkit.CookieManager
 import android.widget.CompoundButton
 import android.widget.Toast
 import androidx.fragment.app.FragmentActivity
+import androidx.room.Room
 import com.fox2code.foxcompat.app.FoxActivity
 import com.fox2code.mmm.databinding.ActivitySetupBinding
 import com.fox2code.mmm.utils.IntentHelper
 import com.fox2code.mmm.utils.realm.ReposList
+import com.fox2code.mmm.utils.room.ModuleListCacheDatabase
+import com.fox2code.mmm.utils.room.ReposListDatabase
 import com.fox2code.rosettax.LanguageActivity
 import com.fox2code.rosettax.LanguageSwitcher
 import com.google.android.material.bottomnavigation.BottomNavigationItemView
@@ -254,7 +257,7 @@ class SetupActivity : FoxActivity(), LanguageActivity {
                 r.close()
                 Timber.d("Realm transaction committed")
             }
-            editor.putString("last_shown_setup", "v2")
+            editor.putString("last_shown_setup", "v3")
             // Commit the changes
             editor.commit()
             // sleep to allow the realm transaction to finish
@@ -347,7 +350,18 @@ class SetupActivity : FoxActivity(), LanguageActivity {
 
     // creates the room database
     private fun createDatabases() {
+        val startTime = System.currentTimeMillis()
         val appContext = MainApplication.INSTANCE!!.applicationContext
+        Room.databaseBuilder(appContext, ReposListDatabase::class.java, "reposlist.db")
+            .createFromAsset("assets/reposlist.db")
+            .fallbackToDestructiveMigration()
+            .build()
+        // same for modulelistcache
+        Room.databaseBuilder(appContext, ModuleListCacheDatabase::class.java, "modulelistcache.db")
+            .createFromAsset("assets/modulelistcache.db")
+            .fallbackToDestructiveMigration()
+            .build()
+        Timber.d("Databases created in %s ms", System.currentTimeMillis() - startTime)
     }
 
     private fun createFiles() {

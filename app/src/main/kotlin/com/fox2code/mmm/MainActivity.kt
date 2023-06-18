@@ -28,6 +28,7 @@ import androidx.appcompat.widget.SearchView
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.room.Room
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout.OnRefreshListener
 import com.fox2code.foxcompat.app.FoxActivity
@@ -54,11 +55,9 @@ import com.fox2code.mmm.utils.RuntimeUtils
 import com.fox2code.mmm.utils.SyncManager
 import com.fox2code.mmm.utils.io.net.Http.Companion.cleanDnsCache
 import com.fox2code.mmm.utils.io.net.Http.Companion.hasWebView
-import com.fox2code.mmm.utils.realm.ReposList
+import com.fox2code.mmm.utils.room.ReposListDatabase
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.progressindicator.LinearProgressIndicator
-import io.realm.Realm
-import io.realm.RealmConfiguration
 import org.matomo.sdk.extra.TrackHelper
 import timber.log.Timber
 import java.sql.Timestamp
@@ -104,25 +103,24 @@ class MainActivity : FoxActivity(), OnRefreshListener, SearchView.OnQueryTextLis
         super.onCreate(savedInstanceState)
         TrackHelper.track().screen(this).with(MainApplication.INSTANCE!!.tracker)
         // track enabled repos
-        val realmConfig = RealmConfiguration.Builder().name("ReposList.realm")
-            .encryptionKey(MainApplication.INSTANCE!!.key)
-            .directory(MainApplication.INSTANCE!!.getDataDirWithPath("realms")).schemaVersion(1)
-            .allowQueriesOnUiThread(true).allowWritesOnUiThread(true).build()
-        val realm = Realm.getInstance(realmConfig)
+        val db = Room.databaseBuilder(
+            applicationContext,
+            ReposListDatabase::class.java,
+            "reposlist.db"
+        ).build()
+        val repoDao = db.reposListDao()
+        val repos = repoDao.getAll()
         val enabledRepos = StringBuilder()
-        realm.executeTransaction { r: Realm ->
-            for (r2 in r.where(
-                ReposList::class.java
-            ).equalTo("enabled", true).findAll()) {
-                enabledRepos.append(r2.url).append(":").append(r2.name).append(",")
+        for (repo in repos) {
+            if (repo.enabled) {
+                enabledRepos.append(repo.url).append(", ")
             }
         }
         if (enabledRepos.isNotEmpty()) {
-            enabledRepos.setLength(enabledRepos.length - 1)
+            enabledRepos.delete(enabledRepos.length - 2, enabledRepos.length)
+            TrackHelper.track().event("Enabled Repos", enabledRepos.toString())
+                .with(MainApplication.INSTANCE!!.tracker)
         }
-        TrackHelper.track().event("enabled_repos", enabledRepos.toString())
-            .with(MainApplication.INSTANCE!!.tracker)
-        realm.close()
         // hide this behind a buildconfig flag for now, but crash the app if it's not an official build and not debug
         if (BuildConfig.ENABLE_PROTECTION && !MainApplication.o && !BuildConfig.DEBUG) {
             throw RuntimeException("This is not an official build of AMM")

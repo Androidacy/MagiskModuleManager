@@ -195,6 +195,9 @@
 
 -keepclassmembers class org.apache.commons.compress.archivers.zip.* { *; }
 
+-keep,includedescriptorclasses class net.sqlcipher.** { *; }
+-keep,includedescriptorclasses interface net.sqlcipher.** { *; }
+
 # dontwarn
 -dontwarn android.os.SystemProperties
 -dontwarn android.view.ThreadedRenderer

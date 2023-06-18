@@ -12,10 +12,10 @@ data class ReposList(
     @PrimaryKey var id: String,
     var url: String,
     var enabled: Boolean,
-    var donate: String,
-    var support: String,
-    var submitModule: String,
-    var lastUpdate: Long,
+    var donate: String?,
+    var support: String?,
+    var submitModule: String?,
+    var lastUpdate: Int,
     var name: String,
-    var website: String
+    var website: String?
 )

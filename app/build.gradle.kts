@@ -19,8 +19,6 @@ plugins {
     id("io.sentry.android.gradle")
 }
 
-// apply realm-android
-apply(plugin = "realm-android")
 val hasSentryConfig = File(rootProject.projectDir, "sentry.properties").exists()
 android {
     // functions to get git info: gitCommitHash, gitBranch, gitRemote
@@ -526,6 +524,9 @@ dependencies {
 
     // yes
     implementation("com.github.fingerprintjs:fingerprint-android:2.0.0")
+
+    // encryption for room
+    implementation("net.zetetic:android-database-sqlcipher:4.5.4")
 
     // room
     implementation("androidx.room:room-runtime:2.5.1")

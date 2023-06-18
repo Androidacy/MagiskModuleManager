@@ -374,7 +374,7 @@ class BackgroundUpdateChecker(context: Context, workerParams: WorkerParameters) 
         fun onMainActivityCreate(context: Context) {
             // Refuse to run if first_launch pref is not false
             if (MainApplication.getSharedPreferences("mmm")!!
-                    .getString("last_shown_setup", null) != "v2"
+                    .getString("last_shown_setup", null) != "v3"
             ) return
             // create notification channel group
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {

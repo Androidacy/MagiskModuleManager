@@ -154,7 +154,7 @@ class RuntimeUtils {
         if (BuildConfig.DEBUG) Timber.i("Checking if we need to run setup")
         // Check if context is the first launch using prefs and if doSetupRestarting was passed in the intent
         val prefs = MainApplication.getSharedPreferences("mmm")!!
-        var firstLaunch = prefs.getString("last_shown_setup", null) != "v2"
+        var firstLaunch = prefs.getString("last_shown_setup", null) != "v3"
         // First launch
         // context is intentionally separate from the above if statement, because it needs to be checked even if the first launch check is true due to some weird edge cases
         if (activity.intent.getBooleanExtra("doSetupRestarting", false)) {

@@ -5,11 +5,13 @@
 package com.fox2code.mmm.utils.room
 
 import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
 import androidx.room.Query
 
 
 // contains
-// codename (string, primary), version (string), versionCode (int), author (string), description (string), minApi (int), maxApi (int), minMagisk (int), needRamdisk (boolean), support (string), donate (string), config (string), changeBoot (bool), mmtReborn (bool), repoId (string), lastUpdate (bigint)
+// codename (string, primary), version (string), versionCode (int), author (string), description (string), minApi (int), maxApi (int), minMagisk (int), needRamdisk (boolean), support (string), donate (string), config (string), changeBoot (bool), mmtReborn (bool), repoId (string), lastUpdate (bigint), safe (bool)
 @Suppress("unused")
 @Dao
 interface ModuleListCacheDao {
@@ -66,8 +68,8 @@ interface ModuleListCacheDao {
     @Query("SELECT * FROM modulelistcache WHERE codename = :codename")
     fun getByCodename(codename: String): ModuleListCache
 
-    @Query("INSERT INTO modulelistcache VALUES (:codename, :version, :versionCode, :author, :description, :minApi, :maxApi, :minMagisk, :needRamdisk, :support, :donate, :config, :changeBoot, :mmtReborn, :repoId, :lastUpdate)")
-    fun insert(codename: String, version: String, versionCode: Int, author: String, description: String, minApi: Int, maxApi: Int, minMagisk: Int, needRamdisk: Boolean, support: String, donate: String, config: String, changeBoot: Boolean, mmtReborn: Boolean, repoId: String, lastUpdate: Long)
+    @Insert(entity = ModuleListCache::class, onConflict = OnConflictStrategy.REPLACE)
+    fun insert(codename: String, version: String, versionCode: Int, author: String, description: String, minApi: Int, maxApi: Int, minMagisk: Int, needRamdisk: Boolean, support: String, donate: String, config: String, changeBoot: Boolean, mmtReborn: Boolean, repoId: String, lastUpdate: Long, safe: Boolean, name: String)
 
     @Query("UPDATE modulelistcache SET version = :version WHERE codename = :codename")
     fun setVersion(codename: String, version: String)
@@ -113,6 +115,12 @@ interface ModuleListCacheDao {
 
     @Query("UPDATE modulelistcache SET lastUpdate = :lastUpdate WHERE codename = :codename")
     fun setLastUpdate(codename: String, lastUpdate: Long)
+
+    @Query("UPDATE modulelistcache SET safe = :safe WHERE codename = :codename")
+    fun setSafe(codename: String, safe: Boolean)
+
+    @Query("UPDATE modulelistcache SET name = :name WHERE codename = :codename")
+    fun setName(codename: String, name: String)
 
     @Query("DELETE FROM modulelistcache WHERE codename = :codename")
     fun delete(codename: String)
@@ -168,6 +176,16 @@ interface ModuleListCacheDao {
     @Query("SELECT lastUpdate FROM modulelistcache WHERE codename = :codename")
     fun getLastUpdate(codename: String): Long
 
+    @Query("SELECT safe FROM modulelistcache WHERE codename = :codename")
+    fun getSafe(codename: String): Boolean
+
+    @Query("SELECT name FROM modulelistcache WHERE codename = :codename")
+    fun getName(codename: String): String
+
     @Query("SELECT * FROM modulelistcache WHERE codename = :codename")
     fun get(codename: String): ModuleListCache
+
+    // exists
+    @Query("SELECT EXISTS(SELECT * FROM modulelistcache WHERE codename = :codename)")
+    fun exists(codename: String): Boolean
 }
