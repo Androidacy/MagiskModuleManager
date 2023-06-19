@@ -152,7 +152,7 @@ public class SettingsActivity extends FoxActivity implements LanguageActivity {
             points += 1;
         }
         Timber.d("Device performance class: %d", points);
-        if (points <= 9) {
+        if (points <= 7) {
             return PERFORMANCE_CLASS_LOW;
         } else if (points <= 12) {
             return PERFORMANCE_CLASS_AVERAGE;
