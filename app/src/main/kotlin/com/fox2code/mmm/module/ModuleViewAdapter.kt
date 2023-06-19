@@ -56,8 +56,8 @@ class ModuleViewAdapter : RecyclerView.Adapter<ModuleViewAdapter.ViewHolder>() {
                     }
                 }
             }
-        } catch (ignored: Exception) {
-            Timber.e("Error while updating module holder. This may mean we're trying to update too early.")
+        } catch (e: Exception) {
+            Timber.e(e, "Error while updating module holder. This may mean we're trying to update too early.")
         }
     }
 
@@ -138,7 +138,7 @@ class ModuleViewAdapter : RecyclerView.Adapter<ModuleViewAdapter.ViewHolder>() {
                     if (initState) return@setOnClickListener   // Skip if non user
                     val moduleHolder = moduleHolder
                     if (i < actionButtonsTypes.size && moduleHolder != null) {
-                        actionButtonsTypes[i]!!.doAction(v as Chip?, moduleHolder)
+                        (v as Chip?)?.let { actionButtonsTypes[i]!!.doAction(it, moduleHolder) }
                         if (moduleHolder.shouldRemove()) {
                             cardView.visibility = View.GONE
                         }
@@ -149,8 +149,10 @@ class ModuleViewAdapter : RecyclerView.Adapter<ModuleViewAdapter.ViewHolder>() {
                     val moduleHolder = moduleHolder
                     var didSomething = false
                     if (i < actionButtonsTypes.size && moduleHolder != null) {
-                        didSomething = actionButtonsTypes[i]!!
-                            .doActionLong(v as Chip?, moduleHolder)
+                        didSomething = (v as Chip?)?.let {
+                            actionButtonsTypes[i]!!
+                                .doActionLong(it, moduleHolder)
+                        } == true
                         if (moduleHolder.shouldRemove()) {
                             cardView.visibility = View.GONE
                         }

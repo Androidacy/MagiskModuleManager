@@ -5,11 +5,10 @@
 package com.fox2code.mmm.utils.room
 
 import androidx.room.Entity
-import androidx.room.PrimaryKey
 
-@Entity(tableName = "ReposList")
+@Entity(tableName = "ReposList", primaryKeys = ["id"], indices = [androidx.room.Index(value = ["id"], unique = true)])
 data class ReposList(
-    @PrimaryKey var id: String,
+    var id: String,
     var url: String,
     var enabled: Boolean,
     var donate: String?,

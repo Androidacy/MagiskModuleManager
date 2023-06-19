@@ -72,6 +72,10 @@ android {
                 "en"
             )
         )
+        // ksp room processor
+        room {
+            schemaLocationDir.set(file("roomSchemas"))
+        }
     }
 
     splits {
@@ -524,9 +528,6 @@ dependencies {
 
     // yes
     implementation("com.github.fingerprintjs:fingerprint-android:2.0.0")
-
-    // encryption for room
-    implementation("net.zetetic:android-database-sqlcipher:4.5.4")
 
     // room
     implementation("androidx.room:room-runtime:2.5.1")

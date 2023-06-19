@@ -382,10 +382,15 @@ enum class PropUtils {
                     InputStreamReader(inputStream, StandardCharsets.UTF_8)
                 ).use { bufferedReader ->
                     var line: String
-                    while (bufferedReader.readLine().also { line = it } != null) {
+                    var lineNumber = 0
+                    val iterator = bufferedReader.lineSequence().iterator()
+                    while (iterator.hasNext()) {
+                        line = iterator.next()
+                        lineNumber++
                         while (line.startsWith("\u0000")) line = line.substring(1)
                         if (line.startsWith("$what=")) {
                             moduleId = line.substring(what.length + 1).trim { it <= ' ' }
+                            break
                         }
                     }
                 }

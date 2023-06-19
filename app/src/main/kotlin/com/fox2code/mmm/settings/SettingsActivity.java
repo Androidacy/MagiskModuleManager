@@ -5,7 +5,6 @@
 package com.fox2code.mmm.settings;
 
 import static com.fox2code.mmm.settings.SettingsActivity.RepoFragment.applyMaterial3;
-import static java.lang.Integer.parseInt;
 
 import android.annotation.SuppressLint;
 import android.app.ActivityManager;
@@ -98,12 +97,12 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.RandomAccessFile;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Locale;
+import java.util.List;
 import java.util.Objects;
 import java.util.Random;
 import java.util.Set;
@@ -136,35 +135,30 @@ public class SettingsActivity extends FoxActivity implements LanguageActivity {
 
     @PerformanceClass
     public static int getDevicePerformanceClass() {
-        int devicePerformanceClass;
-        int androidVersion = Build.VERSION.SDK_INT;
-        int cpuCount = Runtime.getRuntime().availableProcessors();
-        int memoryClass = ((ActivityManager) Objects.requireNonNull(MainApplication.getINSTANCE()).getSystemService(Context.ACTIVITY_SERVICE)).getMemoryClass();
-        int totalCpuFreq = 0;
-        int freqResolved = 0;
-        for (int i = 0; i < cpuCount; i++) {
-            try (RandomAccessFile reader = new RandomAccessFile(String.format(Locale.ENGLISH, "/sys/devices/system/cpu/cpu%d/cpufreq/cpuinfo_max_freq", i), "r")) {
-                String line = reader.readLine();
-                if (line != null) {
-                    totalCpuFreq += parseInt(line) / 1000;
-                    freqResolved++;
-                }
-            } catch (Exception ignore) {
-            }
-        }
-        int maxCpuFreq = freqResolved == 0 ? -1 : (int) Math.ceil(totalCpuFreq / (float) freqResolved);
+        // special algorithm to determine performance class. low is < 4 cores and/ore < 4GB ram, mid is 4-6 cores and 4-6GB ram, high is > 6 cores and > 6GB ram. android sdk version is used as well
+        // device is awarded 1 point for each core and 1 point for each GB of ram.
 
-        if (androidVersion < 21 || cpuCount <= 2 || memoryClass <= 100 || cpuCount <= 4 && maxCpuFreq != -1 && maxCpuFreq <= 1250 || cpuCount <= 4 && maxCpuFreq <= 1600 && memoryClass <= 128 && androidVersion == 21 || cpuCount <= 4 && maxCpuFreq <= 1300 && memoryClass <= 128 && androidVersion <= 24) {
-            devicePerformanceClass = PERFORMANCE_CLASS_LOW;
-        } else if (cpuCount < 8 || memoryClass <= 160 || maxCpuFreq != -1 && maxCpuFreq <= 2050 || maxCpuFreq == -1 && cpuCount == 8 && androidVersion <= 23) {
-            devicePerformanceClass = PERFORMANCE_CLASS_AVERAGE;
+        int points = 0;
+        int cores = Runtime.getRuntime().availableProcessors();
+        ActivityManager activityManager = (ActivityManager) Objects.requireNonNull(MainApplication.getINSTANCE()).getSystemService(Context.ACTIVITY_SERVICE);
+        if (activityManager != null) {
+            ActivityManager.MemoryInfo memoryInfo = new ActivityManager.MemoryInfo();
+            activityManager.getMemoryInfo(memoryInfo);
+            long totalMemory = memoryInfo.totalMem;
+            points += cores;
+            points += totalMemory / 1024 / 1024 / 1024;
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            points += 1;
+        }
+        Timber.d("Device performance class: %d", points);
+        if (points <= 9) {
+            return PERFORMANCE_CLASS_LOW;
+        } else if (points <= 12) {
+            return PERFORMANCE_CLASS_AVERAGE;
         } else {
-            devicePerformanceClass = PERFORMANCE_CLASS_HIGH;
+            return PERFORMANCE_CLASS_HIGH;
         }
-
-        Timber.d("getDevicePerformanceClass: androidVersion=" + androidVersion + " cpuCount=" + cpuCount + " memoryClass=" + memoryClass + " maxCpuFreq=" + maxCpuFreq + " devicePerformanceClass=" + devicePerformanceClass);
-
-        return devicePerformanceClass;
     }
 
     @SuppressLint("RestrictedApi")
@@ -1072,6 +1066,7 @@ public class SettingsActivity extends FoxActivity implements LanguageActivity {
             }
             // Get magisk_alt_repo enabled state from room reposlist db
             ReposListDatabase db = Room.databaseBuilder(requireContext(), ReposListDatabase.class, "ReposList.db").allowMainThreadQueries().build();
+
             // add listener to magisk_alt_repo_enabled switch to update room db
             Preference magiskAltRepoEnabled = Objects.requireNonNull(findPreference("pref_magisk_alt_repo_enabled"));
             magiskAltRepoEnabled.setOnPreferenceChangeListener((preference, newValue) -> {
@@ -1259,17 +1254,17 @@ public class SettingsActivity extends FoxActivity implements LanguageActivity {
 
         @SuppressLint("RestrictedApi")
         public void updateCustomRepoList(boolean initial) {
-            RealmConfiguration realmConfiguration = new RealmConfiguration.Builder().name("ReposList.realm").encryptionKey(MainApplication.getINSTANCE().getKey()).allowQueriesOnUiThread(true).allowWritesOnUiThread(true).directory(MainApplication.getINSTANCE().getDataDirWithPath("realms")).schemaVersion(1).build();
-            Realm realm = Realm.getInstance(realmConfiguration);
             // get all repos that are not built-in
             int CUSTOM_REPO_ENTRIES = 0;
             // array of custom repos
             ArrayList<String> customRepos = new ArrayList<>();
-            RealmResults<ReposList> customRepoDataDB = realm.where(ReposList.class).findAll();
-            for (ReposList repo : customRepoDataDB) {
-                if (!repo.getId().equals("androidacy_repo") && !repo.getId().equals("magisk_alt_repo")) {
+            ReposListDatabase db = Room.databaseBuilder(requireContext(), ReposListDatabase.class, "ReposList.db").allowMainThreadQueries().build();
+            List<ReposList> reposList = db.reposListDao().getAll();
+            for (ReposList repo : reposList) {
+                ArrayList<String> buildInRepos = new ArrayList<>(Arrays.asList("androidacy_repo", "magisk_alt_repo"));
+                if (!buildInRepos.contains(repo.getId())) {
                     CUSTOM_REPO_ENTRIES++;
-                    customRepos.add(repo.getUrl());
+                    customRepos.add(repo.getId());
                 }
             }
             Timber.d("%d repos: %s", CUSTOM_REPO_ENTRIES, customRepos);
@@ -1286,12 +1281,7 @@ public class SettingsActivity extends FoxActivity implements LanguageActivity {
                     if (preference == null) continue;
                     final int index = i;
                     preference.setOnPreferenceClickListener(preference1 -> {
-                        if (realm.isInTransaction()) {
-                            realm.commitTransaction();
-                        }
-                        realm.beginTransaction();
-                        Objects.requireNonNull(realm.where(ReposList.class).equalTo("id", repoData.preferenceId).findFirst()).deleteFromRealm();
-                        realm.commitTransaction();
+                        db.reposListDao().delete(customRepos.get(index));
                         customRepoManager.removeRepo(index);
                         updateCustomRepoList(false);
                         preference1.setVisible(false);
@@ -1428,16 +1418,15 @@ public class SettingsActivity extends FoxActivity implements LanguageActivity {
             if (preference == null) return;
             if (!preferenceName.contains("androidacy") && !preferenceName.contains("magisk_alt_repo")) {
                 if (repoData != null) {
-                    RealmConfiguration realmConfiguration = new RealmConfiguration.Builder().name("ReposList.realm").encryptionKey(MainApplication.getINSTANCE().getKey()).allowQueriesOnUiThread(true).allowWritesOnUiThread(true).directory(MainApplication.getINSTANCE().getDataDirWithPath("realms")).schemaVersion(1).build();
-                    Realm realm = Realm.getInstance(realmConfiguration);
-                    RealmResults<ReposList> repoDataRealmResults = realm.where(ReposList.class).equalTo("id", repoData.preferenceId).findAll();
+                    ReposListDatabase db = Room.databaseBuilder(requireContext(), ReposListDatabase.class, "ReposList.db").allowMainThreadQueries().build();
+                    ReposList reposList = db.reposListDao().getById(repoData.preferenceId);
                     Timber.d("Setting preference " + preferenceName + " because it is not the Androidacy repo or the Magisk Alt Repo");
-                    if (repoData.isForceHide() || repoDataRealmResults.isEmpty()) {
+                    if (repoData.isForceHide() || reposList == null) {
                         Timber.d("Hiding preference " + preferenceName + " because it is null or force hidden");
                         hideRepoData(preferenceName);
                         return;
                     } else {
-                        Timber.d("Showing preference %s because the forceHide status is %s and the RealmResults is %s", preferenceName, repoData.isForceHide(), repoDataRealmResults.toString());
+                        Timber.d("Showing preference %s because the forceHide status is %s and the RealmResults is %s", preferenceName, repoData.isForceHide(), reposList);
                         preference.setTitle(repoData.getName());
                         preference.setVisible(true);
                         // set website, support, and submitmodule as well as donate
@@ -1474,7 +1463,6 @@ public class SettingsActivity extends FoxActivity implements LanguageActivity {
                             findPreference(preferenceName + "_donate").setVisible(false);
                         }
                     }
-                    realm.close();
                 } else {
                     Timber.d("Hiding preference " + preferenceName + " because it's data is null");
                     hideRepoData(preferenceName);

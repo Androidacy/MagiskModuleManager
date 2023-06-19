@@ -1,0 +1,142 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 1,
+    "identityHash": "2abfd2dad332c887d96cdda63d92a639",
+    "entities": [
+      {
+        "tableName": "modulelistcache",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`codename` TEXT NOT NULL, `version` TEXT NOT NULL, `versionCode` INTEGER NOT NULL, `author` TEXT NOT NULL, `description` TEXT NOT NULL, `minApi` INTEGER NOT NULL, `maxApi` INTEGER NOT NULL, `minMagisk` INTEGER NOT NULL, `needRamdisk` INTEGER NOT NULL, `support` TEXT NOT NULL, `donate` TEXT NOT NULL, `config` TEXT NOT NULL, `changeBoot` INTEGER NOT NULL, `mmtReborn` INTEGER NOT NULL, `repoId` TEXT NOT NULL, `lastUpdate` INTEGER NOT NULL, `name` TEXT NOT NULL, `safe` INTEGER NOT NULL, `stats` INTEGER NOT NULL, PRIMARY KEY(`codename`))",
+        "fields": [
+          {
+            "fieldPath": "codename",
+            "columnName": "codename",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "version",
+            "columnName": "version",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "versionCode",
+            "columnName": "versionCode",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "author",
+            "columnName": "author",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "description",
+            "columnName": "description",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "minApi",
+            "columnName": "minApi",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "maxApi",
+            "columnName": "maxApi",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "minMagisk",
+            "columnName": "minMagisk",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "needRamdisk",
+            "columnName": "needRamdisk",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "support",
+            "columnName": "support",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "donate",
+            "columnName": "donate",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "config",
+            "columnName": "config",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "changeBoot",
+            "columnName": "changeBoot",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "mmtReborn",
+            "columnName": "mmtReborn",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "repoId",
+            "columnName": "repoId",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "lastUpdate",
+            "columnName": "lastUpdate",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "name",
+            "columnName": "name",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "safe",
+            "columnName": "safe",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "stats",
+            "columnName": "stats",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "codename"
+          ]
+        },
+        "indices": [],
+        "foreignKeys": []
+      }
+    ],
+    "views": [],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '2abfd2dad332c887d96cdda63d92a639')"
+    ]
+  }
+}

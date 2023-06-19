@@ -66,12 +66,11 @@ class ModuleManager private constructor() : SyncManager() {
                 var moduleInfo = moduleInfos[module]
                 // next, merge the module info with a record from ModuleListCache room db if it exists
                 // initialize modulelistcache db
-                // DO NOT USE REALM ANYMORE
                 val db = Room.databaseBuilder(
                     MainApplication.INSTANCE!!,
                     ModuleListCacheDatabase::class.java,
                     "ModuleListCache"
-                ).build()
+                ).allowMainThreadQueries().build()
                 // get module info from cache
                 val moduleListCacheDao: ModuleListCacheDao = db.moduleListCacheDao()
                 Timber.d("Found cache for %s", module)

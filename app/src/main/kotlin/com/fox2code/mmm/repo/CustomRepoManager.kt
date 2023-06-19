@@ -10,12 +10,13 @@ import com.fox2code.mmm.MainApplication.Companion.getSharedPreferences
 import com.fox2code.mmm.utils.io.Hashes.Companion.hashSha256
 import com.fox2code.mmm.utils.io.PropUtils.Companion.isNullString
 import com.fox2code.mmm.utils.io.net.Http.Companion.doHttpGet
+import com.fox2code.mmm.utils.room.ReposList
 import com.fox2code.mmm.utils.room.ReposListDatabase
 import org.json.JSONObject
 import timber.log.Timber
 import java.nio.charset.StandardCharsets
 
-@Suppress("UNUSED_PARAMETER", "MemberVisibilityCanBePrivate")
+@Suppress("MemberVisibilityCanBePrivate")
 class CustomRepoManager internal constructor(
     mainApplication: MainApplication?, private val repoManager: RepoManager
 ) {
@@ -35,7 +36,7 @@ class CustomRepoManager internal constructor(
             // now the same as above but for room database
             val applicationContext = mainApplication!!.applicationContext
             val db = Room.databaseBuilder(
-                applicationContext, ReposListDatabase::class.java, "reposlist.db"
+                applicationContext, ReposListDatabase::class.java, "ReposList.db"
             ).build()
             val reposListDao = db.reposListDao()
             val reposListList = reposListDao.getAll()
@@ -49,6 +50,7 @@ class CustomRepoManager internal constructor(
                     (repoManager.addOrGet(repo) as CustomRepoData).override = "custom_repo_$index"
                 }
             }
+            db.close()
         }
     }
 
@@ -113,7 +115,8 @@ class CustomRepoManager internal constructor(
             applicationContext, ReposListDatabase::class.java, "reposlist.db"
         ).build()
         val reposListDao = db.reposListDao()
-        reposListDao.insert(id, repo, true, donate, support, submitModule, 0, name, website)
+        val reposList = ReposList(id, repo, true, donate, support, submitModule, 0, name, website)
+        reposListDao.insert(reposList)
         repoCount++
         dirty = true
         val customRepoData = repoManager.addOrGet(repo) as CustomRepoData
@@ -127,6 +130,7 @@ class CustomRepoManager internal constructor(
         // Set the enabled state to true
         customRepoData.isEnabled = true
         customRepoData.updateEnabledState()
+        db.close()
         return customRepoData
     }
 

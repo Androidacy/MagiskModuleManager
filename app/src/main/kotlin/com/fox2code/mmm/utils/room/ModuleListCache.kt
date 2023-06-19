@@ -7,7 +7,7 @@ package com.fox2code.mmm.utils.room
 import androidx.room.Entity
 
 @Suppress("unused")
-@Entity(tableName = "modulelistcache")
+@Entity(tableName = "modulelistcache", primaryKeys = ["codename"], indices = [androidx.room.Index(value = ["codename"], unique = true)])
 class ModuleListCache (
     var codename: String,
     var version: String,

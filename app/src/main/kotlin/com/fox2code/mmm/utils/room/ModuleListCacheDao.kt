@@ -69,7 +69,7 @@ interface ModuleListCacheDao {
     fun getByCodename(codename: String): ModuleListCache
 
     @Insert(entity = ModuleListCache::class, onConflict = OnConflictStrategy.REPLACE)
-    fun insert(codename: String, version: String, versionCode: Int, author: String, description: String, minApi: Int, maxApi: Int, minMagisk: Int, needRamdisk: Boolean, support: String, donate: String, config: String, changeBoot: Boolean, mmtReborn: Boolean, repoId: String, lastUpdate: Long, safe: Boolean, name: String, stats: Int)
+    fun insert(moduleListCache: ModuleListCache)
 
     @Query("UPDATE modulelistcache SET version = :version WHERE codename = :codename")
     fun setVersion(codename: String, version: String)

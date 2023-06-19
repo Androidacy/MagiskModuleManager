@@ -439,4 +439,6 @@
     <string name="reinstall_warning">Most modules should be uninstalled, then reinstalled cleanly. For this reason, AMM does not support reinstalling modules while they are installed on the device.</string>
     <string name="build_expired">This build has expired. Please update to the latest version.</string>
     <string name="eula_agree_v2_headline">EULA and Terms</string>
+    <string name="error_creating_repos_database">Could not create repos db</string>
+    <string name="error_creating_modulelistcache_database">Failed to create module cache db</string>
 </resources>

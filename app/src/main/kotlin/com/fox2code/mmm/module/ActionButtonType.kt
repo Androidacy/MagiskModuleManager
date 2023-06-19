@@ -1,376 +1,430 @@
 /*
  * Copyright (c) 2023 to present Androidacy and contributors. Names, logos, icons, and the Androidacy name are all trademarks of Androidacy and may not be used without license. See LICENSE for more information.
  */
+package com.fox2code.mmm.module
 
-package com.fox2code.mmm.module;
+import android.annotation.SuppressLint
+import android.content.DialogInterface
+import android.net.Uri
+import android.text.Spanned
+import android.widget.TextView
+import android.widget.Toast
+import androidx.annotation.DrawableRes
+import com.fox2code.foxcompat.app.FoxActivity
+import com.fox2code.foxcompat.view.FoxDisplay
+import com.fox2code.mmm.MainApplication.Companion.INSTANCE
+import com.fox2code.mmm.MainApplication.Companion.isShowcaseMode
+import com.fox2code.mmm.R
+import com.fox2code.mmm.androidacy.AndroidacyUtil.Companion.isAndroidacyLink
+import com.fox2code.mmm.installer.InstallerInitializer.Companion.peekMagiskPath
+import com.fox2code.mmm.manager.ModuleInfo
+import com.fox2code.mmm.manager.ModuleManager.Companion.instance
+import com.fox2code.mmm.utils.ExternalHelper
+import com.fox2code.mmm.utils.IntentHelper.Companion.openConfig
+import com.fox2code.mmm.utils.IntentHelper.Companion.openCustomTab
+import com.fox2code.mmm.utils.IntentHelper.Companion.openInstaller
+import com.fox2code.mmm.utils.IntentHelper.Companion.openMarkdown
+import com.fox2code.mmm.utils.IntentHelper.Companion.openUrl
+import com.fox2code.mmm.utils.IntentHelper.Companion.openUrlAndroidacy
+import com.google.android.material.chip.Chip
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import io.noties.markwon.Markwon
+import org.matomo.sdk.extra.TrackHelper
+import timber.log.Timber
+import java.util.Objects
 
-import android.annotation.SuppressLint;
-import android.content.Context;
-import android.graphics.drawable.Drawable;
-import android.net.Uri;
-import android.text.Spanned;
-import android.widget.Button;
-import android.widget.TextView;
-import android.widget.Toast;
-
-import androidx.annotation.DrawableRes;
-import androidx.appcompat.app.AlertDialog;
-
-import com.fox2code.foxcompat.app.FoxActivity;
-import com.fox2code.foxcompat.view.FoxDisplay;
-import com.fox2code.mmm.MainApplication;
-import com.fox2code.mmm.R;
-import com.fox2code.mmm.androidacy.AndroidacyUtil;
-import com.fox2code.mmm.installer.InstallerInitializer;
-import com.fox2code.mmm.manager.LocalModuleInfo;
-import com.fox2code.mmm.manager.ModuleInfo;
-import com.fox2code.mmm.manager.ModuleManager;
-import com.fox2code.mmm.utils.ExternalHelper;
-import com.fox2code.mmm.utils.IntentHelper;
-import com.google.android.material.chip.Chip;
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-
-import org.matomo.sdk.extra.TrackHelper;
-
-import java.util.Objects;
-
-import io.noties.markwon.Markwon;
-import timber.log.Timber;
-
-@SuppressWarnings("ReplaceNullCheck")
+@Suppress("SENSELESS_COMPARISON")
 @SuppressLint("UseCompatLoadingForDrawables")
-public enum ActionButtonType {
-    INFO() {
-        @Override
-        public void update(Chip button, ModuleHolder moduleHolder) {
-            button.setChipIcon(button.getContext().getDrawable(R.drawable.ic_baseline_info_24));
-            button.setText(R.string.description);
+enum class ActionButtonType {
+    INFO {
+        override fun update(button: Chip, moduleHolder: ModuleHolder) {
+            button.chipIcon = button.context.getDrawable(R.drawable.ic_baseline_info_24)
+            button.setText(R.string.description)
         }
 
-        @Override
-        public void doAction(Chip button, ModuleHolder moduleHolder) {
-            String name;
-            if (moduleHolder.moduleInfo != null) {
-                name = moduleHolder.moduleInfo.name;
+        override fun doAction(button: Chip, moduleHolder: ModuleHolder) {
+            val name: String? = if (moduleHolder.moduleInfo != null) {
+                moduleHolder.moduleInfo!!.name
             } else {
-                name = moduleHolder.repoModule.moduleInfo.name;
+                moduleHolder.repoModule?.moduleInfo?.name
             }
-            TrackHelper.track().event("view_notes", name).with(MainApplication.getINSTANCE().getTracker());
-            String notesUrl = moduleHolder.repoModule.notesUrl;
-            if (AndroidacyUtil.Companion.isAndroidacyLink(notesUrl)) {
-                IntentHelper.openUrlAndroidacy(button.getContext(), notesUrl, false, moduleHolder.repoModule.moduleInfo.name, moduleHolder.getMainModuleConfig());
+            TrackHelper.track().event("view_notes", name).with(INSTANCE!!.getTracker())
+            val notesUrl = moduleHolder.repoModule?.notesUrl
+            if (isAndroidacyLink(notesUrl)) {
+                openUrlAndroidacy(
+                    button.context,
+                    notesUrl,
+                    false,
+                    moduleHolder.repoModule?.moduleInfo?.name,
+                    moduleHolder.mainModuleConfig
+                )
             } else {
-                IntentHelper.openMarkdown(button.getContext(), notesUrl, moduleHolder.repoModule.moduleInfo.name, moduleHolder.getMainModuleConfig(), moduleHolder.repoModule.moduleInfo.changeBoot, moduleHolder.repoModule.moduleInfo.needRamdisk, moduleHolder.repoModule.moduleInfo.minMagisk, moduleHolder.repoModule.moduleInfo.minApi, moduleHolder.repoModule.moduleInfo.maxApi);
+                openMarkdown(
+                    button.context,
+                    notesUrl,
+                    moduleHolder.repoModule?.moduleInfo?.name,
+                    moduleHolder.mainModuleConfig,
+                    moduleHolder.repoModule?.moduleInfo?.changeBoot,
+                    moduleHolder.repoModule?.moduleInfo?.needRamdisk,
+                    moduleHolder.repoModule?.moduleInfo?.minMagisk ?: 0,
+                    moduleHolder.repoModule?.moduleInfo?.minApi ?: 0,
+                    moduleHolder.repoModule?.moduleInfo?.maxApi ?: 9999
+                )
             }
         }
 
-        @Override
-        public boolean doActionLong(Chip button, ModuleHolder moduleHolder) {
-            Context context = button.getContext();
-            Toast.makeText(context, context.getString(R.string.module_id_prefix) + moduleHolder.moduleId, Toast.LENGTH_SHORT).show();
-            return true;
+        override fun doActionLong(button: Chip, moduleHolder: ModuleHolder): Boolean {
+            val context = button.context
+            Toast.makeText(
+                context,
+                context.getString(R.string.module_id_prefix) + moduleHolder.moduleId,
+                Toast.LENGTH_SHORT
+            ).show()
+            return true
         }
-    }, UPDATE_INSTALL() {
-        @Override
-        public void update(Chip button, ModuleHolder moduleHolder) {
-            int icon;
+    },
+    UPDATE_INSTALL {
+        override fun update(button: Chip, moduleHolder: ModuleHolder) {
+            val icon: Int
             if (moduleHolder.hasUpdate()) {
-                icon = R.drawable.ic_baseline_update_24;
-                button.setText(R.string.update);
+                icon = R.drawable.ic_baseline_update_24
+                button.setText(R.string.update)
             } else if (moduleHolder.moduleInfo != null) {
-                icon = R.drawable.ic_baseline_refresh_24;
-                button.setText(R.string.reinstall);
+                icon = R.drawable.ic_baseline_refresh_24
+                button.setText(R.string.reinstall)
             } else {
-                icon = R.drawable.ic_baseline_system_update_24;
-                button.setText(R.string.install);
+                icon = R.drawable.ic_baseline_system_update_24
+                button.setText(R.string.install)
             }
-            button.setChipIcon(button.getContext().getDrawable(icon));
+            button.chipIcon = button.context.getDrawable(icon)
         }
 
-        @Override
-        public void doAction(Chip button, ModuleHolder moduleHolder) {
-            ModuleInfo moduleInfo = moduleHolder.getMainModuleInfo();
-            if (moduleInfo == null) return;
-
-            String name;
-            if (moduleHolder.moduleInfo != null) {
-                name = moduleHolder.moduleInfo.name;
+        override fun doAction(button: Chip, moduleHolder: ModuleHolder) {
+            // if mainmoduleinfo is null, we are in repo mode
+            val moduleInfo: ModuleInfo = if (moduleHolder.mainModuleInfo != null) {
+                moduleHolder.mainModuleInfo
             } else {
-                name = moduleHolder.repoModule.moduleInfo.name;
+                moduleHolder.repoModule?.moduleInfo ?: return
             }
-            TrackHelper.track().event("view_update_install", name).with(MainApplication.getINSTANCE().getTracker());
+            val name: String? = if (moduleHolder.moduleInfo != null) {
+                moduleHolder.moduleInfo!!.name
+            } else {
+                moduleHolder.repoModule?.moduleInfo?.name
+            }
+            TrackHelper.track().event("view_update_install", name).with(INSTANCE!!.getTracker())
             // if icon is reinstall, we need to uninstall first - warn the user but don't proceed
             if (moduleHolder.moduleInfo != null) {
                 // get icon of the button
-                Drawable icon = button.getChipIcon();
-                if (icon != null && icon.getConstantState() != null) {
-                    Drawable reinstallIcon = button.getContext().getDrawable(R.drawable.ic_baseline_refresh_24);
-                    if (reinstallIcon != null && reinstallIcon.getConstantState() != null) {
-                        if (icon.getConstantState().equals(reinstallIcon.getConstantState())) {
-                            new MaterialAlertDialogBuilder(button.getContext())
-                                    .setTitle(R.string.reinstall)
-                                    .setMessage(R.string.reinstall_warning)
-                                    .setPositiveButton(R.string.reinstall, null)
-                                    .show();
-                            return;
+                val icon = button.chipIcon
+                if (icon != null && icon.constantState != null) {
+                    val reinstallIcon =
+                        button.context.getDrawable(R.drawable.ic_baseline_refresh_24)
+                    if (reinstallIcon != null && reinstallIcon.constantState != null) {
+                        if (icon.constantState == reinstallIcon.constantState) {
+                            MaterialAlertDialogBuilder(button.context)
+                                .setTitle(R.string.reinstall)
+                                .setMessage(R.string.reinstall_warning)
+                                .setPositiveButton(R.string.reinstall, null)
+                                .show()
+                            return
                         }
                     }
                 }
             }
-            String updateZipUrl = moduleHolder.getUpdateZipUrl();
-            if (updateZipUrl == null) return;
+            val updateZipUrl = moduleHolder.updateZipUrl ?: return
             // Androidacy manage the selection between download and install
-            if (AndroidacyUtil.Companion.isAndroidacyLink(updateZipUrl)) {
-                IntentHelper.openUrlAndroidacy(button.getContext(), updateZipUrl, true, moduleInfo.name, moduleInfo.config);
-                return;
+            if (isAndroidacyLink(updateZipUrl)) {
+                openUrlAndroidacy(
+                    button.context,
+                    updateZipUrl,
+                    true,
+                    moduleInfo.name,
+                    moduleInfo.config
+                )
+                return
             }
-            boolean hasRoot = InstallerInitializer.peekMagiskPath() != null && !MainApplication.Companion.isShowcaseMode();
-            MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(button.getContext());
-            builder.setTitle(moduleInfo.name).setCancelable(true).setIcon(R.drawable.ic_baseline_extension_24);
-            CharSequence desc = moduleInfo.description;
-            Markwon markwon = null;
-            LocalModuleInfo localModuleInfo = moduleHolder.moduleInfo;
-            if (localModuleInfo != null && !localModuleInfo.updateChangeLog.isEmpty()) {
-                markwon = MainApplication.getINSTANCE().getMarkwon();
+            val hasRoot = peekMagiskPath() != null && !isShowcaseMode
+            val builder = MaterialAlertDialogBuilder(button.context)
+            builder.setTitle(moduleInfo.name).setCancelable(true)
+                .setIcon(R.drawable.ic_baseline_extension_24)
+            var desc: CharSequence? = moduleInfo.description
+            var markwon: Markwon? = null
+            val localModuleInfo = moduleHolder.moduleInfo
+            if (localModuleInfo != null && localModuleInfo.updateChangeLog.isNotEmpty()) {
+                markwon = INSTANCE!!.getMarkwon()
                 // Re-render each time in cse of config changes
-                desc = markwon.toMarkdown(localModuleInfo.updateChangeLog);
+                desc = markwon!!.toMarkdown(localModuleInfo.updateChangeLog)
             }
-
-            if (desc == null || desc.length() == 0) {
-                builder.setMessage(R.string.no_desc_found);
+            if (desc.isNullOrEmpty()) {
+                builder.setMessage(R.string.no_desc_found)
             } else {
-                builder.setMessage(desc);
+                builder.setMessage(desc)
             }
-            Timber.i("URL: %s", updateZipUrl);
-            builder.setNegativeButton(R.string.download_module, (x, y) -> IntentHelper.openCustomTab(button.getContext(), updateZipUrl));
+            Timber.i("URL: %s", updateZipUrl)
+            builder.setNegativeButton(R.string.download_module) { _: DialogInterface?, _: Int ->
+                openCustomTab(
+                    button.context,
+                    updateZipUrl
+                )
+            }
             if (hasRoot) {
-                builder.setPositiveButton(moduleHolder.hasUpdate() ? R.string.update_module : R.string.install_module, (x, y) -> {
-                    String updateZipChecksum = moduleHolder.getUpdateZipChecksum();
-                    IntentHelper.openInstaller(button.getContext(), updateZipUrl, moduleInfo.name, moduleInfo.config, updateZipChecksum, moduleInfo.mmtReborn);
-                });
+                builder.setPositiveButton(if (moduleHolder.hasUpdate()) R.string.update_module else R.string.install_module) { _: DialogInterface?, _: Int ->
+                    val updateZipChecksum = moduleHolder.updateZipChecksum
+                    openInstaller(
+                        button.context,
+                        updateZipUrl,
+                        moduleInfo.name,
+                        moduleInfo.config,
+                        updateZipChecksum,
+                        moduleInfo.mmtReborn
+                    )
+                }
             }
-            ExternalHelper.INSTANCE.injectButton(builder, () -> Uri.parse(updateZipUrl), moduleHolder.getUpdateZipRepo());
-            int dim5dp = FoxDisplay.dpToPixel(5);
-            builder.setBackgroundInsetStart(dim5dp).setBackgroundInsetEnd(dim5dp);
-            AlertDialog alertDialog = builder.show();
-            for (int i = -3; i < 0; i++) {
-                Button alertButton = alertDialog.getButton(i);
-                if (alertButton != null && alertButton.getPaddingStart() > dim5dp) {
-                    alertButton.setPadding(dim5dp, dim5dp, dim5dp, dim5dp);
+            ExternalHelper.INSTANCE.injectButton(
+                builder,
+                { Uri.parse(updateZipUrl) },
+                moduleHolder.updateZipRepo
+            )
+            val dim5dp = FoxDisplay.dpToPixel(5f)
+            builder.setBackgroundInsetStart(dim5dp).setBackgroundInsetEnd(dim5dp)
+            val alertDialog = builder.show()
+            for (i in -3..-1) {
+                val alertButton = alertDialog.getButton(i)
+                if (alertButton != null && alertButton.paddingStart > dim5dp) {
+                    alertButton.setPadding(dim5dp, dim5dp, dim5dp, dim5dp)
                 }
             }
             if (markwon != null) {
-                TextView messageView = Objects.requireNonNull(alertDialog.getWindow()).findViewById(android.R.id.message);
-                markwon.setParsedMarkdown(messageView, (Spanned) desc);
+                val messageView = alertDialog.window!!.findViewById<TextView>(android.R.id.message)
+                markwon.setParsedMarkdown(messageView, (desc as Spanned?)!!)
             }
         }
-    }, UNINSTALL() {
-        @Override
-        public void update(Chip button, ModuleHolder moduleHolder) {
-            int icon = moduleHolder.hasFlag(ModuleInfo.FLAG_MODULE_UNINSTALLING) ? R.drawable.ic_baseline_delete_outline_24 : (!moduleHolder.hasFlag(ModuleInfo.FLAG_MODULE_UPDATING) || moduleHolder.hasFlag(ModuleInfo.FLAGS_MODULE_ACTIVE)) ? R.drawable.ic_baseline_delete_24 : R.drawable.ic_baseline_delete_forever_24;
-            button.setChipIcon(button.getContext().getDrawable(icon));
-            button.setText(R.string.uninstall);
+    },
+    UNINSTALL {
+        override fun update(button: Chip, moduleHolder: ModuleHolder) {
+            val icon =
+                if (moduleHolder.hasFlag(ModuleInfo.FLAG_MODULE_UNINSTALLING)) R.drawable.ic_baseline_delete_outline_24 else if (!moduleHolder.hasFlag(
+                        ModuleInfo.FLAG_MODULE_UPDATING
+                    ) || moduleHolder.hasFlag(ModuleInfo.FLAGS_MODULE_ACTIVE)
+                ) R.drawable.ic_baseline_delete_24 else R.drawable.ic_baseline_delete_forever_24
+            button.chipIcon = button.context.getDrawable(icon)
+            button.setText(R.string.uninstall)
         }
 
-        @Override
-        public void doAction(Chip button, ModuleHolder moduleHolder) {
-            if (!moduleHolder.hasFlag(ModuleInfo.FLAGS_MODULE_ACTIVE | ModuleInfo.FLAG_MODULE_UNINSTALLING) && moduleHolder.hasFlag(ModuleInfo.FLAG_MODULE_UPDATING)) {
-                doActionLong(button, moduleHolder);
-                return;
+        override fun doAction(button: Chip, moduleHolder: ModuleHolder) {
+            if (!moduleHolder.hasFlag(ModuleInfo.FLAGS_MODULE_ACTIVE or ModuleInfo.FLAG_MODULE_UNINSTALLING) && moduleHolder.hasFlag(
+                    ModuleInfo.FLAG_MODULE_UPDATING
+                )
+            ) {
+                doActionLong(button, moduleHolder)
+                return
             }
-            String name;
-            if (moduleHolder.moduleInfo != null) {
-                name = moduleHolder.moduleInfo.name;
+            val name: String? = if (moduleHolder.moduleInfo != null) {
+                moduleHolder.moduleInfo!!.name
             } else {
-                name = moduleHolder.repoModule.moduleInfo.name;
+                moduleHolder.repoModule?.moduleInfo?.name
             }
-            TrackHelper.track().event("uninstall_module", name).with(MainApplication.getINSTANCE().getTracker());
-            Timber.i(Integer.toHexString(moduleHolder.moduleInfo.flags));
-            if (!Objects.requireNonNull(ModuleManager.getInstance()).setUninstallState(moduleHolder.moduleInfo, !moduleHolder.hasFlag(ModuleInfo.FLAG_MODULE_UNINSTALLING))) {
-                Timber.e("Failed to switch uninstalled state!");
+            TrackHelper.track().event("uninstall_module", name).with(INSTANCE!!.getTracker())
+            Timber.i(Integer.toHexString(moduleHolder.moduleInfo?.flags ?: 0))
+            if (!instance!!.setUninstallState(
+                    moduleHolder.moduleInfo!!, !moduleHolder.hasFlag(
+                        ModuleInfo.FLAG_MODULE_UNINSTALLING
+                    )
+                )
+            ) {
+                Timber.e("Failed to switch uninstalled state!")
             }
-            update(button, moduleHolder);
+            update(button, moduleHolder)
         }
 
-        @Override
-        public boolean doActionLong(Chip button, ModuleHolder moduleHolder) {
+        override fun doActionLong(button: Chip, moduleHolder: ModuleHolder): Boolean {
+            if (moduleHolder.moduleInfo == null) {
+                return false
+            }
             // Actually a module having mount is the only issue when deleting module
-            if (moduleHolder.moduleInfo.hasFlag(ModuleInfo.FLAG_MODULE_HAS_ACTIVE_MOUNT))
-                return false; // We can't trust active flag on first boot
-            MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(button.getContext());
-            builder.setTitle(R.string.master_delete);
-            builder.setPositiveButton(R.string.master_delete_yes, (dialog, which) -> {
-                String moduleId = moduleHolder.moduleInfo.id;
-                if (!Objects.requireNonNull(ModuleManager.getInstance()).masterClear(moduleHolder.moduleInfo)) {
-                    Toast.makeText(button.getContext(), R.string.master_delete_fail, Toast.LENGTH_SHORT).show();
+            if (moduleHolder.moduleInfo!!.hasFlag(ModuleInfo.FLAG_MODULE_HAS_ACTIVE_MOUNT)) return false // We can't trust active flag on first boot
+            val builder = MaterialAlertDialogBuilder(button.context)
+            builder.setTitle(R.string.master_delete)
+            builder.setPositiveButton(R.string.master_delete_yes) { _: DialogInterface?, _: Int ->
+                val moduleId = moduleHolder.moduleInfo!!.id
+                if (!instance!!.masterClear(moduleHolder.moduleInfo!!)) {
+                    Toast.makeText(button.context, R.string.master_delete_fail, Toast.LENGTH_SHORT)
+                        .show()
                 } else {
-                    moduleHolder.moduleInfo = null;
-                    FoxActivity.getFoxActivity(button).refreshUI();
-                    Timber.e("Cleared: %s", moduleId);
+                    moduleHolder.moduleInfo = null
+                    FoxActivity.getFoxActivity(button).refreshUI()
+                    Timber.e("Cleared: %s", moduleId)
                 }
-            });
-            builder.setNegativeButton(R.string.master_delete_no, (v, i) -> {
-            });
-            builder.create();
-            builder.show();
-            return true;
-        }
-    }, CONFIG() {
-        @Override
-        public void update(Chip button, ModuleHolder moduleHolder) {
-            button.setChipIcon(button.getContext().getDrawable(R.drawable.ic_baseline_app_settings_alt_24));
-            button.setText(R.string.config);
-        }
-
-        @Override
-        public void doAction(Chip button, ModuleHolder moduleHolder) {
-            String config = moduleHolder.getMainModuleConfig();
-            if (config == null) return;
-
-            String name;
-            if (moduleHolder.moduleInfo != null) {
-                name = moduleHolder.moduleInfo.name;
-            } else {
-                name = moduleHolder.repoModule.moduleInfo.name;
             }
-            TrackHelper.track().event("config_module", name).with(MainApplication.getINSTANCE().getTracker());
-            if (AndroidacyUtil.Companion.isAndroidacyLink(config)) {
-                IntentHelper.openUrlAndroidacy(button.getContext(), config, true);
-            } else {
-                IntentHelper.openConfig(button.getContext(), config);
-            }
+            builder.setNegativeButton(R.string.master_delete_no) { _: DialogInterface?, _: Int -> }
+            builder.create()
+            builder.show()
+            return true
         }
-    }, SUPPORT() {
-        @Override
-        public void update(Chip button, ModuleHolder moduleHolder) {
-            ModuleInfo moduleInfo = moduleHolder.getMainModuleInfo();
-            button.setChipIcon(button.getContext().getDrawable(supportIconForUrl(moduleInfo.support)));
-            button.setText(R.string.support);
+    },
+    CONFIG {
+        override fun update(button: Chip, moduleHolder: ModuleHolder) {
+            button.chipIcon =
+                button.context.getDrawable(R.drawable.ic_baseline_app_settings_alt_24)
+            button.setText(R.string.config)
         }
 
-        @Override
-        public void doAction(Chip button, ModuleHolder moduleHolder) {
-
-            String name;
-            if (moduleHolder.moduleInfo != null) {
-                name = moduleHolder.moduleInfo.name;
-            } else {
-                name = moduleHolder.repoModule.moduleInfo.name;
+        override fun doAction(button: Chip, moduleHolder: ModuleHolder) {
+            if (moduleHolder.moduleInfo == null) {
+                return
             }
-            TrackHelper.track().event("support_module", name).with(MainApplication.getINSTANCE().getTracker());
-            IntentHelper.Companion.openUrl(button.getContext(), Objects.requireNonNull(moduleHolder.getMainModuleInfo().support));
-        }
-    }, DONATE() {
-        @Override
-        public void update(Chip button, ModuleHolder moduleHolder) {
-            ModuleInfo moduleInfo = moduleHolder.getMainModuleInfo();
-            button.setChipIcon(button.getContext().getDrawable(donateIconForUrl(moduleInfo.donate)));
-            button.setText(R.string.donate);
-        }
-
-        @Override
-        public void doAction(Chip button, ModuleHolder moduleHolder) {
-            String name;
-            if (moduleHolder.moduleInfo != null) {
-                name = moduleHolder.moduleInfo.name;
+            val config = moduleHolder.mainModuleConfig ?: return
+            val name: String? = if (moduleHolder.moduleInfo != null) {
+                moduleHolder.moduleInfo!!.name
             } else {
-                name = moduleHolder.repoModule.moduleInfo.name;
+                moduleHolder.repoModule?.moduleInfo?.name
             }
-            TrackHelper.track().event("donate_module", name).with(MainApplication.getINSTANCE().getTracker());
-            IntentHelper.Companion.openUrl(button.getContext(), moduleHolder.getMainModuleInfo().donate);
+            TrackHelper.track().event("config_module", name).with(INSTANCE!!.getTracker())
+            if (isAndroidacyLink(config)) {
+                openUrlAndroidacy(button.context, config, true)
+            } else {
+                openConfig(button.context, config)
+            }
         }
-    }, WARNING() {
-        @Override
-        public void update(Chip button, ModuleHolder moduleHolder) {
-            button.setChipIcon(button.getContext().getDrawable(R.drawable.ic_baseline_warning_24));
-            button.setText(R.string.warning);
+    },
+    SUPPORT {
+        override fun update(button: Chip, moduleHolder: ModuleHolder) {
+            val moduleInfo = moduleHolder.mainModuleInfo
+            button.chipIcon = button.context.getDrawable(
+                supportIconForUrl(moduleInfo.support)
+            )
+            button.setText(R.string.support)
         }
 
-        @Override
-        public void doAction(Chip button, ModuleHolder moduleHolder) {
-            String name;
-            if (moduleHolder.moduleInfo != null) {
-                name = moduleHolder.moduleInfo.name;
+        override fun doAction(button: Chip, moduleHolder: ModuleHolder) {
+            val name: String? = if (moduleHolder.moduleInfo != null) {
+                moduleHolder.moduleInfo!!.name
             } else {
-                name = moduleHolder.repoModule.moduleInfo.name;
+                moduleHolder.repoModule?.moduleInfo?.name
             }
-            TrackHelper.track().event("warning_module", name).with(MainApplication.getINSTANCE().getTracker());
-            new MaterialAlertDialogBuilder(button.getContext()).setTitle(R.string.warning).setMessage(R.string.warning_message).setPositiveButton(R.string.understand, (v, i) -> {
-            }).create().show();
+            TrackHelper.track().event("support_module", name).with(INSTANCE!!.getTracker())
+            openUrl(button.context, Objects.requireNonNull(moduleHolder.mainModuleInfo.support))
         }
-    }, SAFE() {
+    },
+    DONATE {
+        override fun update(button: Chip, moduleHolder: ModuleHolder) {
+            val moduleInfo = moduleHolder.mainModuleInfo
+            button.chipIcon = button.context.getDrawable(
+                donateIconForUrl(moduleInfo.donate)
+            )
+            button.setText(R.string.donate)
+        }
+
+        override fun doAction(button: Chip, moduleHolder: ModuleHolder) {
+            val name: String? = if (moduleHolder.moduleInfo != null) {
+                moduleHolder.moduleInfo!!.name
+            } else {
+                moduleHolder.repoModule?.moduleInfo?.name
+            }
+            TrackHelper.track().event("donate_module", name).with(INSTANCE!!.getTracker())
+            openUrl(button.context, moduleHolder.mainModuleInfo.donate)
+        }
+    },
+    WARNING {
+        override fun update(button: Chip, moduleHolder: ModuleHolder) {
+            button.chipIcon = button.context.getDrawable(R.drawable.ic_baseline_warning_24)
+            button.setText(R.string.warning)
+        }
+
+        override fun doAction(button: Chip, moduleHolder: ModuleHolder) {
+            val name: String? = if (moduleHolder.moduleInfo != null) {
+                moduleHolder.moduleInfo!!.name
+            } else {
+                moduleHolder.repoModule?.moduleInfo?.name
+            }
+            TrackHelper.track().event("warning_module", name).with(INSTANCE!!.getTracker())
+            MaterialAlertDialogBuilder(button.context).setTitle(R.string.warning)
+                .setMessage(R.string.warning_message).setPositiveButton(
+                R.string.understand
+            ) { _: DialogInterface?, _: Int -> }
+                .create().show()
+        }
+    },
+    SAFE {
         // SAFE is for modules that the api says are clean. only supported by androidacy currently
-        @Override
-        public void update(Chip button, ModuleHolder moduleHolder) {
-            button.setChipIcon(button.getContext().getDrawable(R.drawable.baseline_verified_user_24));
-            button.setText(R.string.safe);
+        override fun update(button: Chip, moduleHolder: ModuleHolder) {
+            button.chipIcon =
+                button.context.getDrawable(R.drawable.baseline_verified_user_24)
+            button.setText(R.string.safe)
         }
 
-        @Override
-        public void doAction(Chip button, ModuleHolder moduleHolder) {
-            String name;
-            if (moduleHolder.moduleInfo != null) {
-                name = moduleHolder.moduleInfo.name;
+        override fun doAction(button: Chip, moduleHolder: ModuleHolder) {
+            val name: String? = if (moduleHolder.moduleInfo != null) {
+                moduleHolder.moduleInfo!!.name
             } else {
-                name = moduleHolder.repoModule.moduleInfo.name;
+                moduleHolder.repoModule?.moduleInfo?.name
             }
-            TrackHelper.track().event("safe_module", name).with(MainApplication.getINSTANCE().getTracker());
-            new MaterialAlertDialogBuilder(button.getContext()).setTitle(R.string.safe_module).setMessage(R.string.safe_message).setPositiveButton(R.string.understand, (v, i) -> {
-            }).create().show();
+            TrackHelper.track().event("safe_module", name).with(INSTANCE!!.getTracker())
+            MaterialAlertDialogBuilder(button.context).setTitle(R.string.safe_module)
+                .setMessage(R.string.safe_message).setPositiveButton(
+                R.string.understand
+            ) { _: DialogInterface?, _: Int -> }
+                .create().show()
         }
     };
 
     @DrawableRes
-    private final int iconId;
+    private val iconId: Int
 
-    ActionButtonType() {
-        this.iconId = 0;
+    constructor() {
+        iconId = 0
     }
 
-    @SuppressWarnings("unused")
-    ActionButtonType(int iconId) {
-        this.iconId = iconId;
+    @Suppress("unused")
+    constructor(iconId: Int) {
+        this.iconId = iconId
     }
 
-    @DrawableRes
-    public static int supportIconForUrl(String url) {
-        int icon = R.drawable.ic_baseline_support_24;
-        if (url == null) {
-            return icon;
-        } else if (url.startsWith("https://t.me/")) {
-            icon = R.drawable.ic_baseline_telegram_24;
-        } else if (url.startsWith("https://discord.gg/") || url.startsWith("https://discord.com/invite/")) {
-            icon = R.drawable.ic_baseline_discord_24;
-        } else if (url.startsWith("https://github.com/")) {
-            icon = R.drawable.ic_github;
-        } else if (url.startsWith("https://gitlab.com/")) {
-            icon = R.drawable.ic_gitlab;
-        } else if (url.startsWith("https://forum.xda-developers.com/")) {
-            icon = R.drawable.ic_xda;
+    open fun update(button: Chip, moduleHolder: ModuleHolder) {
+        button.chipIcon = button.context.getDrawable(iconId)
+    }
+
+    abstract fun doAction(button: Chip, moduleHolder: ModuleHolder)
+    open fun doActionLong(button: Chip, moduleHolder: ModuleHolder): Boolean {
+        return false
+    }
+
+    companion object {
+        @JvmStatic
+        @DrawableRes
+        fun supportIconForUrl(url: String?): Int {
+            var icon = R.drawable.ic_baseline_support_24
+            if (url == null) {
+                return icon
+            } else if (url.startsWith("https://t.me/")) {
+                icon = R.drawable.ic_baseline_telegram_24
+            } else if (url.startsWith("https://discord.gg/") || url.startsWith("https://discord.com/invite/")) {
+                icon = R.drawable.ic_baseline_discord_24
+            } else if (url.startsWith("https://github.com/")) {
+                icon = R.drawable.ic_github
+            } else if (url.startsWith("https://gitlab.com/")) {
+                icon = R.drawable.ic_gitlab
+            } else if (url.startsWith("https://forum.xda-developers.com/")) {
+                icon = R.drawable.ic_xda
+            }
+            return icon
         }
-        return icon;
-    }
 
-    @DrawableRes
-    public static int donateIconForUrl(String url) {
-        int icon = R.drawable.ic_baseline_monetization_on_24;
-        if (url == null) {
-            return icon;
-        } else if (url.startsWith("https://www.paypal.me/") || url.startsWith("https://www.paypal.com/paypalme/") || url.startsWith("https://www.paypal.com/donate/")) {
-            icon = R.drawable.ic_baseline_paypal_24;
-        } else if (url.startsWith("https://patreon.com/") || url.startsWith("https://www.patreon.com/")) {
-            icon = R.drawable.ic_patreon;
+        @JvmStatic
+        @DrawableRes
+        fun donateIconForUrl(url: String?): Int {
+            var icon = R.drawable.ic_baseline_monetization_on_24
+            if (url == null) {
+                return icon
+            } else if (url.startsWith("https://www.paypal.me/") || url.startsWith("https://www.paypal.com/paypalme/") || url.startsWith(
+                    "https://www.paypal.com/donate/"
+                )
+            ) {
+                icon = R.drawable.ic_baseline_paypal_24
+            } else if (url.startsWith("https://patreon.com/") || url.startsWith("https://www.patreon.com/")) {
+                icon = R.drawable.ic_patreon
+            }
+            return icon
         }
-        return icon;
-    }
-
-    public void update(Chip button, ModuleHolder moduleHolder) {
-        button.setChipIcon(button.getContext().getDrawable(this.iconId));
-    }
-
-    public abstract void doAction(Chip button, ModuleHolder moduleHolder);
-
-    public boolean doActionLong(Chip button, ModuleHolder moduleHolder) {
-        return false;
     }
 }

@@ -41,8 +41,7 @@ open class RepoData(url: String, cacheRoot: File) : XRepo() {
     private var metaDataCache: JSONObject?
 
     @JvmField
-    var lastUpdate
-            : Long = 0
+    var lastUpdate: Long = 0
 
     @JvmField
     var website: String? = null
@@ -72,18 +71,7 @@ open class RepoData(url: String, cacheRoot: File) : XRepo() {
     var defaultSubmitModule: String? = null
 
     override var name: String? = null
-        get() = {
-            // if name is null return defaultName and if defaultName is null return url
-            if (field == null) {
-                if (defaultName == null) {
-                    url
-                } else {
-                    defaultName
-                }
-            } else {
-                field
-            }
-        }.toString()
+        get() = field ?: defaultName
         set(value) {
             field = value
         }
@@ -150,9 +138,7 @@ open class RepoData(url: String, cacheRoot: File) : XRepo() {
         isForceHide = shouldForceHide(tempVarForPreferenceId)
         // basically same as above but for room database
         val db = Room.databaseBuilder(
-            INSTANCE!!.applicationContext,
-            ReposListDatabase::class.java,
-            "repo_database"
+            INSTANCE!!.applicationContext, ReposListDatabase::class.java, "ReposList.db"
         ).allowMainThreadQueries().build()
         val reposListRoom = db.reposListDao()
         val reposListRoomList = reposListRoom.getById(preferenceId!!)
@@ -189,6 +175,7 @@ open class RepoData(url: String, cacheRoot: File) : XRepo() {
                 Timber.w("Failed to load repo metadata from database: " + e.message + ". If this is a first time run, this is normal.")
             }
         }
+        db.close()
     }
 
     open fun prepare(): Boolean {
@@ -204,8 +191,7 @@ open class RepoData(url: String, cacheRoot: File) : XRepo() {
             var nameForModules =
                 if (name.endsWith(" (Official)")) name.substring(0, name.length - 11) else name
             nameForModules = if (nameForModules.endsWith(" [Official]")) nameForModules.substring(
-                0,
-                nameForModules.length - 11
+                0, nameForModules.length - 11
             ) else nameForModules
             nameForModules =
                 if (nameForModules.contains("Official")) nameForModules.replace("Official", "")
@@ -307,9 +293,9 @@ open class RepoData(url: String, cacheRoot: File) : XRepo() {
         } else {
             val db = Room.databaseBuilder(
                 INSTANCE!!.applicationContext,
-               ReposListDatabase::class.java,
+                ReposListDatabase::class.java,
                 "ReposList.db",
-            ).build()
+            ).allowMainThreadQueries().build()
             val reposList = db.reposListDao().getById(preferenceId!!)
             // should never happen but for safety
             if (reposList.enabled) {
@@ -325,9 +311,21 @@ open class RepoData(url: String, cacheRoot: File) : XRepo() {
                 INSTANCE!!.applicationContext,
                 ReposListDatabase::class.java,
                 "ReposList.db",
-            ).build()
+            ).allowMainThreadQueries().build()
+
             val reposList = db.reposListDao().getById(preferenceId!!)
-            db.reposListDao().update(name = reposList.name, enabled = value, id = reposList.id, donate = reposList.donate, support = reposList.support, website = reposList.website, submitModule = reposList.submitModule, lastUpdate = reposList.lastUpdate.toLong(), url = reposList.url)
+            db.reposListDao().update(
+                name = reposList.name,
+                enabled = value,
+                id = reposList.id,
+                donate = reposList.donate.toString(),
+                support = reposList.support.toString(),
+                website = reposList.website.toString(),
+                submitModule = reposList.submitModule.toString(),
+                lastUpdate = reposList.lastUpdate.toLong(),
+                url = reposList.url
+            )
+            db.close()
         }
 
     @Throws(IOException::class)
@@ -381,6 +379,7 @@ open class RepoData(url: String, cacheRoot: File) : XRepo() {
             ReposListDatabase::class.java,
             "ReposList.db",
         ).allowMainThreadQueries().build()
+
         val reposList = db.reposListDao().getById(preferenceId!!)
         enabled = if (reposList.enabled) {
             !isForceHide
@@ -433,10 +432,14 @@ open class RepoData(url: String, cacheRoot: File) : XRepo() {
                 val diff = currentTime - lastUpdate
                 val diffMinutes = diff / (60 * 1000) % 60
                 Timber.d("Repo $preferenceId updated: $diffMinutes minutes ago")
+                db.close()
+                db2.close()
                 diffMinutes > if (BuildConfig.DEBUG) 15 else 30
             } else {
                 Timber.d("Repo $preferenceId should update could not find repo in database")
                 Timber.d("This is probably an error, please report this to the developer")
+                db.close()
+                db2.close()
                 true
             }
         } else {

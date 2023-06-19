@@ -5,6 +5,8 @@
 package com.fox2code.mmm.utils.room
 
 import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
 import androidx.room.Query
 
 @Suppress("unused")
@@ -26,11 +28,11 @@ interface ReposListDao {
     @Query("SELECT * FROM ReposList WHERE id = :id")
     fun getById(id: String): ReposList
 
-    @Query("INSERT INTO ReposList VALUES (:id, :url, :enabled, :donate, :support, :submitModule, :lastUpdate, :name, :website)")
-    fun insert(id: String, url: String, enabled: Boolean, donate: String?, support: String?, submitModule: String?, lastUpdate: Long, name: String, website: String?)
+    @Insert(entity = ReposList::class, onConflict = OnConflictStrategy.REPLACE)
+    fun insert(reposList: ReposList)
 
     @Query("UPDATE ReposList SET url = :url, enabled = :enabled, donate = :donate, support = :support, submitModule = :submitModule, lastUpdate = :lastUpdate, name = :name, website = :website WHERE id = :id")
-    fun update(id: String, url: String?, enabled: Boolean?, donate: String?, support: String?, submitModule: String?, lastUpdate: Long?, name: String?, website: String?)
+    fun update(id: String = "", url: String = "", enabled: Boolean = false, donate: String = "", support: String = "", submitModule: String = "", lastUpdate: Long = 0, name: String = "", website: String = "")
 
     @Query("DELETE FROM ReposList WHERE id = :id")
     fun delete(id: String)

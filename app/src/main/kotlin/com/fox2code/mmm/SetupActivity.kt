@@ -21,8 +21,11 @@ import androidx.fragment.app.FragmentActivity
 import androidx.room.Room
 import com.fox2code.foxcompat.app.FoxActivity
 import com.fox2code.mmm.databinding.ActivitySetupBinding
+import com.fox2code.mmm.repo.RepoManager
 import com.fox2code.mmm.utils.IntentHelper
+import com.fox2code.mmm.utils.room.ModuleListCache
 import com.fox2code.mmm.utils.room.ModuleListCacheDatabase
+import com.fox2code.mmm.utils.room.ReposList
 import com.fox2code.mmm.utils.room.ReposListDatabase
 import com.fox2code.rosettax.LanguageActivity
 import com.fox2code.rosettax.LanguageSwitcher
@@ -227,10 +230,11 @@ class SetupActivity : FoxActivity(), LanguageActivity {
             val db = Room.databaseBuilder(
                 applicationContext,
                 ReposListDatabase::class.java, "ReposList.db"
-            ).build()
+            ).allowMainThreadQueries().build()
             val androidacyRepoRoom = andRepoView.isChecked
             val magiskAltRepoRoom = magiskAltRepoView.isChecked
             val reposListDao = db.reposListDao()
+            Timber.d(reposListDao.getAll().toString())
             val androidacyRepoRoomObj = reposListDao.getById("androidacy_repo")
             val magiskAltRepoRoomObj = reposListDao.getById("magisk_alt_repo")
             reposListDao.setEnabled(androidacyRepoRoomObj.id, androidacyRepoRoom)
@@ -239,12 +243,6 @@ class SetupActivity : FoxActivity(), LanguageActivity {
             editor.putString("last_shown_setup", "v3")
             // Commit the changes
             editor.commit()
-            // sleep to allow the realm transaction to finish
-            try {
-                Thread.sleep(250)
-            } catch (e: InterruptedException) {
-                Thread.currentThread().interrupt()
-            }
             // Log the changes
             Timber.d("Setup finished. Preferences: %s", prefs.all)
             Timber.d("Androidacy repo: %s", androidacyRepoRoom)
@@ -329,18 +327,111 @@ class SetupActivity : FoxActivity(), LanguageActivity {
 
     // creates the room database
     private fun createDatabases() {
-        val startTime = System.currentTimeMillis()
-        val appContext = MainApplication.INSTANCE!!.applicationContext
-        Room.databaseBuilder(appContext, ReposListDatabase::class.java, "reposlist.db")
-            .createFromAsset("assets/reposlist.db")
-            .fallbackToDestructiveMigration()
-            .build()
-        // same for modulelistcache
-        Room.databaseBuilder(appContext, ModuleListCacheDatabase::class.java, "modulelistcache.db")
-            .createFromAsset("assets/modulelistcache.db")
-            .fallbackToDestructiveMigration()
-            .build()
-        Timber.d("Databases created in %s ms", System.currentTimeMillis() - startTime)
+        val thread = Thread {
+            Timber.d("Creating databases")
+            val startTime = System.currentTimeMillis()
+            val appContext = MainApplication.INSTANCE!!.applicationContext
+            val db = Room.databaseBuilder(appContext, ReposListDatabase::class.java, "ReposList.db")
+                .fallbackToDestructiveMigration().build()
+            // same for modulelistcache
+            val db2 = Room.databaseBuilder(
+                appContext,
+                ModuleListCacheDatabase::class.java,
+                "ModuleListCache.db"
+            )
+                .fallbackToDestructiveMigration()
+                .allowMainThreadQueries().build()
+
+            val reposListDao = db.reposListDao()
+            val moduleListCacheDao = db2.moduleListCacheDao()
+            // create the androidacy repo
+            val androidacyRepo = ReposList(
+                "androidacy_repo",
+                RepoManager.ANDROIDACY_MAGISK_REPO_ENDPOINT,
+                true,
+                "https://www.androidacy.com/membership-join/",
+                "https://t.me/androidacy",
+                "https://www.androidacy.com/module-repository-applications//",
+                0,
+                "Androidacy Modules Repo",
+                "https://www.androidacy.com/"
+            )
+            // create the magisk alt repo
+            val magiskAltRepo = ReposList(
+                "magisk_alt_repo",
+                RepoManager.MAGISK_ALT_REPO_JSDELIVR,
+                false,
+                "",
+                "",
+                RepoManager.MAGISK_ALT_REPO_HOMEPAGE + "/submission/",
+                0,
+                "Magisk Alt Modules Repo",
+                RepoManager.MAGISK_ALT_REPO_HOMEPAGE
+            )
+            // insert the repos into the database
+            reposListDao.insert(androidacyRepo)
+            reposListDao.insert(magiskAltRepo)
+            // create the modulelistcache
+            val moduleListCache = ModuleListCache(
+                codename = "androidacy_repo",
+                version = "",
+                versionCode = 0,
+                author = "",
+                description = "",
+                minApi = 0,
+                maxApi = 99999,
+                minMagisk = 0,
+                needRamdisk = false,
+                support = "",
+                donate = "",
+                config = "",
+                changeBoot = false,
+                mmtReborn = false,
+                repoId = "androidacy_repo",
+                lastUpdate = 0,
+                name = "",
+                safe = false,
+                stats = 0,
+            )
+            // insert the modulelistcache into the database
+            moduleListCacheDao.insert(moduleListCache)
+            // now make sure reposlist is updated with 2 entries and modulelistcache is updated with 1 entry
+            val reposList = reposListDao.getAll()
+            val moduleListCacheList = moduleListCacheDao.getAll()
+            // make sure reposlist is updated with 2 entries
+            if (reposList.size != 2) {
+                Timber.e("ReposList is not updated with 2 entries")
+                // show a toast
+                runOnUiThread {
+                    Toast.makeText(
+                        this,
+                        R.string.error_creating_repos_database,
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
+            } else {
+                Timber.d("ReposList is updated with 2 entries")
+            }
+            // make sure modulelistcache is updated with 1 entry
+            if (moduleListCacheList.size != 1) {
+                Timber.e("ModuleListCache is not updated with 1 entry")
+                // show a toast
+                runOnUiThread {
+                    Toast.makeText(
+                        this,
+                        R.string.error_creating_modulelistcache_database,
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
+            } else {
+                Timber.d("ModuleListCache is updated with 1 entry")
+            }
+            // close the databases
+            db.close()
+            db2.close()
+            Timber.d("Databases created in %s ms", System.currentTimeMillis() - startTime)
+        }
+        thread.start()
     }
 
     private fun createFiles() {

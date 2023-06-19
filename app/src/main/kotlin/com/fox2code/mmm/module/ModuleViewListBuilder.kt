@@ -72,6 +72,8 @@ class ModuleViewListBuilder(private val activity: Activity) {
             Timber.i("appendRemoteModules() called")
         }
         synchronized(updateLock) {
+            Timber.i("appendRemoteModules() started")
+            val startTime = System.currentTimeMillis()
             val showIncompatible = MainApplication.isShowIncompatibleModules
             for (moduleHolder in mappedModuleHolders.values) {
                 moduleHolder.repoModule = null
@@ -119,6 +121,7 @@ class ModuleViewListBuilder(private val activity: Activity) {
                         }
                     }
                 }
+                Timber.i("appendRemoteModules() finished in %dms", System.currentTimeMillis() - startTime)
             }
         }
     }
