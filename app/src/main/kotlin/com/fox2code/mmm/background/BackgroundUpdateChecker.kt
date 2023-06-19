@@ -26,6 +26,7 @@ import androidx.work.WorkManager
 import androidx.work.Worker
 import androidx.work.WorkerParameters
 import com.fox2code.mmm.AppUpdateManager
+import com.fox2code.mmm.BuildConfig
 import com.fox2code.mmm.MainActivity
 import com.fox2code.mmm.MainApplication
 import com.fox2code.mmm.R
@@ -53,7 +54,7 @@ class BackgroundUpdateChecker(context: Context, workerParams: WorkerParameters) 
         private const val NOTFIICATION_GROUP = "updates"
         private const val NOTIFICATION_CHANNEL_ID_APP = "background_update_app"
         val lock =
-            Any() // Avoid concurrency issuespublic static final String NOTIFICATION_CHANNEL_ID = "background_update";
+            Any() // Avoid concurrency issues
         private const val NOTIFICATION_ID_ONGOING = 2
         private const val NOTIFICATION_CHANNEL_ID_ONGOING = "mmm_background_update"
         private const val NOTIFICATION_ID_APP = 3
@@ -111,7 +112,7 @@ class BackgroundUpdateChecker(context: Context, workerParams: WorkerParameters) 
             }
         }
 
-        @Suppress("NAME_SHADOWING")
+        @Suppress("NAME_SHADOWING", "KotlinConstantConditions")
         fun doCheck(context: Context) {
             // first, check if the user has enabled background update checking
             if (!MainApplication.getSharedPreferences("mmm")!!
@@ -280,14 +281,20 @@ class BackgroundUpdateChecker(context: Context, workerParams: WorkerParameters) 
                 if (MainApplication.getSharedPreferences("mmm")!!
                         .getBoolean("pref_background_update_check_app", false)
                 ) {
-                    try {
-                        val shouldUpdate = AppUpdateManager.appUpdateManager.checkUpdate(true)
-                        if (shouldUpdate) {
-                            Timber.d("Found app update")
-                            postNotificationForAppUpdate(context)
+
+                    // don't check if app is from play store or fdroid
+                    if (BuildConfig.FLAVOR != "play" || BuildConfig.FLAVOR != "fdroid") {
+                        try {
+                            val shouldUpdate = AppUpdateManager.appUpdateManager.checkUpdate(true)
+                            if (shouldUpdate) {
+                                Timber.d("Found app update")
+                                postNotificationForAppUpdate(context)
+                            } else {
+                                Timber.d("No app update found")
+                            }
+                        } catch (e: Exception) {
+                            Timber.e("Failed to check for app update")
                         }
-                    } catch (e: Exception) {
-                        Timber.e("Failed to check for app update")
                     }
                 }
                 // remove checking notification

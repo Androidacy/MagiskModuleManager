@@ -69,7 +69,7 @@ interface ModuleListCacheDao {
     fun getByCodename(codename: String): ModuleListCache
 
     @Insert(entity = ModuleListCache::class, onConflict = OnConflictStrategy.REPLACE)
-    fun insert(codename: String, version: String, versionCode: Int, author: String, description: String, minApi: Int, maxApi: Int, minMagisk: Int, needRamdisk: Boolean, support: String, donate: String, config: String, changeBoot: Boolean, mmtReborn: Boolean, repoId: String, lastUpdate: Long, safe: Boolean, name: String)
+    fun insert(codename: String, version: String, versionCode: Int, author: String, description: String, minApi: Int, maxApi: Int, minMagisk: Int, needRamdisk: Boolean, support: String, donate: String, config: String, changeBoot: Boolean, mmtReborn: Boolean, repoId: String, lastUpdate: Long, safe: Boolean, name: String, stats: Int)
 
     @Query("UPDATE modulelistcache SET version = :version WHERE codename = :codename")
     fun setVersion(codename: String, version: String)
@@ -121,6 +121,9 @@ interface ModuleListCacheDao {
 
     @Query("UPDATE modulelistcache SET name = :name WHERE codename = :codename")
     fun setName(codename: String, name: String)
+
+    @Query("UPDATE modulelistcache SET stats = :stats WHERE codename = :codename")
+    fun setStats(codename: String, stats: Int)
 
     @Query("DELETE FROM modulelistcache WHERE codename = :codename")
     fun delete(codename: String)
@@ -182,10 +185,21 @@ interface ModuleListCacheDao {
     @Query("SELECT name FROM modulelistcache WHERE codename = :codename")
     fun getName(codename: String): String
 
+    @Query("SELECT stats FROM modulelistcache WHERE codename = :codename")
+    fun getStats(codename: String): Int
+
     @Query("SELECT * FROM modulelistcache WHERE codename = :codename")
     fun get(codename: String): ModuleListCache
 
     // exists
     @Query("SELECT EXISTS(SELECT * FROM modulelistcache WHERE codename = :codename)")
     fun exists(codename: String): Boolean
+
+    // asJson by repoId
+    @Query("SELECT * FROM modulelistcache WHERE repoId = :repoId")
+    fun asJson(repoId: String): List<ModuleListCache>
+
+    // delete by repoId
+    @Query("DELETE FROM modulelistcache WHERE repoId = :repoId")
+    fun deleteByRepoId(repoId: String)
 }

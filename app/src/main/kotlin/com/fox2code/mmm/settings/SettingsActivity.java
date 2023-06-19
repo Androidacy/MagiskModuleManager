@@ -48,6 +48,7 @@ import androidx.preference.PreferenceGroup;
 import androidx.preference.PreferenceManager;
 import androidx.preference.SwitchPreferenceCompat;
 import androidx.preference.TwoStatePreference;
+import androidx.room.Room;
 import androidx.security.crypto.EncryptedSharedPreferences;
 import androidx.security.crypto.MasterKey;
 
@@ -75,7 +76,8 @@ import com.fox2code.mmm.utils.ExternalHelper;
 import com.fox2code.mmm.utils.IntentHelper;
 import com.fox2code.mmm.utils.ProcessHelper;
 import com.fox2code.mmm.utils.io.net.Http;
-import com.fox2code.mmm.utils.realm.ReposList;
+import com.fox2code.mmm.utils.room.ReposList;
+import com.fox2code.mmm.utils.room.ReposListDatabase;
 import com.fox2code.mmm.utils.sentry.SentryMain;
 import com.fox2code.rosettax.LanguageActivity;
 import com.fox2code.rosettax.LanguageSwitcher;
@@ -106,9 +108,6 @@ import java.util.Objects;
 import java.util.Random;
 import java.util.Set;
 
-import io.realm.Realm;
-import io.realm.RealmConfiguration;
-import io.realm.RealmResults;
 import timber.log.Timber;
 
 public class SettingsActivity extends FoxActivity implements LanguageActivity {
@@ -1071,28 +1070,13 @@ public class SettingsActivity extends FoxActivity implements LanguageActivity {
                     return true;
                 });
             }
-            // Get magisk_alt_repo enabled state from realm db
-            RealmConfiguration realmConfig = new RealmConfiguration.Builder().name("ReposList.realm").encryptionKey(MainApplication.getINSTANCE().getKey()).allowQueriesOnUiThread(true).allowWritesOnUiThread(true).directory(MainApplication.getINSTANCE().getDataDirWithPath("realms")).schemaVersion(1).build();
-            Realm realm1 = Realm.getInstance(realmConfig);
-            ReposList reposList = realm1.where(ReposList.class).equalTo("id", "magisk_alt_repo").findFirst();
-            if (reposList != null) {
-                // Set the switch to the current state
-                SwitchPreferenceCompat magiskAltRepoEnabled = Objects.requireNonNull(findPreference("pref_magisk_alt_repo_enabled"));
-                magiskAltRepoEnabled.setChecked(reposList.isEnabled());
-            }
-            // add listener to magisk_alt_repo_enabled switch to update realm db
+            // Get magisk_alt_repo enabled state from room reposlist db
+            ReposListDatabase db = Room.databaseBuilder(requireContext(), ReposListDatabase.class, "ReposList.db").allowMainThreadQueries().build();
+            // add listener to magisk_alt_repo_enabled switch to update room db
             Preference magiskAltRepoEnabled = Objects.requireNonNull(findPreference("pref_magisk_alt_repo_enabled"));
             magiskAltRepoEnabled.setOnPreferenceChangeListener((preference, newValue) -> {
-                // Update realm db
-                Realm realm = Realm.getInstance(realmConfig);
-                realm.executeTransaction(realm2 -> {
-                    ReposList reposList1 = realm2.where(ReposList.class).equalTo("id", "magisk_alt_repo").findFirst();
-                    if (reposList1 != null) {
-                        reposList1.setEnabled(Boolean.parseBoolean(String.valueOf(newValue)));
-                    } else {
-                        Timber.e("Alt Repo not found in realm db");
-                    }
-                });
+                // Update room db
+                db.reposListDao().setEnabled("magisk_alt_repo", Boolean.parseBoolean(String.valueOf(newValue)));
                 return true;
             });
             // Disable toggling the pref_androidacy_repo_enabled on builds without an
@@ -1107,37 +1091,21 @@ public class SettingsActivity extends FoxActivity implements LanguageActivity {
                     }).show();
                     // Revert the switch to off
                     androidacyRepoEnabled.setChecked(false);
-                    // Disable in realm db
-                    RealmConfiguration realmConfiguration = new RealmConfiguration.Builder().name("ReposList.realm").encryptionKey(MainApplication.getINSTANCE().getKey()).allowQueriesOnUiThread(true).allowWritesOnUiThread(true).directory(MainApplication.getINSTANCE().getDataDirWithPath("realms")).schemaVersion(1).build();
-                    Realm realm = Realm.getInstance(realmConfiguration);
-                    realm.executeTransaction(realm2 -> {
-                        ReposList repoRealmResults = realm2.where(ReposList.class).equalTo("id", "androidacy_repo").findFirst();
-                        assert repoRealmResults != null;
-                        repoRealmResults.setEnabled(false);
-                        realm2.insertOrUpdate(repoRealmResults);
-                        realm2.close();
-                    });
+                    // Disable in room db
+                    db.reposListDao().setEnabled("androidacy_repo", false);
                     return false;
                 });
             } else {
-                // get if androidacy repo is enabled from realm db
-                RealmConfiguration realmConfiguration = new RealmConfiguration.Builder().name("ReposList.realm").encryptionKey(MainApplication.getINSTANCE().getKey()).allowQueriesOnUiThread(true).allowWritesOnUiThread(true).directory(MainApplication.getINSTANCE().getDataDirWithPath("realms")).schemaVersion(1).build();
-                Realm realm = Realm.getInstance(realmConfiguration);
-                ReposList repoRealmResults = realm.where(ReposList.class).equalTo("id", "androidacy_repo").findFirst();
-                if (repoRealmResults == null) {
-                    throw new IllegalStateException("Androidacy repo not found in realm db");
-                }
-                boolean androidacyRepoEnabledPref = repoRealmResults.isEnabled();
+                // get if androidacy repo is enabled from room db
+                ReposList repoRealmResults = db.reposListDao().getById("androidacy_repo");
+                boolean androidacyRepoEnabledPref = repoRealmResults.getEnabled();
                 // set the switch to the current state
                 androidacyRepoEnabled.setChecked(androidacyRepoEnabledPref);
                 // add a click listener to the switch
                 androidacyRepoEnabled.setOnPreferenceClickListener(preference -> {
                     boolean enabled = androidacyRepoEnabled.isChecked();
                     // save the new state
-                    realm.executeTransaction(realm2 -> {
-                        ReposList repoRealmResults1 = realm2.where(ReposList.class).equalTo("id", "androidacy_repo").findFirst();
-                        repoRealmResults1.setEnabled(enabled);
-                    });
+                    db.reposListDao().setEnabled("androidacy_repo", enabled);
                     return true;
                 });
                 if (androidacyRepoEnabledPref) {

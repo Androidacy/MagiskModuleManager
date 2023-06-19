@@ -22,7 +22,6 @@ import androidx.room.Room
 import com.fox2code.foxcompat.app.FoxActivity
 import com.fox2code.mmm.databinding.ActivitySetupBinding
 import com.fox2code.mmm.utils.IntentHelper
-import com.fox2code.mmm.utils.realm.ReposList
 import com.fox2code.mmm.utils.room.ModuleListCacheDatabase
 import com.fox2code.mmm.utils.room.ReposListDatabase
 import com.fox2code.rosettax.LanguageActivity
@@ -33,8 +32,6 @@ import com.google.android.material.checkbox.MaterialCheckBox
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.materialswitch.MaterialSwitch
 import com.topjohnwu.superuser.internal.UiThreadHandler
-import io.realm.Realm
-import io.realm.RealmConfiguration
 import org.apache.commons.io.FileUtils
 import timber.log.Timber
 import java.io.File
@@ -43,7 +40,6 @@ import java.util.Objects
 
 class SetupActivity : FoxActivity(), LanguageActivity {
     private var cachedTheme = 0
-    private var realmDatabasesCreated = false
 
     @SuppressLint("ApplySharedPref", "RestrictedApi")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -227,36 +223,19 @@ class SetupActivity : FoxActivity(), LanguageActivity {
                 (Objects.requireNonNull<Any>(view.findViewById(R.id.setup_app_analytics)) as MaterialSwitch).isChecked
             )
             Timber.d("Saving preferences")
-            // Set the repos in the ReposList realm db
-            val realmConfig = RealmConfiguration.Builder().name("ReposList.realm")
-                .encryptionKey(MainApplication.INSTANCE!!.key)
-                .directory(MainApplication.INSTANCE!!.getDataDirWithPath("realms"))
-                .schemaVersion(1).build()
-            val androidacyRepo = andRepoView.isChecked
-            val magiskAltRepo = magiskAltRepoView.isChecked
-            var realm = Realm.getInstance(realmConfig)
-            Timber.d("Realm instance: %s", realm)
-            if (realm.isInTransaction) {
-                realm.commitTransaction()
-                Timber.d("Committed last unfinished transaction")
-            }
-            // check if instance has been closed
-            if (realm.isClosed) {
-                Timber.d("Realm instance was closed, reopening")
-                realm = Realm.getInstance(realmConfig)
-            }
-            realm.executeTransactionAsync { r: Realm ->
-                Timber.d("Realm transaction started")
-                r.where(ReposList::class.java).equalTo("id", "androidacy_repo")
-                    .findFirst()!!.isEnabled = androidacyRepo
-                r.where(ReposList::class.java).equalTo("id", "magisk_alt_repo")
-                    .findFirst()!!.isEnabled = magiskAltRepo
-                Timber.d("Realm transaction committing")
-                // commit the changes
-                r.commitTransaction()
-                r.close()
-                Timber.d("Realm transaction committed")
-            }
+            // now basically do the same thing for room db
+            val db = Room.databaseBuilder(
+                applicationContext,
+                ReposListDatabase::class.java, "ReposList.db"
+            ).build()
+            val androidacyRepoRoom = andRepoView.isChecked
+            val magiskAltRepoRoom = magiskAltRepoView.isChecked
+            val reposListDao = db.reposListDao()
+            val androidacyRepoRoomObj = reposListDao.getById("androidacy_repo")
+            val magiskAltRepoRoomObj = reposListDao.getById("magisk_alt_repo")
+            reposListDao.setEnabled(androidacyRepoRoomObj.id, androidacyRepoRoom)
+            reposListDao.setEnabled(magiskAltRepoRoomObj.id, magiskAltRepoRoom)
+            db.close()
             editor.putString("last_shown_setup", "v3")
             // Commit the changes
             editor.commit()
@@ -268,8 +247,8 @@ class SetupActivity : FoxActivity(), LanguageActivity {
             }
             // Log the changes
             Timber.d("Setup finished. Preferences: %s", prefs.all)
-            Timber.d("Androidacy repo: %s", androidacyRepo)
-            Timber.d("Magisk Alt repo: %s", magiskAltRepo)
+            Timber.d("Androidacy repo: %s", androidacyRepoRoom)
+            Timber.d("Magisk Alt repo: %s", magiskAltRepoRoom)
             // log last shown setup
             Timber.d("Last shown setup: %s", prefs.getString("last_shown_setup", "v0"))
             // Restart the activity
@@ -384,7 +363,6 @@ class SetupActivity : FoxActivity(), LanguageActivity {
             FileUtils.forceMkdir(File(MainApplication.INSTANCE!!.dataDir.toString() + "/cache/cronet"))
             FileUtils.forceMkdir(File(MainApplication.INSTANCE!!.dataDir.toString() + "/cache/WebView/Default/HTTP Cache/Code Cache/wasm"))
             FileUtils.forceMkdir(File(MainApplication.INSTANCE!!.dataDir.toString() + "/cache/WebView/Default/HTTP Cache/Code Cache/js"))
-            FileUtils.forceMkdir(File(MainApplication.INSTANCE!!.dataDir.toString() + "/repos/magiskAltRepo"))
         } catch (e: IOException) {
             Timber.e(e)
         }
@@ -393,7 +371,7 @@ class SetupActivity : FoxActivity(), LanguageActivity {
 
     @Suppress("KotlinConstantConditions")
     private fun disableUpdateActivityForFdroidFlavor() {
-        if (BuildConfig.FLAVOR == "fdroid") {
+        if (BuildConfig.FLAVOR == "fdroid" || BuildConfig.FLAVOR == "play") {
             // check if the update activity is enabled
             val pm = packageManager
             val componentName = ComponentName(this, UpdateActivity::class.java)

@@ -11,7 +11,7 @@ import androidx.room.Query
 @Dao
 interface ReposListDao {
     // contains
-    // id (string, primary), url (string), enabled (boolean), donate (string), support (string), submitMoulde (string), lastUpdate (bigint), name (string) and website (string)
+    // id (string, primary), url (string), enabled (boolean), donate (string), support (string), submitModule (string), lastUpdate (bigint), name (string) and website (string)
 
     // functions:
     // getAll(): List<ReposList>
@@ -30,7 +30,7 @@ interface ReposListDao {
     fun insert(id: String, url: String, enabled: Boolean, donate: String?, support: String?, submitModule: String?, lastUpdate: Long, name: String, website: String?)
 
     @Query("UPDATE ReposList SET url = :url, enabled = :enabled, donate = :donate, support = :support, submitModule = :submitModule, lastUpdate = :lastUpdate, name = :name, website = :website WHERE id = :id")
-    fun update(id: String, url: String, enabled: Boolean, donate: String, support: String, submitModule: String, lastUpdate: Long, name: String, website: String)
+    fun update(id: String, url: String?, enabled: Boolean?, donate: String?, support: String?, submitModule: String?, lastUpdate: Long?, name: String?, website: String?)
 
     @Query("DELETE FROM ReposList WHERE id = :id")
     fun delete(id: String)

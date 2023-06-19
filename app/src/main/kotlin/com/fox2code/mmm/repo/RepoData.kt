@@ -4,6 +4,7 @@
 package com.fox2code.mmm.repo
 
 import android.net.Uri
+import androidx.room.Room
 import com.fox2code.mmm.AppUpdateManager.Companion.shouldForceHide
 import com.fox2code.mmm.BuildConfig
 import com.fox2code.mmm.MainActivity
@@ -13,16 +14,13 @@ import com.fox2code.mmm.XRepo
 import com.fox2code.mmm.manager.ModuleInfo
 import com.fox2code.mmm.utils.io.Files.Companion.write
 import com.fox2code.mmm.utils.io.PropUtils.Companion.readProperties
-import com.fox2code.mmm.utils.realm.ModuleListCache
-import com.fox2code.mmm.utils.realm.ReposList
-import io.realm.Realm
-import io.realm.RealmConfiguration
+import com.fox2code.mmm.utils.room.ModuleListCacheDatabase
+import com.fox2code.mmm.utils.room.ReposListDatabase
 import org.json.JSONException
 import org.json.JSONObject
 import timber.log.Timber
 import java.io.File
 import java.io.IOException
-import java.util.concurrent.atomic.AtomicBoolean
 
 @Suppress("LeakingThis", "SENSELESS_COMPARISON", "RedundantSetter")
 open class RepoData(url: String, cacheRoot: File) : XRepo() {
@@ -150,40 +148,20 @@ open class RepoData(url: String, cacheRoot: File) : XRepo() {
         defaultName = url // Set url as default name
         val tempVarForPreferenceId = preferenceId!!
         isForceHide = shouldForceHide(tempVarForPreferenceId)
-        // this.enable is set from the database
-        val realmConfiguration = RealmConfiguration.Builder().name("ReposList.realm").encryptionKey(
-            INSTANCE!!.key
-        ).allowQueriesOnUiThread(true).allowWritesOnUiThread(true).directory(
-            INSTANCE!!.getDataDirWithPath("realms")
-        ).schemaVersion(1).build()
-        val realm = Realm.getInstance(realmConfiguration)
-        val reposList = realm.where(ReposList::class.java).equalTo("id", preferenceId).findFirst()
-        if (reposList == null) {
-            Timber.d("RepoData for %s not found in database", preferenceId)
-            // log every repo in db
-            val fullList: Array<Any> = realm.where(ReposList::class.java).findAll().toTypedArray()
-            Timber.d("RepoData: " + preferenceId + ". repos in database: " + fullList.size)
-            for (repo in fullList) {
-                val r = repo as ReposList
-                Timber.d("RepoData: " + preferenceId + ". repo: " + r.id + " " + r.name + " " + r.website + " " + r.support + " " + r.donate + " " + r.submitModule + " " + r.isEnabled)
-            }
-        } else {
-            Timber.d("RepoData for %s found in database", preferenceId)
-        }
-        Timber.d(
-            "RepoData: $preferenceId. record in database: " + (reposList?.toString()
-                ?: "none")
-        )
-        enabled = !isForceHide && reposList != null && reposList.isEnabled
+        // basically same as above but for room database
+        val db = Room.databaseBuilder(
+            INSTANCE!!.applicationContext,
+            ReposListDatabase::class.java,
+            "repo_database"
+        ).allowMainThreadQueries().build()
+        val reposListRoom = db.reposListDao()
+        val reposListRoomList = reposListRoom.getById(preferenceId!!)
+        enabled = !isForceHide && reposListRoomList != null && reposListRoomList.enabled
         defaultWebsite = "https://" + Uri.parse(url).host + "/"
         // open realm database
         // load metadata from realm database
         if (enabled) {
             try {
-                metaDataCache = ModuleListCache.getRepoModulesAsJson(preferenceId)
-                // log count of modules in the database
-                val tempMetaDataCacheVar = metaDataCache!!
-                Timber.d("RepoData: $preferenceId. modules in database: ${tempMetaDataCacheVar.length()}")
                 // load repo metadata from ReposList unless it's a built-in repo
                 if (RepoManager.isBuiltInRepo(preferenceId)) {
                     name = defaultName
@@ -192,28 +170,25 @@ open class RepoData(url: String, cacheRoot: File) : XRepo() {
                     donate = defaultDonate
                     submitModule = defaultSubmitModule
                 } else {
-                    // get everything from ReposList realm database
-                    name = realm.where(
-                        ReposList::class.java
-                    ).equalTo("id", preferenceId).findFirst()?.name
-                    website = realm.where(
-                        ReposList::class.java
-                    ).equalTo("id", preferenceId).findFirst()?.website
-                    support = realm.where(
-                        ReposList::class.java
-                    ).equalTo("id", preferenceId).findFirst()?.support
-                    donate = realm.where(
-                        ReposList::class.java
-                    ).equalTo("id", preferenceId).findFirst()?.donate
-                    submitModule = realm.where(
-                        ReposList::class.java
-                    ).equalTo("id", preferenceId).findFirst()?.submitModule
+                    // get everything from the database
+                    name = reposListRoomList.name
+                    website = reposListRoomList.website
+                    support = reposListRoomList.support
+                    donate = reposListRoomList.donate
+                    submitModule = reposListRoomList.submitModule
+                    // if name is null return defaultName and if defaultName is null return url
+                    if (name == null) {
+                        name = if (defaultName == null) {
+                            url
+                        } else {
+                            defaultName
+                        }
+                    }
                 }
             } catch (e: Exception) {
                 Timber.w("Failed to load repo metadata from database: " + e.message + ". If this is a first time run, this is normal.")
             }
         }
-        realm.close()
     }
 
     open fun prepare(): Boolean {
@@ -330,27 +305,14 @@ open class RepoData(url: String, cacheRoot: File) : XRepo() {
         get() = if (field) {
             field
         } else {
-            val realmConfiguration2 =
-                RealmConfiguration.Builder().name("ReposList.realm").encryptionKey(
-                    INSTANCE!!.key
-                ).allowQueriesOnUiThread(true).allowWritesOnUiThread(true).directory(
-                    INSTANCE!!.getDataDirWithPath("realms")
-                ).schemaVersion(1).build()
-            val realm2 = Realm.getInstance(realmConfiguration2)
-            val dbEnabled = AtomicBoolean(false)
-            realm2.executeTransaction { realm: Realm ->
-                val reposList =
-                    realm.where(ReposList::class.java).equalTo("id", preferenceId).findFirst()
-                if (reposList != null) {
-                    dbEnabled.set(reposList.isEnabled)
-                } else {
-                    // should never happen but for safety
-                    dbEnabled.set(false)
-                }
-            }
-            realm2.close()
+            val db = Room.databaseBuilder(
+                INSTANCE!!.applicationContext,
+               ReposListDatabase::class.java,
+                "ReposList.db",
+            ).build()
+            val reposList = db.reposListDao().getById(preferenceId!!)
             // should never happen but for safety
-            if (dbEnabled.get()) {
+            if (reposList.enabled) {
                 !isForceHide
             } else {
                 false
@@ -359,22 +321,13 @@ open class RepoData(url: String, cacheRoot: File) : XRepo() {
         set(value) {
             field = value
             this.enabled = enabled && !isForceHide
-            // reposlist realm
-            val realmConfiguration2 =
-                RealmConfiguration.Builder().name("ReposList.realm").encryptionKey(
-                    INSTANCE!!.key
-                ).allowQueriesOnUiThread(true).allowWritesOnUiThread(true).directory(
-                    INSTANCE!!.getDataDirWithPath("realms")
-                ).schemaVersion(1).build()
-            val realm2 = Realm.getInstance(realmConfiguration2)
-            realm2.executeTransaction { realm: Realm ->
-                val reposList =
-                    realm.where(ReposList::class.java).equalTo("id", preferenceId).findFirst()
-                if (reposList != null) {
-                    reposList.isEnabled = enabled
-                }
-            }
-            realm2.close()
+            val db = Room.databaseBuilder(
+                INSTANCE!!.applicationContext,
+                ReposListDatabase::class.java,
+                "ReposList.db",
+            ).build()
+            val reposList = db.reposListDao().getById(preferenceId!!)
+            db.reposListDao().update(name = reposList.name, enabled = value, id = reposList.id, donate = reposList.donate, support = reposList.support, website = reposList.website, submitModule = reposList.submitModule, lastUpdate = reposList.lastUpdate.toLong(), url = reposList.url)
         }
 
     @Throws(IOException::class)
@@ -423,24 +376,17 @@ open class RepoData(url: String, cacheRoot: File) : XRepo() {
         }
         // if repo starts with repo_, it's always enabled bc custom repos can't be disabled without being deleted.
         isForceHide = shouldForceHide(preferenceId!!)
-        // reposlist realm
-        val realmConfiguration2 =
-            RealmConfiguration.Builder().name("ReposList.realm").encryptionKey(
-                INSTANCE!!.key
-            ).allowQueriesOnUiThread(true).allowWritesOnUiThread(true).directory(
-                INSTANCE!!.getDataDirWithPath("realms")
-            ).schemaVersion(1).build()
-        val realm2 = Realm.getInstance(realmConfiguration2)
-        var dbEnabled = false
-        try {
-            dbEnabled = realm2.where(
-                ReposList::class.java
-            ).equalTo("id", preferenceId).findFirst()?.isEnabled == true
-        } catch (e: Exception) {
-            Timber.e(e, "Error while updating enabled state for repo %s", preferenceId)
+        val db = Room.databaseBuilder(
+            INSTANCE!!.applicationContext,
+            ReposListDatabase::class.java,
+            "ReposList.db",
+        ).allowMainThreadQueries().build()
+        val reposList = db.reposListDao().getById(preferenceId!!)
+        enabled = if (reposList.enabled) {
+            !isForceHide
+        } else {
+            false
         }
-        realm2.close()
-        enabled = !isForceHide && dbEnabled
     }
 
     open fun getUrl(): String? {
@@ -467,42 +413,35 @@ open class RepoData(url: String, cacheRoot: File) : XRepo() {
     // should update (lastUpdate > 15 minutes)
     fun shouldUpdate(): Boolean {
         Timber.d("Repo $preferenceId should update check called")
-        val realmConfiguration2 =
-            RealmConfiguration.Builder().name("ReposList.realm").encryptionKey(
-                INSTANCE!!.key
-            ).allowQueriesOnUiThread(true).allowWritesOnUiThread(true).directory(
-                INSTANCE!!.getDataDirWithPath("realms")
-            ).schemaVersion(1).build()
-        val realm2 = Realm.getInstance(realmConfiguration2)
-        val repo = realm2.where(ReposList::class.java).equalTo("id", preferenceId).findFirst()
-        // Make sure ModuleListCache for repoId is not null
-        val cacheRoot = INSTANCE!!.getDataDirWithPath("realms/repos/$preferenceId")
-        val realmConfiguration =
-            RealmConfiguration.Builder().name("ModuleListCache.realm").encryptionKey(
-                INSTANCE!!.key
-            ).schemaVersion(1).deleteRealmIfMigrationNeeded().allowWritesOnUiThread(true)
-                .allowQueriesOnUiThread(true).directory(cacheRoot).build()
-        val realm = Realm.getInstance(realmConfiguration)
-        val moduleListCache = realm.where(
-            ModuleListCache::class.java
-        ).equalTo("repoId", preferenceId).findAll()
+        val db = Room.databaseBuilder(
+            INSTANCE!!.applicationContext,
+            ReposListDatabase::class.java,
+            "ReposList.db",
+        ).allowMainThreadQueries().build()
+        val repo = db.reposListDao().getById(preferenceId!!)
+        // get modulelistcache
+        val db2 = Room.databaseBuilder(
+            INSTANCE!!.applicationContext,
+            ModuleListCacheDatabase::class.java,
+            "ModuleListCache.db",
+        ).allowMainThreadQueries().build()
+        val moduleListCache = db2.moduleListCacheDao().getByRepoId(preferenceId!!)
         if (repo != null) {
-            return if (repo.lastUpdate != 0 && moduleListCache.size != 0) {
+            return if (repo.lastUpdate != 0 && moduleListCache.isNotEmpty()) {
                 val lastUpdate = repo.lastUpdate.toLong()
                 val currentTime = System.currentTimeMillis()
                 val diff = currentTime - lastUpdate
                 val diffMinutes = diff / (60 * 1000) % 60
                 Timber.d("Repo $preferenceId updated: $diffMinutes minutes ago")
-                realm.close()
                 diffMinutes > if (BuildConfig.DEBUG) 15 else 30
             } else {
                 Timber.d("Repo $preferenceId should update could not find repo in database")
                 Timber.d("This is probably an error, please report this to the developer")
-                realm.close()
                 true
             }
         } else {
-            realm.close()
+            db.close()
+            db2.close()
         }
         return true
     }
