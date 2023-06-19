@@ -112,7 +112,7 @@ class CustomRepoManager internal constructor(
         // now the same as above but for room database
         val applicationContext = INSTANCE!!.applicationContext
         val db = Room.databaseBuilder(
-            applicationContext, ReposListDatabase::class.java, "reposlist.db"
+            applicationContext, ReposListDatabase::class.java, "ReposList.db"
         ).build()
         val reposListDao = db.reposListDao()
         val reposList = ReposList(id, repo, true, donate, support, submitModule, 0, name, website)

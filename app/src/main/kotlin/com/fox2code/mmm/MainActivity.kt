@@ -28,6 +28,7 @@ import androidx.appcompat.widget.SearchView
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.room.Room
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout.OnRefreshListener
 import com.fox2code.foxcompat.app.FoxActivity
@@ -54,6 +55,7 @@ import com.fox2code.mmm.utils.RuntimeUtils
 import com.fox2code.mmm.utils.SyncManager
 import com.fox2code.mmm.utils.io.net.Http.Companion.cleanDnsCache
 import com.fox2code.mmm.utils.io.net.Http.Companion.hasWebView
+import com.fox2code.mmm.utils.room.ReposListDatabase
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.progressindicator.LinearProgressIndicator
 import org.matomo.sdk.extra.TrackHelper
@@ -108,6 +110,28 @@ class MainActivity : FoxActivity(), OnRefreshListener, SearchView.OnQueryTextLis
             // Show a toast to warn the user
             Toast.makeText(this, R.string.not_official_build, Toast.LENGTH_LONG).show()
         }
+        // track enabled repos
+        Thread {
+            val db = Room.databaseBuilder(
+                applicationContext,
+                ReposListDatabase::class.java,
+                "ReposList.db"
+            ).build()
+            val repoDao = db.reposListDao()
+            val repos = repoDao.getAll()
+            val enabledRepos = StringBuilder()
+            for (repo in repos) {
+                if (repo.enabled) {
+                    enabledRepos.append(repo.url).append(", ")
+                }
+            }
+            db.close()
+            if (enabledRepos.isNotEmpty()) {
+                enabledRepos.delete(enabledRepos.length - 2, enabledRepos.length)
+                TrackHelper.track().event("Enabled Repos", enabledRepos.toString())
+                    .with(MainApplication.INSTANCE!!.tracker)
+            }
+        }.start()
         val ts = Timestamp(System.currentTimeMillis() - 30L * 24 * 60 * 60 * 1000)
         // check if this build has expired
         val buildTime = Timestamp(BuildConfig.BUILD_TIME)

@@ -297,6 +297,7 @@ open class RepoData(url: String, cacheRoot: File) : XRepo() {
                 "ReposList.db",
             ).allowMainThreadQueries().build()
             val reposList = db.reposListDao().getById(preferenceId!!)
+            db.close()
             // should never happen but for safety
             if (reposList.enabled) {
                 !isForceHide
