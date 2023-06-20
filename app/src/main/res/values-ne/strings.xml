@@ -3,7 +3,6 @@
   -->
 
 <resources>
-    <string name="favourite">मनपर्ने</string>
     <string name="uninstall">हटाउने</string>
     <string name="description">वर्णन</string>
     <string name="language">भाषा</string>
@@ -13,7 +12,6 @@
     <string name="fail_internet">इन्टरनेटमा जडान गर्न सकिएन</string>
     <string name="no_web_view">प्रणाली वेवभ्यु खोल्न सकिएन</string>
     <string name="app_update_available">एपको नयाँ संस्करण उपलव्ध छ</string>
-    <string name="app_update">एप अध्यावधिक गर्ने</string>
     <string name="no_desc_found">कुनै वर्णन फेला परेन</string>
     <string name="website">वेवसाईट</string>
     <string name="support">सहायता</string>
@@ -36,12 +34,7 @@
     <string name="download_full_app">पूर्ण संस्करण डाउनलोड गर्नुहोस्</string>
     <string name="permission_notification_grant">स्विकृति दिने</string>
     <string name="dont_ask_again">अव फेरी नसोध</string>
-    <string name="misc">विविध</string>
-    <string name="submit">वुझाउने</string>
     <string name="sentry_dialogue_failed_toast">एउटा त्रुटि को कारण प्रतिकृया वुझाउन सकिएन</string>
-    <string name="additional_info">के भएको थियो हामीलाई भन्नुहोस्</string>
-    <string name="email">तपाईको इमेल</string>
-    <string name="name">तपाईको नाम</string>
     <string name="setup_background_update_check">स्वचालित उध्यावधिक जाँच</string>
     <string name="theme_system">प्रणाली</string>
     <string name="theme_dark">अँध्यारो</string>
@@ -55,18 +48,13 @@
     <string name="safe">सुरक्षित</string>
     <string name="show_licenses">अनुमतिपत्रहरू देखाउने</string>
     <string name="module_last_update">अन्तिम अध्यावधिक:</string>
-    <string name="setup_language_button">भाषा छान्नुहोस्</string>
     <string name="androidacy_update_needed">यो एप पुरानो भएको छ ।</string>
     <string name="androidacy_update_needed_message">कृपया यो एपलाई नयां संस्करणमा अध्यावधिक गर्नुहोस ।</string>
     <string name="zip_security_warning">%s स्थापित गर्ने\?</string>
     <string name="update_button">कृपया पर्खनुहोस् …</string>
-    <string name="repo_update_failed_extended">%1$s को अध्यावधिक सफल भएन । कृपया पछि पुनः प्रयास गर्नुहोस् ।</string>
     <string name="sentry_dialogue_success">प्रतिकृया सफलतापूर्वक बुझाईयो । हामी छिटै पुनरावृति गर्नेछौं</string>
-    <string name="other_section">अन्य</string>
-    <string name="pref_category_general">सामान्य</string>
     <string name="please_wait">कृपया पर्खनुहोस्</string>
     <string name="warning">चेतावनि!</string>
-    <string name="sentry_dialogue_no_description">कुनै विवरण उपलब्ध नभएकाले प्रतिकृया वुझाउन सकिएन</string>
     <string name="official">वैधानिक</string>
     <string name="unofficial">अवैधानिक</string>
     <string name="update_available">अध्यावधिक भेटियो</string>
@@ -79,7 +67,6 @@
     <string name="notification_channel_background_update">अध्यावधिक हरुको लागि जाँच गर्दै …</string>
     <string name="download_update">अध्यावधिक डाउनलोड गर्ने</string>
     <string name="error_download_update">अध्यावधिकको जानकारी डाउनलोड गर्दा एउटा त्रुटि भयो ।</string>
-    <string name="notification_update_subtitle">एप खोल्न क्लिकगर्नुहोस्</string>
     <string name="prevent_reboot_pref">पुनः शुरूगर्नबाट रोक्ने</string>
     <string name="module_by">द्वारा:</string>
     <string name="module_downloads">डाउनलोडहरु:</string>

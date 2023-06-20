@@ -61,24 +61,24 @@ class ModuleManager private constructor() : SyncManager() {
         if (BuildConfig.DEBUG) Timber.d("Scan")
         val modulesList = StringBuilder()
         if (modules != null) {
+            val db = Room.databaseBuilder(
+                MainApplication.INSTANCE!!,
+                ModuleListCacheDatabase::class.java,
+                "ModuleListCache.db"
+            ).allowMainThreadQueries().build()
             for (module in modules) {
                 if (!SuFile("/data/adb/modules/$module").isDirectory) continue  // Ignore non directory files inside modules folder
                 var moduleInfo = moduleInfos[module]
                 // next, merge the module info with a record from ModuleListCache room db if it exists
                 // initialize modulelistcache db
-                val db = Room.databaseBuilder(
-                    MainApplication.INSTANCE!!,
-                    ModuleListCacheDatabase::class.java,
-                    "ModuleListCache"
-                ).allowMainThreadQueries().build()
                 // get module info from cache
                 val moduleListCacheDao: ModuleListCacheDao = db.moduleListCacheDao()
-                Timber.d("Found cache for %s", module)
                 // get module info from cache
                 if (moduleInfo == null) {
                     moduleInfo = LocalModuleInfo(module)
                 }
                 if (moduleListCacheDao.exists(module)) {
+                    Timber.d("Found cache for %s", module)
                     val moduleListCache: ModuleListCache = moduleListCacheDao.getByCodename(module)
                     moduleInfo.name =
                         if (moduleListCache.name != "") moduleListCache.name else module
@@ -135,6 +135,7 @@ class ModuleManager private constructor() : SyncManager() {
                 modulesList.append(moduleInfo.id).append(":").append(moduleInfo.versionCode)
                     .append(",")
             }
+            db.close()
         }
         if (modulesList.isNotEmpty()) {
             modulesList.deleteCharAt(modulesList.length - 1)

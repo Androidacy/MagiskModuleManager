@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright (c) 2023 to present Androidacy and contributors. Names, logos, icons, and the Androidacy name are all trademarks of Androidacy and may not be used without license. See LICENSE for more information.
   --><resources xmlns:tools="http://schemas.android.com/tools">
-    <string name="app_name_short">Fox\'s Mmm</string>
     <string name="fail_root_magisk">Не вдалося отримати доступ до root-прав або Magisk-у</string>
     <string name="loading">Завантаження…</string>
     <string name="updatable">Є оновлення</string>
@@ -11,11 +10,9 @@
     <string name="no_web_view">Неможливо відкрити системний WebView</string>
     <string name="title_activity_settings">SettingsActivity</string>
     <string name="app_update_available">Доступна нова версія додатку</string>
-    <string name="app_update">Оновити додаток</string>
     <string name="download_module">Завантажити модуль</string>
     <string name="install_module">Встановити модуль</string>
     <string name="update_module">Оновити модуль</string>
-    <string name="changelog">Журнал змін</string>
     <string name="support">Підтримка</string>
     <string name="donate">Підтримати</string>
     <string name="update">Оновити</string>
@@ -25,8 +22,6 @@
     <string name="uninstall">Видалити</string>
     <string name="config">Конфігурація</string>
     <string name="report_bugs">Повідомити про помилки</string>
-    <string name="sniffed_modules">Знайдені модулі</string>
-    <string name="sniffing_modules">Пошук модулів</string>
     <string name="submit_modules">Надіслати модуль</string>
     <string name="require_android_12">Потрібен Android 12+</string>
     <string name="install_terminal_reboot_now">Перезавантажити</string>
@@ -43,7 +38,6 @@
     <string name="module_max_sdk_chip">Макс. Android</string>
     <string name="showcase_mode_pref">Захист від змін</string>
     <string name="showcase_mode_desc">Режим захисту від змін не дозволяє менеджеру виконувати дії над модулями</string>
-    <string name="pref_category_settings">Налаштування</string>
     <string name="enable_monet">Увімкнути Monet</string>
     <string name="pref_category_info">Інформація</string>
     <string name="show_licenses">Показати ліцензії</string>
@@ -53,14 +47,11 @@
     <string name="pref_category_repos">Репозиторії</string>
     <string name="pref_category_security">Безпека</string>
     <string name="pref_category_appearance">Зовнішній вигляд</string>
-    <string name="pref_category_general">Загальні</string>
-    <string name="repo_main_desc">Репозиторій з модулями Magisk</string>
     <string name="master_delete">Видалити файли модуля\?</string>
     <string name="master_delete_no">Залишити</string>
     <string name="master_delete_yes">Видалити</string>
     <string name="master_delete_fail">Не вдалося видалити файли модуля</string>
     <string name="theme_pref">Тема</string>
-    <string name="theme_mode_pref">Тема оформлення</string>
     <string name="module_id_prefix">ID модуля:</string>
     <string name="install_from_storage">Встановити модуль зі сховища</string>
     <string name="low_quality_module">Неякісний модуль</string>
@@ -73,65 +64,48 @@
     <string name="use_magisk_install_command_pref" tools:ignore="TypographyDashes">Використовуйте команду \"magisk --install-module\"</string>
     <string name="dev_mode_enabled">Режим розробника ввімкнено</string>
     <string name="dev_mode_disabled">Режим розробника вимкнено</string>
-    <string name="force_english_pref">Завжди англійська мова програми</string>
     <string name="disable_low_quality_module_filter_pref">Показати неякісні модулі</string>
     <string name="dns_over_https_pref">DNS через HTTPS</string>
     <string name="dns_over_https_desc">У деяких випадках може вирішити проблеми з підключенням. (Не стосується WebView.)</string>
     <string name="wrap_text_pref">Перенесення за словами</string>
     <string name="enable_blur_pref">Ефект розмиття фону</string>
-    <string name="disable_chips_in_description">Вимкнути форматування в описі</string>
     <string name="repo_enabled">Репозиторій увімкнено</string>
     <string name="repo_disabled">Репозиторій вимкнено</string>
     <string name="remove_repo">Відалити репозиторій</string>
     <string name="add_repo">Додати репозиторій</string>
     <string name="custom_url">Свій URL</string>
     <string name="link_copied">Посилання скопійовано</string>
-    <string name="backup_module_list">Резервне копіювання модулів</string>
-    <string name="restore_module_list">Відновлення модулів</string>
-    <string name="require_internet">Для цієї операції потрібне підключення до Інтернету</string>
     <string name="androidacy_test_mode_pref">Тестовий режим Androidacy</string>
     <string name="notification_update_title">Знайдені оновлення модулів: %1$d</string>
-    <string name="notification_update_title_easter_egg">Виявлено оновлення модулів: %i</string>
-    <string name="notification_update_subtitle">Натисніть, щоб відкрити додаток</string>
     <string name="notification_update_pref">Автоматична перевірка оновлень модулів</string>
     <string name="notification_update_desc">Може збільшити використання акумулятора</string>
     <string name="notification_update_debug_pref">Тестове сповіщення</string>
     <string name="api_key">Ключ API Androidacy</string>
     <string name="api_key_summary">Використовуйте спеціальний ключ API для Androidacy. Корисно для преміум-підписників, для видалення реклами тощо.</string>
-    <string name="api_key_not_set">Ключ API Androidacy відсутній</string>
-    <string name="api_key_set">Поточний ключ API Androidacy</string>
     <string name="api_key_invalid">Не вдалося перевірити ключ API. Перевірте його та спробу ще.</string>
     <string name="api_key_valid">Ключ API дійсний.</string>
     <string name="checking_api_key">Перевірка ключа API…</string>
-    <string name="validating_api_key">Перевірка ключа API…</string>
     <string name="api_key_removed">Успішно скинуто ключ API</string>
     <string name="save_api_key">Перевірити</string>
     <string name="warning">Увага!</string>
     <string name="crash">Збій додатку для тестування</string>
-    <string name="repackaged_as">Перепаковано як:</string>
-    <string name="wrapped_from">Зібрано з:</string>
     <string name="crash_reporting_restart_title">Перезапустити додаток, щоб застосувати зміни\?</string>
     <string name="crash_reporting_restart_message">Додаток необхідно перезавантажити, щоб застосувати цю опцію</string>
     <string name="restart">Перезавантажити</string>
     <string name="androidacy_failed_to_parse_token">Не вдалося отримати маркер із Androidacy. Будь-ласка спробуйте пізніше.</string>
-    <string name="androidacy_server_down">Не вдалося зв’язатися з сервером Androidacy. Перевірте підключення та спробуйте ще.</string>
     <string name="androidacy_need_captcha">Оновлення Androidacy заблоковано Captcha</string>
     <string name="app_name">Fox\'s Magisk Менеджер Модулів</string>
     <string name="fail_root_denied">Відмовлено у root-доступі через додаток Magisk</string>
     <string name="showcase_mode">Активний захист від змін</string>
     <string name="failed_download">Неможливо завантажити файл</string>
-    <string name="slow_modules">Модулі завантажувалися надто довго, поміркуйте над тим, щоб вимкнути деякі модулі</string>
     <string name="fail_magisk_missing">Додаток Magisk не встановлений на цьому пристрої</string>
     <string name="website">Веб-сайт</string>
-    <string name="favourite">Обране</string>
-    <string name="require_android_6">Потрібен Android 6.0+</string>
     <string name="module_stars">В обраному у:</string>
     <string name="module_needs_ramdisk_desc">Для завантаження модуля потрібна наявність розділу ramdisk</string>
     <string name="manage_repos_pref">Обрані репозиторії</string>
     <string name="prevent_reboot_pref">Без перезавантаження</string>
     <string name="prevent_reboot_desc">Запобігає примусовому перезавантаженню після встановлення модуля</string>
     <string name="show_incompatible_desc">Показати модулі, котрі не працюватимуть на вашому пристрої на основі їхніх метаданих</string>
-    <string name="repo_main_alt">Альтернатива Magisk-Modules-Repo з меншими обмеженнями.</string>
     <string name="invalid_format">Вибраний модуль має недійсний формат</string>
     <string name="force_dark_terminal_title">Завжди темний термінал</string>
     <string name="file_picker_failure">Ваш обраний менеджер файлів не може отримати доступ до файлу.</string>
@@ -139,9 +113,6 @@
 \nВмикайте це на свій страх і ризик!</string>
     <string name="disable_low_quality_module_filter_desc">Деякі модулі не декларують свої метадані належним чином, що спричиняє візуальні збої та/або вказує на низьку якість модуля.
 \nВмикайте на свій страх і ризик!</string>
-    <string name="disable_extensions_pref">Вимкнути Mmm</string>
-    <string name="disable_extensions_desc">Вимкніть розширення Fox\'s Mmm, щоб модулі не використовували розширення терміналів.
-\nКорисно, якщо модуль неправильно використовує розширення Fox\'s Mmm.</string>
     <string name="wrap_text_desc">Показувати текст у кількох рядках замість розміщення всього тексту в одному рядку під час встановлення модуля.</string>
     <string name="androidacy_repo_info">Це сховище може відображати деяку ненав’язливу рекламу для покриття витрат на сервер і розробку. Включає огляди, автоматичне сканування на віруси тощо.</string>
     <string name="androidacy_test_mode_desc">Використовуйте проміжну кінцеву точку Androidacy замість кінцевої точки випуску. (Буде перезапущено додаток)</string>
@@ -154,8 +125,6 @@
     <string name="androidacy_test_mode_warning">Ви налаштовуєте додаток на використання невиробничої кінцевої точки для Androidacy. Це може призвести до нестабільної роботи додатку та збою завантаження онлайн-репозиторій. НЕ повідомляйте про помилки, якщо цей перемикач увімкнений. Додаток буде перезапущено, щоб перезавантажити репозиторії.</string>
     <string name="androidacy_failed_to_validate_token">Не вдалося перевірити маркер для Androidacy. Будь-ласка спробуйте пізніше.</string>
     <string name="api_key_restart">Ключ API змінено. Перезавантажте додаток, щоб застосувати зміни.</string>
-    <string name="sentry_dialogue_message">Ми зіткнулися з помилкою! Будь ласка, допоможіть нам покращити додаток, додавши інформацію про помилку нижче.
-\nІм’я та адреса поштової скриньки є необов’язковими, але це дозволить нам зв’язатися з вами, якщо буде потрібно для отримання додаткової інформації.</string>
     <string name="setup_message">Ласкаво просимо! Ця програма допоможе вам встановити та керувати модулями Magisk. Щоб розпочати, виберіть наведені нижче параметри. Ці та інші параметри можна налаштувати пізніше.</string>
     <string name="setup_background_update_check_summary">Дозвольте перевіряти наявність оновлень модулів і додатків у фоновому режимі. Ця функція може використовувати більше заряд акумулятора та трафіку.</string>
     <string name="setup_magisk_alt_repo_summary">Менш захищений, ніж оригінал. Має багато модулів ціною певної безпеки.</string>
@@ -169,29 +138,18 @@
     <string name="permission_notification_grant">Надати дозвіл</string>
     <string name="background_update_check_permission_required">Дозвольте сповіщення, щоб увімкнути цю опцію.</string>
     <string name="dont_ask_again">Більше не питати</string>
-    <string name="force_black_theme_desc">Під час використання темної теми встановлюється чорний AMOLED фон. Майте на увазі, що це може мати проблеми з контрастом деяких кольорових тем.</string>
-    <string name="force_black_theme_pref">Примусова чорна тема</string>
     <string name="androidacy_repo_disabled">Цей репозиторій вимкнено</string>
     <string name="androidacy_repo_disabled_message">У цій збірці відсутні ключі клієнта для репозиторію Androidacy. Завантажте випуск з GitHub, якщо хочете скористатися такими функціями, як огляди модулів, автоматичні перевірки безпеки тощо.</string>
     <string name="download_full_app">Завантажити повну версію</string>
     <string name="repo_update_failed">Деякі репозиторії не вдалося оновити</string>
-    <string name="repo_update_failed_extended">Не вдалося оновити %1$s. Будь-ласка спробуйте пізніше.</string>
-    <string name="sentry_dialogue_title">Ой! Схоже, додаток несподівано закрився.</string>
-    <string name="name">Ваше ім\'я</string>
-    <string name="email">Поштова скринька</string>
-    <string name="additional_info">Вкажіть що сталося</string>
-    <string name="submit">Надіслати</string>
     <string name="blur_disabled_summary">Розмиття не сумісне з прозорими темами.</string>
     <string name="custom_repo_always_on">Користувацькі репозиторії завжди ввімкнені, доки ви їх не видалите.</string>
     <string name="sentry_dialogue_failed_toast">Не вдалося надіслати відгук через помилку</string>
     <string name="sentry_dialogue_success">Відгук успішно надіслано. Невдовзі ми його розглянемо</string>
-    <string name="sentry_dialogue_no_description">Не вдалося надіслати відгук, оскільки не було надано опису</string>
-    <string name="go_to_online_repo">Перейдіть до онлайн репозиторію</string>
     <string name="pref_pkg_info_summary">%1$s v%2$s (%3$d) | %4$s збірка</string>
     <string name="official">Офіційна</string>
     <string name="unofficial">Неофіційна</string>
     <string name="setup_title">Перше налаштування</string>
-    <string name="setup_button">Пізніше</string>
     <string name="setup_background_update_check">Автоматична перевірка оновлень</string>
     <string name="setup_androidacy_repo">Репозиторій Androidacy</string>
     <string name="setup_androidacy_repo_summary">Є відгуки користувачів, автоматичне сканування на віруси, швидке оновлення, широкий вибір і підтримується Androidacy.</string>
@@ -200,8 +158,6 @@
     <string name="setup_crash_reporting_summary">Звіти про збої та моніторинг продуктивності. Усі повідомлення є суворо анонімними та конфіденційними.</string>
     <string name="setup_custom_repos">Ви можете додати власний репозиторій пізніше в налаштуваннях.</string>
     <string name="repos">Репозиторії</string>
-    <string name="misc">Різне</string>
-    <string name="setup_button_skip">Пропустити</string>
     <string name="alt_repo_info">Це репозиторій має менше обмежень і відгуків, що може призвести до нижчої якості модулів. Досить простий, але має багато модулів.</string>
     <string name="install_terminal_config_missing">Пакет %s відсутній для конфігурації модуля, тому ми не можемо його запустити.</string>
     <string name="clear_app_data">Видалення даних додатку</string>
@@ -212,14 +168,6 @@
     <string name="magisk_alt_repo_name">Репозиторій Magisk Alt</string>
     <string name="repo_enabled_changed">Ви ввімкнули або вимкнули репозиторій. Будь ласка, оновіть список модулів або перезавантажте додаток.</string>
     <string name="finish">ОК</string>
-    <string name="setup_theme">Обрати тему</string>
-    <string name="setup_theme_header">Обрати тему</string>
-    <string name="setup_theme_system">Тема системи</string>
-    <string name="setup_theme_light">Світла тема</string>
-    <string name="setup_theme_dark">Темна тема</string>
-    <string name="setup_theme_black">Темна тема AMOLED</string>
-    <string name="setup_theme_transparent_light">Прозора світла тема - вимкне Monet та розмиття!</string>
-    <string name="setup_theme_button">Оберіть тему</string>
     <string name="theme">Тема</string>
     <string name="theme_system">Системи</string>
     <string name="theme_dark">Темна</string>
@@ -227,7 +175,6 @@
     <string name="theme_transparent_light">Світла (прозора)</string>
     <string name="theme_light">Світла</string>
     <string name="androidacy_update_needed_message">Оновіть додаток до останньої версії.</string>
-    <string name="androidacy_webview_update_required">Ваш webview застарів! Будь ласка, оновіть його.</string>
     <string name="androidacy_update_needed">Цей додаток застарів.</string>
     <string name="monet_disabled_summary">Monet несумісний з прозорими темами.</string>
     <string name="transparent_theme_dialogue_title">Ви встановлюєте прозору тему</string>
@@ -249,10 +196,8 @@
 \n
 \nПереконайтеся, що ви довіряєте джерелу цього модуля, оскільки є дуже потужні модулі та вони можуть робити майже все.</string>
     <string name="zip_unpacking">Перевірка модуля…</string>
-    <string name="theme_transparent_dark">Темна (прозора)</string>
     <string name="understand">Я розумію</string>
     <string name="setup_theme_title">Обрати тему</string>
-    <string name="setup_language_button">Обрати мову</string>
     <string name="title_activity_setup">Майстер встановлення</string>
     <string name="action_settings">Налаштування</string>
     <string name="repo_update_failed_message">Наступні репозиторії мають помилки при оновлені:
@@ -282,27 +227,22 @@
 \n%1$s</string>
     <string name="please_feedback">Допоможіть нам, розкажіть, що ви намагалися зробити, коли це сталося.</string>
     <string name="sentry_dialogue_empty_message">Ви не вказали додатковий відгук.</string>
-    <string name="more_details">Більш детальну інформацію можна знайти нижче.</string>
     <string name="sentry_enable_nag">Схоже, звіти про збої відключено. Будь ласка, увімкніть їх, щоб надіслати відгук.</string>
     <string name="reset_app">Скинути додаток</string>
     <string name="upgraded_summary">Ти кращий! Схоже, ти вже оновили свою підписку та підтримуєш Androidacy.</string>
     <string name="upgraded">Преміум активован</string>
     <string name="reset_warning">Якщо ви продовжуєте бачити цей екран, скидання додатку може допомогти. Це видалить дані додатку, але не вплине на встановлені модулі.</string>
-    <string name="reset_app_message">Це повністю видалить усі дані додатку та його. Модулі не будуть видалені.</string>
     <string name="reset">Скидання</string>
     <string name="reset_app_confirmation">Це повністю видалить дані додатку, але не вплине на модулі.</string>
     <string name="error_adding">Не вдалося додати репозиторій користувача</string>
     <string name="api_key_mismatch">Ключ API має невірний формат</string>
     <string name="notification_update_ignore_desc">Список модулів, які потрібно виключити з перевірки оновлень</string>
-    <string name="title_activity_update">Внутрішній апдейтор</string>
     <string name="update_title">Оновити додаток</string>
     <string name="update_button">Будь ласка, зачекайте…</string>
-    <string name="invalid_characters_message">Введений вами список модулів недійсний. Будь ласка, вводьте лише дійсні ідентифікатори модулів, розділені комами</string>
     <string name="background_update_check_excludes">Модулі, які потрібно виключити з автоматичних перевірок оновлень</string>
     <string name="update_message">Будь ласка, зачекайте поки ми перевіримо та встановимо оновлення для AMM. Це може зайняти декілька хвилин</string>
     <string name="notification_update_ignore_pref">Виключити модулі</string>
     <string name="pref_category_updates">Оновлення</string>
-    <string name="invalid_excludes">Невірні дані</string>
     <string name="error_no_extras">ПОМИЛКА: Отримано недійсні дані під час запуску</string>
     <string name="update_debug_warning">Здається, ви запускаєте збірку для налагодження. Збірки для налагодження потрібно оновлювати вручну, і вони не підтримують оновлення в додатках</string>
     <string name="error_no_action">ПОМИЛКА: Невірна дія. У продовженні відмовлено.</string>
@@ -311,14 +251,11 @@
     <string name="no_update_available">У вас остання версія!</string>
     <string name="download_update">Завантажте оновлення</string>
     <string name="error_download_update">Під час завантаження інформації про оновлення сталася помилка.</string>
-    <string name="error_no_asset">ПОМИЛКА: Не вдалося проаналізувати інформацію про оновлення</string>
     <string name="downloading_update">Завантаження оновлення… %1$d%%</string>
     <string name="installing_update">Встановлення оновлення…</string>
     <string name="no_file_found">ПОМИЛКА: Не вдалося знайти пакет оновлення.</string>
     <string name="check_for_updates">Перевірте наявність оновлень додатку</string>
     <string name="update_debug_download_pref">Тестовий механізм завантаження оновлень</string>
-    <string name="changelog_none">Змін ще немає!</string>
-    <string name="update_cancel_button">Скасувати оновлення</string>
     <string name="invalid_repo_url">URL-адреса, яку ви ввели для репозиторію, недійсна</string>
     <string name="add_repo_message">Репозиторії повинні обслуговуватися за допомогою HTTPS і відповідати специфікаціям, викладеним у <a href="https://github.com/Androidacy/MagiskModuleManager/blob/master/docs/DEVELOPERS.md#custom-repo-format">документації</a>.</string>
     <string name="notification_update_summary">Наступні модулі можуть бути оновлені:</string>
@@ -345,10 +282,8 @@
     <string name="notification_channel_background_update_app">Доступне оновлення додатку!</string>
     <string name="keep_tapping_to_enter_hogwarts">Продовжуйте натискати, щоб вас зарахували до Гоґвортсу!</string>
     <string name="modules">Модулі</string>
-    <string name="search">Пошук</string>
     <string name="yer_a_wizard_harry">Ти чарівник, Гаррі!</string>
     <string name="no_browser">У вас не відсутній браузер. Щоб продовжити, встановіть його.</string>
-    <string name="crash_reporting_headline">Звіт про збої</string>
     <string name="setup_update_check_headline">Перевірка оновлень</string>
     <string name="setup_background_update_check_require_wifi">Вимагати Wi-Fi для перевірки оновлень</string>
     <string name="setup_app_analytics">Дозволити аналітику</string>
@@ -363,18 +298,14 @@
     <string name="setup_background_update_check_require_wifi_summary">Для перевірки оновлень потрібен Wi-Fi або інше безлімітне з’єднання</string>
     <string name="clear_app_cache_desc">Зазвичай це не потрібно, але може допомогти вирішити деякі проблеми.</string>
     <string name="clear_cache_dialogue_message">Це очистить кеш додатку. Ваші налаштування буде збережено, але програмі може знадобитися більше часу для виконання деяких операцій.</string>
-    <string name="certificate_error">Не вдалося перевірити сертифікат сервера. Будь ласка, переконайтеся, що ніщо не перехоплює з’єднання HTTPs для AMM.</string>
     <string name="crash_reporting_pii_desc">Дозволяє надсилати додаткову інформацію у звітах про збої, деяка може містити особисту інформацію, наприклад IP-адресу та ідентифікатори пристрою.</string>
     <string name="empty_field">URL-адреса обов\'язкова</string>
     <string name="repo_already_added">Репозиторій вже існує.</string>
     <string name="error_creating_cookie_database">Помилка доступу до WebView. Функціональність може бути обмежена.</string>
-    <string name="setup_scroll_down">Щоб показати кнопку завершення, прокрутіть вниз і перегляньте всі параметри.</string>
     <string name="language_not_available">Мова %s не має перекладу. Бажаєте допомогти з перекладом\?</string>
     <string name="blur_desc">Створює ефект розмиття позаду деяких діалогів та елементів. Зверніть увагу, що розмиття може працювати неефективно на деяких пристроях і не у всіх місцях.</string>
     <string name="error_encrypted_shared_preferences">Відбулася помилка під час читання загальних налаштувань. Будь ласка, перезавантажте додаток.</string>
     <string name="showcase_mode_dialogue_message">Щоб увімкнути режим демонстрації, потрібно перезапустити додаток.</string>
-    <string name="other_section">Інше</string>
-    <string name="eula_agree">Натискаючи завершити, ви погоджуєтеся дотримуватися ліцензії LGPL-3.0 (https://www.gnu.org/licenses/lgpl-3.0.en.html) і EULA (https://www.androidacy.com). /foxmmm-eula/)</string>
     <string name="debug_cat">Відладка</string>
     <string name="announcements">Новини та оновлення</string>
     <string name="back">Назад</string>
@@ -385,7 +316,6 @@
     <string name="promo_code_copied">Використовуйте скопійований код, щоб отримати 50% знижки за перший місяць!</string>
     <string name="warning_pls_restart">Зверніть увагу, що деякі налаштування можуть не робити, доки ви не перезавантажите додаток.</string>
     <string name="reinstall">Перевстановити</string>
-    <string name="eula_sum">Я погоджуюся з EULA та Ліцензією</string>
     <string name="setup_scroll_down_v2">Щоб увімкнути кнопку «OK», прокрутіть униз і підтвердьте, що ви прочитали та погоджуєтеся з Ліцензійною угодою.</string>
     <string name="eula_agree_v2">Ви погоджуєтеся дотримуватися ліцензії LGPL-3.0 (https://www.gnu.org/licenses/lgpl-3.0.en.html) і EULA (https://www.androidacy.com/foxmmm-eula/ ), на додаток до будь-яких умов третіх сторін, і що автори цієї програми не несуть жодної відповідальності за її використання вами, а також ми не надаємо жодних гарантій, прямих чи непрямих.</string>
     <string name="background_update_check_excludes_version_summary">Вкажіть версії оновлень модулів, які потрібно ігнорувати. Будь ласка, використовуйте лише код версії. Ви можете дізнатись його утриманням на версії у списку модулів. Використовуйте ^ на початку щоб ігнорувати цю версію і новіше. Використання $ в кінці говорить, що ігнорувати до вказаної версії.</string>

@@ -234,7 +234,7 @@ class RepoManager private constructor(mainApplication: MainApplication) : SyncMa
                 }
                 if (BuildConfig.DEBUG) Timber.d("Finishing: %s", repoUpdaters[i]!!.repoData.name)
                 isLastUpdateSuccess = repoUpdaters[i]!!.finish()
-                if (!isLastUpdateSuccess) {
+                if (!isLastUpdateSuccess || modules.isEmpty()) {
                     Timber.e("Failed to update %s", repoUpdaters[i]!!.repoData.name)
                     // Show snackbar on main looper and add some bottom padding
                     val context: Activity? = MainApplication.INSTANCE!!.lastCompatActivity

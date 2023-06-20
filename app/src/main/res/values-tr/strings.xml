@@ -4,7 +4,6 @@
 
 <resources>
     <string name="app_name">Fox\'un Magisk Modül Yöneticisi</string>
-    <string name="app_name_short">Fox\'un Mmy</string>
     <string name="fail_root_magisk">Root veya Magisk\'e erişim sağlanamadı</string>
     <string name="fail_root_denied">Root erişimi, Magisk uygulaması aracılığıyla reddedildi</string>
     <string name="fail_magisk_missing">Magisk, bu cihazda yüklü değil</string>
@@ -14,17 +13,14 @@
     <string name="online_repo">Çevrimiçi Depo</string>
     <string name="showcase_mode">Uygulama kilit modunda</string>
     <string name="failed_download">Dosya indirilemedi</string>
-    <string name="slow_modules">Modüllerin açılışı çok uzun sürdü, bazı modülleri devre dışı bırakmayı düşünün</string>
     <string name="fail_internet">İnternete bağlanılamadı</string>
     <string name="no_web_view">Sistem WebView açılamadı</string>
     <string name="title_activity_settings">AyarlarEtkinliği</string>
     <string name="app_update_available">Uygulama güncellemesi mevcut</string>
-    <string name="app_update">Uygulamayı güncelle</string>
     <string name="no_desc_found">Açıklama bulunamadı.</string>
     <string name="download_module">Modülü indir</string>
     <string name="install_module">Modülü yükle</string>
     <string name="update_module">Modülü güncelle</string>
-    <string name="changelog">Değişiklik günlüğü</string>
     <string name="website">Web sitesi</string>
     <string name="support">Destek</string>
     <string name="donate">Bağış yap</string>
@@ -33,12 +29,8 @@
     <string name="description">Açıklama</string>
     <string name="uninstall">Kaldır</string>
     <string name="config">Yapılandırma</string>
-    <string name="favourite">Favori</string>
     <string name="report_bugs">Hataları bildir</string>
-    <string name="sniffed_modules">Koklanmış modüller</string>
-    <string name="sniffing_modules">Koklama modülleri</string>
     <string name="submit_modules">Bir modül gönder</string>
-    <string name="require_android_6">Android 6.0+ gerekir</string>
     <string name="require_android_12">Android 12+ gerekir</string>
     <string name="language">Dil</string>
     <string name="install_terminal_reboot_now">Yeniden başlat</string>
@@ -66,7 +58,6 @@
     <string name="showcase_mode_desc">Kilit modu yöneticinin modüller üzerinde işlem yapmayı önler</string>
     <string name="prevent_reboot_pref">Yeniden başlatmayı engelle</string>
     <string name="prevent_reboot_desc">Beklenmeyen yeniden başlatmaları önler</string>
-    <string name="pref_category_settings">Ayarlar</string>
     <string name="enable_monet">Monet\'i etkinleştir</string>
     <string name="pref_category_info">Bilgi</string>
     <string name="show_licenses">Lisansları göster</string>
@@ -77,15 +68,11 @@
     <string name="pref_category_repos">Depolar</string>
     <string name="pref_category_security">Güvenlik</string>
     <string name="pref_category_appearance">Görünüm</string>
-    <string name="pref_category_general">Genel</string>
-    <string name="repo_main_desc">Magisk Modülleri barındıran depo</string>
-    <string name="repo_main_alt">Daha az kısıtlamalara sahip bir Magisk-Modules-Repo\'ya alternatifi.</string>
     <string name="master_delete">Modül dosyalarını sil?</string>
     <string name="master_delete_no">Dosyaları sakla</string>
     <string name="master_delete_yes">Dosyaları sil</string>
     <string name="master_delete_fail">Modül dosyaları silinemedi</string>
     <string name="theme_pref">Tema</string>
-    <string name="theme_mode_pref">Tema modu</string>
     <string name="module_id_prefix">Modül id: </string>
     <string name="install_from_storage">Depolamadan modül yükle</string>
     <string name="invalid_format">Seçilmiş modül geçersiz biçimde</string>
@@ -103,7 +90,6 @@
 \nBunu etkinleştirmenizde sorumluluk size aittir!</string>
     <string name="dev_mode_enabled">Geliştirici modu açık</string>
     <string name="dev_mode_disabled">Geliştirici modu kapalı</string>
-    <string name="force_english_pref">İngilizce dilini zorla</string>
     <string name="disable_low_quality_module_filter_pref">Düşük kalite modül filtresini devre dışı bırak</string>
     <string name="disable_low_quality_module_filter_desc">Bazı modüller meta verilerini düzgün bir şekilde beyan etmeyerek görsel aksaklıklara neden olur ve/veya modül kalitesinin düşük olduğunu gösterir.
 \nBunu kendi sorumluluğunuzda açın!</string>
@@ -112,30 +98,21 @@
         Bazı durumlarda bağlantı sorunlarını düzeltebilir.
         (WebView için geçerli değildir)
     </string>
-    <string name="disable_extensions_pref">Mmy yok</string>
-    <string name="disable_extensions_desc">Fox\'un Mmy eklentilerini devre dışı bırakır; bu, modüllerin terminal eklentilerini kullanmasını önler.
-\nEğer modül Fox\'un Mmy eklentilerini kötüye kullanırsa yararlıdır.</string>
     <string name="wrap_text_pref">Metni kaydır</string>
     <string name="wrap_text_desc">
         Bir modül yüklerken tüm metni aynı satıra koymak yerine metni yeni bir satıra kaydırır.
     </string>
     <string name="enable_blur_pref">Bulanıklık</string>
-    <string name="disable_chips_in_description">Açıklamadaki çipleri devre dışı bırak</string>
     <string name="repo_enabled">Depo açık</string>
     <string name="repo_disabled">Depo kapalı</string>
     <string name="add_repo">Depo ekle</string>
     <string name="remove_repo">Depo\'yu kaldır</string>
     <string name="custom_url">Özel url</string>
     <string name="androidacy_repo_info">Bu depo, sunucu ve geliştirme masraflarını karşılamak için bazı kesintisiz reklamlar görüntüleyebilir.</string>
-    <string name="backup_module_list">Modülleri yedekle</string>
-    <string name="restore_module_list">Modülleri geri yükle</string>
-    <string name="require_internet">Bu işlem bir internet bağlantısı gerektirir</string>
     <string name="androidacy_test_mode_pref">Androidacy test modu</string>
     <string name="androidacy_test_mode_desc">Release endpoint yerine Androidacy Endpoint\'i kullan. (Uygulama sürecinin yeniden başlatılması gerekir)</string>
     <!-- Background Notification translation -->
     <string name="notification_update_title">%1$d modül güncellemesi bulundu</string>
-    <string name="notification_update_title_easter_egg">%i modül güncellemesi koklandı</string>
-    <string name="notification_update_subtitle">Uygulamayı açmak için tıkla</string>
     <string name="notification_update_pref">Otomatik modül güncelleme kontrolü</string>
     <string name="notification_update_desc">Pil kullanımını arttırabilir</string>
     <string name="notification_update_debug_pref">Bildirim Testi</string>
@@ -150,27 +127,21 @@
     <string name="crash_reporting_desc">Bunu devre dışı bırakırsanız geliştirici otomatik hata raporları almayacak ve bu, sorunları çözmeyi zorlaştırabilir</string>
     <string name="api_key">Androidacy API Anahtarı</string>
     <string name="api_key_summary">Androidacy için özel API anahtarı kullan. Premium aboneler için, reklamları ve daha fazlasını kaldırmak için, kullanışlıdır.</string>
-    <string name="api_key_not_set">Androidacy API anahtarı boş</string>
-    <string name="api_key_set">Mevcut Androidacy API anahtarı</string>
     <string name="api_key_invalid">API anahtarı doğrulanamadı. Lütfen kontrol edin ve tekrar deneyin.</string>
     <string name="api_key_valid">API anahtarı geçerli.</string>
     <string name="checking_api_key">API anahtarı doğrulanıyor…</string>
-    <string name="validating_api_key">API anahtarı doğrulanıyor…</string>
     <string name="please_wait">Lütfen bekleyin</string>
     <string name="api_key_removed">API anahtarı başarıyla sıfırlandı</string>
     <string name="save_api_key">Doğrula</string>
     <string name="warning">Uyarı!</string>
     <string name="androidacy_test_mode_warning">Uygulamayı Androidacy için üretim dışı bir endpoint kullanmak için ayarlıyorsunuz. Bu, uygulamada kararsızlığa ve çevrimiçi deponun yüklenememesine neden olabilir.  Bu anahtar açıksa hataları BİLDİRMEYİN.  Değişiklik, uygulama yeniden başlatıldığında etkili olacaktır.</string>
     <string name="crash">Test etmek için uygulamayı çökert</string>
-    <string name="repackaged_as">Bu şekilde yeniden paketlendi:</string>
-    <string name="wrapped_from">Tarafından sarmalandı:</string>
     <string name="crash_reporting_restart_title">Değişiklikleri uygulamak için yeniden başlat\?</string>
     <string name="crash_reporting_restart_message">Bu ayarı uygulamak için uygulamanın yeniden başlatılması gerekli</string>
     <string name="restart">Yeniden başlat</string>
     <string name="androidacy_test_mode_disable_warning">Uygulama, endpoint\'i devre dışı bırakmak için yeniden başlatılacaktır</string>
     <string name="androidacy_failed_to_parse_token">Androidacy\'den jeton alınamadı. Lütfen sonra tekrar deneyin.</string>
     <string name="androidacy_failed_to_validate_token">Androidacy için jeton doğrulanamadı. Lütfen sonra tekrar deneyin.</string>
-    <string name="androidacy_server_down">Androidacy sunucusuna ulaşılamadı. Bağlantınızı kontrol edin ve tekrar deneyin.</string>
     <string name="link_copied">Link kopyalandı</string>
     <string name="api_key_restart">API anahtarı değiştirildi. Değişiklikleri uygulamak için uygulamayı yeniden başlatın.</string>
     <string name="api_key_unchanged">Girdiğiniz API anahtarı zaten kullanımda olanıyla aynı.</string>
@@ -179,41 +150,28 @@
     <string name="permission_notification_grant">İzni ver</string>
     <string name="background_update_check_permission_required">Bu seçeneği etkinleştirmek için lütfen bildirimleri etkinleştirin.</string>
     <string name="dont_ask_again">Birdaha sorma</string>
-    <string name="force_black_theme_desc">Koyu tema kullanırken AMOLED siyah arkaplanlarını zorlar. Lütfen bunun bazı renk temalarıyla kontrast sorunlarına neden olabileceğini biliniz.</string>
-    <string name="force_black_theme_pref">Siyah temayı zorla</string>
     <string name="androidacy_repo_disabled">Bu depo şu anda devre dışı</string>
     <string name="androidacy_repo_disabled_message">Bu sürümde Androidacy Repo için istemci anahtarları kayıptır. Eğer modül incelemeleri, otomatik güvenlik kontrolleri ve daha fazlasından yararlanmak isterseniz lütfen GitHub sürümünü indiriniz.</string>
     <string name="download_full_app">Tam sürümünü indir</string>
     <string name="repo_update_failed">Bazı depolar güncellenemedi</string>
     <string name="androidacy_need_captcha">Androidacy güncellemesi Captcha tarafından engellendi</string>
     <string name="androidacy_update_needed">Bu uygulama güncel değil.</string>
-    <string name="go_to_online_repo">Çevirimiçi depoya kaydır</string>
     <string name="official">Resmi</string>
     <string name="unofficial">Gayriresmi</string>
     <string name="sentry_dialogue_success">Geribildirim başarıyla iletildi. En kısa zamanda gözden geçireceğiz</string>
-    <string name="sentry_dialogue_no_description">Geribildirim açıklama sunulmadığı gibi iletilemedi</string>
     <string name="pref_pkg_info_summary">%1$s v%2$s (%3$d) | %4$s Yapım</string>
     <string name="alt_repo_info">Bu depo, daha düşük kaliteli modüllere götürebilecek daha az kısıtlamalara ve incelemelere sahiptir. Tatlı iskeletler ama birçok modüle sahiptir.</string>
     <string name="no_file_provided">Zip\'i açmaya çalışırken dosya bulunamadı.</string>
     <string name="zip_load_failed">Zip dosyası yüklenemedi</string>
     <string name="androidacy_thanks">Androidacy tarafından kısmen geliştirildi</string>
     <string name="source_code_summary"><b>Commit</b> %1$s @ %2$s</string>
-    <string name="repo_update_failed_extended">%1$s güncellenemedi. Lütfen daha sonra tekrar deneyin.</string>
     <string name="monet_disabled_summary">Monet, şeffaf temalarla uyumlu değildir.</string>
     <string name="blur_disabled_summary">Bulanıklık, şeffaf temalarla uyumlu değildir.</string>
     <string name="transparent_theme_dialogue_message">Şeffaf temalar bazı uyuşmazlıklara sahip olabilir ve tüm ROM\'larda çalışmayabilir. Ek olarak monet ve bulanıklık devre dışı bırakılacaktır. İstediğiniz zaman geri değiştirebilirsiniz.</string>
     <string name="custom_repo_always_on">Özel depolar siz kaldırana kadar her zaman açık olacaktır.</string>
-    <string name="sentry_dialogue_message">Bir hatayla karşılaştık! Lütfen aşağıdaki hata hakkında bazı bilgiler ekleyerek uygulamayı geliştirmemize yardım edin.
-\nİsim ve eposta isteğe bağlıdır ama eğer daha fazla bilgi gerekliyse bu sizinle iletişim kurmamıza izin verir.</string>
-    <string name="sentry_dialogue_title">Hay aksi! Görünüşe göre uygulama beklenmedik şekilde kapandı.</string>
-    <string name="name">İsminiz</string>
-    <string name="email">Epostanız</string>
-    <string name="additional_info">Ne olduğunu söyleyin</string>
-    <string name="submit">İlet</string>
     <string name="sentry_dialogue_failed_toast">Bir hata yüzünden geribildirim iletilemedi</string>
     <string name="setup_title">İlk kez kurulum</string>
     <string name="setup_message">Hoşgeldiniz! Bu uygulama Magisk modüllerini yüklemeye ve yönetmeye yardımcı olur. Başlamak için lütfen aşağıdaki ayarları seçin. Bunlar ve daha fazlası ayarlardan daha sonra değiştirilebilir.</string>
-    <string name="setup_button">Kurulumu bitir</string>
     <string name="setup_background_update_check">Otomatik güncelleme kontrolü</string>
     <string name="setup_androidacy_repo">Androidacy deposunu etkinleştir</string>
     <string name="setup_androidacy_repo_summary">Özellikler, kullanıcı incelemeleri, otomatik virüs taramaları, hızlı güncellemeler, geniş seçimler ve Androidacy destekli.</string>
@@ -223,8 +181,6 @@
     <string name="setup_crash_reporting_summary">Çökme bildirimi ve performans gözetimi. Tüm raporlar sert bir şekilde anonim ve gizlidir.</string>
     <string name="setup_custom_repos">Özel depoları ayarlarda daha sonra ekleyebilirsiniz.</string>
     <string name="repos">Depolar</string>
-    <string name="misc">Çeşitli</string>
-    <string name="setup_button_skip">Atla</string>
     <string name="low_performance_device_dialogue_title">Alt sınıf cihazda bulanıklık etkinleştirme</string>
     <string name="low_performance_device_dialogue_message">İyi yerine getiremeyebilen bir cihazda bulanıklığı etkinleştirmeye çalışıyorsunuz.
 \nEtkinleştirebilirsiniz fakat bu, zayıf kullanıcı deneyimini beraberinde getirebilir ve yapmamanızı öneriyoruz.</string>
@@ -239,10 +195,7 @@
     <string name="theme_transparent_light">Aydınlık (şeffaf)</string>
     <string name="theme_light">Aydınlık</string>
     <string name="androidacy_update_needed_message">Lütfen uygulamayı son sürüme güncelleyin.</string>
-    <string name="androidacy_webview_update_required">Webview güncel değil! Lütfen güncelleyin.</string>
     <string name="finish">Bitir</string>
-    <string name="setup_theme_button">Bir tema seç</string>
-    <string name="setup_theme_transparent_light">Şeffaf aydınlık tema, monet ve bulanıklğı devre dışı bırakacaktır!</string>
     <string name="language_cta">Dilini göremiyor musun\?</string>
     <string name="language_cta_desc">Çeviri yaparak bize yardım edin! Daha fazlasını bulmak için buraya dokunun.</string>
     <string name="androidacy_thanks_desc">Onların uygulamaya bütünleştirmeleri ve katkıları için Androidacy\'ye büyük teşekkürler.</string>
@@ -254,12 +207,6 @@
     <string name="clear_data_dialogue_title">Uygulama verilerini temizle\?</string>
     <string name="clear_data_dialogue_message">Uygulama verilerini temizlemek üzeresiniz. Lütfen bu eylemi onaylayın.</string>
     <string name="setup_background_update_check_summary">Modül ve uygulama güncellemelerini arkaplanda kontrol etmemize izin verir. Bu özellik daha fazla pil ve veri kullanabilir.</string>
-    <string name="setup_theme_system">Sistem teması</string>
-    <string name="setup_theme">Bir tema seçin</string>
-    <string name="setup_theme_header">Bir tema seçin</string>
-    <string name="setup_theme_black">AMOLED Siyah tema</string>
-    <string name="setup_theme_dark">Koyu tema</string>
-    <string name="setup_theme_light">Aydınlık tema</string>
     <string name="zip_prop_load_failed">Modül özellikleri yüklenemedi</string>
     <string name="zip_security_warning">%s Kur\?</string>
     <string name="zip_unpacking">Modül inceleniyor…</string>
@@ -268,13 +215,11 @@
 \nKaldırmanız şiddetle tavsiye edilir.</string>
     <string name="understand">Anladım</string>
     <string name="setup_theme_title">Tema seç</string>
-    <string name="setup_language_button">Dil seç</string>
     <string name="title_activity_setup">Kurulum Sihirbazı</string>
     <string name="action_settings">Ayarlar</string>
     <string name="zip_intent_module_install">%2$s ZIP dosyasından \"%1$s\" modülünü kurmak ister misiniz\?
 \n
 \nModüller çok güçlü ve neredeyse her şeyi yapabildiğinden bu modülün kaynağına güvendiğinizden emin olun.</string>
-    <string name="theme_transparent_dark">Koyu (şeffaf)</string>
     <string name="repo_update_failed_message">Aşağıdaki repolar güncellenemedi:
 \n
 \n%s</string>
@@ -291,7 +236,6 @@
     <string name="update_button">Lütfen bekleyin…</string>
     <string name="notification_update_ignore_desc">Güncelleme kontrollerinden hariç tutulacak modüllerin listesi</string>
     <string name="background_update_check_excludes">Otomatik güncelleme kontrollerinden hariç tutulacak modüller</string>
-    <string name="title_activity_update">Uygulama İçi Güncelleyici</string>
     <string name="update_title">Uygulamayı güncelle</string>
     <string name="update_message">AMM güncellemelerini kontrol edip yüklerken lütfen bekleyin. Bu işlem birkaç dakika sürebilir</string>
     <string name="crash_text">Uh-oh, bir engele takıldık!</string>
@@ -303,7 +247,6 @@
     <string name="crash_icon">Arıza simgesi</string>
     <string name="copy_button">Metni kopyala</string>
     <string name="crash_details">Bilinmeyen neden</string>
-    <string name="more_details">Daha fazla ayrıntı aşağıda bulunabilir.</string>
     <string name="crash_details_copied">Yığın izi panoya kopyalandı!</string>
     <string name="crash_full_stacktrace">Yığın izi:
 \n%1$s</string>
@@ -311,7 +254,6 @@
     <string name="upgraded_summary">Sen harikasın! Görünüşe göre aboneliğinizi çoktan yükseltmişsiniz ve Androidacy\'i destekliyorsunuz.</string>
     <string name="upgraded">Premium aktif</string>
     <string name="reset_warning">Bu ekranı görmeye devam ederseniz, uygulamayı sıfırlamak yardımcı olabilir. Bu işlem uygulama verilerini temizler ancak yüklü modülleri etkilemez.</string>
-    <string name="reset_app_message">Bu, tüm uygulama verilerini tamamen kaldıracak ve uygulamayı kapatacaktır. Modüller kaldırılmayacaktır.</string>
     <string name="reset">Sıfırla</string>
     <string name="reset_app_confirmation">Bu işlem uygulama verilerini tamamen silecek ancak modülleri etkilemeyecektir.</string>
     <string name="error_no_extras">HATA: Başlatma sırasında geçersiz veri alındı</string>
@@ -322,7 +264,6 @@
     <string name="no_update_available">Her şey güncel!</string>
     <string name="download_update">Güncellemeyi indirin</string>
     <string name="error_download_update">Güncelleme bilgileri indirilirken bir hata oluştu.</string>
-    <string name="error_no_asset">HATA: Güncelleme bilgileri ayrıştırılamadı</string>
     <string name="downloading_update">Güncelleme indiriliyor… %1$d%%</string>
     <string name="installing_update">Güncelleme yükleniyor…</string>
     <string name="no_file_found">HATA: Güncelleme paketi bulunamadı.</string>
@@ -331,11 +272,7 @@
     <string name="api_key_mismatch">API anahtarı geçersiz bir biçimde</string>
     <string name="notification_update_ignore_pref">Modülleri hariç tut</string>
     <string name="pref_category_updates">Güncellemeler</string>
-    <string name="invalid_excludes">Geçersiz giriş</string>
-    <string name="invalid_characters_message">Girdiğiniz modül listesi geçersiz. Lütfen yalnızca virgülle ayrılmış geçerli modül kimliklerini girin</string>
     <string name="update_debug_download_pref">Güncelleme indirme mekanizmasını test edin</string>
-    <string name="changelog_none">Henüz bir değişiklik yok!</string>
-    <string name="update_cancel_button">Güncellemeyi iptal et</string>
     <string name="invalid_repo_url">Depo için girdiğiniz URL geçersiz</string>
     <string name="add_repo_message">Repolar HTTPS üzerinden sunulmalı ve belgelerde belirtilen özelliklere uymalıdır.</string>
     <string name="notification_update_wifi_pref">Güncelleme kontrolleri için wi-fi veya ölçülmemiş bir ağ gerektirir. Sınırlı mobil veriniz varsa açık bırakmanız önerilir.</string>
@@ -363,5 +300,4 @@
     <string name="safe_message">Bu modül depo tarafından güvenli olarak doğrulanmıştır, yani belirli kalite ve güvenlik eşiklerini geçmiştir ve kötü amaçlı yazılımlara karşı kontrol edilmiştir.</string>
     <string name="notification_update_app_desc">Uygulama güncellemelerini otomatik olarak kontrol etmeyi etkinleştirin. Güncellemeler otomatik olarak indirilmeyecektir.</string>
     <string name="notification_channel_category_app_update_description">Bir uygulama güncellemesi mevcut olduğunda bildirir</string>
-    <string name="search">Ara</string>
 </resources>

@@ -51,6 +51,7 @@ import com.fox2code.mmm.utils.io.net.Http
 import com.fox2code.mmm.utils.sentry.SentryBreadcrumb
 import com.fox2code.mmm.utils.sentry.SentryMain
 import com.google.android.material.bottomnavigation.BottomNavigationItemView
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.progressindicator.LinearProgressIndicator
 import com.topjohnwu.superuser.CallbackList
@@ -162,7 +163,8 @@ class InstallerActivity : FoxActivity() {
         val horizontalScroller = findViewById<View>(R.id.install_horizontal_scroller)
         var installTerminal: RecyclerView
         progressIndicator = findViewById(R.id.progress_bar)
-        rebootFloatingButton = findViewById(R.id.install_terminal_reboot_fab)
+        val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottom_navigation)
+        rebootFloatingButton = bottomNavigationView.findViewById(R.id.install_terminal_reboot_fab)
         cancelFloatingButton = findViewById(R.id.back_installer)
         val rbtBtn = rebootFloatingButton
         val cnlBtn = cancelFloatingButton

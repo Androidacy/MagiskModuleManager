@@ -4,7 +4,6 @@
 
 <resources>
     <string name="app_name">Fox\'s Magisk Module Manager</string>
-    <string name="app_name_short">Fox\'s Mmm</string>
     <string name="fail_root_magisk">Nepodarilo sa získať prístup k Root-u alebo Magisk</string>
     <string name="loading">Načítavanie…</string>
     <string name="updatable">Aktualizovateľné</string>
@@ -12,21 +11,17 @@
     <string name="online_repo">Online Repozitár</string>
     <string name="showcase_mode">Aplikácia je v obmedzenom režime</string>
     <string name="failed_download">Sťahovanie súboru zlyhalo</string>
-    <string name="slow_modules">Načítanie modulov trvalo príliš dlho, zvážte ich obmedziť</string>
     <string name="fail_internet">Pripojenie k internetu zlyhalo</string>
     <string name="title_activity_settings">SettingsActivity</string>
     <string name="app_update_available">Dostupné aktualizácie aplikácie</string>
-    <string name="app_update">Aktualizovať</string>
     <string name="no_desc_found">Popis nenájdený.</string>
     <string name="download_module">Stiahnuť modul</string>
     <string name="install_module">Inštalovať modul</string>
     <string name="update_module">Aktualizovať modul</string>
-    <string name="changelog">Zoznam zmien</string>
     <string name="website">Website</string>
     <string name="support">Podpora</string>
     <string name="donate">Prispejte na vývoj</string>
     <string name="submit_modules">Odoslat modul</string>
-    <string name="require_android_6">Požaduje sa Android 6.0+</string>
     <!-- Module section translation -->
     <string name="module_last_update">Posledná aktualizácia:</string>
     <string name="module_repo">Repozitár:</string>
@@ -38,7 +33,6 @@
     <string name="manage_repos_pref">Spravovat repozitáre</string>
     <string name="showcase_mode_pref">Obmedzený režim</string>
     <string name="showcase_mode_desc">Obmedzený režim bráni správcovi vykonávať akcie s modulmi</string>
-    <string name="pref_category_settings">Nastavenia</string>
     <string name="pref_category_info">Info</string>
     <string name="show_licenses">Zobraziť licencie</string>
     <string name="licenses">Licencie</string>
@@ -46,14 +40,11 @@
     <string name="show_incompatible_desc">Zobraziť moduly, ktoré nie sú podľa ich metadát kompatibilné s vaším zariadením</string>
     <string name="magisk_outdated">Magisk je zastaralý!</string>
     <string name="pref_category_repos">Úložisko</string>
-    <string name="repo_main_desc">Úložisko s Magisk modulmi</string>
-    <string name="repo_main_alt">Alternativné úložisko Magisk-Modules-Repo s menšími obmedzeniami.</string>
     <string name="master_delete">Zmazať súbory modulu?</string>
     <string name="master_delete_no">Ponechať súbory</string>
     <string name="master_delete_yes">Zmazat soubory</string>
     <string name="master_delete_fail">Zmazánie súborov modulu zlyhalo</string>
     <string name="theme_pref">Téma</string>
-    <string name="theme_mode_pref">Mód témy</string>
     <string name="module_id_prefix">Id modulu: </string>
     <string name="install_from_storage">Inštalovať modul z miestneho úložiska</string>
     <string name="invalid_format">Vybraný modul má nesprávny formát</string>
@@ -71,7 +62,6 @@
 		    povoľte to len na vlastné riziko!
     </string>
     <string name="dev_mode_enabled">Povolený režim pre vývojárov</string>
-    <string name="force_english_pref">Vynútiť Angličtinu</string>
     <string name="disable_low_quality_module_filter_pref">Zakázať filter nekvalitných modulov</string>
     <string name="disable_low_quality_module_filter_desc">Niektoré moduly deklarujú svoje metadáta nesprávne, čo môže spôsobiť závady zobrazenia, alebo ukazujú nízku kvalitu modulu, zakážte to len na vlastné riziko!</string>
     <string name="dns_over_https_pref">Dns cez https</string>
@@ -79,8 +69,6 @@
         V niektorých prípadoch môže opraviť problémy s pripojením.
         (Nevzťahuje se na WebView)
     </string>
-    <string name="disable_extensions_pref">Zakázať rozšírenia</string>
-    <string name="disable_extensions_desc">Vypnutím rozšírení Fox\'s Mmm sa zabráni modulom použiť terminal extensions, vhodné ak modul používa Fox\'s Mmm nesprávne.</string>
     <string name="wrap_text_pref">Zalomiť text</string>
     <string name="wrap_text_desc">
         Zalomí text do nového riadku, namiesto toho aby
@@ -96,11 +84,8 @@
     <string name="description">Popis</string>
     <string name="uninstall">Odinštalovať</string>
     <string name="config">Konfigurácia</string>
-    <string name="favourite">Obľúbené</string>
     <string name="update">Aktualizovať</string>
     <string name="report_bugs">Nahlásiť chyby</string>
-    <string name="sniffed_modules">Nájdené moduly</string>
-    <string name="sniffing_modules">Hľadajú sa moduly</string>
     <string name="require_android_12">Vyžaduje sa Android 12+</string>
     <string name="install_terminal_reboot_now">Reštartovať</string>
     <string name="language">Jazyk</string>
@@ -115,33 +100,21 @@
     <string name="prevent_reboot_desc">Zabrániť neočakávaným rebootom</string>
     <string name="enable_monet">Povoliť Monet</string>
     <string name="pref_category_appearance">Vzhľad</string>
-    <string name="pref_category_general">Všeobecné</string>
     <string name="low_quality_module">Modul nižšej kvality</string>
-    <string name="disable_chips_in_description">Deaktivovať chipy v popise</string>
     <string name="add_repo">Pridať Repozitár</string>
     <string name="remove_repo">Zmazať Repozitár</string>
     <string name="custom_url">Vlastná URL</string>
-    <string name="backup_module_list">Zálohovať moduly</string>
     <string name="androidacy_repo_info">Toto úložisko môže zobrazovať nevtieravú reklamu na pokrytie nákladov na server a vývoj. Môžu to byť recenzie, automatické antivírusové kontroly a iné.</string>
-    <string name="repo_update_failed_extended">Aktualizácia %1$s zlyhala. Prosím skúste neskôr.</string>
     <string name="blur_disabled_summary">Blur je nekompatibilný s priehľadnými motívmi.</string>
     <string name="monet_disabled_summary">Monet je nekompatibilný s priehľadnými motívmi.</string>
     <string name="transparent_theme_dialogue_title">Nastavujete priehľadný motív</string>
     <string name="custom_repo_always_on">Vlastné repozitáre sú vždy zapnuté pokiaľ ich nezmažete.</string>
-    <string name="sentry_dialogue_title">Ups! Zdá sa, že sa aplikácia neočakávane ukončila.</string>
-    <string name="name">Vaše meno</string>
-    <string name="email">Váš email</string>
-    <string name="additional_info">Povedzte nám čo sa stalo</string>
-    <string name="submit">Poslať</string>
     <string name="sentry_dialogue_failed_toast">Feedback nebolo možné odoslať kvôli chybe</string>
     <string name="sentry_dialogue_success">Feedback úspešne odoslaný. Čoskoro si ho pozrieme</string>
-    <string name="sentry_dialogue_no_description">Keďže ste nenapísali nič bližšie, feedback sa neodoslal</string>
-    <string name="go_to_online_repo">Skrolovať pre online repozitár</string>
     <string name="official">Oficiálny</string>
     <string name="unofficial">Neoficiálny</string>
     <string name="setup_title">Prvá inštalácia</string>
     <string name="setup_message">Vitajte! Táto aplikácia vám pomôže nainštalovať a spravovať moduly Magisk. Ak chcete začať, vyberte nižšie uvedené možnosti. Tieto a ďalšie sa dajú konfigurovať v nastaveneniach neskôr.</string>
-    <string name="setup_button">Dokončiť nastavenia</string>
     <string name="api_key_restart">Kľúč API sa zmenil. Pre použitie zmien reštartujte app.</string>
     <string name="api_key_unchanged">Kľúč API ktorý ste zadali je rovnaký ako ten čo sa používa teraz.</string>
     <string name="permission_notification_title">Povoliť upozornenia\?</string>
@@ -149,8 +122,6 @@
     <string name="permission_notification_grant">Povoliť oprávnenia</string>
     <string name="background_update_check_permission_required">Ak chcete aktivovať túto možnosť, povolte oznámenia.</string>
     <string name="dont_ask_again">Nepýtajte sa znova</string>
-    <string name="force_black_theme_desc">Vynútiť čierne pozadie AMOLED pri použití tmavého motívu. U niektorých farebných motívov môže dochádzať k problémom s kontrastom.</string>
-    <string name="force_black_theme_pref">Vynútiť čierny motív</string>
     <string name="androidacy_repo_disabled">Tento repozitár je momentálne zakázaný</string>
     <string name="androidacy_repo_disabled_message">V tejto zostave chýbajú klientske kľúče pre repozitár Androidacy. Pokiaľ chcete využívať funkcie, ako sú recenzie modulov, automatické bezpečnostné kontroly a ďalšie, stiahnite si vydanie z GitHub-u.</string>
     <string name="download_full_app">Stiahnuť plnú verziu</string>
@@ -159,17 +130,12 @@
     <string name="dev_mode_disabled">Vývojárský režim vypnutý</string>
     <string name="androidacy_failed_to_parse_token">Androidacy token sa nedá načítať. Prosím skúste to neskôr.</string>
     <string name="androidacy_failed_to_validate_token">Androidacy token sa nedá overiť. Prosím skúste to neskôr.</string>
-    <string name="androidacy_server_down">Nedá sa spojiť s Androidacy serverom. Skontrolujte vaše pripojenie a skúste znova.</string>
     <string name="crash_reporting_desc">Ak toto zakážete, vývojár nedostane automatické správy o chybách, čo môže sťažiť odstraňovanie problémov</string>
     <string name="androidacy_need_captcha">Aktualizáciu Androidacy blokuje Captcha</string>
     <string name="link_copied">Odkaz skopírovaný</string>
-    <string name="restore_module_list">Obnoviť moduly</string>
-    <string name="require_internet">Táto operácia vyžaduje pripojenie k internetu</string>
     <string name="androidacy_test_mode_pref">Testovací režim Androidacy</string>
     <string name="androidacy_test_mode_desc">Použiť testovací endpoint namiesto endpointu vydánia (Aplikácia sa reštartuje)</string>
     <string name="notification_update_title">Našlo sa %i aktualizácií modulov</string>
-    <string name="notification_update_title_easter_egg">Našlo sa %i aktualizovatelných modulov</string>
-    <string name="notification_update_subtitle">Na spustenie app kliknite</string>
     <string name="notification_update_pref">Kontrola aktualizácií modulov v pozadí</string>
     <string name="notification_update_desc">Môže zvýšiť spotrebu batérie</string>
     <string name="notification_update_debug_pref">Skúška upozornení</string>
@@ -178,18 +144,13 @@
     <string name="crash_reporting">Automaticky hlásiť chyby a výkon vývojárom</string>
     <string name="api_key">API kľúč Androidacy</string>
     <string name="api_key_summary">Použíť vlastný kľúč API pre Androidacy. Užitočné pre prémiových predplatiteľov, na odstránenie reklám a ďaľšie.</string>
-    <string name="api_key_not_set">Kľúč Androidacy API je prázdny</string>
-    <string name="api_key_set">Súčasný kľúč Androidacy</string>
     <string name="api_key_valid">Kľúč API je platný.</string>
     <string name="checking_api_key">Overuje sa kľúč API…</string>
-    <string name="validating_api_key">Overuje sa kľúč API…</string>
     <string name="please_wait">Čakajte prosím</string>
     <string name="api_key_removed">Kľúč API sa úspešne resetoval</string>
     <string name="save_api_key">Overiť</string>
     <string name="warning">Varovanie!</string>
     <string name="crash">Crashnout aplikáciu na účely testovania</string>
-    <string name="repackaged_as">Prebalené ako:</string>
-    <string name="wrapped_from">Zabalené od:</string>
     <string name="crash_reporting_restart_title">Reštartovať app pre použitie zmien\?</string>
     <string name="crash_reporting_restart_message">Pre použitie týchto zmien je nutné reštartovať aplikáciu</string>
     <string name="restart">Reštartovať</string>
@@ -204,8 +165,6 @@
     <string name="setup_crash_reporting">Povoliť Sentry</string>
     <string name="setup_crash_reporting_summary">Oznamovanie chýb a výkonu. Všetky oznámenia sú striktne anonymné a dôverné.</string>
     <string name="transparent_theme_dialogue_message">Priehľadné motívy nemusia byť úplne konzistentné a nemusia fungovať na všetkých ROM. Monet a Blur budú deaktivované. Môžete to kedykoľvek vrátiť.</string>
-    <string name="sentry_dialogue_message">Vyskytla sa chyba! Pomôžte nám vylepšiť aplikáciu pridaním niektorých informácií o chybe.
-\nMeno a email sú nepovinné, ale umožnia nám kontaktovať Vás ak by sme potrebovali viac informácií.</string>
     <string name="setup_androidacy_repo_summary">Androidacy poskytuje užívateľské recenzie, automatickú antivírovú kontrolu, rýchle aktualizácie a široký výber.</string>
     <string name="install_terminal_reboot_now_message">Chystáte sa reštartovať zariadenie. Ak ste si svoju prácu uložili, pokračujte stlačením tlačidla OK, inak stlačte Storno.</string>
     <string name="install_terminal_config_missing">Balík %s chýba v konfigurácii modulu, preto sa nedá spustiť.</string>
@@ -218,10 +177,6 @@
     <string name="alt_repo_info">Tento repozitár má menej obmedzení a recenzií, čo môže viesť k nižšej kvalite modulov. Takmer obnažené, ale má veľa modulov.</string>
     <string name="setup_custom_repos">Vlastné repozitáre môžete pridať kedykoľvek neskôr.</string>
     <string name="repos">Repozitáre</string>
-    <string name="misc">Rôzne</string>
-    <string name="setup_button_skip">Preskočiť</string>
-    <string name="androidacy_webview_update_required">Váš webview je zastaraný. Aktualizujte ho prosím.</string>
-    <string name="setup_theme_transparent_light">Transparentný svetlý motív - zakáže sa monet a blur!</string>
     <string name="androidacy_update_needed">Táto aplikácia je zastaraná.</string>
     <string name="androidacy_update_needed_message">Prosím aktualizujte aplikáciu na najnovšiu verziu.</string>
     <string name="pref_pkg_info_summary">%1$s v%2$s (%3$d) | %4$s Build</string>
@@ -230,13 +185,6 @@
     <string name="magisk_alt_repo_name">Alternatívny Magisk repozitár</string>
     <string name="repo_enabled_changed">Povolili ste, alebo zakázali repozitár. Prosím obnovte zoznam modulov alebo reštartujte aplikáciu.</string>
     <string name="finish">Dokončiť</string>
-    <string name="setup_theme">Vybrať motív</string>
-    <string name="setup_theme_header">Vybrať motív</string>
-    <string name="setup_theme_light">Svetlý motív</string>
-    <string name="setup_theme_dark">Tmavý motív</string>
-    <string name="setup_theme_black">Tmavý AMOLED motív</string>
-    <string name="setup_theme_system">Systémový motív</string>
-    <string name="setup_theme_button">Vybrať motív</string>
     <string name="theme">Motív</string>
     <string name="theme_system">Systém</string>
     <string name="theme_dark">Tmavý</string>

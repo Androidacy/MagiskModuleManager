@@ -112,23 +112,20 @@ enum class ActionButtonType {
                 moduleHolder.repoModule?.moduleInfo?.name
             }
             TrackHelper.track().event("view_update_install", name).with(INSTANCE!!.getTracker())
-            // if icon is reinstall, we need to uninstall first - warn the user but don't proceed
+            // if text is reinstall, we need to uninstall first - warn the user but don't proceed
             if (moduleHolder.moduleInfo != null) {
-                // get icon of the button
-                val icon = button.chipIcon
-                if (icon != null && icon.constantState != null) {
-                    val reinstallIcon =
-                        button.context.getDrawable(R.drawable.ic_baseline_refresh_24)
-                    if (reinstallIcon != null && reinstallIcon.constantState != null) {
-                        if (icon.constantState == reinstallIcon.constantState) {
-                            MaterialAlertDialogBuilder(button.context)
-                                .setTitle(R.string.reinstall)
-                                .setMessage(R.string.reinstall_warning)
-                                .setPositiveButton(R.string.reinstall, null)
-                                .show()
-                            return
-                        }
-                    }
+                // get the text
+                val text = button.text
+                // if the text is reinstall, warn the user
+                if (text == button.context.getString(R.string.reinstall)) {
+                    val builder = MaterialAlertDialogBuilder(button.context)
+                    builder.setTitle(R.string.reinstall)
+                        .setMessage(R.string.reinstall_warning)
+                        .setCancelable(true)
+                        // ok button that does nothing
+                        .setPositiveButton(R.string.ok, null)
+                        .show()
+                    return
                 }
             }
             val updateZipUrl = moduleHolder.updateZipUrl ?: return

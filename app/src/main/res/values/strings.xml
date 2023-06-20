@@ -6,7 +6,6 @@
     <string name="app_name">Fox\'s Magisk Module Manager</string>
     <!-- redesign name -->
     <string name="app_name_v2">Androidacy Module Manager</string>
-    <string name="app_name_short">Fox\'s Mmm</string>
     <string name="app_name_short_v2">AMM</string>
     <string name="fail_root_magisk">Could not access either Root or Magisk</string>
     <string name="fail_root_denied">Root has been denied via the Magisk app</string>
@@ -17,17 +16,14 @@
     <string name="online_repo">Online Repo</string>
     <string name="showcase_mode">The app is in lockdown mode</string>
     <string name="failed_download">Could not download the file</string>
-    <string name="slow_modules">Modules took too long to boot, consider disabling some modules</string>
     <string name="fail_internet">Could not connect to the Internet</string>
     <string name="no_web_view">Could not open system WebView</string>
     <string name="title_activity_settings">SettingsActivity</string>
     <string name="app_update_available">A new version of the app is available</string>
-    <string name="app_update">Update app</string>
     <string name="no_desc_found">No description found.</string>
     <string name="download_module">Download module</string>
     <string name="install_module">Install module</string>
     <string name="update_module">Upgrade module</string>
-    <string name="changelog">Changelog</string>
     <string name="website">Website</string>
     <string name="support">Support</string>
     <string name="donate">Donate</string>
@@ -36,12 +32,8 @@
     <string name="description">Description</string>
     <string name="uninstall">Uninstall</string>
     <string name="config">Config</string>
-    <string name="favourite">Favourite</string>
     <string name="report_bugs">Report bugs</string>
-    <string name="sniffed_modules">Sniffed modules</string>
-    <string name="sniffing_modules">Sniffing modules</string>
     <string name="submit_modules">Submit a module</string>
-    <string name="require_android_6">Requires Android 6.0+</string>
     <string name="require_android_12">Requires Android 12+</string>
     <string name="install_terminal_reboot_now">Reboot</string>
     <string name="language">Language</string>
@@ -71,7 +63,6 @@
     <string name="showcase_mode_desc">Lockdown mode prevents the manager from carrying out actions on modules</string>
     <string name="prevent_reboot_pref">Prevent reboot</string>
     <string name="prevent_reboot_desc">Prevents unexpected reboots</string>
-    <string name="pref_category_settings">Settings</string>
     <string name="enable_monet">Enable Monet</string>
     <string name="pref_category_info">Info</string>
     <string name="show_licenses">Show licenses</string>
@@ -82,15 +73,11 @@
     <string name="pref_category_repos">Repos</string>
     <string name="pref_category_security">Security</string>
     <string name="pref_category_appearance">Appearance</string>
-    <string name="pref_category_general">General</string>
-    <string name="repo_main_desc">The repository hosting Magisk modules</string>
-    <string name="repo_main_alt">An alternative to the Magisk-Modules-Repo with fewer restrictions.</string>
     <string name="master_delete">Delete the module files?</string>
     <string name="master_delete_no">Keep</string>
     <string name="master_delete_yes">Delete</string>
     <string name="master_delete_fail">Could not delete the module files</string>
     <string name="theme_pref">Theme</string>
-    <string name="theme_mode_pref">Theme mode</string>
     <string name="module_id_prefix">Module ID: </string>
     <string name="install_from_storage">Install module from storage</string>
     <string name="invalid_format">The selected module has an invalid format</string>
@@ -110,7 +97,6 @@
     </string>
     <string name="dev_mode_enabled">Developer mode on</string>
     <string name="dev_mode_disabled">Developer mode off</string>
-    <string name="force_english_pref">English app language</string>
     <string name="disable_low_quality_module_filter_pref">Show low-quality modules</string>
     <string name="disable_low_quality_module_filter_desc">
         Some modules do not declare their metadata properly, causing visual glitches,
@@ -121,18 +107,12 @@
         May fix connections issues in some cases.
         (Does not apply to WebView.)
     </string>
-    <string name="disable_extensions_pref">No Mmm</string>
-    <string name="disable_extensions_desc">
-        Turn off Fox\'s Mmm extensions, preventing modules from using
-        terminal extensions.\nUseful if a module misuses Fox\'s Mmm extensions.
-    </string>
     <string name="wrap_text_pref">Text wrapping</string>
     <string name="wrap_text_desc">
         Show text on multiple lines instead of putting
         all text on the same line when installing a module.
     </string>
     <string name="enable_blur_pref">Blur</string>
-    <string name="disable_chips_in_description">Disable chips in description</string>
     <string name="repo_enabled">Repo on</string>
     <string name="repo_disabled">Repo off</string>
     <string name="add_repo">Add Repo</string>
@@ -140,16 +120,11 @@
     <string name="custom_url">Custom url</string>
     <string name="link_copied">Link copied</string>
     <string name="androidacy_repo_info">This repository may display some non-intrusive advertising to cover server and development costs. Features reviews, automatic virus scans, and more.</string>
-    <string name="backup_module_list">Backup modules</string>
-    <string name="restore_module_list">Restore modules</string>
-    <string name="require_internet">This operation require an internet connection</string>
     <string name="androidacy_test_mode_pref">Androidacy test mode</string>
     <string name="androidacy_test_mode_desc">Use staging Androidacy endpoint instead of release endpoint. (Will restart app)</string>
 
     <!-- Background Notification translation -->
     <string name="notification_update_title">Found %1$d module updates</string>
-    <string name="notification_update_title_easter_egg">Sniffed %i module updates</string>
-    <string name="notification_update_subtitle">Click to open the app</string>
     <string name="notification_update_pref">Automatic modules update check</string>
     <string name="notification_update_desc">May increase battery usage</string>
     <string name="notification_update_debug_pref">Test Notification</string>
@@ -166,27 +141,21 @@
     <string name="crash_reporting_desc">If you disable this, the developer will not get automatic bug reports, and this may make troubleshooting harder</string>
     <string name="api_key">Androidacy API Key</string>
     <string name="api_key_summary">Use a custom API key for Androidacy. Useful for premium subscribers, to remove ads and more.</string>
-    <string name="api_key_not_set">Androidacy API key is empty</string>
-    <string name="api_key_set">Current Androidacy API key</string>
     <string name="api_key_invalid">Could not validate API key. Please check it and try again.</string>
     <string name="api_key_valid">API key is valid.</string>
     <string name="checking_api_key">Validating API key…</string>
-    <string name="validating_api_key">Validating API key…</string>
     <string name="please_wait">Please wait</string>
     <string name="api_key_removed">Successfully reset API key</string>
     <string name="save_api_key">Validate</string>
     <string name="warning">Warning!</string>
     <string name="androidacy_test_mode_warning">You are setting the app to use a non-production endpoint for Androidacy. This may result in app instability and failure to load the online repo. Do NOT report bugs if you have this switch on. App will be restarted to reload repos.</string>
     <string name="crash">Crash the app for testing</string>
-    <string name="repackaged_as">Repackaged as:</string>
-    <string name="wrapped_from">Wrapped from:</string>
     <string name="crash_reporting_restart_title">Restart app to apply changes?</string>
     <string name="crash_reporting_restart_message">The app needs to restart to apply this setting</string>
     <string name="restart">Restart</string>
     <string name="androidacy_test_mode_disable_warning">App will be restarted to disable staging endpoint</string>
     <string name="androidacy_failed_to_parse_token">Could not retrieve token from Androidacy. Please try again later.</string>
     <string name="androidacy_failed_to_validate_token">Could not validate token for Androidacy. Please try again later.</string>
-    <string name="androidacy_server_down">Unable to contact Androidacy server. Check your connection and try again.</string>
     <string name="androidacy_need_captcha">Androidacy update blocked by Captcha</string>
     <string name="api_key_restart">API key has been changed. Restart the app to apply changes.</string>
     <string name="api_key_unchanged">The API key you input is the same as the one already in use.</string>
@@ -195,9 +164,6 @@
     <string name="permission_notification_grant">Grant permission</string>
     <string name="background_update_check_permission_required">Please enable notifications to enable this option.</string>
     <string name="dont_ask_again">Don\'t ask again</string>
-    <string name="force_black_theme_desc">Forces AMOLED black backgrounds when using dark theme.
-        Please be aware this may have contrast problems with some color themes.</string>
-    <string name="force_black_theme_pref">Force black theme</string>
     <string name="androidacy_repo_disabled">This repo is currently disabled</string>
     <string name="androidacy_repo_disabled_message">This build is missing client keys for the
         Androidacy Repo.
@@ -205,32 +171,19 @@
         download the GitHub release if you\'d like to benefit from features like module reviews, automatic security checks, and more.</string>
     <string name="download_full_app">Download full version</string>
     <string name="repo_update_failed">Some repos have failed to update</string>
-    <string name="repo_update_failed_extended">Update of %1$s failed. Please try again later.</string>
     <string name="monet_disabled_summary">Monet is not compatible with transparent themes.</string>
     <string name="blur_disabled_summary">Blur is not compatible with transparent themes.</string>
     <string name="transparent_theme_dialogue_title">You are setting a transparent theme</string>
     <string name="transparent_theme_dialogue_message">Transparent themes may have some inconsistencies and may not work on all ROMs. In addition, monet and blur will be disabled. You can change back at any time.</string>
     <string name="custom_repo_always_on">Custom repos are always on until you remove them.</string>
-    <string name="sentry_dialogue_message">We encountered an error! Please help us improve the app
-        by adding some information about the error below.\nName and email are optional but will
-        allow us to contact you if needed for more information.</string>
-    <string name="sentry_dialogue_title">Oops! Looks like the app closed unexpectedly.</string>
-    <string name="name">Your name</string>
-    <string name="email">Your email</string>
-    <string name="additional_info">Tell us what happened</string>
-    <string name="submit">Submit</string>
     <string name="sentry_dialogue_failed_toast">Could not submit feedback due to an error</string>
     <string name="sentry_dialogue_success">Submitted feedback successfully. We\'ll review it
     shortly</string>
-    <string name="sentry_dialogue_no_description">Could not submit feedback as no
-        description was provided</string>
-    <string name="go_to_online_repo">Scroll to online repo</string>
     <string name="pref_pkg_info_summary">%1$s v%2$s (%3$d) | %4$s Build</string>
     <string name="official">Official</string>
     <string name="unofficial">Unofficial</string>
     <string name="setup_title">First time setup</string>
     <string name="setup_message">Welcome! This app will help you install and manage Magisk modules. To get started, please select the options below. These and more can be configured from settings later.</string>
-    <string name="setup_button">Finish setup</string>
     <string name="setup_background_update_check">Automatic update check</string>
     <string name="setup_background_update_check_summary">Allow us to check for module and app updates in the background. This feature may use more battery and data.</string>
     <string name="setup_androidacy_repo">Enable the Androidacy repo</string>
@@ -243,8 +196,6 @@
     <string name="setup_crash_reporting_summary">Crash reporting and performance monitoring. All reports are strictly anonymous and confidential.</string>
     <string name="setup_custom_repos">You can add custom repos later in settings.</string>
     <string name="repos">Repos</string>
-    <string name="misc">Miscellaneous</string>
-    <string name="setup_button_skip">Skip</string>
     <string name="low_performance_device_dialogue_title">Enabling blur on lower-end device</string>
     <string name="low_performance_device_dialogue_message">You are trying to enable blur on a device that may not perform well with it.\nYou may enable it, but this may lead to a poor user experience and we recommend you don\'t.</string>
     <string name="alt_repo_info">This repo has less restrictions and reviews, which may lead to lower quality modules. Pretty bare bones but has a lot of modules.</string>
@@ -258,24 +209,14 @@
     <string name="magisk_alt_repo_name">Magisk Alt Repo</string>
     <string name="repo_enabled_changed">You\'ve enabled or disabled a repo. Please refresh the module list or restart the app.</string>
     <string name="finish">Finish</string>
-    <string name="setup_theme">Choose a theme</string>
-    <string name="setup_theme_header">Choose a theme</string>
-    <string name="setup_theme_system">System theme</string>
-    <string name="setup_theme_light">Light theme</string>
-    <string name="setup_theme_dark">Dark theme</string>
-    <string name="setup_theme_black">AMOLED Black theme</string>
-    <string name="setup_theme_transparent_light">Transparent light theme - will disable monet and blur!</string>
-    <string name="setup_theme_button">Choose a theme</string>
     <string name="theme">Theme</string>
     <string name="theme_system">System</string>
     <string name="theme_dark">Dark</string>
     <string name="theme_black">AMOLED Black</string>
-    <string name="theme_transparent_dark">Dark (transparency)</string>
     <string name="theme_transparent_light">Light (transparency)</string>
     <string name="theme_light">Light</string>
     <string name="androidacy_update_needed">This app is outdated.</string>
     <string name="androidacy_update_needed_message">Please update the app to the latest version.</string>
-    <string name="androidacy_webview_update_required">Your webview is outdated! Please update it.</string>
     <string name="language_cta">Don\'t see your language?</string>
     <string name="language_cta_desc">Help us by translating it! Tap here to find out more.</string>
     <string name="source_code_summary"><b>Commit</b> %1$s @ %2$s</string>
@@ -291,7 +232,6 @@
     <string name="warning_message">This module has indicators it may have been installed without your knowledge, or may be attempting to hide itself.\n\nUninstall is strongly recommended.</string>
     <string name="understand">I understand</string>
     <string name="setup_theme_title">Choose theme</string>
-    <string name="setup_language_button">Choose language</string>
     <string name="title_activity_setup">Setup Wizard</string>
     <string name="action_settings">Settings</string>
     <string name="repo_update_failed_message">The following repos have failed to update:\n\n%s</string>
@@ -316,7 +256,6 @@
     <string name="crash_icon">Crash icon</string>
     <string name="copy_button">Copy text</string>
     <string name="crash_details">Unknown cause</string>
-    <string name="more_details">More details may be found below.</string>
     <string name="crash_details_copied">Copied stacktrace to clipboard!</string>
     <string name="crash_full_stacktrace">Stacktrace:\n%1$s</string>
     <string name="sentry_enable_nag">It looks like crash reporting is disabled. Please enable it to submit feedback.</string>
@@ -324,7 +263,6 @@
     <string name="upgraded_summary">You\'re pretty awesome! Looks like you\'ve already upgraded your subscription and are supporting Androidacy.</string>
     <string name="upgraded">Premium active</string>
     <string name="reset_warning">If you keep seeing this screen, resetting the app might help. This will clear app data but will not effect installed modules.</string>
-    <string name="reset_app_message">This will completely remove all app data and close the app. Modules will not be uninstalled.</string>
     <string name="reset">Reset</string>
     <string name="reset_app_confirmation">This is going to completely wipe app data, but will not effect modules.</string>
     <string name="error_adding">Failed to add custom repo</string>
@@ -332,10 +270,7 @@
     <string name="notification_update_ignore_desc">List of modules to exclude from update checks</string>
     <string name="notification_update_ignore_pref">Exclude modules</string>
     <string name="pref_category_updates">Updates</string>
-    <string name="invalid_excludes">Invalid input</string>
-    <string name="invalid_characters_message">The list of modules you input is invalid. Please only input valid module id\'s separated by commas</string>
     <string name="background_update_check_excludes">Modules to exclude from automatic update checks</string>
-    <string name="title_activity_update">In-app Updater</string>
     <string name="update_title">Update app</string>
     <string name="update_message">Please wait while we check for and install updates to AMM. This may take a few minutes</string>
     <string name="update_button">Please wait…</string>
@@ -347,14 +282,11 @@
     <string name="no_update_available">You\'re up to date!</string>
     <string name="download_update">Download update</string>
     <string name="error_download_update">An error occurred downloading the update information.</string>
-    <string name="error_no_asset">ERROR: Failed to parse update information</string>
     <string name="downloading_update">Downloading update… %1$d%%</string>
     <string name="installing_update">Installing update…</string>
     <string name="no_file_found">ERROR: Could not find update package.</string>
     <string name="check_for_updates">Check for app updates</string>
     <string name="update_debug_download_pref">Test update download mechanism</string>
-    <string name="changelog_none">No changes yet!</string>
-    <string name="update_cancel_button">Cancel update</string>
     <string name="invalid_repo_url">The URL you entered for the repo is invalid</string>
     <string name="add_repo_message">Repos must be served over HTTPS, and must follow the spec outlined in the documentation.</string>
     <string name="notification_update_summary">The following modules can be updated:</string>
@@ -383,8 +315,6 @@
     <string name="keep_tapping_to_enter_hogwarts">Keep tapping to be admitted into Hogwarts!</string>
     <string name="modules">Modules</string>
     <string name="no_browser">You do not have a browser installed. Please install one to continue.</string>
-    <string name="search">Search</string>
-    <string name="crash_reporting_headline">Crash reporting</string>
     <string name="setup_update_check_headline">Update checks</string>
     <string name="setup_background_update_check_require_wifi">Require wifi for update checks</string>
     <string name="setup_background_update_check_require_wifi_summary">Require wifi or an otherwise unmetered connection to do update checks</string>
@@ -395,24 +325,19 @@
     <string name="cache_clear_failed">Failed to clear cache</string>
     <string name="clear_cache_dialogue_title">Clear app cache?</string>
     <string name="clear_cache_dialogue_message">This will clear app cache. Your preferences will be saved, but the app may take longer to do some operations temporarily.</string>
-    <string name="certificate_error">The server certificate could not be verified. Please make sure nothing is intercepting HTTPS connections for AMM.</string>
     <string name="pref_category_privacy">Privacy</string>
     <string name="crash_reporting_pii_desc">Allows sending additional information in crash reports, some of which may contain personally identifiable information such as IP address and device identifiers.</string>
     <string name="crash_reporting_pii">Send additional information</string>
     <string name="setup_crash_reporting_pii">Send additional info in crash reports.</string>
     <string name="setup_crash_reporting_pii_summary">This may include device identifiers and IP addresses. No data will be used for any other purpose besides analyzing crashes and improving performance.</string>
     <string name="error_creating_cookie_database">Error accessing WebView. Functionality may be impacted.</string>
-    <string name="setup_scroll_down">To enable the finish button, please scroll down and view all the options.</string>
     <string name="empty_field">URL is required</string>
     <string name="repo_already_added">Repo already exists.</string>
     <string name="language_not_available">Language %s has not been translated. Help translate it?</string>
     <string name="blur_desc">Creates a blur effect behind some dialogs and elements. Note that blur may not perform well on some devices and may not work for everyone.</string>
     <string name="error_encrypted_shared_preferences">An error occurred reading shared preferences. Please reset the app.</string>
     <string name="showcase_mode_dialogue_message">An app restart is required to enable showcase mode.</string>
-    <string name="other_section">Other</string>
-    <string name="eula_agree">By clicking "finish", you are agreeing to be bound by the LGPL-3.0 (https://www.gnu.org/licenses/lgpl-3.0.en.html) license and the EULA (https://www.androidacy.com/foxmmm-eula/)</string>
     <string name="eula_agree_v2">You agree to be bound by the LGPL-3.0 (https://www.gnu.org/licenses/lgpl-3.0.en.html) license and the EULA (https://www.androidacy.com/foxmmm-eula/), in addition to any third party terms, and that the authors of this app bear no responsibility of your usage of it, nor do we offer any warranties express or implied.</string>
-    <string name="eula_sum">I agree to the EULA and License</string>
     <string name="analytics_desc">Allow us to track app usage and installs. Fully GDPR compliant and uses Matomo, hosted by Androidacy.</string>
     <string name="debug_cat">Debugging</string>
     <string name="announcements">News and updates</string>

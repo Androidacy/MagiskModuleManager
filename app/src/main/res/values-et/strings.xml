@@ -4,7 +4,6 @@
 
 <resources>
     <string name="app_name">Foxi Magiski moodulihaldur</string>
-    <string name="app_name_short">Foxi Mmh</string>
     <string name="fail_root_magisk">Juurkasutajale või Magiskile ligipääsu hankimine ebaõnnestus</string>
     <string name="loading">Laadimine…</string>
     <string name="updatable">Uuendatav</string>
@@ -12,16 +11,13 @@
     <string name="online_repo">Veebihoidla</string>
     <string name="showcase_mode">Rakendus on lukustusrežiimis</string>
     <string name="failed_download">Faili allalaadimine ebaõnnestus</string>
-    <string name="slow_modules">Moodulite laadimine võttis liiga kaua aega, kaalu mõndade moodulite keelamist</string>
     <string name="fail_internet">Internetiga ühendumine ebaõnnestus</string>
     <string name="title_activity_settings">SettingsActivity</string>
     <string name="app_update_available">Rakenduse uuendus on saadaval</string>
-    <string name="app_update">Uuenda</string>
     <string name="no_desc_found">Kirjeldust ei leitud</string>
     <string name="download_module">Laadi moodul alla</string>
     <string name="install_module">Installi moodul</string>
     <string name="update_module">Uuenda moodulit</string>
-    <string name="changelog">Muudatuste logi</string>
     <string name="website">Veebileht</string>
     <string name="support">Tugi</string>
     <string name="donate">Anneta</string>
@@ -37,7 +33,6 @@
     <string name="manage_repos_pref">Halda hoidlaid</string>
     <string name="showcase_mode_pref">Lukustusrežiim</string>
     <string name="showcase_mode_desc">Lukustusrežiim väldib halduris moodulite haldamist</string>
-    <string name="pref_category_settings">Seaded</string>
     <string name="pref_category_info">Info</string>
     <string name="show_licenses">Kuva litsentsid</string>
     <string name="licenses">Litsentsid</string>
@@ -45,8 +40,6 @@
     <string name="show_incompatible_desc">Kuva moodulid, mis ei ühildu metaandmete alusel sinu seadmega</string>
     <string name="magisk_outdated">Magisk on aegunud!</string>
     <string name="pref_category_repos">Hoidlad</string>
-    <string name="repo_main_desc">Hoidla, mis hostib Magiski mooduleid</string>
-    <string name="repo_main_alt">Väiksemate piirangutega alternatiiv Magisk-Modules-Repo-le.</string>
     <string name="master_delete">Kustuta mooduli failid?</string>
     <string name="master_delete_no">Säilita failid</string>
     <string name="master_delete_yes">Kustuta failid</string>
@@ -69,7 +62,6 @@
         seega peitsin selle valiku arendajarežiimi, luba omal vastutusel!
     </string>
     <string name="dev_mode_enabled">Arendajarežiim lubatud</string>
-    <string name="force_english_pref">Force English language</string>
     <string name="disable_low_quality_module_filter_pref">Keela madala kvaliteediga mooduli filter</string>
     <string name="disable_low_quality_module_filter_desc">
         Mõned moodulid ei sisesta oma metaandmeid korrektselt, põhjustades visuaalseid jõnkse,
@@ -77,11 +69,6 @@
     </string>
     <string name="dns_over_https_pref">DNS üle HTTPSi</string>
     <string name="dns_over_https_desc">Võib teatud juhtudel võrguvigu parandada.</string>
-    <string name="disable_extensions_pref">Keela laiendused</string>
-    <string name="disable_extensions_desc">
-        Keela Foxi Mmh laiendused, see väldib moodulitel terminalilaienduste kasutamist -
-        kasulik, kui moodul väärkasutab Foxi Mmh laiendusi.
-    </string>
     <string name="wrap_text_pref">Teksti murdmine</string>
     <string name="wrap_text_desc">Murrab teksti uuele reale, selle asemel et asetada kogu tekst moodulit installides samale reale.</string>
     <string name="repo_enabled">Hoidla lubatud</string>

@@ -4,7 +4,6 @@
 
 <resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">Fox - Manager module Magisk</string>
-    <string name="app_name_short">Fox\'s Mmm</string>
     <string name="fail_root_magisk">Obținerea accesului la rădăcină sau Magisk a eșuat</string>
     <string name="fail_root_denied">Accesul root a fost refuzat în aplicația Magisk</string>
     <string name="fail_magisk_missing">Magisk nu este instalat pe acest dispozitiv</string>
@@ -14,17 +13,14 @@
     <string name="online_repo">Depozit online</string>
     <string name="showcase_mode">Aplicația este în modul blocare</string>
     <string name="failed_download">Descărcarea fișierului a eșuat</string>
-    <string name="slow_modules">A durat prea mult pentru pornirea modulelor, ia în considerare dezactivarea unor module</string>
     <string name="fail_internet">Conectarea la internet a eșuat</string>
     <string name="no_web_view">Nu s-a putut obține WebView de sistem</string>
     <string name="title_activity_settings">Setări activitate</string>
     <string name="app_update_available">Actualizare aplicație disponibilă</string>
-    <string name="app_update">Actualizați</string>
     <string name="no_desc_found">Nicio descriere găsită.</string>
     <string name="download_module">Descărcare modul</string>
     <string name="install_module">Instalare modul</string>
     <string name="update_module">Actualizare modul</string>
-    <string name="changelog">Istoric modificări</string>
     <string name="website">Site web</string>
     <string name="support">Suport</string>
     <string name="donate">Donează</string>
@@ -33,11 +29,8 @@
     <string name="description">Descriere</string>
     <string name="uninstall">Dezinstalare</string>
     <string name="config">Configurare</string>
-    <string name="favourite">Favorit</string>
     <string name="report_bugs">Raportează erori</string>
-    <string name="sniffed_modules">Module închise</string>
     <string name="submit_modules">Trimite un modul</string>
-    <string name="require_android_6">Necesită Android 6.0+</string>
     <string name="require_android_12">Necesită Android 12+</string>
     <string name="install_terminal_reboot_now">Repornire</string>
     <string name="language">Limbă</string>
@@ -61,7 +54,6 @@
     <string name="showcase_mode_desc">Modul de blocare împiedică managerul să facă acțiuni asupra modulelor</string>
     <string name="prevent_reboot_pref">Împiedică repornirea</string>
     <string name="prevent_reboot_desc">Prevenire repornire neașteptată</string>
-    <string name="pref_category_settings">Setări</string>
     <string name="enable_monet">Activează Monet</string>
     <string name="pref_category_info">Informații</string>
     <string name="show_licenses">Afișează licențe</string>
@@ -72,15 +64,11 @@
     <string name="pref_category_repos">Depozite</string>
     <string name="pref_category_security">Securitate</string>
     <string name="pref_category_appearance">Aspect</string>
-    <string name="pref_category_general">General</string>
-    <string name="repo_main_desc">Depozitul care găzduiește modulele Magisk</string>
-    <string name="repo_main_alt">O alternativă la Magisk-Modules-Repo cu mai puține restricții.</string>
     <string name="master_delete">Ștergi fișierele modulului?</string>
     <string name="master_delete_no">Păstrează fișierele</string>
     <string name="master_delete_yes">Șterge fișierele</string>
     <string name="master_delete_fail">Ștergerea fișierelor modulului a eșuat</string>
     <string name="theme_pref">Temă</string>
-    <string name="theme_mode_pref">Mod temă</string>
     <string name="module_id_prefix">ID modul: </string>
     <string name="install_from_storage">Instalare modul de pe stocare</string>
     <string name="invalid_format">Modulul selectat este într-un format greșit</string>
@@ -99,7 +87,6 @@
     </string>
     <string name="dev_mode_enabled">Mod dezvoltator activat</string>
     <string name="dev_mode_disabled">Modul dezvoltator este dezactivat</string>
-    <string name="force_english_pref">Forțează limba engleză</string>
     <string name="disable_low_quality_module_filter_pref">Dezactivează filtrul de module de calitate slabă</string>
     <string name="disable_low_quality_module_filter_desc">        
         Unele module nu declară corect metadatele, cauzând erori vizuale,
@@ -109,28 +96,19 @@
     <string name="dns_over_https_desc">        Poate rezolva problemele de conexiune în unele cazuri.
         (Nu se aplică la WebView)
     </string>
-    <string name="disable_extensions_pref">Dezactivează extensiile</string>
-    <string name="disable_extensions_desc">        Dezactivează extensiile Fox\'s Mmm, acest lucru împiedică modulele să folosească
-        extensii terminal, util dacă un modul folosește în mod abuziv extensiile Fox\'s Mmm.
-    </string>
     <string name="wrap_text_pref">Încadrează textul</string>
     <string name="wrap_text_desc">Se încadrează textul la o linie nouă în loc să fie pus tot textul pe aceeași linie atunci când se instalează un modul.</string>
     <string name="enable_blur_pref">Activează estomparea</string>
-    <string name="disable_chips_in_description">Dezactivează cipurile în descriere</string>
     <string name="repo_enabled">Depozit activat</string>
     <string name="repo_disabled">Depozit dezactivat</string>
     <string name="add_repo">Adăugare depozit</string>
     <string name="remove_repo">Eliminare depozit</string>
     <string name="custom_url">URL personalizat</string>
     <string name="androidacy_repo_info">Acest depozit poate afișa publicitate non-intruzivă pentru a acoperi costurile de server și de dezvoltare. Include recenzii, scanări automate de viruși și multe altele.</string>
-    <string name="backup_module_list">Rezervare module</string>
-    <string name="restore_module_list">Restabilire module</string>
-    <string name="require_internet">Această operațiune necesită o conexiune la Internet</string>
     <string name="androidacy_test_mode_pref">Modul de testare Androidacy</string>
     <string name="androidacy_test_mode_desc">Folosiți punctul final Androidacy staging în loc de punctul final de lansare. (Va reporni aplicația)</string>
     <!-- Background Notification translation -->
     <string name="notification_update_title">S-au găsit %i actualizări module</string>
-    <string name="notification_update_subtitle">Clic pentru a deschide aplicația</string>
     <string name="notification_update_pref">Verificarea actualizării modulelor în fundal</string>
     <string name="notification_update_desc">Poate crește utilizarea bateriei</string>
     <string name="notification_update_debug_pref">Notificare test</string>
@@ -144,30 +122,22 @@
     <string name="crash_reporting_desc">Dacă dezactivați acestă opțiune, dezvoltatorul nu va primi rapoarte automate de erori, iar acest lucru poate face depanarea mai dificilă</string>
     <string name="api_key">Cheie API Androidacy</string>
     <string name="api_key_summary">Folosiți o cheie API personalizată pentru Androidacy. Util pentru abonații premium, pentru a elimina reclamele și multe altele.</string>
-    <string name="api_key_not_set">Cheia API Androidacy este goală</string>
-    <string name="api_key_set">Cheie API Androidacy actuală</string>
     <string name="api_key_invalid">Nu s-a putut valida cheia API. Vă rugăm verificați-o și încercați din nou.</string>
     <string name="api_key_valid">Cheia API este validă.</string>
     <string name="checking_api_key">Validare cheie API…</string>
-    <string name="validating_api_key">Validare cheie API…</string>
     <string name="please_wait">Așteptați</string>
     <string name="api_key_removed">Resetare cheie API reușită</string>
     <string name="save_api_key">Validare</string>
     <string name="warning">Avertisment!</string>
     <string name="androidacy_test_mode_warning">Setați aplicația să utilizeze un punct final non-producție pentru Androidacy. Acest lucru poate duce la instabilitatea aplicației și la eșecul încărcării depozitului online. NU raportați erori dacă aveți acest comutator pornit. Aplicația va fi repornită pentru a reîncărca depozitele.</string>
     <string name="crash">Oprește forțat aplicația pentru testare</string>
-    <string name="repackaged_as">Reambalat ca:</string>
-    <string name="wrapped_from">Înglobat din:</string>
     <string name="crash_reporting_restart_title">Reporniți aplicația pentru a aplica modificările?</string>
     <string name="crash_reporting_restart_message">Aplicația trebuie să repornească pentru a aplica această setare</string>
     <string name="restart">Repornire</string>
     <string name="androidacy_test_mode_disable_warning">Aplicația va fi repornită pentru a dezactiva finalizarea etapelor</string>
-    <string name="sniffing_modules">Detectare module</string>
     <string name="link_copied">Link copiat</string>
-    <string name="notification_update_title_easter_egg">Actualizări ale modulelor: %i</string>
     <string name="androidacy_failed_to_parse_token">Nu s-a putut prelua token-ul de la Androidacy. Vă rugăm să încercați din nou mai târziu.</string>
     <string name="androidacy_failed_to_validate_token">Nu s-a putut valida token-ul pentru Androidacy. Vă rugăm să încercați din nou mai târziu.</string>
-    <string name="androidacy_server_down">Nu se poate contacta serverul Androidacy. Verificați conexiunea și încercați din nou.</string>
     <string name="androidacy_need_captcha">Actualizare Androidacy blocată de Captcha</string>
     <string name="androidacy_repo_disabled_message">În această versiune lipsesc cheile client pentru Androidacy Repo. Descărcați versiunea GitHub dacă doriți să beneficiați de funcții precum recenzii de module, verificări automate de securitate și multe altele.</string>
     <string name="api_key_restart">Cheia API a fost schimbată. Reporniți aplicația pentru a aplica modificările.</string>
@@ -177,39 +147,26 @@
     <string name="permission_notification_grant">Acordare permisiune</string>
     <string name="background_update_check_permission_required">Activați notificările pentru a activa această opțiune.</string>
     <string name="dont_ask_again">Nu mai întreba</string>
-    <string name="force_black_theme_desc">Forțează fundalurile negre AMOLED atunci când utilizați tema întunecată. Vă rugăm să rețineți că acest lucru poate avea probleme de contrast cu unele teme de culoare.</string>
-    <string name="force_black_theme_pref">Forțează tema neagră</string>
     <string name="androidacy_repo_disabled">Acest depozit este în prezent dezactivat</string>
     <string name="download_full_app">Descărcați versiunea completă</string>
     <string name="repo_update_failed">Unele depozite nu au reușit să se actualizeze</string>
-    <string name="repo_update_failed_extended">Actualizarea %1$s a eșuat. Încercați din nou mai târziu.</string>
     <string name="monet_disabled_summary">Monet nu este compatibil cu teme transparente.</string>
     <string name="blur_disabled_summary">Blur nu este compatibil cu teme transparente.</string>
     <string name="transparent_theme_dialogue_title">Setați o temă transparentă</string>
     <string name="custom_repo_always_on">Depozitele personalizate sunt întotdeauna activate până când le eliminați.</string>
-    <string name="sentry_dialogue_title">Hopa! Se pare că aplicația s-a închis pe neașteptate.</string>
-    <string name="name">Numele</string>
-    <string name="email">E-mailul</string>
-    <string name="additional_info">Spune-ne ce sa întâmplat</string>
-    <string name="submit">Trimitere</string>
     <string name="sentry_dialogue_failed_toast">Nu s-a putut trimite feedback din cauza unei erori</string>
     <string name="sentry_dialogue_success">Feedback trimis cu succes. Îl vom revizui în curând</string>
-    <string name="sentry_dialogue_no_description">Nu s-a putut trimite feedback deoarece nu a fost furnizată nicio descriere</string>
-    <string name="go_to_online_repo">Derulați la depozitele online</string>
     <string name="pref_pkg_info_summary">%1$s v%2$s (%3$d) | %4$s</string>
     <string name="official">Oficial</string>
     <string name="unofficial">Neoficial</string>
     <string name="setup_title">Configurare pentru prima dată</string>
     <string name="setup_message">Bine ați venit! Această aplicație vă va ajuta să instalați și să gestionați modulele Magisk. Pentru a începe, vă rugăm să selectați opțiunile de mai jos. Acestea și altele pot fi configurate ulterior în setări.</string>
-    <string name="setup_button">Finalizare configurare</string>
-    <string name="setup_androidacy_repo">Activați depozitul Androidacy 
+    <string name="setup_androidacy_repo">Activați depozitul Androidacy
 \nInclude recenzii ale utilizatorilor, scanări automate de viruși, actualizări rapide, o selecție largă și este susținut de Androidacy.</string>
     <string name="setup_crash_reporting">Activați raportarea erorilor Sentry și monitorizarea performanței. 
 \nToate rapoartele sunt strict anonime și confidențiale.</string>
     <string name="setup_custom_repos">Puteți adăuga depozite personalizate mai târziu în setări.</string>
     <string name="repos">Depozite</string>
-    <string name="misc">Diverse</string>
-    <string name="setup_button_skip">Omitere</string>
     <string name="low_performance_device_dialogue_title">Activarea estompării pe dispozitiv de gamă inferioară</string>
     <string name="alt_repo_info">Acest depozit are mai puține restricții și recenzii, ceea ce poate duce la module de calitate inferioară. Destul de slab, dar are o mulțime de module.</string>
     <string name="install_terminal_reboot_now_message">Sunteți pe cale să reporniți dispozitivul. Dacă v-ați salvat munca, apăsați ok pentru a continua. În caz contrar, apăsați pe anulare.</string>
@@ -218,17 +175,13 @@
     <string name="clear_data_dialogue_title">Ștergeți datele aplicației\?</string>
     <string name="clear_data_dialogue_message">Sunteți pe cale să ștergeți datele aplicației. Vă rugăm să confirmați această acțiune.</string>
     <string name="transparent_theme_dialogue_message">Temele transparente pot avea unele inconsecvențe și pot să nu funcționeze pe toate ROM-urile. În plus, monet și estompare vor fi dezactivate. Puteți schimba oricând înapoi.</string>
-    <string name="sentry_dialogue_message">Am întâmpinat o eroare! Vă rugăm să ne ajutați să îmbunătățim aplicația adăugând câteva informații despre eroare de mai jos. 
-\nNumele și adresa de e-mail sunt opționale, dar ne vor permite să vă contactăm dacă este necesar pentru mai multe informații.</string>
-    <string name="setup_background_update_check">Ne permite să verificăm actualizările în fundal. 
+    <string name="setup_background_update_check">Ne permite să verificăm actualizările în fundal.
 \nAceastă funcție poate folosi mai multă baterie.</string>
     <string name="setup_magisk_alt_repo">Activați Magisk Alt Repo 
 \nMult mai lax decât originalul. Are o mulțime de module cu prețul unei anumite siguranțe.</string>
     <string name="low_performance_device_dialogue_message">Încercați să activați estomparea pe un dispozitiv care poate să nu funcționeze bine cu acesta. 
 \nPuteți să îl activați, dar acest lucru poate duce la o experiență de utilizator slabă, deci vă recomandăm să nu o faceți.</string>
-    <string name="androidacy_webview_update_required">Webview-ul dvs. este depășit! Vă rugăm să îl actualizați.</string>
     <string name="zip_unpacking">Se inspectează modulul…</string>
-    <string name="setup_language_button">Alege o limbă</string>
     <string name="title_activity_setup">Expertul de configurare</string>
     <string name="action_settings">Setări</string>
     <string name="setup_background_update_check_summary">Permiteți-ne să verificăm actualizările modulelor și aplicațiilor în fundal. Această funcție poate utiliza mai multă baterie și date.</string>
@@ -236,9 +189,7 @@
     <string name="setup_crash_reporting_summary">Raportarea accidentelor și monitorizarea performanțelor. Toate rapoartele sunt strict anonime și confidențiale.</string>
     <string name="zip_load_failed">Nu s-a putut încărca fișierul zip</string>
     <string name="androidacy_thanks">Dezvoltat în parte de Androidacy</string>
-    <string name="setup_theme_header">Alege o temă</string>
     <string name="no_file_provided">Nu a fost furnizat niciun fișier la încercarea de a deschide zip.</string>
-    <string name="setup_theme_transparent_light">Tema luminos-transparentă - va dezactiva monet și blur!</string>
     <string name="androidacy_update_needed">Această aplicație este învechită.</string>
     <string name="androidacy_update_needed_message">Vă rugăm să actualizați aplicația la cea mai recentă versiune.</string>
     <string name="language_cta">Nu vezi limba ta\?</string>
@@ -267,19 +218,12 @@
     <string name="error_saving_logs">Nu s-au putut salva jurnalele</string>
     <string name="share_logs">Share AMM logs</string>
     <string name="not_official_build">Această aplicație este o versiune neoficială a AMM.</string>
-    <string name="setup_theme">Alege o temă</string>
-    <string name="setup_theme_system">Tema de sistem</string>
-    <string name="setup_theme_light">Tema luminoasă</string>
-    <string name="setup_theme_dark">Tema întunecată</string>
-    <string name="setup_theme_black">Tema AMOLED neagră</string>
-    <string name="setup_theme_button">Alege o temă</string>
     <string name="theme">Temă</string>
     <string name="theme_system">Sistem</string>
     <string name="theme_dark">Întunecat</string>
     <string name="theme_black">Negru AMOLED</string>
     <string name="reset_api_key">Resetarea cheilor API</string>
     <string name="upgrade_androidacy_promo">Treceți la premium</string>
-    <string name="theme_transparent_dark">Întunecat (transparent)</string>
     <string name="theme_transparent_light">Luminos (transparent)</string>
     <string name="theme_light">Luminos</string>
     <string name="androidacy_thanks_desc">O mare felicitare pentru Androidacy pentru integrarea și contribuția lor la aplicație.</string>

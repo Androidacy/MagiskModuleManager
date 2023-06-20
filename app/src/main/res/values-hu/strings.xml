@@ -3,7 +3,6 @@
   -->
 
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <string name="app_name_short">Fox\'s Mmm</string>
     <string name="fail_root_denied">Root hozzáférés megtagadva a Magisk app által</string>
     <string name="fail_magisk_missing">A Magisk nincs telepítve az eszközre</string>
     <string name="loading">Betöltés…</string>
@@ -13,7 +12,6 @@
     <string name="fail_internet">Nincs internet hozzáférés</string>
     <string name="no_web_view">Nem sikerült megnyitni a WebView-t</string>
     <string name="app_update_available">Új alkalmazásverzió érhető el</string>
-    <string name="app_update">Az alkalmazás frissítése</string>
     <string name="no_desc_found">Nincs leírás.</string>
     <string name="download_module">Modul letöltése</string>
     <string name="install_module">Modul telepítése</string>
@@ -21,7 +19,6 @@
     <string name="app_name">Fox\'s Magisk Module Manager</string>
     <string name="fail_root_magisk">Nem található root vagy Magisk hozzáférés</string>
     <string name="failed_download">Nem sikerült letölteni a fájlt</string>
-    <string name="slow_modules">A modulok betöltése sokáig tart, érdemes megfontolni néhány letiltását</string>
     <string name="licenses">Licencek</string>
     <string name="magisk_outdated">Elérhető egy újabb Magisk verzió!</string>
     <string name="master_delete_fail">Nem sikerült törölni a modulfájlokat</string>
@@ -30,25 +27,18 @@
     <string name="disable_low_quality_module_filter_pref">Alacsony minőségű modulok mutatása</string>
     <string name="disable_low_quality_module_filter_desc">Vannak modulok, amelyek metaadata nem megfelelő, amely vizuális hibákhoz vezet és/vagy a modul gyenge minőségét okozza.
 \nCsak saját felelősségedre kapcsold be!</string>
-    <string name="backup_module_list">Modulok mentése</string>
-    <string name="require_internet">Ehhez a művelethez internetkapcsolat szükséges</string>
     <string name="language_support_outdated">Néhány fordítás a jelenlegi nyelvnél nem naprakész. Fontold meg a fordításban való közreműködést GitHub-on</string>
     <string name="crash_reporting_desc">Ha letiltod, akkor a fejlesztő nem kapja meg a hibajelzéseket, ami megnehezíti a hibák javítását</string>
     <string name="permission_notification_title">Engedélyezed az értesítéseket\?</string>
     <string name="permission_notification_message">Hozzáférés szükséges az értesítésekhez a frissítési értesítések megjelenítéséhez. Ha nem adsz engedélyt, akkor a frissítések keresése nem fog működni a háttérben.</string>
     <string name="permission_notification_grant">Hozzáférés engedélyezése</string>
     <string name="background_update_check_permission_required">Engedélyezd az értesítéseket a funkció beállításához.</string>
-    <string name="force_black_theme_desc">AMOLED fekete hátterek használata sötét téma esetén. Néhány téma esetén ez megjelenítési problémákat eredményezhet.</string>
     <string name="setup_message">Üdvözöllek! Ez az app segít a Magisk modulok telepítésében és kezelésében. Indításhoz válassz a lenti lehetőségek közül. Ezek és több más dolog is testreszabható a későbbiekben.</string>
     <string name="setup_magisk_alt_repo">Magisk alternatív repo engedélyezése</string>
     <string name="low_performance_device_dialogue_title">Elmosódás engedélyezése gyengébb eszközön</string>
-    <string name="setup_theme_header">Válassz témát</string>
-    <string name="setup_theme_transparent_light">Átlátszó világos téma - letiltja a monet-et és elmosódást!</string>
-    <string name="androidacy_webview_update_required">A webview elavult! Kérlek, frissítsd.</string>
     <string name="zip_intent_module_install">Biztosan telepíted a(z) \"%1$s\" modult a(z) \"%2$s\" zip fájlból\?
 \n
 \nGyőződ meg róla, hogy a modul biztonságos forrásból származik.</string>
-    <string name="changelog">Változásnapló</string>
     <string name="website">Weboldal</string>
     <string name="support">Technikai támogatás</string>
     <string name="donate">Támogatás</string>
@@ -57,11 +47,9 @@
     <string name="description">Leírás</string>
     <string name="uninstall">Eltávolítás</string>
     <string name="config">Beállítás</string>
-    <string name="favourite">Kedvenc</string>
     <string name="report_bugs">Hiba jelentése</string>
     <string name="submit_modules">Modul beküldése</string>
     <string name="require_android_12">Android 12 vagy újabb szükséges</string>
-    <string name="require_android_6">Android 6.0 vagy újabb szükséges</string>
     <string name="install_terminal_reboot_now">Újraindítás</string>
     <string name="language">Nyelv</string>
     <string name="module_last_update">Utolsó frissítés:</string>
@@ -75,7 +63,6 @@
     <string name="manage_repos_pref">Repok kezelése</string>
     <string name="prevent_reboot_pref">Újraindítás megelőzése</string>
     <string name="prevent_reboot_desc">Megakadályozza a nem várt újraindításokat</string>
-    <string name="pref_category_settings">Beállítások</string>
     <string name="enable_monet">Monet engedélyezése</string>
     <string name="pref_category_info">Info</string>
     <string name="show_licenses">Licencek megjelenítése</string>
@@ -86,14 +73,10 @@
     <string name="pref_category_repos">Repok</string>
     <string name="pref_category_security">Biztonság</string>
     <string name="pref_category_appearance">Kinézet</string>
-    <string name="pref_category_general">Általános</string>
-    <string name="repo_main_desc">A repo tárolja a Magisk modulokat</string>
-    <string name="repo_main_alt">Egy alternatíva a Magisk modul repohoz kevesebb korlátozással.</string>
     <string name="master_delete">Törlöd a modulfájlokat\?</string>
     <string name="master_delete_no">Megtartás</string>
     <string name="master_delete_yes">Törlés</string>
     <string name="theme_pref">Téma</string>
-    <string name="theme_mode_pref">Téma mód</string>
     <string name="module_id_prefix">Modul ID:</string>
     <string name="install_from_storage">Modul telepítése háttértárról</string>
     <string name="invalid_format">A kiválasztott modul hibás formátumú</string>
@@ -107,7 +90,6 @@
     <string name="use_magisk_install_command_pref" tools:ignore="TypographyDashes">Használd a \"magisk --install-module\" parancsot</string>
     <string name="dev_mode_enabled">Fejlesztői mód bekapcsolva</string>
     <string name="dev_mode_disabled">Fejlesztői mód kikapcsolva</string>
-    <string name="force_english_pref">Angol alkalmazásnyelv</string>
     <string name="dns_over_https_pref">DNS a HTTPS fölött</string>
     <string name="dns_over_https_desc">Javíthatja a kapcsolati hibákat. (WebView-ra nem érvényes.)</string>
     <string name="wrap_text_pref">Szöveg sortörése</string>
@@ -119,42 +101,30 @@
     <string name="add_repo">Repo hozzáadása</string>
     <string name="link_copied">Link másolva</string>
     <string name="custom_url">Egyedi URL</string>
-    <string name="restore_module_list">Modulok visszaállítása</string>
     <string name="notification_update_title">%1$d modulfrissítés található</string>
-    <string name="notification_update_subtitle">Bökj ide az app megnyitásához</string>
     <string name="notification_update_pref">A modulfrissítések automatikus keresése</string>
     <string name="notification_update_desc">Növelheti az energiafogyasztást</string>
     <string name="notification_update_debug_pref">Értesítés tesztelése</string>
     <string name="language_translated_by">Fordította Toldy Zoltán Roland</string>
     <string name="crash_reporting">Hibák és teljesítményadatok automatikus küldése a fejlesztőknek</string>
     <string name="checking_api_key">API kulcs validálása…</string>
-    <string name="validating_api_key">API kulcs validálása…</string>
     <string name="please_wait">Kérlek, várj</string>
     <string name="api_key_removed">Sikeres API kulcs visszaállítás</string>
     <string name="save_api_key">Validálás</string>
     <string name="warning">Figyelem!</string>
     <string name="crash">Alkalmazás összeomlasztása tesztelési célból</string>
-    <string name="repackaged_as">Újracsomagolta:</string>
-    <string name="wrapped_from">Csomagolta:</string>
     <string name="crash_reporting_restart_title">Újraindítod az alkalmazás a módosítások érvénybe léptetéséhez\?</string>
     <string name="crash_reporting_restart_message">Az alkalmazást újra kell indítani a módosítások életbe lépéséhez</string>
     <string name="restart">Újraindítás</string>
     <string name="dont_ask_again">Ne kérdezze újra</string>
-    <string name="force_black_theme_pref">Fekete téma erőltetése</string>
     <string name="androidacy_repo_disabled">Ez a repo jelenleg le van tiltva</string>
     <string name="download_full_app">Teljes verzió letöltése</string>
     <string name="repo_update_failed">Néhány repo frissítése sikertelen</string>
-    <string name="name">Neved</string>
-    <string name="email">E-mail címed</string>
-    <string name="additional_info">Mondd el mi történt</string>
-    <string name="submit">Beküldés</string>
     <string name="sentry_dialogue_failed_toast">Nem sikerült beküldeni a visszajelzést valamilyen hiba miatt</string>
     <string name="sentry_dialogue_success">Visszajelzés sikeresen beküldve. Hamarosan megvizsgáljuk</string>
-    <string name="sentry_dialogue_no_description">Nem sikerült a beküldés, mert nem adtál meg leírást</string>
     <string name="pref_pkg_info_summary">%1$s v%2$s (%3$d) | %4$s Build</string>
     <string name="official">Hivatalos</string>
     <string name="unofficial">Nemhivatalos</string>
-    <string name="setup_button">Beállítás befejezése</string>
     <string name="setup_title">Beállítás elkezdése</string>
     <string name="setup_background_update_check">Frissítések keresése a háttérben</string>
     <string name="setup_background_update_check_summary">Engedélyezi a modul és alkalmazásfrissítések keresését a háttéreben. A funkció fogyasztja az akkut és adatforgalmat.</string>
@@ -162,22 +132,13 @@
     <string name="setup_crash_reporting_summary">Összeomlás jelentés és teljesítmény figyelés. Az összes riport szigorúan anonim és bizalmas.</string>
     <string name="setup_custom_repos">Később hozzáadhatsz saját repokat a beállításokban.</string>
     <string name="repos">Repok</string>
-    <string name="misc">Egyebek</string>
-    <string name="setup_button_skip">KIhagyás</string>
     <string name="clear_app_data">Alkalmazásadatok törlése</string>
     <string name="clear_data_dialogue_title">Törlöd az alkalmazásadatokat\?</string>
     <string name="finish">Befejezés</string>
-    <string name="setup_theme">Válassz témát</string>
-    <string name="setup_theme_system">Rendszertéma</string>
-    <string name="setup_theme_light">Világos téma</string>
-    <string name="setup_theme_dark">Sötét téma</string>
-    <string name="setup_theme_black">AMOLED fekete téma</string>
-    <string name="setup_theme_button">Válassz témát</string>
     <string name="theme">Téma</string>
     <string name="theme_system">Rendszer</string>
     <string name="theme_dark">Sötét</string>
     <string name="theme_black">AMOLED fekete</string>
-    <string name="theme_transparent_dark">Sötét (átlátszó)</string>
     <string name="theme_transparent_light">Világos (átlátszó)</string>
     <string name="theme_light">Világos</string>
     <string name="androidacy_update_needed">Az alkalmazás elavult.</string>
@@ -189,7 +150,6 @@
     <string name="zip_security_warning">Telepíted: %s\?</string>
     <string name="understand">Megértettem</string>
     <string name="setup_theme_title">Válassz témát</string>
-    <string name="setup_language_button">Válassz nyelvet</string>
     <string name="title_activity_setup">Beállítás varázsló</string>
     <string name="action_settings">Beállítások</string>
     <string name="repo_update_failed_message">Ezeket a repokat nem sikerült frissíteni:\\n\\n%s</string>
@@ -207,30 +167,20 @@
     <string name="module_by">tőle:</string>
     <string name="module_needs_ramdisk">Ramdiskre van szüksége</string>
     <string name="module_can_change_boot">Megváltoztathatja a boot-ot</string>
-    <string name="sniffed_modules">Behúzott modulok</string>
-    <string name="sniffing_modules">Behúzott modulok</string>
     <string name="module_needs_ramdisk_desc">A modulhoz telepített boot ramdisk szükséges</string>
     <string name="show_incompatible_desc">Mutassa azokat a modulokat is, amelyek a metaadatok alapján valószínűleg nem működnek a készüléken</string>
     <string name="use_magisk_install_command_desc">A tesztelés során problémákat okozott a modul telepítési hiba diagnosztikai eszközének, ezért ez az opció a fejlesztői mód mögé van rejtve.
 \nSaját felelősségre kapcsold be!</string>
-    <string name="disable_extensions_pref">Nincs Mmm</string>
-    <string name="disable_extensions_desc">Kapcsolja ki a AMM bővítményeit, megakadályozva ezzel, hogy a modulok terminálbővítményeket használjanak.
-\nHasznos, ha egy modul visszaél a AMM kiterjesztéseivel.</string>
-    <string name="disable_chips_in_description">Chipek letiltása a leírásban</string>
     <string name="androidacy_repo_info">Ez a repo reklámokat jeleníthet meg a szerver és fejlesztési költségek fedezése érdekében. Ezek között lehetnek vélemények, víruskeresők, egyebek.</string>
     <string name="androidacy_test_mode_pref">Androidacy teszt mód</string>
     <string name="androidacy_test_mode_desc">Használja a staging Androidacy végpontot a kiadási végpont helyett. (az alkalmazás újra fog indulni)</string>
     <string name="api_key">Androidacy API kulcs</string>
     <string name="api_key_summary">Egyedi Androidacy API kulcs használata. Hasznos a prémium előfizetőknek például a reklámos elrejtéséhez.</string>
-    <string name="api_key_not_set">Androidacy API kulcs üres</string>
-    <string name="api_key_set">Jelenlegi Androidacy API kulcs</string>
     <string name="androidacy_test_mode_warning">Az alkalmazást úgy állítja be, hogy egy nem-produktív végpontot használjon az Androidacy számára. Ez az alkalmazás instabilitásához és az online repo betöltésének sikertelenségéhez vezethet. Ne jelentsd a hibákat, ha bekapcsolod ez a funkciót. Az alkalmazás újra fog indulni a repók újratöltéséhez.</string>
     <string name="androidacy_test_mode_disable_warning">Az alkalmazás újra fog indulni a staging végpont letiltásához</string>
     <string name="androidacy_failed_to_parse_token">Nem sikerült a token beszerzése az Androidacy-tól. Kérlek próbáld később.</string>
     <string name="androidacy_failed_to_validate_token">Nem sikerült a token validálása az Androidacy-hoz. Kérlek, próbáld újra.</string>
-    <string name="androidacy_server_down">Nem sikerült elérni az Androidacy szervert. Ellenőrizd a kapcsolatot, majd próbáld újra.</string>
     <string name="androidacy_need_captcha">Az Androidacy frissítést a Captcha blokkolta</string>
-    <string name="notification_update_title_easter_egg">Behúzott %i modul frissítései</string>
     <string name="api_key_invalid">Nem sikerült érvényesíteni az API-kulcsot. Kérjük, ellenőrizd és próbálja újra.</string>
     <string name="api_key_valid">Hibás API kulcs.</string>
     <string name="api_key_restart">API kulcs megváltozott. Indítsd újra az alkalmazást.</string>
@@ -240,14 +190,9 @@
     <string name="androidacy_repo_disabled_message">Ez a build nem rendelkezik megfelelő Androidacy client key-vel. Kérlek, hogy töltsd le GitHub-ról a legutolsó verziót, ha használni szeretnéd az automatikus biztonsági teszt, modul véleményezés és egyéb funkciókat.</string>
     <string name="setup_androidacy_repo">Androidacy repó engedélyezése</string>
     <string name="setup_androidacy_repo_summary">A funkciók között a véleményezés, automatikus víruskeresés, gyors frissítés és modulok széles választéka megtalálható.</string>
-    <string name="repo_update_failed_extended">%1$s frissítése sikertelen. Próbáld újra később.</string>
     <string name="blur_disabled_summary">Az elmosás nem kompatilibis az átlátszó témákkal.</string>
     <string name="transparent_theme_dialogue_title">Átlátszó témát állítasz be</string>
     <string name="custom_repo_always_on">Az egyéni repók mindig be vannak kapcsolva, amíg el nem távolítod őket.</string>
-    <string name="sentry_dialogue_message">Hiba történt! Kérjük, segíts nekünk javítani az alkalmazáson a hibával kapcsolatos további információk hozzáadásával.
-\nA név és az e-mail cím megadása nem kötelező, de lehetővé teszi számunkra, hogy szükség esetén további információkért felvegyük Veled a kapcsolatot.</string>
-    <string name="sentry_dialogue_title">Hoppá! Úgy tűnik az alkalmazás váratlanul leállt.</string>
-    <string name="go_to_online_repo">Ugrás az online repóhoz</string>
     <string name="setup_crash_reporting">Őrszem engedélyezése</string>
     <string name="androidacy_repo_name">Androidacy repó</string>
     <string name="no_file_provided">Nem található fájl a zip megnyitásakor.</string>

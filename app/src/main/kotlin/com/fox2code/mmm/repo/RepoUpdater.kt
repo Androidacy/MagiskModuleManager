@@ -145,7 +145,7 @@ class RepoUpdater(repoData2: RepoData) {
                     // this.indexRaw is the raw index file (json)
                     val modules = JSONObject(String(indexRaw!!, StandardCharsets.UTF_8))
                     // androidacy repo uses "data" key, others should use "modules" key. Both are JSONArrays
-                    val modulesArray: JSONArray = if (repoData.name == "Androidacy Modules Repo") {
+                    val modulesArray: JSONArray = if (repoData.preferenceId == "androidacy_repo") {
                         // get modules from "data" key. This is a JSONArray so we need to convert it to a JSONObject
                         modules.getJSONArray("data")
                     } else {
@@ -154,7 +154,13 @@ class RepoUpdater(repoData2: RepoData) {
                     }
                     val moduleListCacheDao = db.moduleListCacheDao()
                     moduleListCacheDao.deleteByRepoId(repoData.preferenceId!!)
-                    // iterate over modules. pls don't hate me for this, its ugly but it works
+                    if (modulesArray.length() == 0) {
+                        Timber.w("No modules were found in the index file for %s", repoData.preferenceId)
+                        Timber.d("Finished updating database for %s in %dms", repoData.preferenceId, System.currentTimeMillis() - startTime)
+                        success.set(false)
+                        return@Thread
+                    }
+                    // iterate over modules
                     for (n in 0 until modulesArray.length()) {
                         // get module
                         val module = modulesArray.getJSONObject(n)

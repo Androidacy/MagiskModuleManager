@@ -3,12 +3,6 @@
   -->
 
 <resources>
-    <color name="gray_200">#C8C8C8</color>
-    <color name="purple_200">#FFBB86FC</color>
-    <color name="purple_500">#FF6200EE</color>
-    <color name="purple_700">#FF3700B3</color>
-    <color name="teal_200">#FF03DAC5</color>
-    <color name="teal_700">#FF018786</color>
     <color name="orange_700">#EF6C00</color>
     <color name="orange_200">#FFA726</color>
     <color name="orange_500">#FF9800</color>
@@ -19,21 +13,14 @@
     <color name="white">#FFFFFFFF</color>
     <color name="status_bar_color">@color/black_transparent</color>
     <color name="status_bar_color_light">@color/white_transparent</color>
-    <color name="module_holder_div">@color/black_transparent</color>
     <!-- Icon -->
     <color name="launcher_icon_background">#FF9B08</color>
     <color name="launcher_icon">@android:color/white</color>
     <!-- Colors for themes (Does not applies to monet) -->
     <color name="dark_colorBackgroundFloating">#FF202020</color>
     <color name="dark_backgroundColor">#FF111111</color>
-    <color name="dark_chipBackgroundColor">#FF1C1C1C</color>
     <color name="light_colorBackgroundFloating">#FFFFFFFF</color>
     <color name="light_backgroundColor">#FFFFFFFF</color>
-    <color name="light_chipBackgroundColor">#FFDADADA</color>
     <color name="gray_900">#3A3A3A</color>
     <color name="gray_800">#424242</color>
-    <color name="gray_700">#616161</color>
-    <color name="gray_600">#757575</color>
-    <color name="gray_500">#9E9E9E</color>
-    <color name="blue">#2196F3</color>
 </resources>

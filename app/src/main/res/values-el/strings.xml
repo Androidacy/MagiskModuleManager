@@ -4,7 +4,6 @@
 
 <resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">Fox\'s Magisk Module Manager</string>
-    <string name="app_name_short">Fox\'s Mmm</string>
     <string name="fail_root_magisk">Δεν ήταν δυνατή η πρόσβαση σε δικαιώματα root ή στο magisk</string>
     <string name="loading">Φόρτωση…</string>
     <string name="updatable">Αναβαθμίσιμα</string>
@@ -12,17 +11,14 @@
     <string name="online_repo">Ηλεκτρονικό αποθετήριο</string>
     <string name="showcase_mode">Η εφαρμογή βρίσκεται σε κατάσταση lockdown</string>
     <string name="failed_download">Δεν ήταν δυνατή η λήψη του αρχείου</string>
-    <string name="slow_modules">Τα Modules χρειάστηκαν πολύ χρόνο για εκκίνηση τους, σκεφτείτε να απενεργοποιήσετε ορισμένα απο αυτά</string>
     <string name="fail_internet">Δεν ήταν δυνατή η σύνδεση στο Διαδίκτυο</string>
     <string name="no_web_view">Δεν ήταν δυνατό το άνοιγμα του πλοηγητή συστήματως</string>
     <string name="title_activity_settings">Δραστηριότητα ρυθμίσεων</string>
     <string name="app_update_available">Μια νεότερη έκδοση της εφαρμογής είναι διαθέσιμη</string>
-    <string name="app_update">Αναβάθμιση</string>
     <string name="no_desc_found">Δεν βρέθηκε περιγραφή.</string>
     <string name="download_module">Λήξη του Module</string>
     <string name="install_module">Εγκατάσταση του Module</string>
     <string name="update_module">Αναβάθμιση του Module</string>
-    <string name="changelog">Ημερολόγιο αλλαγών</string>
     <string name="website">Ιστοσελίδα</string>
     <string name="support">Υποστήριξη</string>
     <string name="donate">Δωρίστε</string>
@@ -32,7 +28,6 @@
     <string name="uninstall">Απεγκατάσταση</string>
     <string name="config">Παραμέτροποίηση</string>
     <string name="submit_modules">Υποβάλετε ένα module</string>
-    <string name="require_android_6">Απαιτεί το Android 6.0+</string>
     <string name="require_android_12">Απαιτεί το Android 12+</string>
     <string name="install_terminal_reboot_now">Επανεκκίνηση</string>
     <string name="language">Γλώσσα</string>
@@ -60,7 +55,6 @@
     <string name="showcase_mode_desc">Η λειτουργία lockdown εμποδίζει τον διαχειριστή να πραγματοποιήσει ενέργειες στα modules</string>
     <string name="prevent_reboot_pref">Αποτροπή επανεκκίνησης</string>
     <string name="prevent_reboot_desc">Αποτρέπει απροσδόκητες επανεκκινήσεις</string>
-    <string name="pref_category_settings">ω</string>
     <string name="enable_monet">Ενεργοποίηση Monet</string>
     <string name="pref_category_info">Πληροφορίες</string>
     <string name="show_licenses">Εμφάνιση αδειών</string>
@@ -71,15 +65,11 @@
     <string name="pref_category_repos">Αποθετήρια</string>
     <string name="pref_category_security">Ασφάλεια</string>
     <string name="pref_category_appearance">Εμφάνιση</string>
-    <string name="pref_category_general">Γενικά</string>
-    <string name="repo_main_desc">Το αποθετήριο που φιλοξενεί modules για το magisk</string>
-    <string name="repo_main_alt">Μια εναλλακτική λύση για το magisk-modules-repo με λιγότερους περιορισμούς.</string>
     <string name="master_delete">Διαγραφή των αρχείων module;</string>
     <string name="master_delete_no">Διατήρηση</string>
     <string name="master_delete_yes">Διαγραφή</string>
     <string name="master_delete_fail">Δεν ήταν δυνατή η διαγραφή των αρχείων module</string>
     <string name="theme_pref">Θέμα</string>
-    <string name="theme_mode_pref">Λειτουργία θέματος</string>
     <string name="module_id_prefix">Αναγνωριστικό module: </string>
     <string name="install_from_storage">Εγκατάσταση module από αποθηκευτικό χώρο</string>
     <string name="invalid_format">Το επιλεγμένο module έχει μη έγκυρη μορφή</string>
@@ -98,7 +88,6 @@
         Για αυτό τον λόγο αυτή η επιλογή είναι κρυμμένη πίσω από τη λειτουργία για προγραμματιστές.\nEνεργοποιήστε την ρύθμιση με δική σας ευθύνη!
     </string>
     <string name="dev_mode_enabled">Λειτουργία για προγραμματιστές ενεργοποιημένη</string>
-    <string name="force_english_pref">Αγγλική γλώσσα εφαρμογής</string>
     <string name="disable_low_quality_module_filter_pref">Εμφάνιση module χαμηλής ποιότητας</string>
     <string name="disable_low_quality_module_filter_desc">Ορισμένα modules δεν δηλώνουν σωστά τα μεταδεδομένα τους, προκαλώντας οπτικές δυσλειτουργίες, και/ή υποδεικνύοντας κακή ποιότητα του module.
 \nΕνεργοποιήστε την ρύθμιση με δική σας ευθύνη!</string>
@@ -107,30 +96,19 @@
         Μπορεί να διορθώσει τα θέματα συνδέσεων σε ορισμένες περιπτώσεις.
         (Δεν ισχύει για το webview.)
     </string>
-    <string name="disable_extensions_pref">nΑπενεργοποίηση Mmm</string>
-    <string name="disable_extensions_desc">
-        Απενεργοποιήστε τις επεκτάσεις MMM του Fox, εμποδίζοντας τη χρήση των 
-        επεκτάσεων τερματικού απο τα module.\nΧρήσιμο εάν ένα module καταχράται τις επεκτάσεις MMM του Fox.
-    </string>
     <string name="wrap_text_pref">Αναδίπλωση κειμένου</string>
     <string name="wrap_text_desc">
         Εμφάνιση κειμένου σε πολλαπλές γραμμές αντί να τοποθετείται
         όλο το κείμενο στην ίδια γραμμή κατά την εγκατάσταση ενος module.
     </string>
     <string name="enable_blur_pref">Θολούρα</string>
-    <string name="disable_chips_in_description">Απενεργοποιήστε τα τσιπ στην περιγραφή</string>
     <string name="repo_enabled">Ενεργοποιημένο αποθετήριο</string>
     <string name="repo_disabled">Απενεργοποιημένο αποθετήριο</string>
     <string name="add_repo">Προσθήκη αποθετηρίου</string>
     <string name="remove_repo">Αφαίρεση αποθετηρίου</string>
     <string name="custom_url">Προσαρμοσμένη διεύθυνση url</string>
-    <string name="backup_module_list">Εφεδρικά modules</string>
-    <string name="restore_module_list">Επαναφορά module</string>
-    <string name="require_internet">Αυτή η λειτουργία απαιτεί σύνδεση στο Διαδίκτυο</string>
     <!-- Background Notification translation -->
     <string name="notification_update_title">Βρέθηκαν %1$d ενημερώσεις για τα εγκατεστημένα modules</string>
-    <string name="notification_update_title_easter_egg">Μύρισα %i ενημερώσεις για τα εγκατεστημενα modules</string>
-    <string name="notification_update_subtitle">Κάντε κλικ για να ανοίξετε την εφαρμογή</string>
     <string name="notification_update_pref">Αυτόματος έλεγχος ενημέρωσης των modules</string>
     <string name="notification_update_desc">Μπορεί να αυξήσει τη χρήση της μπαταρίας</string>
     <string name="notification_update_debug_pref">Ειδοποίηση δοκιμής</string>
@@ -141,32 +119,20 @@
     <!-- Replace with your own username when translating -->
     <string name="language_translated_by">Μεταφράστηκε από INvxrteD, Tha_14</string>
     <string name="report_bugs">Αναφορά σφαλμάτων</string>
-    <string name="sniffed_modules">Sniffed Modules</string>
     <string name="save_api_key">Επικύρωσε</string>
     <string name="warning">Προσοχή!</string>
     <string name="crash">Κρασάρισμα της εφαρμογής για δοκιμή</string>
-    <string name="repackaged_as">Ανασυσκευασμένο ως:</string>
-    <string name="wrapped_from">Συσκευασμένο από:</string>
     <string name="crash_reporting_restart_title">Θέλετε να επανεκκινήσετε την εφαρμογή για να εφαρμόσετε τις αλλαγές;</string>
     <string name="crash_reporting_restart_message">Η εφαρμογή χρειάζεται επανεκκίνηση για να τεθεί σε λειτουργία αυτή η ρύθμιση</string>
     <string name="restart">Επανεκκίνηση</string>
-    <string name="repo_update_failed_extended">Ο εκσυγχρονισμός του %1$s απέτυχε. Παρακαλούμε προσπαθήστε ξανά αργότερα.</string>
     <string name="monet_disabled_summary">Το Monet δεν είναι συμβατό με διαφανή θέματα.</string>
     <string name="blur_disabled_summary">Το blur δεν είναι συμβατό με διαφανή θέματα.</string>
     <string name="transparent_theme_dialogue_title">Θέτετε ένα διαφανές θέμα</string>
     <string name="custom_repo_always_on">Τα προσαρμοσμένα repositories είναι πάντα σε λειτουργία μέχρι να τα αφαιρέσετε.</string>
-    <string name="sentry_dialogue_title">Ουπς! Φαίνεται ότι η εφαρμογή έκλεισε απροσδόκητα.</string>
-    <string name="name">Το όνομα σας</string>
-    <string name="email">Το email σας</string>
-    <string name="additional_info">Πείτε μας τι συνέβη</string>
-    <string name="submit">Υποβολή</string>
     <string name="sentry_dialogue_failed_toast">Δεν υποβλήθηκε το σχόλιο λόγω σφάλματος</string>
-    <string name="sentry_dialogue_no_description">Δεν υποβλήθηκε το σχόλιο, αφού δεν παραχωρήθηκε περιγραφή</string>
-    <string name="go_to_online_repo">Μεταβείτε στο διαδικτυακό αποθετήριο</string>
     <string name="official">Επίσημο</string>
     <string name="unofficial">Ανεπίσημο</string>
     <string name="setup_title">Ρύθμιση πρώτης χρήσης</string>
-    <string name="setup_button">Τέλος ρύθμισης</string>
     <string name="setup_androidacy_repo">Ενεργοποίηση του αποθετηρίου Androidacy</string>
     <string name="setup_magisk_alt_repo">Ενεργοποίηση του αποθετηρίου Magisk Alt</string>
     <string name="androidacy_update_needed">Η εφαρμογή είναι παρωχημένη.</string>
@@ -178,7 +144,6 @@
 \n
 \nΗ απεγκατάστασή του, συνιστάται ανεπιφύλακτα.</string>
     <string name="understand">Καταλαβαίνω</string>
-    <string name="setup_language_button">Επιλέξτε γλώσσα</string>
     <string name="title_activity_setup">Οδηγός εγκατάστασης</string>
     <string name="action_settings">Ρυθμίσεις</string>
     <string name="language_cta_desc">Βοήθησέ μας μεταφράζοντας την εφαρμογή σε αυτή! Πάτα εδώ για περισσότερες πληροφορίες.</string>
@@ -192,7 +157,6 @@
     <string name="permission_notification_grant">Παραχώρηση άδειας</string>
     <string name="background_update_check_permission_required">Παρακαλούμε ενεργοποιήστε τις ειδοποιήσεις για να ενεργοποιήσετε αυτή την επιλογή.</string>
     <string name="dont_ask_again">Μην ζητήσετε ξανά</string>
-    <string name="force_black_theme_pref">Επιβολή μαύρου θέματος</string>
     <string name="androidacy_repo_disabled">Αυτό το repository είναι επί του παρόντος απενεργοποιημένο</string>
     <string name="download_full_app">Λήψη πλήρης έκδοσης</string>
     <string name="repo_update_failed">Απέτυχε ο εκσυγχρονισμός μερικών repositories</string>
@@ -206,12 +170,9 @@
     <string name="not_official_build">Αυτή η εφαρμογή είναι ανεπίσημη κατασκευή του AMM.</string>
     <string name="androidacy_failed_to_parse_token">Το token δεν ανακτήθηκε από το Androidacy. Παρακαλούμε προσπαθήστε ξανά αργότερα.</string>
     <string name="androidacy_failed_to_validate_token">Το token δεν επικυρώθηκε από το Androidacy. Παρακαλούμε προσπαθήστε ξανά αργότερα.</string>
-    <string name="androidacy_server_down">Αδυναμία επικοινωνίας με τον server του Androidacy. Παρακαλούμε ελέγξτε την σύνδεσή σας στο διαδίκτυο και προσπαθήστε ξανά αργότερα.</string>
     <string name="androidacy_need_captcha">Ο εκσυγχρονισμός του Androidacy, μπλοκαρίστηκε από το Captcha</string>
     <string name="crash_reporting">Αυτοματοποίηση αναφοράς σφαλμάτων και ποιότητας εκτέλεσης στους προγραμματιστές</string>
     <string name="api_key">Κλειδί API Androidacy</string>
-    <string name="api_key_not_set">Το κλειδί API του Androidacy είναι κενό</string>
-    <string name="api_key_set">Τρέχων κλειδί API του Androidacy</string>
     <string name="api_key_valid">Το κλειδί API δεν είναι έγκυρο.</string>
     <string name="checking_api_key">Επικύρωση κλειδιού API…</string>
     <string name="please_wait">Παρακαλώ περιμένετε</string>
@@ -219,7 +180,6 @@
     <string name="androidacy_test_mode_disable_warning">Η εφαρμογή θα επανεκκινηθεί για να απενεργοποιηθεί το endpoint σταδιοποίησης</string>
     <string name="modules">Modules</string>
     <string name="no_browser">Δεν έχεις κανέναν φυλλομετρητή εγκατεστημένο. Παρακαλούμε εγκατέστησε έναν για να συνεχίσεις.</string>
-    <string name="search">Εύρεση</string>
     <string name="clear_app_data">Καθαρισμός δεδομένων της εφαρμογής</string>
     <string name="clear_data_dialogue_title">Θα θέλατε να καθαρίσετε όλα τα δεδομένα που συνοδεύουν την εφαρμογή;</string>
     <string name="setup_androidacy_repo_summary">Χρησιμοποιούνται κριτικές χρηστών, αυτοματοποιημένοι έλεγχοι για ιούς, γρήγορα updates, μεγάλη γκάμα, και υποστήριξη από το Androidacy.</string>
@@ -227,27 +187,16 @@
     <string name="setup_crash_reporting">Ενεργοποίηση του Sentry</string>
     <string name="setup_custom_repos">Μπορείτε να προσθέσετε προσαρμοσμένα αποθετήρια, αργότερα στις ρυθμίσεις.</string>
     <string name="repos">Αποθετήρια</string>
-    <string name="misc">Διάφορα</string>
-    <string name="setup_button_skip">Παράλειψη</string>
     <string name="low_performance_device_dialogue_title">Ενεργοποιώντας το blur σε συσκευή χαμηλών προδιαγραφών</string>
     <string name="alt_repo_info">Αυτό το αποθετήριο, έχει λιγότερους περιορισμούς και κριτικές, οπότε μπορεί να οδηγήσει σε modules χαμηλότερης ποιότητας. Αρκετά γυμνό, αλλά έχει πολλά modules.</string>
     <string name="debug_build">Αυτή είναι κατασκευή για εντοπισμό σφαλμάτων. Ενδέχεται να υπάρξουν κάποια σφάλματα, καθώς και χειρότερη ποιότητα εκτέλεσης.</string>
     <string name="androidacy_repo_name">Αποθετήριο Androidacy</string>
     <string name="magisk_alt_repo_name">Αποθετήριο Magisk Alt</string>
     <string name="finish">Τέλος</string>
-    <string name="setup_theme">Επιλέξτε θέμα</string>
-    <string name="setup_theme_header">Επιλέξτε θέμα</string>
-    <string name="setup_theme_system">Θέμα συστήματος</string>
-    <string name="setup_theme_light">Φωτεινό θέμα</string>
-    <string name="setup_theme_dark">Σκοτεινό θέμα</string>
-    <string name="setup_theme_black">Μαύρο AMOLED θέμα</string>
     <string name="theme">Θέμα</string>
     <string name="theme_system">Σύστημα</string>
-    <string name="setup_theme_transparent_light">Φωτεινό διαφανές θέμα - θα απενεργοποιηθεί το monet και το blur!</string>
-    <string name="setup_theme_button">Επιλέξτε θέμα</string>
     <string name="theme_dark">Σκοτεινό</string>
     <string name="theme_black">Μαύρο AMOLED</string>
-    <string name="validating_api_key">Επικύρωση κλειδιού API…</string>
     <string name="update_message">Περιμένετε μέχρι να ελέγξουμε και να εγκαταστήσουμε ενημερώσεις στο AMM. Αυτό μπορεί να διαρκέσει μερικά λεπτά</string>
     <string name="error_no_extras">ΣΦΑΛΜΑ: Λήφθηκαν μη έγκυρα δεδομένα κατά την εκκίνηση</string>
     <string name="error_no_action">ΣΦΑΛΜΑ: Καθορίστηκε μη έγκυρη ενέργεια. Δεν μπορούμε να συνεχίσουμε.</string>
@@ -255,7 +204,6 @@
     <string name="checking_for_update">Έλεγχος για ενημερώσεις…</string>
     <string name="no_update_available">Είσαι ενημερωμένος!</string>
     <string name="download_update">Λήψη ενημέρωσης</string>
-    <string name="error_no_asset">ΣΦΑΛΜΑ: Αποτυχία ανάλυσης των πληροφοριών ενημέρωσης</string>
     <string name="downloading_update">Λήψη ενημέρωσης… %1$d%%</string>
     <string name="installing_update">Εγκατάσταση ενημέρωσης…</string>
     <string name="no_file_found">ΣΦΑΛΜΑ: Δεν βρέθηκε το πακέτο ενημέρωσης.</string>
@@ -276,23 +224,19 @@
     <string name="crash_icon">Εικονίδιο των crashes</string>
     <string name="copy_button">Αντιγραφή κειμένου</string>
     <string name="crash_details">Άγνωστη αιτία</string>
-    <string name="more_details">Περισσότερες λεπτομέρειες μπορούν να βρεθούν παρακάτω.</string>
     <string name="crash_full_stacktrace">Αναδρομογραμμή:
 \n%1$s</string>
     <string name="reset_app">Επανεκκινήστε την εφαρμογή</string>
     <string name="upgraded_summary">Είσαι τέλειος! Φαίνεται ότι έχεις ήδη ανανεώσει την συνδρομή σου, και υποστηρίζεις το Androidacy.</string>
-    <string name="reset_app_message">Αυτό θα αφαιρέσει εντελώς όλα τα δεδομένα της εφαρμογής, και θα την κλείσει. Τα modules δεν θα απεγκαταστηθούν.</string>
     <string name="upgraded">Premium λειτουργία, ενεργή</string>
     <string name="reset_warning">Αν συνεχίσετε να βλέπετε αυτή την οθόνη, ίσως να βοηθήσει η επαναφορά της εφαρμογής. Αυτό θα καθαρίσει τα δεδομένα της, όμως δεν θα επηρεάσει τα εγκατεστημένα modules.</string>
     <string name="reset">Επαναφορά</string>
     <string name="reset_app_confirmation">Αυτό θα διαγράψει όλα τα δεδομένα της εφαρμογής αλλά δεν θα επηρεάσει τα modules.</string>
     <string name="error_adding">Αποτυχία προσθήκης διαμορφωμένου αποθετηρίου</string>
     <string name="api_key_mismatch">Το κλειδί API έχει μη έγκυρη μορφή</string>
-    <string name="theme_transparent_dark">Σκοτεινό (διαφάνεια)</string>
     <string name="theme_transparent_light">Φωτεινό (διαφάνεια)</string>
     <string name="theme_light">Φωτεινό</string>
     <string name="androidacy_update_needed_message">Παρακαλείσθε να εκσυγχρονίσετε την εφαρμογή στην τελευταία έκδοσή της.</string>
-    <string name="androidacy_webview_update_required">Το webview σας είναι παρωχημένο. Παρακαλείσθε να το εκσυγχρονίσετε.</string>
     <string name="zip_load_failed">Δεν ήταν δυνατή η φόρτωση του αρχείου zip</string>
     <string name="androidacy_thanks">Αναπτύχθηκε εν μέρει από το Androidacy</string>
     <string name="androidacy_thanks_desc">Ευχαριστούμε το Androidacy για την ενσωμάτωσή και τις εισφορές τους στην εφαρμογή.</string>
@@ -300,15 +244,10 @@
     <string name="notification_update_ignore_pref">Απέκλεισε modules</string>
     <string name="notification_update_ignore_desc">Λίστα των module που θα απέχουν από τον έλεγχο αναβάθμισης</string>
     <string name="pref_category_updates">Αναβαθμίσεις</string>
-    <string name="invalid_excludes">Μη έγκυρη εισαγωγή</string>
-    <string name="invalid_characters_message">Η λίστα τον modules που εισήγαγες δεν είναι έγκυρη. Παρακαλείσθε να εισαγάγετε μόνο έγκυρα module ids, διαχωρισμένα από κόμματα</string>
     <string name="permission_notification_message">Χρειαζόμαστε την άδεια για ειδοποιήσεις, ώστε να σε ειδοποιούμε για κάθε δυνατό εκσυγχρονισμό της εφαρμογής και των modules, δεν θα λειτουργήσει ο αυτόματος έλεγχος για αναβαθμίσεις.</string>
     <string name="setup_background_update_check">Αυτοματοποιημένος έλεγχος εκσυγχρονισμού</string>
     <string name="background_update_check_excludes">Modules αποκλεισμένα από αυτόματο έλεγχο αναβάθμισης</string>
-    <string name="title_activity_update">Ενημερωτής εντός εφαρμογής</string>
     <string name="update_button">Παρακαλώ περιμένετε…</string>
-    <string name="changelog_none">Καμιά αλλαγή ακόμα!</string>
-    <string name="update_cancel_button">Ακύρωση ενημέρωσης</string>
     <string name="invalid_repo_url">Το URL που εισήγαγες για το αποθετήριο δεν είναι έγκυρο</string>
     <string name="add_repo_message">Τα αποθετήρια πρέπει να εξυπηρετούν μέσω HTTPS, και πρέπει να ακολουθούν τις προδιαγραφές που περιγράφονται στην τεκμηρίωση.</string>
     <string name="notification_update_summary">Τα ακόλουθα modules μπορούν να ενημερωθούν:</string>
@@ -332,7 +271,6 @@
     <string name="notification_channel_category_app_update_description">Ειδοποιεί όταν μια ενημέρωση εφαρμογής είναι διαθέσιμη</string>
     <string name="notification_channel_background_update_app">Ενημέρωση εφαρμογής διαθέσιμη!</string>
     <string name="notification_channel_background_update_app_description">Υπάρχει διαθέσιμη ενημέρωση για το AMM. Πατήστε εδώ για να το ενημερώσετε.</string>
-    <string name="crash_reporting_headline">Αναφορά crashes</string>
     <string name="setup_update_check_headline">Έλεγχος ενημερώσεων</string>
     <string name="setup_background_update_check_require_wifi">Απαίτησε wifi για τον έλεγχο ενημερώσεων</string>
     <string name="setup_background_update_check_require_wifi_summary">Απαιτείται Wi-Fi ή σύνδεση χωρίς μετρήσεις για να κάνετε ελέγχους ενημέρωσης</string>
@@ -343,20 +281,17 @@
     <string name="cache_clear_failed">Αποτυχία εκκαθάρισης της προσωρινής μνήμης</string>
     <string name="clear_cache_dialogue_title">Θέλετε να καθαρίσετε την προσωρινή μνήμη της εφαρμογής;</string>
     <string name="clear_cache_dialogue_message">Αυτό θα διαγράψει την προσωρινή μνήμη της εφαρμογής. Οι προτιμήσεις σας θα αποθηκευτούν, αλλά η εφαρμογή ενδέχεται να χρειαστεί περισσότερο χρόνο για να εκτελέσει ορισμένες λειτουργίες προσωρινά.</string>
-    <string name="certificate_error">Δεν ήταν δυνατή η επαλήθευση του πιστοποιητικού διακομιστή. Βεβαιωθείτε ότι τίποτα δεν παρεμποδίζει τις συνδέσεις HTTPS για το AMM.</string>
     <string name="pref_category_privacy">Ιδιωτικότητα</string>
     <string name="crash_reporting_pii_desc">Επιτρέπει την αποστολή πρόσθετων πληροφοριών σε αναφορές σφαλμάτων, ορισμένες από τις οποίες μπορεί να περιέχουν στοιχεία προσωπικής ταυτοποίησης, όπως διεύθυνση IP και αναγνωριστικά συσκευής.</string>
     <string name="crash_reporting_pii">Στείλτε επιπλέον πληροφορίες</string>
     <string name="setup_crash_reporting_pii">Στείλτε επιπλέον πληροφορίες σε αναφορές για crashes.</string>
     <string name="setup_crash_reporting_pii_summary">Αυτό μπορεί να περιλαμβάνει αναγνωριστικά συσκευής και διευθύνσεις IP. Δεν θα χρησιμοποιηθούν δεδομένα για οποιονδήποτε άλλο σκοπό εκτός από την ανάλυση σφαλμάτων και τη βελτίωση της απόδοσης.</string>
     <string name="error_creating_cookie_database">Σφάλμα κατά την πρόσβαση στο WebView. Η λειτουργικότητα μπορεί να επηρεαστεί.</string>
-    <string name="setup_scroll_down">Για να ενεργοποιήσετε το κουμπί τερματισμού, κάντε κύλιση προς τα κάτω και δείτε όλες τις επιλογές.</string>
     <string name="empty_field">Το URL απαιτείται</string>
     <string name="repo_already_added">Το αποθετήριο υπάρχει ήδη.</string>
     <string name="showcase_mode_dialogue_message">Απαιτείται επανεκκίνηση της εφαρμογής για να ενεργοποιηθεί η λειτουργία προβολής.</string>
     <string name="fail_root_denied">Τα δικαιώματα root απορρίφθηκαν μέσω του Magisk</string>
     <string name="fail_magisk_missing">Το Magisk δεν είναι επαρκώς εγκατεστημένο στην συσκευή</string>
-    <string name="favourite">Προσθήκη στα αγαπημένα</string>
     <string name="dev_mode_disabled">Λειτουργία προγραμματιστή απενεργοποιήθηκε</string>
     <string name="link_copied">Το link αντιγράφηκε</string>
     <string name="androidacy_repo_info">Αυτό το repository ίσως να προβάλει κάποια διαφημιστικά μηνύματα, ώστε να καλύψει το κόστος της ανάπτυξής του, και των servers. Περιέχει κριτικές, αυτοματοποιημένο έλεγχο για ιούς και περισσότερα.</string>
@@ -365,14 +300,9 @@
     <string name="api_key_summary">Χρησιμοποίησε προσαρμοσμένο κλειδί API για το Androidacy. Χρήσιμο για premium συνδρομητές, ώστε να αφαιρεθούν τα διαφημιστικά μηνύματα, και άλλα.</string>
     <string name="api_key_invalid">Δεν μπορέσαμε να επαληθεύσουμε το κλειδί API. Παρακαλούμε ελέγξτε το και προσπαθήστε ξανά.</string>
     <string name="androidacy_test_mode_warning">Ρυθμίσατε την εφαρμογή να χρησιμοποιεί ένα μη παραγωγικό endpoint για το Androidacy. Αυτό ίσως έχει αποτέλεσμα την αστάθεια της εφαρμογής και αποτυχία φόρτωσης του διαδικτυακού repository. ΜΗΝ αναφέρετε σφάλματα αν έχετε θέσει αυτή την ρύθμιση σε λειτουργία. Η εφαρμογή θα επανεκκινηθεί για να γίνει επαναφόρτωση των repositories.</string>
-    <string name="force_black_theme_desc">Επιβολή μαύρων AMOLED Backgrounds, όταν χρησιμοποιείται το σκοτεινό θέμα. Παρακαλούμε να είστε ενήμεροι, ότι αυτό ίσως προκαλέσει προβλήματα αντίθεσης χρωμάτων σε συγκεκριμένα θέματα.</string>
     <string name="androidacy_repo_disabled_message">Από το συγκεκριμένο build λείπουν τα κλειδιά client για το Androidacy Repository. Παρακαλούμε κατεβάστε την εφαρμογή από τις εκδόσεις του GitHub, αν θέλετε να χρησιμοποιείτε λειτουργίες όπως οι κριτικές για modules, ο αυτόματος έλεγχος ασφαλείας, και άλλα.</string>
-    <string name="sentry_dialogue_message">Συναντήσαμε ένα σφάλμα! Παρακαλούμε βοηθήστε μας να βελτιώσουμε την εφαρμογή προσθέτοντας κάποιες πληροφορίες για το σφάλμα, παρακάτω.
-\n Το όνομα και το email είναι προαιρετικά, αλλά θα μας επιτρέψουν να επικοινωνήσουμε μαζί σας αν χρειαστούμε περισσότερες πληροφορίες.</string>
     <string name="sentry_dialogue_success">Υποβολή σχολίου επιτυχής. Θα το αναθεωρήσουμε σύντομα</string>
     <string name="setup_message">Καλωσορίσατε! Αυτή η εφαρμογή θα σας βοηθήσει να κατεβάσετε και να διαχειριστείτε Modules για το Magisk. Για να ξεκινήσετε, παρακαλούμε επιλέξτε τις παρακάτω επιλογές. Αυτές και πολλές άλλες μπορούν να διαμορφωθούν έπειτα, στις ρυθμίσεις.</string>
-    <string name="other_section">Άλλο</string>
-    <string name="eula_agree">Κάνοντας κλικ στο Τέλος, συμφωνείτε ότι δεσμεύεστε από την άδεια LGPL-3.0 (https://www.gnu.org/licenses/lgpl-3.0.en.html) και την Άδεια Χρήσης [EULA] (https://www.androidacy.com /foxmmm-eula/)</string>
     <string name="setup_background_update_check_summary">Επιτρέψτε μας να ελέγχουμε για αναβαθμίσεις των modules και της εφαρμογής στο παρασκήνιο. Αυτή η ρύθμιση ίσως χρησιμοποιήσει περισσότερη μπαταρία και δεδομένα.</string>
     <string name="setup_crash_reporting_summary">Αναφορά των crash και επίβλεψη της εκτέλεσης. Όλες οι αναφορές είναι αυστηρά ανώνυμες και εμπιστευτικές.</string>
     <string name="low_performance_device_dialogue_message">Προσπαθείς να ενεργοποιήσεις το blur σε μια συσκευή που ίσως να μην αποδίδει καλά με αυτό.
@@ -395,7 +325,6 @@
     <string name="error_download_update">Προέκυψε σφάλμα λαμβάνοντας τις πληροφορίες ενημέρωσης.</string>
     <string name="update_debug_download_pref">Δοκιμή μηχανισμού λήψης ενημερώσεων</string>
     <string name="notification_update_wifi_pref">Απαίτηση wi-fi ή δικτύου χωρίς μετρήσεις για έλεγχο ενημερώσεων. Προτείνεται να είναι σε λειτουργία αν έχετε περιορισμένα δεδομένα κινητής τηλεφωνίας.</string>
-    <string name="sniffing_modules">Sniffing Modules</string>
     <string name="yer_a_wizard_harry">Είσαι μάγος, Χάρι!</string>
     <string name="keep_tapping_to_enter_hogwarts">Συνέχισε να πατάς, ώστε να γίνεις δεκτός στο Hogwarts!</string>
     <string name="language_not_available">Η γλώσσα %s δεν έχει μεταφραστεί. Μπορείτε να μας βοηθήσετε στην μετάφρασή της;</string>
@@ -404,7 +333,6 @@
     <string name="crash_details_suggestion">Το stacktrace μπορεί να βρεθεί παρακάτω. Ωστόσο, <b>ανεπιφύλακτα</b> σας συνιστούμε να χρησιμοποιήσετε την παρακάτω φόρμα σχολίων για να υποβάλετε σχόλια. Με αυτόν τον τρόπο, αντί να αντιγράψετε χειροκίνητα το stacktrace, θα μας αποσταλεί αυτόματα. Επίσης, συμβάλλετε στην αποσυμφόρηση με αυτόν τον τρόπο και επιπλέον λεπτομέρειες αναφέρονται αυτόματα.</string>
     <string name="reinstall">Επανεγκατάσταση</string>
     <string name="eula_agree_v2">Συμφωνείτε να δεσμεύεστε από την άδεια LGPL-3.0 (https://www.gnu.org/licenses/lgpl-3.0.en.html) και την Άδεια Χρήσης [EULA] (https://www.androidacy.com/foxmmm-eula/ ), καθώς και από τυχόν όρους τρίτων και ότι οι δημιουργοί αυτής της εφαρμογής δεν φέρουν καμία ευθύνη για τη χρήση της από εσάς, ούτε προσφέρουμε καμία εγγύηση ρητή ή σιωπηρή.</string>
-    <string name="eula_sum">Συμφωνώ με την EULA και την Άδεια [License]</string>
     <string name="setup_scroll_down_v2">Για να ενεργοποιήσετε το κουμπί τερματισμού, κάντε κύλιση προς τα κάτω και επιβεβαιώστε ότι έχετε διαβάσει και συμφωνείτε με την EULA και τις άδειες. κάνετε επανεκκίνηση της εφαρμογής.</string>
     <string name="donate_androidacy">Κάντε δωρεά στο Androidacy</string>
     <string name="donate_androidacy_sum">Αγοράστε μια premium συνδρομή στο Androidacy για να υποστηρίξετε την εφαρμογή και το αποθετήριο.</string>

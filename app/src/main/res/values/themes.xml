@@ -42,12 +42,6 @@
         <item name="cornerRadius">@dimen/card_corner_radius</item>
     </style>
 
-    <style name="Widget.Material3.Chip.Choice.Light" parent="Widget.Material3.Chip.Assist">
-        <item name="chipBackgroundColor">@color/white</item>
-        <item name="chipStrokeWidth">0dp</item>
-        <item name="chipIconTint">?attr/colorControlNormal</item>
-    </style>
-
     <style name="Theme.MagiskModuleManager.Transparent.Light" parent="Theme.Material3.Light">
         <item name="android:windowIsTranslucent">true</item>
         <item name="android:windowBackground">@android:color/transparent</item>
@@ -145,33 +139,7 @@
         <item name="alertDialogTheme">@style/Theme.MagiskModuleManager.AlertDialog</item>
     </style>
 
-    <style name="Widget.Material.Chip.Choice.Dark" parent="Widget.MaterialComponents.Chip.Action">
-        <item name="chipBackgroundColor">@color/dark_chipBackgroundColor</item>
-        <item name="chipStrokeWidth">0dp</item>
-        <item name="chipIconTint">@color/white</item>
-    </style>
-
     <!-- Base application theme. -->
-    <style name="Theme.MagiskModuleManager.Transparent.Dark" parent="Theme.MagiskModuleManager.Dark">
-        <item name="android:windowIsTranslucent">true</item>
-        <item name="android:windowBackground">@android:color/transparent</item>
-        <item name="android:windowContentOverlay">@null</item>
-        <item name="android:windowIsFloating">true</item>
-        <item name="android:backgroundDimEnabled">false</item>
-        <item name="android:colorBackgroundCacheHint">@null</item>
-        <item name="android:windowAnimationStyle">@android:style/Animation</item>
-        <item name="android:windowTranslucentStatus">false</item>
-        <item name="android:statusBarColor">@android:color/transparent</item>
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
-        <item name="android:windowActionBar">false</item>
-        <item name="android:windowNoTitle">true</item>
-        <!-- fonts -->
-        <item name="android:fontFamily">@font/inter</item>
-        <item name="font">@font/inter</item>
-        <item name="cornerRadius">@dimen/card_corner_radius</item>
-        <item name="alertDialogTheme">@style/Theme.MagiskModuleManager.AlertDialog</item>
-    </style>
 
     <style name="Theme.MagiskModuleManager" parent="Theme.MagiskModuleManager.Light" />
 
@@ -181,10 +149,6 @@
         <item name="android:windowActionBar">false</item>
         <item name="android:windowNoTitle">true</item>
     </style>
-
-    <style name="Theme.MagiskModuleManager.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
-
-    <style name="Theme.MagiskModuleManager.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
 
     <style name="Theme.MagiskModuleManager.AlertDialog" parent="ThemeOverlay.Material3.MaterialAlertDialog">

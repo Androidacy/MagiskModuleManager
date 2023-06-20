@@ -4,7 +4,6 @@
 
 <resources>
     <string name="app_name">Fox sin Magisk-modulbehandler</string>
-    <string name="app_name_short">Mmm fra Fox</string>
     <string name="fail_root_magisk">Fikk ikke enten rot- eller Magisk-tilgang</string>
     <string name="loading">Laster inn…</string>
     <string name="updatable">Uppgraderbare</string>
@@ -12,22 +11,18 @@
     <string name="online_repo">Nettbasert pakkebrønn</string>
     <string name="showcase_mode">Programmet er i nedlåst modus</string>
     <string name="failed_download">Kunne ikke laste ned filen</string>
-    <string name="slow_modules">Det tok for lang tid å starte opp moduler. Overvei å skru av noen av dem</string>
     <string name="fail_internet">Kunne ikke koble til Internett</string>
     <string name="no_web_view">Kunne ikke åpne systemets WebView</string>
     <string name="title_activity_settings">SettingsActivity</string>
     <string name="app_update_available">En ny versjon av programmet er tilgjengelig</string>
-    <string name="app_update">Oppgrader</string>
     <string name="no_desc_found">Fant ingen beskrivelse.</string>
     <string name="download_module">Last ned modul</string>
     <string name="install_module">Installer modul</string>
     <string name="update_module">Oppgrader modul</string>
-    <string name="changelog">Endringslogg</string>
     <string name="website">Nettside</string>
     <string name="support">Brukerstøtte</string>
     <string name="donate">Doner</string>
     <string name="submit_modules">Send inn en modul</string>
-    <string name="require_android_6">Krever Android 6.0+</string>
     <!-- Module section translation -->
     <string name="module_last_update">Siste versjon:</string>
     <string name="module_repo">Pakkebrønn:</string>
@@ -39,7 +34,6 @@
     <string name="manage_repos_pref">Håndter pakkebrønner</string>
     <string name="showcase_mode_pref">Nedlåst modus</string>
     <string name="showcase_mode_desc">Nedlåst modus forhendrer behandleren fra å utføre handlinger på moduler</string>
-    <string name="pref_category_settings">Innstillinger</string>
     <string name="pref_category_info">Info</string>
     <string name="show_licenses">Vis lisenser</string>
     <string name="licenses">Lisenser</string>
@@ -47,14 +41,11 @@
     <string name="show_incompatible_desc">Vis moduler som antagelig ikke virker basert på deres metadata</string>
     <string name="magisk_outdated">Magisk er utdatert!</string>
     <string name="pref_category_repos">Pakkebrønner</string>
-    <string name="repo_main_desc">Pakkebrønnen som vertstjener Magisk-moduler</string>
-    <string name="repo_main_alt">Et alternativ til Magisk-Modules-Repo med færre begrensninger.</string>
     <string name="master_delete">Slett modulfilene?</string>
     <string name="master_delete_no">Behold</string>
     <string name="master_delete_yes">Slett</string>
     <string name="master_delete_fail">Kunne ikke slette modulfilene</string>
     <string name="theme_pref">Drakt</string>
-    <string name="theme_mode_pref">Draktmodus</string>
     <string name="module_id_prefix">Modul-ID: </string>
     <string name="install_from_storage">Installer modul fra lagring</string>
     <string name="invalid_format">Valgt modul har et ugyldig format</string>
@@ -72,7 +63,6 @@
         så dette alternativet er skjult bak utviklingsmoduset. Bruk det på egen risiko!
     </string>
     <string name="dev_mode_enabled">Utviklermodus på</string>
-    <string name="force_english_pref">Påtving engelsk språk</string>
     <string name="disable_low_quality_module_filter_pref">Skru av utfiltrering av lavkvalitetsmoduler</string>
     <string name="disable_low_quality_module_filter_desc">
         Noen moduler kunngjør ikke metadataen sin riktig, noe som forårsaker synlige grafikkproblemer,
@@ -81,11 +71,6 @@
     <string name="dns_over_https_desc">
         Kan fikse problemer i noen tilfeller.
         (Har ikke innvirkning på WebView.)
-    </string>
-    <string name="disable_extensions_pref">Ingen Mmm</string>
-    <string name="disable_extensions_desc">
-        Skru av Fox sin Mmm-utvidelser, noe som forhindrer moduler fra å bruke
-        terminalutvidelser. Nyttig hvis en modul misbruker Fox sin Mmm-utvidelser.
     </string>
     <string name="wrap_text_pref">Linjebryt tekst</string>
     <string name="wrap_text_desc">
@@ -111,10 +96,8 @@
     <string name="prevent_reboot_pref">Forhindre omstart</string>
     <string name="pref_category_security">Sikkerhet</string>
     <string name="pref_category_appearance">Utseende</string>
-    <string name="pref_category_general">Generelt</string>
     <string name="prevent_reboot_desc">Forhindrer uventede omstarter</string>
     <string name="enable_monet">Skru på Monet</string>
-    <string name="sniffed_modules">Sniffede moduler</string>
     <string name="module_needs_ramdisk">Trenger ramdisk</string>
     <string name="module_can_change_boot">Kan endre oppstart</string>
     <string name="module_can_change_boot_desc">Denne modulen kan endre oppstartsavtrykket</string>
@@ -123,25 +106,17 @@
     <string name="remove_repo">Fjern kodelager</string>
     <string name="custom_url">Egendefinert nettadresse</string>
     <string name="dev_mode_disabled">Utviklermodus av</string>
-    <string name="restore_module_list">Gjenopprett moduler</string>
     <string name="androidacy_test_mode_pref">Androidacy-testmodus</string>
     <string name="notification_update_title">Fant %i moduloppgraderinger</string>
-    <string name="disable_chips_in_description">Skru av chips i beskrivelse</string>
-    <string name="require_internet">Denne operasjonen krever tilknytning til Internett</string>
     <string name="androidacy_test_mode_desc">Bruk Androidacy-beta istedenfor å hente ferdige utgivelser. (Vil utføre omstart av programmet.)</string>
-    <string name="repackaged_as">Ompakket som:</string>
     <string name="warning">Advarsel.</string>
     <string name="restart">Omstart</string>
-    <string name="notification_update_subtitle">Klikk for å åpne programmet</string>
     <string name="notification_update_debug_pref">Testmerknad</string>
     <string name="language_translated_by">Oversatt av Allan Nordhøy</string>
     <string name="api_key">Androidacy-API-nøkkel</string>
-    <string name="api_key_not_set">Androidacy-API-nøkkelen er tom</string>
-    <string name="api_key_set">Nåværende Androidacy-API-nøkkel</string>
     <string name="api_key_invalid">Kunne ikke bekrefte API-nøkkelen. Sjekk den og prøv igjen.</string>
     <string name="api_key_valid">API-nøkkelen er gyldig.</string>
     <string name="checking_api_key">Bekrefter API-nøkkel …</string>
-    <string name="validating_api_key">Bekrefter API-nøkkel …</string>
     <string name="please_wait">Vent …</string>
     <string name="save_api_key">Bekreft</string>
     <string name="crash">Krasj programmet i testøyemed</string>
@@ -154,20 +129,14 @@
     <string name="androidacy_test_mode_disable_warning">Programmet må startes på ny for å skru av betamodus</string>
     <string name="notification_update_pref">Bakgrunnsoppgraderingssjekk for moduler</string>
     <string name="crash_reporting_desc">Hvis du skrur av dette får ikke utvikleren feilrapporter, og avlusing blir vanskeligere.</string>
-    <string name="wrapped_from">Innpakket fra:</string>
     <string name="api_key_summary">Bruk en egendefinert API-nøkkel for Androidacy. Nyttig for premiumsabonnementer, for å fjerne reklame, med mer.</string>
     <string name="androidacy_test_mode_warning">Du setter opp programmet til å bruke en utgivelseskanal for Androidacy som ikke er tiltenkt produksjon. Dette kan gjøre programmet ustabilt, og føre til at den nettbaserte pakkebrønnen ikke lastes. IKKE rapporter feil hvis du har dette påslått. (Programmet vil startes på ny for å gjeninnlaste alle kodelagre.)</string>
     <string name="dns_over_https_pref">DNS over HTTPS</string>
-    <string name="favourite">Favoritt</string>
     <string name="module_min_magisk_chip">Min. Magisk %s</string>
-    <string name="backup_module_list">Sikkerhetskopi-moduler</string>
-    <string name="notification_update_title_easter_egg">Sniffet %i moduloppgraderinger</string>
-    <string name="sniffing_modules">Sniffer moduler</string>
     <string name="module_needs_ramdisk_desc">Denne modulen krever at ramdisk er isntallert</string>
     <string name="androidacy_repo_info">Denne pakkebrønnen kan vise reklame for å dekke tjener- og utviklingskostnader.</string>
     <string name="androidacy_failed_to_validate_token">Kunne ikke bekrefte symbol for Androidacy. Prøv igjen senere.</string>
     <string name="androidacy_failed_to_parse_token">Kunne ikke hente symbol fra Androidacy. Prøv igjen senere.</string>
-    <string name="androidacy_server_down">Kunne ikke kontakte Androidacy-tjeneren. Sjekk tilkoblingen din og prøv igjen.</string>
     <string name="androidacy_need_captcha">Oppgradering til ny versjon av Androidacy blokkert av CAPTCHA</string>
     <string name="link_copied">Lenke kopiert</string>
 </resources>
