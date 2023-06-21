@@ -28,10 +28,15 @@ import com.fox2code.mmm.R
 import com.fox2code.mmm.SetupActivity
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
+import com.topjohnwu.superuser.Shell
 import timber.log.Timber
 
 @Suppress("UNUSED_PARAMETER")
 class RuntimeUtils {
+    enum class RebootMode {
+        REBOOT, RECOVERY, BOOTLOADER, EDL
+    }
+
     @SuppressLint("RestrictedApi")
     private fun ensurePermissions(context: Context, activity: MainActivity) {
         if (BuildConfig.DEBUG) Timber.i("Ensure Permissions")
@@ -268,5 +273,47 @@ class RuntimeUtils {
         // do not show for another 7 days
         prefs.edit().putLong("ugsns4", System.currentTimeMillis()).apply()
         Timber.i("showUpgradeSnackbar done")
+    }
+
+    companion object {
+        fun reboot(mainActivity: FoxActivity, reboot: RebootMode) {
+            // reboot based on the reboot cmd from the enum we were passed
+            when (reboot) {
+                RebootMode.REBOOT -> {
+                    showRebootDialog(mainActivity) {
+                        Shell.cmd("/system/bin/svc power reboot || /system/bin/reboot").submit()
+                    }
+                }
+                RebootMode.RECOVERY -> {
+                    // KEYCODE_POWER = 26, hide incorrect "Factory data reset" message
+                    showRebootDialog(mainActivity) {
+                        Shell.cmd("/system/bin/input keyevent 26").submit()
+                    }
+                }
+                RebootMode.BOOTLOADER -> {
+                    showRebootDialog(mainActivity) {
+                        Shell.cmd("/system/bin/svc power reboot bootloader || /system/bin/reboot bootloader")
+                            .submit()
+                    }
+                }
+                RebootMode.EDL -> {
+                    showRebootDialog(mainActivity) {
+                        Shell.cmd("/system/bin/reboot edl").submit()
+                    }
+                }
+            }
+        }
+
+        private fun showRebootDialog(mainActivity: FoxActivity, function: () -> Unit) {
+            val dialog = MaterialAlertDialogBuilder(mainActivity)
+                .setTitle(R.string.reboot)
+                .setMessage(R.string.install_terminal_reboot_now_message)
+                .setPositiveButton(R.string.reboot) { _, _ ->
+                    function()
+                }
+                .setNegativeButton(R.string.cancel) { _, _ -> }
+                .create()
+            dialog.show()
+        }
     }
 }

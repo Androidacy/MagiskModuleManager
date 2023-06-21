@@ -27,7 +27,7 @@ import java.io.InputStreamReader
 import java.nio.charset.StandardCharsets
 
 class ModuleManager private constructor() : SyncManager() {
-    private val moduleInfos: HashMap<String, LocalModuleInfo> = HashMap()
+    private var moduleInfos: HashMap<String, LocalModuleInfo> = HashMap()
     private val bootPrefs: SharedPreferences = MainApplication.bootSharedPreferences!!
     private var updatableModuleCount = 0
 
@@ -200,12 +200,15 @@ class ModuleManager private constructor() : SyncManager() {
         }
     }
 
-    val modules: HashMap<String, LocalModuleInfo>
+    var modules: HashMap<String, LocalModuleInfo> = HashMap()
         get() {
             afterScan()
             return moduleInfos
         }
-
+        set(value) {
+            moduleInfos = value
+            field = value
+        }
     @Suppress("unused")
     fun getUpdatableModuleCount(): Int {
         afterScan()

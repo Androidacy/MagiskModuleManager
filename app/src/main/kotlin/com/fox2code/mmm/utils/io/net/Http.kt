@@ -10,6 +10,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.SharedPreferences
 import android.net.ConnectivityManager
+import android.net.Network
 import android.net.NetworkCapabilities
 import android.net.Uri
 import android.os.Build
@@ -181,6 +182,9 @@ enum class Http {;
     }
 
     companion object {
+        private var connectivityListener: ConnectivityManager.NetworkCallback? = null
+        private var lastConnectivityResult: Boolean = false
+        private var lastConnectivityCheck: Long = 0
         private var limitedRetries: Int = 0
         private var httpClient: OkHttpClient? = null
         private var httpClientDoH: OkHttpClient? = null
@@ -719,15 +723,52 @@ enum class Http {;
 
         @JvmStatic
         fun hasConnectivity(context: Context): Boolean {
+            // cache result for 10 seconds so we don't spam the system
+            if (System.currentTimeMillis() - lastConnectivityCheck < 10000) {
+                return lastConnectivityResult
+            }
             // Check if we have internet connection using connectivity manager
             val connectivityManager =
                 context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
             // are we connected to a network with internet capabilities?
             val networkCapabilities =
                 connectivityManager.getNetworkCapabilities(connectivityManager.activeNetwork)
-            return networkCapabilities != null && networkCapabilities.hasCapability(
+            val systemSaysYes =  networkCapabilities != null && networkCapabilities.hasCapability(
                 NetworkCapabilities.NET_CAPABILITY_INTERNET
             )
+            Timber.d("System says we have internet: $systemSaysYes")
+            // if we don't already have a listener, add one, so we can invalidate the cache when the network changes
+            if (connectivityListener == null) {
+                connectivityListener = object : ConnectivityManager.NetworkCallback() {
+                    override fun onAvailable(network: Network) {
+                        super.onAvailable(network)
+                        Timber.d("Network became available")
+                        lastConnectivityCheck = 0
+                    }
+
+                    override fun onLost(network: Network) {
+                        super.onLost(network)
+                        Timber.d("Network became unavailable")
+                        lastConnectivityCheck = 0
+                    }
+                }
+                connectivityManager.registerDefaultNetworkCallback(connectivityListener!!)
+            }
+            if (!systemSaysYes) return false
+            // check ourselves
+            val hasInternet = try {
+                val resp = doHttpGet("https://production-api.androidacy.com/ping", false)
+                val respString = String(resp)
+                Timber.d("Ping response: $respString")
+                true
+            } catch (e: HttpException) {
+                Timber.e(e, "Failed to check internet connection")
+                false
+            }
+            Timber.d("We say we have internet: $hasInternet")
+            lastConnectivityCheck = System.currentTimeMillis()
+            lastConnectivityResult = systemSaysYes && hasInternet
+            return lastConnectivityResult
         }
     }
 }

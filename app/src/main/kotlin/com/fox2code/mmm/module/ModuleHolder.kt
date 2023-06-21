@@ -43,7 +43,7 @@ class ModuleHolder : Comparable<ModuleHolder?> {
 
     constructor(notificationType: NotificationType) {
         moduleId = ""
-        this.notificationType = Objects.requireNonNull(notificationType)
+        this.notificationType = notificationType
         separator = null
         footerPx = -1
     }
@@ -106,17 +106,16 @@ class ModuleHolder : Comparable<ModuleHolder?> {
 
     val type: Type
         get() = if (footerPx != -1) {
-            Timber.i("Module %s is footer", moduleId)
             Type.FOOTER
         } else if (separator != null) {
-            Timber.i("Module %s is separator", moduleId)
             Type.SEPARATOR
         } else if (notificationType != null) {
-            Timber.i("Module %s is notification", moduleId)
             Type.NOTIFICATION
         } else if (moduleInfo == null) {
+            Timber.i("Module %s is null and probably is a remote module", moduleId)
             Type.INSTALLABLE
         } else if (moduleInfo!!.versionCode < moduleInfo!!.updateVersionCode || repoModule != null && moduleInfo!!.versionCode < repoModule!!.moduleInfo.versionCode) {
+            Timber.i("Module %s is updateable", moduleId)
             var ignoreUpdate = false
             try {
                 if (getSharedPreferences("mmm")?.getStringSet("pref_background_update_check_excludes", HashSet())!!
@@ -195,6 +194,7 @@ class ModuleHolder : Comparable<ModuleHolder?> {
                 Type.UPDATABLE
             }
         } else {
+            Timber.i("Module %s is installed", moduleId)
             Type.INSTALLED
         }
 

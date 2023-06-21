@@ -98,8 +98,18 @@ class AndroidacyRepoData(cacheRoot: File?, testMode: Boolean) : RepoData(
                 editor.remove("pref_androidacy_api_token")
                 editor.apply()
                 return false
+            } else {
+                val handler = Handler(Looper.getMainLooper())
+                handler.post {
+                    Toast.makeText(
+                        INSTANCE,
+                        INSTANCE!!.getString(R.string.androidacy_api_error, e.errorCode),
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
             }
-            throw e
+            Timber.w(e)
+            false
         } catch (e: JSONException) {
             // response is not JSON
             Timber.w("Invalid token, resetting...")

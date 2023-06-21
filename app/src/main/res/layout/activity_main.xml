@@ -64,34 +64,51 @@
         app:layout_constraintBottom_toTopOf="@id/bottom_navigation"
         app:layout_constraintEnd_toEndOf="parent"
         tools:ignore="RtlHardcoded">
-        <!--
-        setting high app:cardCornerRadius is not supported on some versions
-        so we must use code to get a round appearance.
-        -->
+
+        <!-- reboot fab, floating to the left of the search bar -->
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/reboot_fab"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:layout_marginEnd="4dp"
+            android:layout_marginBottom="2dp"
+            android:clickable="true"
+            android:contentDescription="@string/reboot"
+            android:src="@drawable/baseline_restart_alt_24"
+            android:visibility="visible"
+            app:fabSize="mini"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/search_bar"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:focusable="true" />
 
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/search_card"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@null"
-            android:shape="ring"
+            android:layout_height="56dp"
             android:visibility="visible"
-            app:cardCornerRadius="@dimen/card_corner_radius"
-            app:cardElevation="0dp"
+            app:cardElevation="6dp"
+            android:layout_marginBottom="2dp"
             app:cardPreventCornerOverlap="true"
-            app:strokeColor="@android:color/transparent"
+            app:shapeAppearanceOverlay="@style/ShapeAppearance.Material3.Corner.Medium"
+            app:cardBackgroundColor="@color/system_accent1_100"
             app:strokeWidth="0dp">
 
             <androidx.appcompat.widget.SearchView
                 android:id="@+id/search_bar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@null"
                 android:padding="2dp"
                 android:visibility="visible"
                 app:iconifiedByDefault="true"
-                app:useDrawerArrowDrawable="true" />
+                android:background="@null"
+                app:useDrawerArrowDrawable="true"
+                android:alpha="1"
+                tools:ignore="DuplicateClickableBoundsCheck" />
+
         </com.google.android.material.card.MaterialCardView>
+
     </LinearLayout>
     <!-- bottom md3 navigation bar -->
     <!-- used for local and remote module list -->

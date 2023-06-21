@@ -8,6 +8,7 @@ import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.DialogInterface
 import android.content.Intent
 import android.content.res.Configuration
 import android.graphics.Color
@@ -57,6 +58,8 @@ import com.fox2code.mmm.utils.io.net.Http.Companion.cleanDnsCache
 import com.fox2code.mmm.utils.io.net.Http.Companion.hasWebView
 import com.fox2code.mmm.utils.room.ReposListDatabase
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.progressindicator.LinearProgressIndicator
 import org.matomo.sdk.extra.TrackHelper
 import timber.log.Timber
@@ -81,6 +84,7 @@ class MainActivity : FoxActivity(), OnRefreshListener, SearchView.OnQueryTextLis
     private var moduleListOnline: RecyclerView? = null
     private var searchCard: CardView? = null
     private var searchView: SearchView? = null
+    private var rebootFab: FloatingActionButton? = null
     private var initMode = false
     private var runtimeUtils: RuntimeUtils? = null
 
@@ -113,9 +117,7 @@ class MainActivity : FoxActivity(), OnRefreshListener, SearchView.OnQueryTextLis
         // track enabled repos
         Thread {
             val db = Room.databaseBuilder(
-                applicationContext,
-                ReposListDatabase::class.java,
-                "ReposList.db"
+                applicationContext, ReposListDatabase::class.java, "ReposList.db"
             ).build()
             val repoDao = db.reposListDao()
             val repos = repoDao.getAll()
@@ -175,6 +177,11 @@ class MainActivity : FoxActivity(), OnRefreshListener, SearchView.OnQueryTextLis
         searchView = findViewById(R.id.search_bar)
         val searchView = searchView!!
         searchView.isIconified = true
+        // when the search view is collapsed or user hits x, hide the search view
+        searchView.setOnCloseListener {
+            searchView.visibility = View.GONE
+            false
+        }
         moduleViewAdapter = ModuleViewAdapter()
         moduleViewAdapterOnline = ModuleViewAdapter()
         val moduleList = moduleList!!
@@ -190,13 +197,46 @@ class MainActivity : FoxActivity(), OnRefreshListener, SearchView.OnQueryTextLis
         updateBlurState()
         //hideActionBar();
         runtimeUtils!!.checkShowInitialSetup(this, this)
+        rebootFab = findViewById(R.id.reboot_fab)
+        val rebootFab = rebootFab!!
+
+        // set on click listener for reboot fab
+        rebootFab.setOnClickListener {
+            // show reboot dialog with options to reboot, reboot to recovery, bootloader, or edl, and use RuntimeUtils to reboot
+            val rebootDialog = MaterialAlertDialogBuilder(this@MainActivity)
+                .setTitle(R.string.reboot)
+                .setItems(
+                    arrayOf(
+                        getString(R.string.reboot),
+                        getString(R.string.reboot_recovery),
+                        getString(R.string.reboot_bootloader),
+                        getString(R.string.reboot_edl)
+                    )
+                ) { _: DialogInterface?, which: Int ->
+                    when (which) {
+                        0 -> RuntimeUtils.reboot(this@MainActivity, RuntimeUtils.RebootMode.REBOOT)
+                        1 -> RuntimeUtils.reboot(this@MainActivity, RuntimeUtils.RebootMode.RECOVERY)
+                        2 -> RuntimeUtils.reboot(this@MainActivity, RuntimeUtils.RebootMode.BOOTLOADER)
+                        3 -> RuntimeUtils.reboot(this@MainActivity, RuntimeUtils.RebootMode.EDL)
+                    }
+                }
+                .setNegativeButton(R.string.cancel, null)
+                .create()
+            rebootDialog.show()
+        }
         val searchCard = searchCard!!
+        // copy reboot fab style to search card
+        searchCard.elevation = rebootFab.elevation
+        searchCard.translationY = rebootFab.translationY
+        searchCard.foreground = rebootFab.foreground
         moduleList.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                 if (newState != RecyclerView.SCROLL_STATE_IDLE) searchView.clearFocus()
-                // hide search view when scrolling
+                // hide search view  and reboot fab when scrolling
                 if (newState == RecyclerView.SCROLL_STATE_DRAGGING) {
                     searchCard.animate().translationY(-searchCard.height.toFloat())
+                        .setInterpolator(AccelerateInterpolator(2f)).start()
+                    rebootFab.animate().translationY(rebootFab.height.toFloat())
                         .setInterpolator(AccelerateInterpolator(2f)).start()
                 }
             }
@@ -207,6 +247,8 @@ class MainActivity : FoxActivity(), OnRefreshListener, SearchView.OnQueryTextLis
                 if (dy < 0) {
                     searchCard.animate().translationY(0f)
                         .setInterpolator(DecelerateInterpolator(2f)).start()
+                    rebootFab.animate().translationY(0f).setInterpolator(DecelerateInterpolator(2f))
+                        .start()
                 }
             }
         })
@@ -218,6 +260,8 @@ class MainActivity : FoxActivity(), OnRefreshListener, SearchView.OnQueryTextLis
                 if (newState == RecyclerView.SCROLL_STATE_DRAGGING) {
                     searchCard.animate().translationY(-searchCard.height.toFloat())
                         .setInterpolator(AccelerateInterpolator(2f)).start()
+                    rebootFab.animate().translationY(rebootFab.height.toFloat())
+                        .setInterpolator(AccelerateInterpolator(2f)).start()
                 }
             }
 
@@ -227,10 +271,10 @@ class MainActivity : FoxActivity(), OnRefreshListener, SearchView.OnQueryTextLis
                 if (dy < 0) {
                     searchCard.animate().translationY(0f)
                         .setInterpolator(DecelerateInterpolator(2f)).start()
+                    rebootFab.animate().translationY(0f)
                 }
             }
         })
-        searchCard.radius = searchCard.height / 2f
         searchView.minimumHeight = FoxDisplay.dpToPixel(16f)
         searchView.imeOptions = EditorInfo.IME_ACTION_SEARCH or EditorInfo.IME_FLAG_NO_FULLSCREEN
         searchView.setOnQueryTextListener(this)
@@ -390,19 +434,20 @@ class MainActivity : FoxActivity(), OnRefreshListener, SearchView.OnQueryTextLis
                 if (BuildConfig.DEBUG) Timber.i("Check Update")
                 // update repos
                 if (hasWebView()) {
-                    val updateListener: SyncManager.UpdateListener = object : SyncManager.UpdateListener {
-                        override fun update(value: Double) {
-                            runOnUiThread(if (max == 0) Runnable {
-                                progressIndicator.setProgressCompat(
-                                    (value * PRECISION).toInt(), true
-                                )
-                            } else Runnable {
-                                progressIndicator.setProgressCompat(
-                                    (value * PRECISION * 0.75f).toInt(), true
-                                )
-                            })
+                    val updateListener: SyncManager.UpdateListener =
+                        object : SyncManager.UpdateListener {
+                            override fun update(value: Double) {
+                                runOnUiThread(if (max == 0) Runnable {
+                                    progressIndicator.setProgressCompat(
+                                        (value * PRECISION).toInt(), true
+                                    )
+                                } else Runnable {
+                                    progressIndicator.setProgressCompat(
+                                        (value * PRECISION * 0.75f).toInt(), true
+                                    )
+                                })
+                            }
                         }
-                    }
                     RepoManager.getINSTANCE()!!.update(updateListener)
                 }
                 // various notifications
@@ -525,7 +570,6 @@ class MainActivity : FoxActivity(), OnRefreshListener, SearchView.OnQueryTextLis
         moduleViewListBuilderOnline.setHeaderPx(statusBarHeight)
         moduleViewListBuilder.setFooterPx(FoxDisplay.dpToPixel(4f) + bottomInset + searchCard!!.height)
         moduleViewListBuilderOnline.setFooterPx(FoxDisplay.dpToPixel(4f) + bottomInset + searchCard!!.height)
-        searchCard!!.radius = searchCard!!.height / 2f
         moduleViewListBuilder.updateInsets()
         //this.actionBarBlur.invalidate();
         overScrollInsetTop = statusBarHeight
@@ -611,15 +655,16 @@ class MainActivity : FoxActivity(), OnRefreshListener, SearchView.OnQueryTextLis
                         progressIndicator!!.max = PRECISION
                     }
                     if (BuildConfig.DEBUG) Timber.i("Check Update")
-                    val updateListener: SyncManager.UpdateListener = object : SyncManager.UpdateListener {
-                        override fun update(value: Double) {
-                            runOnUiThread {
-                                progressIndicator!!.setProgressCompat(
-                                    (value * PRECISION).toInt(), true
-                                )
+                    val updateListener: SyncManager.UpdateListener =
+                        object : SyncManager.UpdateListener {
+                            override fun update(value: Double) {
+                                runOnUiThread {
+                                    progressIndicator!!.setProgressCompat(
+                                        (value * PRECISION).toInt(), true
+                                    )
+                                }
                             }
                         }
-                    }
                     RepoManager.getINSTANCE()!!.update(updateListener)
                     runOnUiThread {
                         progressIndicator!!.setProgressCompat(PRECISION, true)

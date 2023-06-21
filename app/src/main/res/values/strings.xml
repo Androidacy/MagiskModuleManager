@@ -367,4 +367,12 @@
     <string name="error_creating_repos_database">Could not create repos db</string>
     <string name="error_creating_modulelistcache_database">Failed to create module cache db</string>
     <string name="blur_performance_warning_summary">Device is not compatible with blur</string>
+    <string name="reboot">Reboot</string>
+    <string name="search">Search</string>
+    <string name="reboot_system">Reboot normally</string>
+    <string name="reboot_recovery">Reboot to recovery</string>
+    <string name="reboot_bootloader">Reboot to bootloader</string>
+    <string name="reboot_edl">Reboot to EDL mode</string>
+    <string name="install_terminal_reboot_prevented">Reboot is disabled in app settings</string>
+    <string name="androidacy_api_error">Error while communicating with API: %d</string>
 </resources>

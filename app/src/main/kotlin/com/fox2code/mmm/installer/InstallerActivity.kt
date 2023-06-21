@@ -38,6 +38,7 @@ import com.fox2code.mmm.androidacy.AndroidacyUtil
 import com.fox2code.mmm.module.ActionButtonType
 import com.fox2code.mmm.utils.FastException
 import com.fox2code.mmm.utils.IntentHelper
+import com.fox2code.mmm.utils.RuntimeUtils
 import com.fox2code.mmm.utils.io.Files.Companion.copy
 import com.fox2code.mmm.utils.io.Files.Companion.fixJavaZipHax
 import com.fox2code.mmm.utils.io.Files.Companion.fixSourceArchiveShit
@@ -636,24 +637,25 @@ class InstallerActivity : FoxActivity() {
             }
             setDisplayHomeAsUpEnabled(true)
             progressIndicator!!.visibility = View.GONE
-
-            // This should be improved ?
-            val rbtCmd =
-                "/system/bin/svc power reboot || /system/bin/reboot || setprop sys.powerctl reboot"
             rebootFloatingButton!!.setOnClickListener { _: View? ->
-                if (warnReboot || MainApplication.shouldPreventReboot()) {
+                if (MainApplication.shouldPreventReboot()) {
+                    // toast and do nothing
+                    Toast.makeText(
+                        this,
+                        R.string.install_terminal_reboot_prevented,
+                        Toast.LENGTH_SHORT
+                    ).show()
+                } else {
                     val builder = MaterialAlertDialogBuilder(this)
                     builder.setTitle(R.string.install_terminal_reboot_now)
                         .setMessage(R.string.install_terminal_reboot_now_message)
                         .setCancelable(false).setIcon(
                             R.drawable.ic_reboot_24
                         ).setPositiveButton(R.string.ok) { _: DialogInterface?, _: Int ->
-                            Shell.cmd(rbtCmd).submit()
+                            RuntimeUtils.reboot(this, RuntimeUtils.RebootMode.REBOOT)
                         }
                         .setNegativeButton(R.string.no) { x: DialogInterface, _: Int -> x.dismiss() }
                         .show()
-                } else {
-                    Shell.cmd(rbtCmd).submit()
                 }
             }
             rebootFloatingButton!!.isEnabled = true
