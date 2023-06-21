@@ -339,4 +339,7 @@
     <string name="build_expired">Текущая версия устарела. Обновите до последней версии.</string>
     <string name="app_name_v2">Менеджер модулей Androidacy</string>
     <string name="app_name_short_v2">AMM</string>
+    <string name="blur_performance_warning_summary">Устройство несовместимо с размытием</string>
+    <string name="error_creating_repos_database">Не удалось создать БД репозитория</string>
+    <string name="error_creating_modulelistcache_database">Не удалось создать БД кэша модуля</string>
 </resources>

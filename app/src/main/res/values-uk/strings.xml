@@ -1,4 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?><!--
+<?xml version="1.0" encoding="utf-8"?>
+<!--
   ~ Copyright (c) 2023 to present Androidacy and contributors. Names, logos, icons, and the Androidacy name are all trademarks of Androidacy and may not be used without license. See LICENSE for more information.
   --><resources xmlns:tools="http://schemas.android.com/tools">
     <string name="fail_root_magisk">Не вдалося отримати доступ до root-прав або Magisk-у</string>
@@ -335,4 +336,7 @@
     <string name="build_expired">Поточна версія застаріла. Оновіть до останньої версії.</string>
     <string name="app_name_v2">Менеджер модулів Androidacy</string>
     <string name="app_name_short_v2">AMM</string>
+    <string name="blur_performance_warning_summary">Пристрій несумісний з розмиттям</string>
+    <string name="error_creating_repos_database">Не вдалося створити БД репозиторію</string>
+    <string name="error_creating_modulelistcache_database">Не вдалося створити БД кеша модуля</string>
 </resources>
