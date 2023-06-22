@@ -203,12 +203,13 @@ class ModuleManager private constructor() : SyncManager() {
     var modules: HashMap<String, LocalModuleInfo> = HashMap()
         get() {
             afterScan()
-            return moduleInfos
+            return field
         }
         set(value) {
-            moduleInfos = value
             field = value
+            moduleInfos = value
         }
+    
     @Suppress("unused")
     fun getUpdatableModuleCount(): Int {
         afterScan()

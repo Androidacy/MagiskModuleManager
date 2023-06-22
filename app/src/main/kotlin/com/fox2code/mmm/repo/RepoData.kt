@@ -427,7 +427,7 @@ open class RepoData(url: String, cacheRoot: File) : XRepo() {
         ).allowMainThreadQueries().build()
         val moduleListCache = db2.moduleListCacheDao().getByRepoId(preferenceId!!)
         if (repo != null) {
-            return if (repo.lastUpdate != 0 && moduleListCache.isNotEmpty()) {
+            return if (repo.lastUpdate != 0 && moduleListCache.isNotEmpty() && moduleListCache.size > 1) {
                 val lastUpdate = repo.lastUpdate.toLong()
                 val currentTime = System.currentTimeMillis()
                 val diff = currentTime - lastUpdate
@@ -437,8 +437,7 @@ open class RepoData(url: String, cacheRoot: File) : XRepo() {
                 db2.close()
                 diffMinutes > if (BuildConfig.DEBUG) 15 else 30
             } else {
-                Timber.d("Repo $preferenceId should update could not find repo in database")
-                Timber.d("This is probably an error, please report this to the developer")
+                Timber.d("Repo $preferenceId shouldUpdate true: lastUpdate is " + repo.lastUpdate + " and moduleListCache is " + moduleListCache.size)
                 db.close()
                 db2.close()
                 true

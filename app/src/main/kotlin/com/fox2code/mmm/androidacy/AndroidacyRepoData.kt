@@ -306,6 +306,12 @@ class AndroidacyRepoData(cacheRoot: File?, testMode: Boolean) : RepoData(
         }
         val newModules = ArrayList<RepoModule>()
         val len = jsonArray.length()
+        // stringify json array for logging but only log the first 200 characters
+        val tempJsonArray = jsonArray.toString()
+        Timber.d(
+            "AndroidacyRepoData populate loop start with json %s",
+            if (tempJsonArray.length > 200) tempJsonArray.substring(0, 200) else tempJsonArray
+        )
         var lastLastUpdate: Long = 0
         for (i in 0 until len) {
             jsonObject = jsonArray.getJSONObject(i)
