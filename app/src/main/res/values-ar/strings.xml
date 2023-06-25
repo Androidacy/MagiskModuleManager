@@ -1,8 +1,7 @@
-<?xml version="1.0" encoding="utf-8"?><!--
+<?xml version="1.0" encoding="utf-8"?>
+<!--
   ~ Copyright (c) 2023 to present Androidacy and contributors. Names, logos, icons, and the Androidacy name are all trademarks of Androidacy and may not be used without license. See LICENSE for more information.
-  -->
-
-<resources xmlns:tools="http://schemas.android.com/tools">
+  --><resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">فوكس مدير إضافات Magisk</string>
     <string name="fail_root_denied">تم رفض الوصول إلى الروت عبر تطبيق Magisk</string>
     <string name="failed_download">فشل في تحميل الملف</string>
@@ -333,4 +332,19 @@
     <string name="androidacy_thanks_up">شكرا للترقية! لن تعرض تنزيلات الإضافات و ملفات القراءة (README) إعلانات، وسيتم إلغاء تقييد التنزيلات. في المستقبل. ستتمكن من تنزيل الإضافات مباشرة بنقرة واحدة.</string>
     <string name="crash_details_suggestion">يمكن العثور على تتبع المكدس أدناه. ومع ذلك ، نوصيك <b>بشدة</b> باستخدام نموذج الملاحظات أدناه لإرسال التعليقات بدلا من ذلك. بهذه الطريقة ، بدلا من نسخ تتبع المكدس يدويا ، سيرسله إلينا تلقائيا. كما يتم إزالة التعتيم بهذه الطريقة ويتم الإبلاغ عن تفاصيل إضافية تلقائياً</string>
     <string name="reinstall_warning">معظم الإضافات يجب إلغاء تثبيتها، ثم إعادة تثبيتها من جديد بشكل نظيف. لهذا السبب ، لا يدعم AMM إعادة تثبيت الإضافات ان كانت مثبته حالياً على هذا الجهاز.</string>
+    <string name="error_creating_repos_database">تعذر إنشاء قاعدة الريبو</string>
+    <string name="error_creating_modulelistcache_database">فشل إنشاء ذاكرة تخزين مؤقتة (كايتش) لقاعدة الإضافة</string>
+    <string name="blur_performance_warning_summary">الجهاز غير متوافق مع blur</string>
+    <string name="reboot">إعادة تشغيل</string>
+    <string name="reboot_system">إعادة التشغيل بشكل طبيعي</string>
+    <string name="reboot_recovery">إعادة التشغيل إلى الركفري</string>
+    <string name="reboot_bootloader">إعادة التشغيل إلى البووتلاودر</string>
+    <string name="reboot_edl">إعادة التشغيل إلى وضع EDL</string>
+    <string name="install_terminal_reboot_prevented">تم تعطيل إعادة التشغيل في إعدادات التطبيق</string>
+    <string name="androidacy_api_error">خطأ أثناء محاولة الاتصال بAPI: %d</string>
+    <string name="eula_agree_v2_headline">اتفاقية ترخيص المستخدم النهائي والشروط</string>
+    <string name="build_expired">انتهت صلاحية هذا الإصدار. يرجى التحديث إلى أحدث إصدار.</string>
+    <string name="app_name_v2">اندرويداسي مدير الإضافات</string>
+    <string name="app_name_short_v2">AMM</string>
+    <string name="search">بحث</string>
 </resources>

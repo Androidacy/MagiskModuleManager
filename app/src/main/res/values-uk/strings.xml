@@ -339,4 +339,12 @@
     <string name="blur_performance_warning_summary">Пристрій несумісний з розмиттям</string>
     <string name="error_creating_repos_database">Не вдалося створити БД репозиторію</string>
     <string name="error_creating_modulelistcache_database">Не вдалося створити БД кеша модуля</string>
+    <string name="reboot_recovery">Перезавантаження в рекавері</string>
+    <string name="install_terminal_reboot_prevented">Перезавантаження вимкнено в налаштуваннях додатку</string>
+    <string name="reboot">Перезавантаження</string>
+    <string name="search">Пошук</string>
+    <string name="reboot_system">Звичайне перезавантаження</string>
+    <string name="reboot_bootloader">Перезавантаження в завантажувач</string>
+    <string name="reboot_edl">Перезавантаження в режим EDL</string>
+    <string name="androidacy_api_error">Помилка під час обміну даними з API: %d</string>
 </resources>

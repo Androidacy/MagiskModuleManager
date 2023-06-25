@@ -342,4 +342,12 @@
     <string name="blur_performance_warning_summary">Устройство несовместимо с размытием</string>
     <string name="error_creating_repos_database">Не удалось создать БД репозитория</string>
     <string name="error_creating_modulelistcache_database">Не удалось создать БД кэша модуля</string>
+    <string name="reboot">Перезагрузка</string>
+    <string name="reboot_recovery">Перезагрузка в рекавери</string>
+    <string name="install_terminal_reboot_prevented">Перезагрузка отключена в настройках приложения</string>
+    <string name="search">Поиск</string>
+    <string name="reboot_system">Обычная перезагрузка</string>
+    <string name="androidacy_api_error">Ошибка при обмене данными с API: %d</string>
+    <string name="reboot_bootloader">Перезагрузка в загрузчик</string>
+    <string name="reboot_edl">Перезагрузка в режим EDL</string>
 </resources>
