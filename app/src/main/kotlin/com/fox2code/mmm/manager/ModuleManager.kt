@@ -61,6 +61,7 @@ class ModuleManager private constructor() : SyncManager() {
         if (BuildConfig.DEBUG) Timber.d("Scan")
         val modulesList = StringBuilder()
         if (modules != null) {
+            Timber.i("Found %d modules on device in data", modules.size)
             val db = Room.databaseBuilder(
                 MainApplication.INSTANCE!!,
                 ModuleListCacheDatabase::class.java,
@@ -136,6 +137,8 @@ class ModuleManager private constructor() : SyncManager() {
                     .append(",")
             }
             db.close()
+        } else {
+            Timber.i("No modules on device in data")
         }
         if (modulesList.isNotEmpty()) {
             modulesList.deleteCharAt(modulesList.length - 1)

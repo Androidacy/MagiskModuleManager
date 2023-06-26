@@ -450,14 +450,14 @@ dependencies {
     implementation("com.github.KieronQuinn:MonetCompat:0.4.1")
     implementation("com.github.Fox2Code.FoxCompat:foxcompat:1.2.14")
     implementation("com.github.Fox2Code.FoxCompat:hiddenapis:1.2.14")
-    implementation("com.mikepenz:aboutlibraries:10.7.0")
+    implementation("com.mikepenz:aboutlibraries:10.8.0")
 
     // Utils
     implementation("androidx.work:work-runtime:2.8.1")
-    implementation("com.squareup.okhttp3:okhttp:5.0.0-alpha.10")
-    implementation("com.squareup.okhttp3:okhttp-dnsoverhttps:5.0.0-alpha.10")
+    implementation("com.squareup.okhttp3:okhttp:5.0.0-alpha.11")
+    implementation("com.squareup.okhttp3:okhttp-dnsoverhttps:5.0.0-alpha.11")
     // logging interceptor
-    implementation("com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.10")
+    implementation("com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.11")
     // Chromium cronet from androidacy
     implementation("org.chromium.net:cronet-embedded:113.5672.61")
 
@@ -482,12 +482,12 @@ dependencies {
     implementation("com.github.Fox2Code:AndroidANSI:1.2.1")
 
     // sentry
-    implementation("io.sentry:sentry-android:6.23.0")
-    implementation("io.sentry:sentry-android-timber:6.23.0")
-    implementation("io.sentry:sentry-android-fragment:6.23.0")
-    implementation("io.sentry:sentry-android-okhttp:6.23.0")
-    implementation("io.sentry:sentry-kotlin-extensions:6.23.0")
-    implementation("io.sentry:sentry-android-ndk:6.23.0")
+    implementation("io.sentry:sentry-android:6.24.0")
+    implementation("io.sentry:sentry-android-timber:6.24.0")
+    implementation("io.sentry:sentry-android-fragment:6.24.0")
+    implementation("io.sentry:sentry-android-okhttp:6.24.0")
+    implementation("io.sentry:sentry-kotlin-extensions:6.24.0")
+    implementation("io.sentry:sentry-android-ndk:6.24.0")
 
     // Markdown
     // TODO: switch to an updated implementation
@@ -530,13 +530,13 @@ dependencies {
     implementation("com.github.fingerprintjs:fingerprint-android:2.0.0")
 
     // room
-    implementation("androidx.room:room-runtime:2.5.1")
+    implementation("androidx.room:room-runtime:2.5.2")
 
     // To use Kotlin Symbol Processing (KSP)
-    ksp("androidx.room:room-compiler:2.5.1")
+    ksp("androidx.room:room-compiler:2.5.2")
 
     // optional - Kotlin Extensions and Coroutines support for Room
-    implementation("androidx.room:room-ktx:2.5.1")
+    implementation("androidx.room:room-ktx:2.5.2")
 }
 
 android {
