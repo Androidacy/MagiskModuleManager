@@ -69,6 +69,7 @@ class ModuleManager private constructor() : SyncManager() {
             ).allowMainThreadQueries().build()
             for (module in modules) {
                 if (!SuFile("/data/adb/modules/$module").isDirectory) continue  // Ignore non directory files inside modules folder
+                Timber.d("Found module %s", module)
                 var moduleInfo = moduleInfos[module]
                 // next, merge the module info with a record from ModuleListCache room db if it exists
                 // initialize modulelistcache db
@@ -132,6 +133,7 @@ class ModuleManager private constructor() : SyncManager() {
                     if (BuildConfig.DEBUG) Timber.d(e)
                     moduleInfo.flags = moduleInfo.flags or FLAG_MM_INVALID
                 }
+                moduleInfos[module] = moduleInfo
                 // append moduleID:moduleName to the list
                 modulesList.append(moduleInfo.id).append(":").append(moduleInfo.versionCode)
                     .append(",")
@@ -205,10 +207,12 @@ class ModuleManager private constructor() : SyncManager() {
 
     var modules: HashMap<String, LocalModuleInfo> = HashMap()
         get() {
+            Timber.d("getModules")
             afterScan()
-            return field
+            return moduleInfos
         }
         set(value) {
+            Timber.d("setModules")
             field = value
             moduleInfos = value
         }
@@ -221,6 +225,7 @@ class ModuleManager private constructor() : SyncManager() {
 
     @Suppress("unused")
     fun setEnabledState(moduleInfo: ModuleInfo, checked: Boolean): Boolean {
+        Timber.d("setEnabledState(%s, %s)", moduleInfo.id, checked)
         if (moduleInfo.hasFlag(ModuleInfo.FLAG_MODULE_UPDATING) && !checked) return false
         val disable = SuFile("/data/adb/modules/" + moduleInfo.id + "/disable")
         if (checked) {

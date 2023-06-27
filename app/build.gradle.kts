@@ -42,7 +42,7 @@ android {
         minSdk = 24
         targetSdk = 33
         versionCode = 76
-        versionName = "2.1.2"
+        versionName = "2.2.0"
         vectorDrawables {
             useSupportLibrary = true
         }
@@ -556,7 +556,7 @@ android {
         buildConfig = true
     }
     //noinspection GrDeprecatedAPIUsage
-    buildToolsVersion = "33.0.2"
+    buildToolsVersion = "34.0.0"
     @Suppress("DEPRECATION") packagingOptions {
         jniLibs {
             useLegacyPackaging = true

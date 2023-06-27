@@ -77,7 +77,7 @@ class ModuleHolder : Comparable<ModuleHolder?> {
     val mainModuleName: String?
         get() {
             val moduleInfo = mainModuleInfo
-            if (moduleInfo.name == null) throw Error("Error for " + type.name + " id " + moduleId)
+            if (moduleInfo.name == null) throw Error("Error for ${type.name} id $moduleId")
             return moduleInfo.name
         }
     val mainModuleNameLowercase: String
@@ -111,8 +111,7 @@ class ModuleHolder : Comparable<ModuleHolder?> {
             Type.SEPARATOR
         } else if (notificationType != null) {
             Type.NOTIFICATION
-        } else if (moduleInfo == null) {
-            Timber.i("Module %s is null and probably is a remote module", moduleId)
+        } else if (moduleInfo == null && repoModule != null) {
             Type.INSTALLABLE
         } else if (moduleInfo!!.versionCode < moduleInfo!!.updateVersionCode || repoModule != null && moduleInfo!!.versionCode < repoModule!!.moduleInfo.versionCode) {
             Timber.i("Module %s is updateable", moduleId)

@@ -45,12 +45,15 @@ class ModuleViewListBuilder(private val activity: Activity) {
     }
 
     fun appendInstalledModules() {
+        Timber.i("appendInstalledModules() called")
         synchronized(updateLock) {
             for (moduleHolder in mappedModuleHolders.values) {
+                Timber.i("zeroing module %s", moduleHolder.moduleInfo?.id)
                 moduleHolder.moduleInfo = null
             }
             val moduleManager = instance
             moduleManager?.runAfterScan {
+                Timber.i("A0: runAfterScan %s", moduleManager.modules.size)
                 Timber.i("A1: %s", moduleManager.modules.size)
                 for (moduleInfo in moduleManager.modules.values) {
                     // add the local module to the list in MainActivity
