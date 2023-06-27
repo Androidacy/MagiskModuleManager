@@ -51,6 +51,7 @@ import com.fox2code.foxcompat.view.FoxViewCompat
 import com.fox2code.mmm.AppUpdateManager.Companion.appUpdateManager
 import com.fox2code.mmm.BuildConfig
 import com.fox2code.mmm.Constants
+import com.fox2code.mmm.ExpiredActivity
 import com.fox2code.mmm.MainActivity
 import com.fox2code.mmm.MainApplication
 import com.fox2code.mmm.MainApplication.Companion.INSTANCE
@@ -101,6 +102,7 @@ import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
 import java.io.InputStreamReader
+import java.sql.Timestamp
 import java.util.Objects
 import java.util.Random
 import kotlin.system.exitProcess
@@ -110,18 +112,26 @@ class SettingsActivity : FoxActivity(), LanguageActivity {
     @SuppressLint("RestrictedApi")
     private val onItemSelectedListener =
         NavigationBarView.OnItemSelectedListener { item: MenuItem ->
-            val itemId = item.itemId
-            if (itemId == R.id.back) {
-                TrackHelper.track().event("view_list", "main_modules")
-                    .with(INSTANCE!!.getTracker())
-                startActivity(Intent(this, MainActivity::class.java))
-                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
-                finish()
-                return@OnItemSelectedListener true
-            } else if (itemId == R.id.settings_menu_item) {
-                return@OnItemSelectedListener true
+            when (item.itemId) {
+                R.id.installed_menu_item -> {
+                    // go back to main modules by opening main activity with installed action
+                    val intent = Intent(this, MainActivity::class.java)
+                    intent.action = "android.intent.action.SHOW_INSTALLED"
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                    startActivity(intent)
+                    return@OnItemSelectedListener true
+                }
+                R.id.online_menu_item -> {
+                    val intent = Intent(this, MainActivity::class.java)
+                    intent.action = "android.intent.action.SHOW_ONLINE"
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                    startActivity(intent)
+                    return@OnItemSelectedListener true
+                }
+                else -> {
+                    return@OnItemSelectedListener false
+                }
             }
-            false
         }
 
     @SuppressLint("RestrictedApi")
@@ -130,7 +140,28 @@ class SettingsActivity : FoxActivity(), LanguageActivity {
         super.onCreate(savedInstanceState)
         TrackHelper.track().screen(this).with(INSTANCE!!.getTracker())
         setContentView(R.layout.settings_activity)
-        setTitle(R.string.app_name)
+        setTitle(R.string.app_name_v2)
+        val ts = Timestamp(System.currentTimeMillis() - 30L * 24 * 60 * 60 * 1000)
+        val buildTime = Timestamp(BuildConfig.BUILD_TIME)
+        if (BuildConfig.DEBUG) {
+            if (ts.time > buildTime.time) {
+                val pm = packageManager
+                val intent = Intent(this, ExpiredActivity::class.java)
+                @Suppress("DEPRECATION") val resolveInfo = pm.queryIntentActivities(intent, 0)
+                if (resolveInfo.size > 0) {
+                    startActivity(intent)
+                    finish()
+                    return
+                } else {
+                    throw IllegalAccessError("This build has expired")
+                }
+            }
+        } else {
+            val ts2 = Timestamp(System.currentTimeMillis() - 365L * 24 * 60 * 60 * 1000)
+            if (ts2.time > buildTime.time) {
+                Toast.makeText(this, R.string.build_expired, Toast.LENGTH_LONG).show()
+            }
+        }
         //hideActionBar();
         val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottom_navigation)
         bottomNavigationView.setOnItemSelectedListener(onItemSelectedListener)
@@ -1237,7 +1268,7 @@ class SettingsActivity : FoxActivity(), LanguageActivity {
         }
 
         override fun onBackPressed(compatActivity: FoxActivity): Boolean {
-            compatActivity.setTitle(R.string.app_name)
+            compatActivity.setTitle(R.string.app_name_v2)
             compatActivity.supportFragmentManager.beginTransaction().replace(R.id.settings, this)
                 .setTransition(
                     FragmentTransaction.TRANSIT_FRAGMENT_FADE
@@ -1884,7 +1915,7 @@ class SettingsActivity : FoxActivity(), LanguageActivity {
                                     true
                                 }
                         } else {
-                            findPreference<Preference>(preferenceName + "_support")!!.isVisible =
+                            findPreference<Preference>("${preferenceName}_support")!!.isVisible =
                                 false
                         }
                         if (repoData.getSubmitModule() != null) {

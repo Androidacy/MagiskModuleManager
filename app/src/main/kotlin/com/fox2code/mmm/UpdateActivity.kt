@@ -12,6 +12,7 @@ import android.view.View
 import android.webkit.CookieManager
 import android.webkit.WebSettings
 import android.webkit.WebView
+import android.widget.Toast
 import androidx.core.content.FileProvider
 import androidx.webkit.WebSettingsCompat
 import androidx.webkit.WebViewFeature
@@ -28,6 +29,7 @@ import timber.log.Timber
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
+import java.sql.Timestamp
 import java.util.Objects
 
 class UpdateActivity : FoxActivity() {
@@ -38,6 +40,27 @@ class UpdateActivity : FoxActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_update)
+        val ts = Timestamp(System.currentTimeMillis() - 30L * 24 * 60 * 60 * 1000)
+        val buildTime = Timestamp(BuildConfig.BUILD_TIME)
+        if (BuildConfig.DEBUG) {
+            if (ts.time > buildTime.time) {
+                val pm = packageManager
+                val intent = Intent(this, ExpiredActivity::class.java)
+                @Suppress("DEPRECATION") val resolveInfo = pm.queryIntentActivities(intent, 0)
+                if (resolveInfo.size > 0) {
+                    startActivity(intent)
+                    finish()
+                    return
+                } else {
+                    throw IllegalAccessError("This build has expired")
+                }
+            }
+        } else {
+            val ts2 = Timestamp(System.currentTimeMillis() - 365L * 24 * 60 * 60 * 1000)
+            if (ts2.time > buildTime.time) {
+                Toast.makeText(this, R.string.build_expired, Toast.LENGTH_LONG).show()
+            }
+        }
         chgWv = findViewById(R.id.changelog_webview)
         if (MainApplication.isMatomoAllowed()) {
             TrackHelper.track().screen(this).with(MainApplication.INSTANCE!!.tracker)

@@ -1,9 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<!--
-  ~ Copyright (c) 2023 to present Androidacy and contributors. Names, logos, icons, and the Androidacy name are all trademarks of Androidacy and may not be used without license. See LICENSE for more information.
-  -->
-
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     tools:ignore="QueryAllPackagesPermission"
@@ -15,16 +10,13 @@
         <intent>
             <action android:name="com.fox2code.mmm.utils.intent.action.OPEN_EXTERNAL" />
         </intent>
-    </queries>
-    <!-- Wifi is not the only way to get an internet connection -->
+    </queries> <!-- Wifi is not the only way to get an internet connection -->
     <uses-feature
         android:name="android.hardware.wifi"
-        android:required="false" />
-    <!-- uses webview -->
+        android:required="false" /> <!-- uses webview -->
     <uses-feature
         android:name="android.software.webview"
-        android:required="true" />
-    <!-- uses opengl 1.2 -->
+        android:required="true" /> <!-- uses opengl 1.2 -->
     <uses-feature
         android:name="android.hardware.opengles.aep"
         android:required="false" />
@@ -51,28 +43,35 @@
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <!-- wake lock -->
     <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <!-- request uninstall -->
+    <uses-permission android:name="android.permission.REQUEST_DELETE_PACKAGES" />
+    <!-- wifi -->
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
 
     <application
         android:name=".MainApplication"
         android:allowBackup="false"
-        android:hardwareAccelerated="true"
+        android:appCategory="productivity"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:enableOnBackInvokedCallback="true"
+        android:forceDarkAllowed="false"
         android:fullBackupContent="@xml/full_backup_content"
+        android:hardwareAccelerated="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name_v2"
+        android:memtagMode="async"
         android:networkSecurityConfig="@xml/network_security_config"
         android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="@bool/lang_support_rtl"
         android:testOnly="false"
-        android:appCategory="productivity"
-        android:memtagMode="async"
         android:theme="@style/Theme.MagiskModuleManager"
         android:usesCleartextTraffic="false"
-        android:forceDarkAllowed="false"
         tools:ignore="ManifestResource"
         tools:replace="android:supportsRtl"
         tools:targetApi="tiramisu">
+        <activity
+            android:name=".ExpiredActivity"
+            android:exported="false" />
         <activity
             android:name=".UpdateActivity"
             android:exported="false"
@@ -105,19 +104,18 @@
                 <action android:name="android.intent.action.APPLICATION_PREFERENCES" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".MainActivity"
             android:exported="true"
             android:label="@string/app_name_short_v2"
             android:launchMode="singleTask"
-            android:theme="@style/Theme.MagiskModuleManager.NoActionBar" >
+            android:theme="@style/Theme.MagiskModuleManager.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".installer.InstallerActivity"
             android:exported="false"
@@ -131,13 +129,11 @@
                 <action android:name="${applicationId}.intent.action.INSTALL_MODULE_INTERNAL" />
             </intent-filter>
             -->
-        </activity>
-
-        <!-- We can handle zip files -->
+        </activity> <!-- We can handle zip files -->
         <activity
             android:name=".utils.ZipFileOpener"
             android:exported="true"
-            android:theme="@style/Theme.MagiskModuleManager.NoActionBar" >
+            android:theme="@style/Theme.MagiskModuleManager.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
@@ -148,18 +144,16 @@
                 <data android:scheme="content" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".markdown.MarkdownActivity"
             android:exported="false"
             android:parentActivityName=".MainActivity"
             android:theme="@style/Theme.MagiskModuleManager.NoActionBar" />
-
         <activity
             android:name=".androidacy.AndroidacyActivity"
             android:exported="false"
             android:parentActivityName=".MainActivity"
-            android:theme="@style/Theme.MagiskModuleManager.NoActionBar" >
+            android:theme="@style/Theme.MagiskModuleManager.NoActionBar">
 
             <!--
             <intent-filter>
@@ -167,7 +161,6 @@
             </intent-filter>
             -->
         </activity>
-
         <activity
             android:name="com.mikepenz.aboutlibraries.ui.LibsActivity"
             tools:node="remove" />
@@ -184,7 +177,6 @@
                 android:name="androidx.work.WorkManagerInitializer"
                 tools:node="remove" />
         </provider>
-
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="${applicationId}.file-provider"
@@ -200,26 +192,22 @@
             android:value="false" />
         <meta-data
             android:name="io.sentry.dsn"
-            android:value="https://e199c2a54a1f49b1b5beb3244f2c2358@sentry.androidacy.com/77" />
-        <!-- enable view hierarchy for crashes -->
-        <meta-data android:name="io.sentry.attach-view-hierarchy" android:value="true" />
-        <!-- Sane value, but feel free to lower it -->
+            android:value="https://e199c2a54a1f49b1b5beb3244f2c2358@sentry.androidacy.com/77" /> <!-- enable view hierarchy for crashes -->
+        <meta-data
+            android:name="io.sentry.attach-view-hierarchy"
+            android:value="true" /> <!-- Sane value, but feel free to lower it -->
         <meta-data
             android:name="io.sentry.traces.sample-rate"
-            android:value="0.2" />
-        <!-- Doesn't actually monitor anything, just used to get the activities the user went through -->
+            android:value="0.2" /> <!-- Doesn't actually monitor anything, just used to get the activities the user went through -->
         <meta-data
             android:name="io.sentry.traces.user-interaction.enable"
-            android:value="true" />
-        <!-- Just a screenshot of ONLY the current activity at the time of the crash -->
+            android:value="true" /> <!-- Just a screenshot of ONLY the current activity at the time of the crash -->
         <meta-data
             android:name="io.sentry.attach-screenshot"
-            android:value="true" />
-        <!-- Just the current activity at the time of the crash -->
+            android:value="true" /> <!-- Just the current activity at the time of the crash -->
         <meta-data
             android:name="io.sentry.attach-stacktrace"
-            android:value="true" />
-        <!-- Performance profiling -->
+            android:value="true" /> <!-- Performance profiling -->
         <meta-data
             android:name="io.sentry.traces.profiling.sample-rate"
             android:value="0.2" />

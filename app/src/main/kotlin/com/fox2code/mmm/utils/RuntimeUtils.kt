@@ -280,39 +280,49 @@ class RuntimeUtils {
             // reboot based on the reboot cmd from the enum we were passed
             when (reboot) {
                 RebootMode.REBOOT -> {
-                    showRebootDialog(mainActivity) {
+                    showRebootDialog(mainActivity, false) {
                         Shell.cmd("/system/bin/svc power reboot || /system/bin/reboot").submit()
                     }
                 }
+
                 RebootMode.RECOVERY -> {
                     // KEYCODE_POWER = 26, hide incorrect "Factory data reset" message
-                    showRebootDialog(mainActivity) {
+                    showRebootDialog(mainActivity, false) {
                         Shell.cmd("/system/bin/input keyevent 26").submit()
                     }
                 }
+
                 RebootMode.BOOTLOADER -> {
-                    showRebootDialog(mainActivity) {
+                    showRebootDialog(mainActivity, false) {
                         Shell.cmd("/system/bin/svc power reboot bootloader || /system/bin/reboot bootloader")
                             .submit()
                     }
                 }
+
                 RebootMode.EDL -> {
-                    showRebootDialog(mainActivity) {
+                    showRebootDialog(mainActivity, true) {
                         Shell.cmd("/system/bin/reboot edl").submit()
                     }
                 }
             }
         }
 
-        private fun showRebootDialog(mainActivity: FoxActivity, function: () -> Unit) {
+        private fun showRebootDialog(
+            mainActivity: FoxActivity,
+            showExtraWarning: Boolean,
+            function: () -> Unit
+        ) {
+            val message =
+                if (showExtraWarning) R.string.reboot_extra_warning else R.string.install_terminal_reboot_now_message
             val dialog = MaterialAlertDialogBuilder(mainActivity)
-                .setTitle(R.string.reboot)
-                .setMessage(R.string.install_terminal_reboot_now_message)
-                .setPositiveButton(R.string.reboot) { _, _ ->
-                    function()
-                }
-                .setNegativeButton(R.string.cancel) { _, _ -> }
-                .create()
+            dialog.setTitle(R.string.reboot)
+            dialog.setCancelable(false)
+            dialog.setMessage(message)
+            dialog.setPositiveButton(R.string.reboot) { _, _ ->
+                function()
+            }
+            dialog.setNegativeButton(R.string.cancel) { _, _ -> }
+            dialog.create()
             dialog.show()
         }
     }

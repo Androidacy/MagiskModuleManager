@@ -39,6 +39,7 @@ import org.apache.commons.io.FileUtils
 import timber.log.Timber
 import java.io.File
 import java.io.IOException
+import java.sql.Timestamp
 import java.util.Objects
 
 class SetupActivity : FoxActivity(), LanguageActivity {
@@ -62,6 +63,27 @@ class SetupActivity : FoxActivity(), LanguageActivity {
         }
         val binding = ActivitySetupBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        val ts = Timestamp(System.currentTimeMillis() - 30L * 24 * 60 * 60 * 1000)
+        val buildTime = Timestamp(BuildConfig.BUILD_TIME)
+        if (BuildConfig.DEBUG) {
+            if (ts.time > buildTime.time) {
+                val pm = packageManager
+                val intent = Intent(this, ExpiredActivity::class.java)
+                @Suppress("DEPRECATION") val resolveInfo = pm.queryIntentActivities(intent, 0)
+                if (resolveInfo.size > 0) {
+                    startActivity(intent)
+                    finish()
+                    return
+                } else {
+                    throw IllegalAccessError("This build has expired")
+                }
+            }
+        } else {
+            val ts2 = Timestamp(System.currentTimeMillis() - 365L * 24 * 60 * 60 * 1000)
+            if (ts2.time > buildTime.time) {
+                Toast.makeText(this, R.string.build_expired, Toast.LENGTH_LONG).show()
+            }
+        }
         val view: View = binding.root
         (Objects.requireNonNull<Any>(view.findViewById(R.id.setup_background_update_check)) as MaterialSwitch).isChecked =
             BuildConfig.ENABLE_AUTO_UPDATER

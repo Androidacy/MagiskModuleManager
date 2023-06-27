@@ -135,20 +135,28 @@ class MainActivity : FoxActivity(), OnRefreshListener, SearchView.OnQueryTextLis
             }
         }.start()
         val ts = Timestamp(System.currentTimeMillis() - 30L * 24 * 60 * 60 * 1000)
-        // check if this build has expired
         val buildTime = Timestamp(BuildConfig.BUILD_TIME)
-        // if the build time is more than 30 days ago, throw an exception
         if (BuildConfig.DEBUG) {
-            check(ts.time < buildTime.time) { getString(R.string.build_expired) }
+            if (ts.time > buildTime.time) {
+                val pm = packageManager
+                val intent = Intent(this, ExpiredActivity::class.java)
+                @Suppress("DEPRECATION") val resolveInfo = pm.queryIntentActivities(intent, 0)
+                if (resolveInfo.size > 0) {
+                    startActivity(intent)
+                    finish()
+                    return
+                } else {
+                    throw IllegalAccessError("This build has expired")
+                }
+            }
         } else {
-            // non-debug builds expire after 1 year but only show a toast
             val ts2 = Timestamp(System.currentTimeMillis() - 365L * 24 * 60 * 60 * 1000)
             if (ts2.time > buildTime.time) {
                 Toast.makeText(this, R.string.build_expired, Toast.LENGTH_LONG).show()
             }
         }
         setContentView(R.layout.activity_main)
-        this.setTitle(R.string.app_name)
+        this.setTitle(R.string.app_name_v2)
         // set window flags to ignore status bar
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             // ignore status bar space
@@ -341,6 +349,14 @@ class MainActivity : FoxActivity(), OnRefreshListener, SearchView.OnQueryTextLis
                 }
             }
             true
+        }
+        // parse intent. if action is SHOW_ONLINE, show online modules
+        val action = intent.action
+        if (action == "android.intent.action.SHOW_ONLINE") {
+            // select online modules
+            bottomNavigationView.selectedItemId = R.id.online_menu_item
+        } else {
+            bottomNavigationView.selectedItemId = R.id.installed_menu_item
         }
         // update the padding of blur_frame to match the new bottom nav height
         val blurFrame = findViewById<View>(R.id.blur_frame)

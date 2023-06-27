@@ -375,4 +375,12 @@
     <string name="reboot_edl">Reboot to EDL mode</string>
     <string name="install_terminal_reboot_prevented">Reboot is disabled in app settings</string>
     <string name="androidacy_api_error">Error while communicating with API: %d</string>
+    <string name="reboot_extra_warning">You are about to reboot to EDL mode, a special mode intended for OEMs to flash and fix low level problems. Unless you are sure you want to do this and have the necessary tools to get out of this mode or use it, we strongly encourage you to use the other reboot options.</string>
+    <string name="title_activity_expired">ExpiredActivity</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+    <string name="expired">This build has expired!</string>
+    <string name="expired_message">The build you are using is expired and will no longer run. Please update to the latest stable build.</string>
+    <string name="download_latest">Download latest</string>
 </resources>
