@@ -76,8 +76,9 @@
             android:contentDescription="@string/reboot"
             android:src="@drawable/baseline_restart_alt_24"
             android:visibility="visible"
+            android:elevation="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/search_bar"
+            app:layout_constraintEnd_toStartOf="@id/search_card"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             android:focusable="true" />
@@ -91,8 +92,8 @@
             android:alpha="1"
             android:layout_marginBottom="2dp"
             app:cardPreventCornerOverlap="true"
-            app:shapeAppearanceOverlay="@style/ShapeAppearance.Material3.Corner.Medium"
-            app:cardBackgroundColor="@color/system_accent1_100"
+            app:layout_constraintStart_toStartOf="@id/reboot_fab"
+            app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.Material3.FloatingActionButton"
             app:strokeWidth="0dp">
 
             <androidx.appcompat.widget.SearchView
@@ -102,9 +103,9 @@
                 android:padding="2dp"
                 android:visibility="visible"
                 app:iconifiedByDefault="true"
-                android:background="@null"
-                app:useDrawerArrowDrawable="true"
+                android:background="@color/transparent"
                 android:alpha="1"
+                app:useDrawerArrowDrawable="true"
                 tools:ignore="DuplicateClickableBoundsCheck" />
 
         </com.google.android.material.card.MaterialCardView>
