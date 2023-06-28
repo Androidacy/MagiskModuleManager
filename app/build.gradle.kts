@@ -38,13 +38,15 @@ android {
     ndkVersion = "25.2.9519653"
     signingConfigs {
         create("release") {
-            val properties = Properties().apply {
-                load(File("signing.properties").reader())
+            if (File("signing.properties").exists()) {
+                val properties = Properties().apply {
+                    load(File("signing.properties").reader())
+                }
+                storeFile = File(properties.getProperty("storeFilePath"))
+                storePassword = properties.getProperty("storePassword")
+                keyPassword = properties.getProperty("keyPassword")
+                keyAlias = properties.getProperty("keyAlias")
             }
-            storeFile = File(properties.getProperty("storeFilePath"))
-            storePassword = properties.getProperty("storePassword")
-            keyPassword = properties.getProperty("keyPassword")
-            keyAlias = properties.getProperty("keyAlias")
         }
     }
     defaultConfig {
