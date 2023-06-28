@@ -383,4 +383,5 @@
     <string name="expired">This build has expired!</string>
     <string name="expired_message">The build you are using is expired and will no longer run. Please update to the latest stable build.</string>
     <string name="download_latest">Download latest</string>
+    <string name="logs_saved">Saved logs successfully</string>
 </resources>

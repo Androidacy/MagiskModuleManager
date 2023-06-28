@@ -30,8 +30,8 @@ class InstallerInitializer : Shell.Initializer() {
         private val MAGISK_SBIN = File("/sbin/magisk")
         private val MAGISK_SYSTEM = File("/system/bin/magisk")
         private val MAGISK_SYSTEM_EX = File("/system/xbin/magisk")
-        private val HAS_MAGISK = MAGISK_SBIN.exists() ||
-                MAGISK_SYSTEM.exists() || MAGISK_SYSTEM_EX.exists()
+        private val HAS_MAGISK =
+            MAGISK_SBIN.exists() || MAGISK_SYSTEM.exists() || MAGISK_SYSTEM_EX.exists()
         private var mgskPth: String? = null
         private var mgskVerCode = 0
         private var hsRmdsk = false
@@ -43,9 +43,7 @@ class InstallerInitializer : Shell.Initializer() {
         val errorNotification: NotificationType?
             get() {
                 val hasRoot = Shell.isAppGrantedRoot()
-                if (mgskPth != null &&
-                    hasRoot !== java.lang.Boolean.FALSE
-                ) {
+                if (mgskPth != null && hasRoot !== java.lang.Boolean.FALSE) {
                     return null
                 }
                 if (!HAS_MAGISK) {
@@ -130,47 +128,46 @@ class InstallerInitializer : Shell.Initializer() {
             if (mgskPth != null && !forceCheck) return mgskPth
             val output = ArrayList<String>()
             try {
-            if (!Shell.cmd(
-                    "if grep ' / ' /proc/mounts | grep -q '/dev/root' &> /dev/null; " +
-                            "then echo true; else echo false; fi", "magisk -V", "magisk --path"
-                )
-                    .to(output).exec().isSuccess
-            ) {
-                if (output.size != 0) {
-                    hsRmdsk = "false" == output[0] ||
-                            "true".equals(
-                                System.getProperty("ro.build.ab_update"),
-                                ignoreCase = true
-                            )
-                }
-                Companion.hsRmdsk = hsRmdsk
-                return null
-            }
-            mgskPth = if (output.size < 3) "" else output[2]
-            Timber.i("Magisk runtime path: %s", mgskPth)
-            mgskVerCode = output[1].toInt()
-            Timber.i("Magisk version code: %s", mgskVerCode)
-            if (mgskVerCode >= Constants.MAGISK_VER_CODE_FLAT_MODULES && mgskVerCode < Constants.MAGISK_VER_CODE_PATH_SUPPORT &&
-                (mgskPth.isEmpty() || !File(mgskPth).exists())
-            ) {
-                mgskPth = "/sbin"
-            }
-            if (mgskPth.isNotEmpty() && existsSU(File(mgskPth))) {
-                Companion.mgskPth = mgskPth
-            } else {
-                Timber.e("Failed to get Magisk path (Got $mgskPth)")
-                mgskPth = null
-            }
-            Companion.mgskVerCode = mgskVerCode
-            return mgskPth
-            } catch (ignored: Exception) {
-                if (tries < 5) {
-                    tries++
-                    return tryGetMagiskPath(true)
-                } else {
+                if (!Shell.cmd(
+                        "if grep ' / ' /proc/mounts | grep -q '/dev/root' &> /dev/null; " + "then echo true; else echo false; fi",
+                        "magisk -V",
+                        "magisk --path"
+                    ).to(output).exec().isSuccess
+                ) {
+                    if (output.size != 0) {
+                        hsRmdsk = "false" == output[0] || "true".equals(
+                            System.getProperty("ro.build.ab_update"), ignoreCase = true
+                        )
+                    }
+                    Companion.hsRmdsk = hsRmdsk
                     return null
                 }
-           }
+                mgskPth = if (output.size < 3) "" else output[2]
+                Timber.i("Magisk runtime path: %s", mgskPth)
+                mgskVerCode = output[1].toInt()
+                Timber.i("Magisk version code: %s", mgskVerCode)
+                if (mgskVerCode >= Constants.MAGISK_VER_CODE_FLAT_MODULES && mgskVerCode < Constants.MAGISK_VER_CODE_PATH_SUPPORT && (mgskPth.isEmpty() || !File(
+                        mgskPth
+                    ).exists())
+                ) {
+                    mgskPth = "/sbin"
+                }
+                if (mgskPth.isNotEmpty() && existsSU(File(mgskPth))) {
+                    Companion.mgskPth = mgskPth
+                } else {
+                    Timber.e("Failed to get Magisk path (Got $mgskPth)")
+                    mgskPth = null
+                }
+                Companion.mgskVerCode = mgskVerCode
+                return mgskPth
+            } catch (ignored: Exception) {
+                return if (tries < 5) {
+                    tries++
+                    tryGetMagiskPath(true)
+                } else {
+                    null
+                }
+            }
         }
     }
 }

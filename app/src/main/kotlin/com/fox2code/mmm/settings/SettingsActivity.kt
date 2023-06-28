@@ -1014,40 +1014,37 @@ class SettingsActivity : FoxActivity(), LanguageActivity {
                     try {
                         logsFile.createNewFile()
                         fileOutputStream = FileOutputStream(logsFile)
-                        // first, write some info about the device
+                        // first, some device and app info: namely device oem and model, android version and build, app version and build
                         fileOutputStream.write(
-                            """FoxMagiskModuleManager version: ${BuildConfig.VERSION_NAME} (${BuildConfig.VERSION_CODE})
-            """.toByteArray()
+                            String.format(
+                                "Device: %s %s\nAndroid Version: %s\nROM: %s\nApp Version: %s (%s)\n\n",
+                                Build.MANUFACTURER,
+                                Build.MODEL,
+                                Build.VERSION.RELEASE,
+                                Build.FINGERPRINT,
+                                BuildConfig.VERSION_NAME,
+                                BuildConfig.VERSION_CODE
+                            ).toByteArray()
                         )
-                        fileOutputStream.write(
-                            """Android version: ${Build.VERSION.RELEASE} (${Build.VERSION.SDK_INT})
-            """.toByteArray()
+                        // next, the logs
+                        // get our logs from logcat
+                        val process = Runtime.getRuntime().exec("logcat -d")
+                        val bufferedReader = BufferedReader(
+                            InputStreamReader(process.inputStream)
                         )
-                        fileOutputStream.write(
-                            """Device: ${Build.MANUFACTURER} ${Build.MODEL} (${Build.DEVICE})
-            """.toByteArray()
-                        )
-                        fileOutputStream.write(
-                            """Magisk version: ${peekMagiskVersion()}
-            """.toByteArray()
-                        )
-                        fileOutputStream.write(
-                            ("Has internet: " + (if (getINSTANCE()!!
-                                    .hasConnectivity()
-                            ) "Yes" else "No") + "\n").toByteArray()
-                        )
-                        fileOutputStream.write("Beginning of logs:\n".toByteArray())
-
-                        // read our logcat but format the output to be more readable
-                        val process = Runtime.getRuntime().exec("logcat -d -v tag")
-                        val bufferedReader = BufferedReader(InputStreamReader(process.inputStream))
-                        var line: String
-                        while (bufferedReader.readLine().also { line = it } != null) {
-                            fileOutputStream.write(
-                                """$line
-            """.toByteArray()
-                            )
+                        var line: String?
+                        val iterator: Iterator<String> = bufferedReader.lines().iterator()
+                        while (iterator.hasNext()) {
+                            line = iterator.next()
+                            fileOutputStream.write(line.toByteArray())
+                            fileOutputStream.write("\n".toByteArray())
                         }
+                        fileOutputStream.flush()
+                        Toast.makeText(
+                            requireContext(),
+                            R.string.logs_saved,
+                            Toast.LENGTH_SHORT
+                        ).show()
                     } catch (e: IOException) {
                         e.printStackTrace()
                         Toast.makeText(

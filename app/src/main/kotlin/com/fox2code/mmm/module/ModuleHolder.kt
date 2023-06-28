@@ -189,11 +189,9 @@ class ModuleHolder : Comparable<ModuleHolder?> {
                     INSTANCE!!.modulesHaveUpdates,
                     INSTANCE!!.updateModuleCount
                 )
-                Timber.d("Module %s has update", moduleId)
                 Type.UPDATABLE
             }
         } else {
-            Timber.i("Module %s is installed", moduleId)
             Type.INSTALLED
         }
 
