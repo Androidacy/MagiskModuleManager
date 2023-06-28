@@ -1,8 +1,7 @@
-<?xml version="1.0" encoding="utf-8"?><!--
+<?xml version="1.0" encoding="utf-8"?>
+<!--
   ~ Copyright (c) 2023 to present Androidacy and contributors. Names, logos, icons, and the Androidacy name are all trademarks of Androidacy and may not be used without license. See LICENSE for more information.
-  -->
-
-<resources>
+  --><resources>
     <string name="app_name">Fox 的 Magisk 模块管理器</string>
     <string name="fail_root_magisk">无法访问 Root 权限或者您没有安装 Magisk</string>
     <string name="fail_root_denied">Root 被 Magisk 拒绝</string>
@@ -335,4 +334,32 @@
     <string name="reinstall">重新安装</string>
     <string name="setup_scroll_down_v2">在完成设置前，您必须勾选底部的按钮并确认您已阅读并同意 EULA 和License。</string>
     <string name="eula_agree_v2">您同意接受 LGPL-3.0 (https://www.gnu.org/licenses/lgpl-3.0.en.html) 证书和 EULA (https://www.androidacy.com/foxmmm-eula/), 除任何第三方条款外，本应用程序的作者对您的使用不承担任何责任，我们也不提供任何明示或暗示的保证。</string>
+    <string name="reinstall_warning">大多数模块应该被卸载，然后重新安装干净。 因此，AMM 不支持在设备上安装模块时重新安装模块。</string>
+    <string name="app_name_v2">Androidacy 模块管理器</string>
+    <string name="app_name_short_v2">AMM</string>
+    <string name="background_update_check_excludes_version_summary">指定您想要忽略的模块更新版本。 请仅使用版本代码。 您可以通过按住模块列表中的版本来找到它。 在开头使用 ^ 来匹配该版本和更新版本。 在末尾使用 $ 来匹配直到该版本。</string>
+    <string name="background_update_check_excludes_version_hint">要忽略的版本代码</string>
+    <string name="module_remote_version">远程仓库版本</string>
+    <string name="error_creating_repos_database">无法创建存储库数据库</string>
+    <string name="error_creating_modulelistcache_database">无法创建模块缓存数据库</string>
+    <string name="blur_performance_warning_summary">设备不兼容模糊功能</string>
+    <string name="search">搜索</string>
+    <string name="build_expired">该版本已过期。请更新至最新的版本。</string>
+    <string name="eula_agree_v2_headline">EULA和条款</string>
+    <string name="reboot">重启</string>
+    <string name="reboot_system">重启正常</string>
+    <string name="reboot_recovery">重启至 recovery</string>
+    <string name="reboot_bootloader">重启至 bootloader</string>
+    <string name="reboot_edl">重启至 EDL 模式</string>
+    <string name="install_terminal_reboot_prevented">应用程序设置中禁用重新启动</string>
+    <string name="androidacy_api_error">与 API 通信时出错：%d</string>
+    <string name="notification_update_ignore_version_desc">检查模块更新时忽略特定版本。 禁用上面每个模块的更新检查会覆盖此设置!</string>
+    <string name="notification_update_ignore_version_pref">从更新检查中排除版本</string>
+    <string name="background_update_check_excludes_version">从检查中排除模块的版本</string>
+    <string name="module_version">"版本： "</string>
+    <string name="androidacy_thanks_up">感谢您升级！ 模块下载和自述文件不会显示广告，并且下载不会受到限制。 将来。 您将可以一键直接下载模块。</string>
+    <string name="androidacy_thanks_up_title">你已经升级了!</string>
+    <string name="upgrade_snackbar">Androidacy Premium 提供更快的下载速度、无广告体验等等!</string>
+    <string name="upgrade_now">升级</string>
+    <string name="crash_details_suggestion">堆栈跟踪可以在下面找到。 但是，我们<b>strongly</b>建议您使用下面的反馈表来提交反馈。 这样，它就不会手动复制堆栈跟踪，而是自动将其发送给我们。 它还可以通过这种方式进行反混淆，并自动报告其他详细信息。</string>
 </resources>
