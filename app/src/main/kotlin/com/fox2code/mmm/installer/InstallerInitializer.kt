@@ -38,8 +38,8 @@ class InstallerInitializer : Shell.Initializer() {
         const val ERROR_NO_PATH = 1
         const val ERROR_NO_SU = 2
         const val ERROR_OTHER = 3
+        private var tries = 0
 
-        @JvmStatic
         val errorNotification: NotificationType?
             get() {
                 val hasRoot = Shell.isAppGrantedRoot()
@@ -56,7 +56,6 @@ class InstallerInitializer : Shell.Initializer() {
                 return NotificationType.NO_ROOT
             }
 
-        @JvmStatic
         fun peekMagiskPath(): String? {
             return mgskPth
         }
@@ -74,23 +73,18 @@ class InstallerInitializer : Shell.Initializer() {
          *
          * For read/write only "/data/adb/modules" should be used
          */
-        @JvmStatic
         fun peekModulesPath(): String? {
             return if (mgskPth == null) null else "$mgskPth/.magisk/modules"
         }
 
-        @JvmStatic
         fun peekMagiskVersion(): Int {
             return mgskVerCode
         }
 
-        @JvmStatic
         fun peekHasRamdisk(): Boolean {
             return hsRmdsk
         }
 
-        @JvmStatic
-        @JvmOverloads
         fun tryGetMagiskPathAsync(callback: Callback, forceCheck: Boolean = false) {
             val mgskPth = mgskPth
             val thread: Thread = object : Thread("Magisk GetPath Thread") {
@@ -135,6 +129,7 @@ class InstallerInitializer : Shell.Initializer() {
             var hsRmdsk = hsRmdsk
             if (mgskPth != null && !forceCheck) return mgskPth
             val output = ArrayList<String>()
+            try {
             if (!Shell.cmd(
                     "if grep ' / ' /proc/mounts | grep -q '/dev/root' &> /dev/null; " +
                             "then echo true; else echo false; fi", "magisk -V", "magisk --path"
@@ -168,6 +163,14 @@ class InstallerInitializer : Shell.Initializer() {
             }
             Companion.mgskVerCode = mgskVerCode
             return mgskPth
+            } catch (ignored: Exception) {
+                if (tries < 5) {
+                    tries++
+                    return tryGetMagiskPath(true)
+                } else {
+                    return null
+                }
+           }
         }
     }
 }

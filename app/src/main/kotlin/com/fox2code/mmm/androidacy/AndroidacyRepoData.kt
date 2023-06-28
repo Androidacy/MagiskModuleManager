@@ -130,12 +130,20 @@ class AndroidacyRepoData(cacheRoot: File?, testMode: Boolean) : RepoData(
     fun requestNewToken(): String {
         val deviceId = generateDeviceId()
         val resp = doHttpGet(
-            "https://" + host + "/auth/register?device_id=" + deviceId + "&client_id=" + BuildConfig.ANDROIDACY_CLIENT_ID,
+            "https://" + host + "/auth/register?fmt=json&device_id=" + deviceId + "&client_id=" + BuildConfig.ANDROIDACY_CLIENT_ID,
             false
         )
-        // response is JSON
-        val jsonObject = JSONObject(String(resp))
-        val token = jsonObject.getString("token")
+        var token: String
+	try {
+            val jsonObject = JSONObject(String(resp))
+            token = jsonObject.getString("token")
+        } catch (e: JSONException) {
+            if (String(resp).count() == 64) {
+                token = String(resp)
+            } else {
+                return ""
+            }
+        }
         // Save the token to the shared preferences
         val editor = getSharedPreferences("androidacy")!!.edit()
         editor.putString("pref_androidacy_api_token", token)
@@ -217,37 +225,8 @@ class AndroidacyRepoData(cacheRoot: File?, testMode: Boolean) : RepoData(
             Timber.i("Token is null, requesting new one...")
             try {
                 Timber.i("Requesting new token...")
-                // POST json request to https://production-api.androidacy.com/auth/register
                 token = requestNewToken()
                 // Parse token
-                try {
-                    val jsonObject = JSONObject(token!!)
-                    // log last four of token, replacing the rest with asterisks
-                    token = jsonObject.getString("token")
-                    val tempToken = token!!
-                    Timber.d(
-                        "Token: %s",
-                        tempToken.substring(0, tempToken.length - 4)
-                            .replace(".".toRegex(), "*") + tempToken.substring(
-                            tempToken.length - 4
-                        )
-                    )
-                    memberLevel = jsonObject.getString("role")
-                    Timber.d("Member level: %s", memberLevel)
-                } catch (e: JSONException) {
-                    Timber.e(e, "Failed to parse token: %s", token)
-                    // Show a toast
-                    val mainLooper = Looper.getMainLooper()
-                    val handler = Handler(mainLooper)
-                    handler.post {
-                        Toast.makeText(
-                            INSTANCE,
-                            R.string.androidacy_failed_to_parse_token,
-                            Toast.LENGTH_LONG
-                        ).show()
-                    }
-                    return false
-                }
                 // Ensure token is valid
                 if (!isValidToken(token)) {
                     Timber.e("Failed to validate token")

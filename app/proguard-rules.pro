@@ -14,7 +14,7 @@
 
 # Uncomment this to preserve the line number information for
 # debugging stack traces.
-# -keepattributes SourceFile,LineNumberTable,Signature
+-keepattributes SourceFile,LineNumberTable,Signature
 -printmapping mapping.txt
 
 # Optimisations
@@ -194,9 +194,7 @@
 }
 
 -keepclassmembers class org.apache.commons.compress.archivers.zip.* { *; }
-
--keep,includedescriptorclasses class net.sqlcipher.** { *; }
--keep,includedescriptorclasses interface net.sqlcipher.** { *; }
+#-keep class com.fox2code.mmm.installer.InstallerInitializer { *; }
 
 # dontwarn
 -dontwarn android.os.SystemProperties

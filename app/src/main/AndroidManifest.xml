@@ -192,7 +192,7 @@
             android:value="false" />
         <meta-data
             android:name="io.sentry.dsn"
-            android:value="https://e199c2a54a1f49b1b5beb3244f2c2358@sentry.androidacy.com/77" /> <!-- enable view hierarchy for crashes -->
+            android:value="https://e199c2a54a1f49b1b5beb3244f2c2358@sentry.androidacy.com/7" /> <!-- enable view hierarchy for crashes -->
         <meta-data
             android:name="io.sentry.attach-view-hierarchy"
             android:value="true" /> <!-- Sane value, but feel free to lower it -->
