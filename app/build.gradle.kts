@@ -36,7 +36,17 @@ android {
     namespace = "com.fox2code.mmm"
     compileSdk = 33
     ndkVersion = "25.2.9519653"
-
+    signingConfigs {
+        create("release") {
+            val properties = Properties().apply {
+                load(File("signing.properties").reader())
+            }
+            storeFile = File(properties.getProperty("storeFilePath"))
+            storePassword = properties.getProperty("storePassword")
+            keyPassword = properties.getProperty("keyPassword")
+            keyAlias = properties.getProperty("keyAlias")
+        }
+    }
     defaultConfig {
         applicationId = "com.fox2code.mmm"
         minSdk = 24
@@ -54,6 +64,8 @@ android {
                 "cs",
                 "de",
                 "es-rMX",
+                "es",
+                "el",
                 "fr",
                 "hu",
                 "id",
@@ -63,7 +75,6 @@ android {
                 "pl",
                 "pt",
                 "pt-rBR",
-                "ro",
                 "ru",
                 "tr",
                 "uk",
@@ -86,15 +97,12 @@ android {
             // Enables building multiple APKs per ABI.
             isEnable = true
 
-            // By default all ABIs are included, so use reset()
-
             // Resets the list of ABIs for Gradle to create APKs for to none.
             reset()
 
             // Specifies a list of ABIs for Gradle to create APKs for.
             include("x86", "x86_64", "arm64-v8a", "armeabi-v7a")
 
-            // Specifies that you don't want to also generate a universal APK that includes all ABIs.
             isUniversalApk = true
         }
     }
@@ -107,6 +115,7 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
             )
             renderscriptOptimLevel = 3
+            signingConfig = signingConfigs.getByName("release")
         }
         getByName("debug") {
             applicationIdSuffix = ".debug"
