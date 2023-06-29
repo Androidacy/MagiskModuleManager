@@ -363,4 +363,13 @@
     <string name="reboot_edl">Reiniciar al modo EDL</string>
     <string name="install_terminal_reboot_prevented">El reinicio está desactivado en la configuración de la aplicación</string>
     <string name="androidacy_api_error">Error al comunicarse con la API: %d</string>
+    <string name="title_activity_expired">Actividad expirada</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Panel</string>
+    <string name="title_notifications">Notificaciones</string>
+    <string name="expired">¡Esta compilación ha expirado!</string>
+    <string name="expired_message">La compilación que estás utilizando ha expirado y ya no se ejecutará. Actualiza a la última versión estable.</string>
+    <string name="download_latest">Descargar lo último</string>
+    <string name="logs_saved">Registros guardados exitosamente</string>
+    <string name="reboot_extra_warning">Estás a punto de reiniciar en modo EDL, un modo especial diseñado para que los OEM actualicen y solucionen problemas de bajo nivel. A menos que estés seguro de querer hacer esto y tengas las herramientas necesarias para salir de este modo o usarlo, te recomendamos que uses las otras opciones de reinicio.</string>
 </resources>

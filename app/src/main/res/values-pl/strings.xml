@@ -356,4 +356,13 @@
     <string name="reboot_edl">Restartuj do trybu EDL</string>
     <string name="install_terminal_reboot_prevented">Restart jest wyłączony w ustawieniach aplikacji</string>
     <string name="androidacy_api_error">Błąd podczas komunikacji z API: %d</string>
+    <string name="title_home">Główna</string>
+    <string name="title_dashboard">Pulpit</string>
+    <string name="title_notifications">Powiadomienia</string>
+    <string name="expired">Ta wersja wygasła!</string>
+    <string name="download_latest">Pobierz najnowszą</string>
+    <string name="logs_saved">Pomyślnie zapisano logi</string>
+    <string name="reboot_extra_warning">Za chwilę nastąpi restart do trybu EDL, specjalnego trybu przeznaczonego dla producentów OEM do flashowania i naprawiania problemów niskiego poziomu. O ile nie jesteś pewien, że chcesz to zrobić i nie masz niezbędnych narzędzi, aby wyjść z tego trybu lub go użyć, zdecydowanie zachęcamy do korzystania z innych opcji restartu.</string>
+    <string name="title_activity_expired">ExpiredActivity</string>
+    <string name="expired_message">Używana wersja wygasła i nie będzie już działać. Prosimy o aktualizację do najnowszej stabilnej wersji.</string>
 </resources>
