@@ -196,9 +196,9 @@ enum class Files {
             val zipOutputStream = ZipOutputStream(outputStream)
             var nRead: Int
             val data = ByteArray(16384)
-            var zipEntry: ZipEntry
+            var zipEntry: ZipEntry?
             while (zipInputStream.nextEntry.also { zipEntry = it } != null) {
-                val name = zipEntry.name
+                val name = zipEntry!!.name
                 val i = name.indexOf('/', 1)
                 if (i == -1) continue
                 val newName = name.substring(i + 1)

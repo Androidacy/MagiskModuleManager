@@ -374,6 +374,7 @@ enum class IntentHelper {;
             if ((destination == null) || (destination.parentFile.also {
                     destinationFolder = it
                 } == null) || (!destinationFolder?.mkdirs()!! && !destinationFolder!!.isDirectory)) {
+                Timber.w("dest null.for open")
                 callback.onReceived(destination, null, RESPONSE_ERROR)
                 return
             }
@@ -387,10 +388,8 @@ enum class IntentHelper {;
             ).toBundle()
             compatActivity.startActivityForResult(intent, param) { result: Int, data: Intent? ->
                 val uri = data?.data
-                if (uri == null || result == Activity.RESULT_CANCELED && ContentResolver.SCHEME_FILE == uri.scheme && uri.path != null && (uri.path!!.startsWith(
-                        "/sdcard/"
-                    ) || uri.path!!.startsWith("/data/")) || ContentResolver.SCHEME_ANDROID_RESOURCE != uri.scheme
-                ) {
+                if (uri == null || result == Activity.RESULT_CANCELED) {
+                    Timber.d("invalid uri recieved")
                     callback.onReceived(destination, null, RESPONSE_ERROR)
                     return@startActivityForResult
                 }

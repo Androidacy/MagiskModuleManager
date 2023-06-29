@@ -224,7 +224,7 @@ class InstallerActivity : FoxActivity() {
                             prgInd?.setProgressCompat(progress, true)
                         }
                     }
-                } else readSU(moduleCache!!)
+                } else rawModule = readSU(moduleCache!!)
                 runOnUiThread {
                     prgInd?.visibility = View.GONE
                     prgInd?.isIndeterminate = true
