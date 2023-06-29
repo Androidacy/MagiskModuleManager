@@ -68,8 +68,21 @@ class ZipFileOpener : FoxActivity() {
                         }
                         val buffer = ByteArray(4096)
                         var read: Int
-                        while (inputStream.read(buffer).also { read = it } != -1) {
-                            outputStream.write(buffer, 0, read)
+                        try {
+                            while (inputStream.read(buffer).also { read = it } != -1) {
+                                outputStream.write(buffer, 0, read)
+                            }
+                        } catch (e: IOException) {
+                            Timber.e(e, "onCreate: Failed to copy zip file")
+                            runOnUiThread {
+                                Toast.makeText(
+                                    this,
+                                    R.string.zip_load_failed,
+                                    Toast.LENGTH_LONG
+                                ).show()
+                                finishAndRemoveTask()
+                            }
+                            return@Runnable
                         }
                     }
                 }

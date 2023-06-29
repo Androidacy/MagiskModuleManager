@@ -261,7 +261,10 @@ enum class NotificationType constructor(
                             // Find the line with id=, and check if it matches the regex
                             BufferedReader(InputStreamReader(zipFile.getInputStream(moduleProp))).use { reader ->
                                 var line: String
-                                while (reader.readLine().also { line = it } != null) {
+                                val iterator = reader.lineSequence().iterator()
+                                // same as above but use iterator
+                                while (iterator.hasNext()) {
+                                    line = iterator.next()
                                     if (line.startsWith("id=")) {
                                         val id = line.substring(3)
                                         return id.isEmpty() || !id.matches(Regex("^[a-zA-Z][a-zA-Z0-9._-]+$"))

@@ -332,8 +332,14 @@ class AndroidacyActivity : FoxActivity() {
             }
         }
         wbv?.setDownloadListener(DownloadListener setDownloadListener@{ downloadUrl: String, _: String?, _: String?, _: String?, _: Long ->
-            if (downloadMode || isDownloadUrl(downloadUrl)) return@setDownloadListener
+            Timber.i("Downloadable URL: %s", downloadUrl)
+            val pageUrl = wbv.url
+            if (downloadMode && isDownloadUrl(downloadUrl)) {
+                megaIntercept(pageUrl, downloadUrl)
+            }
+            Timber.i("Download mode is on")
             if (AndroidacyUtil.isAndroidacyLink(downloadUrl) && !backOnResume) {
+                Timber.i("Androidacy link detected")
                 val androidacyWebAPI = androidacyWebAPI
                 if (androidacyWebAPI != null) {
                     if (!androidacyWebAPI.downloadMode) {
@@ -342,6 +348,7 @@ class AndroidacyActivity : FoxActivity() {
                         // Workaround Androidacy bug
                         val moduleId = moduleIdOfUrl(downloadUrl)
                         if (megaIntercept(wbv.url, downloadUrl)) {
+                            Timber.i("megaIntercept failure 2. Forcing onBackPress")
                             // Block request as Androidacy doesn't allow duplicate requests
                             return@setDownloadListener
                         } else if (moduleId != null) {
@@ -356,8 +363,8 @@ class AndroidacyActivity : FoxActivity() {
                 backOnResume = true
                 Timber.i("Exiting WebView %s", AndroidacyUtil.hideToken(downloadUrl))
                 for (prefix in arrayOf<String>(
-                    "https://production-api.androidacy.com/downloads/",
-                    "https://staging-api.androidacy.com/magisk/downloads/"
+                    "https://production-api.androidacy.com/magisk/file//",
+                    "https://staging-api.androidacy.com/magisk/file/"
                 )) {
                     if (downloadUrl.startsWith(prefix)) {
                         return@setDownloadListener
@@ -388,8 +395,8 @@ class AndroidacyActivity : FoxActivity() {
 
     private fun moduleIdOfUrl(url: String): String? {
         for (prefix in arrayOf(
-            "https://production-api.androidacy.com/downloads/",
-            "https://staging-api.androidacy.com/downloads/",
+            "https://production-api.androidacy.com/magisk/file/",
+            "https://staging-api.androidacy.com/magisk/file/",
             "https://production-api.androidacy.com/magisk/readme/",
             "https://staging-api.androidacy.com/magisk/readme/",
             "https://prodiuction-api.androidacy.com/magisk/info/",
@@ -416,20 +423,27 @@ class AndroidacyActivity : FoxActivity() {
     private fun isFileUrl(url: String?): Boolean {
         if (url == null) return false
         for (prefix in arrayOf(
-            "https://production-api.androidacy.com/downloads/",
-            "https://staging-api.androidacy.com/downloads/"
+            "https://production-api.androidacy.com/magisk/file/",
+            "https://staging-api.androidacy.com/magisk/file/"
         )) { // Make both staging and non staging act the same
-            if (url.startsWith(prefix)) return true
+            if (url.startsWith(prefix)) {
+                Timber.i("File URL: %s", url)
+                return true
+            }
+
         }
         return false
     }
 
     private fun isDownloadUrl(url: String): Boolean {
         for (prefix in arrayOf(
-            "https://production-api.androidacy.com/magisk/downloads/",
-            "https://staging-api.androidacy.com/magisk/downloads/"
+            "https://production-api.androidacy.com/magisk/file/",
+            "https://staging-api.androidacy.com/magisk/file/"
         )) { // Make both staging and non staging act the same
-            if (url.startsWith(prefix)) return true
+            if (url.startsWith(prefix)) {
+                Timber.i("Download URL: %s", url)
+                return true
+            }
         }
         return false
     }
@@ -437,7 +451,8 @@ class AndroidacyActivity : FoxActivity() {
     private fun megaIntercept(pageUrl: String?, fileUrl: String?): Boolean {
         if (pageUrl == null || fileUrl == null) return false
         // ensure neither pageUrl nor fileUrl are going to cause a crash
-        if (pageUrl.contains(" ") || fileUrl.contains(" ")) return false
+        pageUrl.replace(" ", "%20")
+        fileUrl.replace(" ", "%20")
         if (!isFileUrl(fileUrl)) {
             return false
         }

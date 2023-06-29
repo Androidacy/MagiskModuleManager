@@ -164,8 +164,7 @@ class InstallerActivity : FoxActivity() {
         val horizontalScroller = findViewById<View>(R.id.install_horizontal_scroller)
         var installTerminal: RecyclerView
         progressIndicator = findViewById(R.id.progress_bar)
-        val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottom_navigation)
-        rebootFloatingButton = bottomNavigationView.findViewById(R.id.install_terminal_reboot_fab)
+        rebootFloatingButton = findViewById(R.id.install_terminal_reboot_fab)
         cancelFloatingButton = findViewById(R.id.back_installer)
         val rbtBtn = rebootFloatingButton
         val cnlBtn = cancelFloatingButton
@@ -414,7 +413,10 @@ class InstallerActivity : FoxActivity() {
                             val bufferedReader =
                                 BufferedReader(InputStreamReader(zipFile.getInputStream(updateBinary)))
                             var line: String
-                            while (bufferedReader.readLine().also { line = it } != null) {
+                            val iterator = bufferedReader.lineSequence().iterator()
+                            // same as above, but with the iterator
+                            while (iterator.hasNext()) {
+                                line = iterator.next()
                                 if (line.contains("AnyKernel3")) {
                                     anyKernel3 = true
                                     break

@@ -274,7 +274,9 @@ class ModuleManager private constructor() : SyncManager() {
                 )
             ).use { bufferedReader ->
                 var line: String
-                while (bufferedReader.readLine().also { line = it } != null) {
+                val iterator = bufferedReader.lineSequence().iterator()
+                while (iterator.hasNext()) {
+                    line = iterator.next()
                     line = line.trim { it <= ' ' }.replace(' ', '.')
                     if (!line.startsWith("/data/adb/") || line.contains("*") || line.contains("/../") || line.endsWith(
                             "/.."

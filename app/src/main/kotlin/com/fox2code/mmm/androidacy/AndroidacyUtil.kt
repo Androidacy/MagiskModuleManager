@@ -101,7 +101,7 @@ enum class AndroidacyUtil {
         }
 
         fun getChecksumFromURL(moduleUrl: String): String? {
-            // Get the &version= part
+            // Get the checksum query param
             val i = moduleUrl.indexOf("&checksum=")
             // Match until next & or end
             if (i != -1) {
