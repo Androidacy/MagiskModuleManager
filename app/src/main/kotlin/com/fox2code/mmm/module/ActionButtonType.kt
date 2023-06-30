@@ -51,25 +51,44 @@ enum class ActionButtonType {
             TrackHelper.track().event("view_notes", name).with(INSTANCE!!.getTracker())
             val notesUrl = moduleHolder.repoModule?.notesUrl
             if (isAndroidacyLink(notesUrl)) {
-                openUrlAndroidacy(
-                    button.context,
-                    notesUrl,
-                    false,
-                    moduleHolder.repoModule?.moduleInfo?.name,
-                    moduleHolder.mainModuleConfig
-                )
+                try {
+                    openUrlAndroidacy(
+                        button.context,
+                        notesUrl,
+                        false,
+                        moduleHolder.repoModule?.moduleInfo?.name,
+                        moduleHolder.mainModuleConfig
+                    )
+                } catch (e: Exception) {
+                    Timber.e(e)
+                    Timber.e("Error opening notes - androidacy link. This should never happen.")
+                    Toast.makeText(
+                        button.context,
+                        R.string.error_opening_notes,
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
             } else {
-                openMarkdown(
-                    button.context,
-                    notesUrl,
-                    moduleHolder.repoModule?.moduleInfo?.name,
-                    moduleHolder.mainModuleConfig,
-                    moduleHolder.repoModule?.moduleInfo?.changeBoot,
-                    moduleHolder.repoModule?.moduleInfo?.needRamdisk,
-                    moduleHolder.repoModule?.moduleInfo?.minMagisk ?: 0,
-                    moduleHolder.repoModule?.moduleInfo?.minApi ?: 0,
-                    moduleHolder.repoModule?.moduleInfo?.maxApi ?: 9999
-                )
+                try {
+                    openMarkdown(
+                        button.context,
+                        notesUrl,
+                        moduleHolder.repoModule?.moduleInfo?.name,
+                        moduleHolder.mainModuleConfig,
+                        moduleHolder.repoModule?.moduleInfo?.changeBoot,
+                        moduleHolder.repoModule?.moduleInfo?.needRamdisk,
+                        moduleHolder.repoModule?.moduleInfo?.minMagisk ?: 0,
+                        moduleHolder.repoModule?.moduleInfo?.minApi ?: 0,
+                        moduleHolder.repoModule?.moduleInfo?.maxApi ?: 9999
+                    )
+                } catch (e: Exception) {
+                    Timber.e(e)
+                    Toast.makeText(
+                        button.context,
+                        R.string.error_opening_notes,
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
             }
         }
 

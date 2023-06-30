@@ -68,7 +68,6 @@ class InstallerInitializer : Shell.Initializer() {
         /**
          * Note: Used to detect which modules are currently loaded.
          *
-         *
          * For read/write only "/data/adb/modules" should be used
          */
         fun peekModulesPath(): String? {
@@ -161,8 +160,14 @@ class InstallerInitializer : Shell.Initializer() {
                 Companion.mgskVerCode = mgskVerCode
                 return mgskPth
             } catch (ignored: Exception) {
-                return if (tries < 5) {
+                return if (tries <= 5) {
                     tries++
+                    // sleep tries * 25ms
+                    try {
+                        Thread.sleep(tries * 25L)
+                    } catch (e: InterruptedException) {
+                        Timber.e(e)
+                    }
                     tryGetMagiskPath(true)
                 } else {
                     null

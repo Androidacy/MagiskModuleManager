@@ -53,8 +53,8 @@ android {
         applicationId = "com.fox2code.mmm"
         minSdk = 24
         targetSdk = 33
-        versionCode = 78
-        versionName = "2.2.1"
+        versionCode = 79
+        versionName = "2.2.2"
         vectorDrawables {
             useSupportLibrary = true
         }
@@ -118,6 +118,7 @@ android {
             )
             renderscriptOptimLevel = 3
             signingConfig = signingConfigs.getByName("release")
+            multiDexEnabled = true
         }
         getByName("debug") {
             applicationIdSuffix = ".debug"

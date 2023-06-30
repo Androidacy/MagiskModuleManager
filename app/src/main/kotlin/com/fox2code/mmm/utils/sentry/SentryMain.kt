@@ -115,6 +115,7 @@ object SentryMain {
                 options.addInAppInclude("com.fox2code.mmm.debug")
                 options.addInAppInclude("com.fox2code.mmm.fdroid")
                 options.addInAppExclude("com.fox2code.mmm.utils.sentry.SentryMain")
+                options.addInAppInclude("com.fox2code.mmm.utils")
                 // Respect user preference for sending PII. default is true on non fdroid builds, false on fdroid builds
                 options.isSendDefaultPii = crashReportingPii
                 options.enableAllAutoBreadcrumbs(true)
@@ -123,7 +124,7 @@ object SentryMain {
                 // It just tell if sentry should ping the sentry dsn to tell the app is running. Useful for performance and profiling.
                 options.isEnableAutoSessionTracking = true
                 // disable crash tracking - we handle that ourselves
-                options.isEnableUncaughtExceptionHandler = false
+                options.isEnableUncaughtExceptionHandler = true
                 // Add a callback that will be used before the event is sent to Sentry.
                 // With this callback, you can modify the event or, when returning null, also discard the event.
                 options.beforeSend = BeforeSendCallback { event: SentryEvent?, _: Hint? ->

@@ -17,6 +17,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textview.MaterialTextView
 import io.sentry.Sentry
 import io.sentry.UserFeedback
+import io.sentry.protocol.SentryId
 import timber.log.Timber
 import java.io.PrintWriter
 import java.io.StringWriter
@@ -84,20 +85,18 @@ class CrashHandler : FoxActivity() {
                 val emailString =
                     arrayOf(if (email.text.toString() == "") "Anonymous" else email.text.toString())
                 // get sentryException passed in intent
-                val sentryException = intent.getSerializableExtra("sentryException") as Throwable?
+                @Suppress("NAME_SHADOWING") val lastEventId = Sentry.getLastEventId()
                 Thread {
                     try {
-                        val userFeedback: UserFeedback
-                        if (sentryException != null) {
-                            userFeedback = UserFeedback(Sentry.captureException(sentryException))
-                            // Setups the JSON body
-                            if (nameString[0] == "") nameString[0] = "Anonymous"
-                            if (emailString[0] == "") emailString[0] = "Anonymous"
-                            userFeedback.name = nameString[0]
-                            userFeedback.email = emailString[0]
-                            userFeedback.comments = description.text.toString()
-                            Sentry.captureUserFeedback(userFeedback)
-                        }
+                        val userFeedback =
+                            UserFeedback(SentryId(lastEventId.toString()))
+                        // Setups the JSON body
+                        if (nameString[0] == "") nameString[0] = "Anonymous"
+                        if (emailString[0] == "") emailString[0] = "Anonymous"
+                        userFeedback.name = nameString[0]
+                        userFeedback.email = emailString[0]
+                        userFeedback.comments = description.text.toString()
+                        Sentry.captureUserFeedback(userFeedback)
                         Timber.i(
                             "Submitted user feedback: name %s email %s comment %s",
                             nameString[0],
@@ -106,9 +105,7 @@ class CrashHandler : FoxActivity() {
                         )
                         runOnUiThread {
                             Toast.makeText(
-                                this,
-                                R.string.sentry_dialogue_success,
-                                Toast.LENGTH_LONG
+                                this, R.string.sentry_dialogue_success, Toast.LENGTH_LONG
                             ).show()
                         }
                         // Close the activity
@@ -120,9 +117,7 @@ class CrashHandler : FoxActivity() {
                         // Show a toast if the user feedback could not be submitted
                         runOnUiThread {
                             Toast.makeText(
-                                this,
-                                R.string.sentry_dialogue_failed_toast,
-                                Toast.LENGTH_LONG
+                                this, R.string.sentry_dialogue_failed_toast, Toast.LENGTH_LONG
                             ).show()
                         }
                     }
@@ -151,9 +146,7 @@ class CrashHandler : FoxActivity() {
             (findViewById<View>(R.id.feedback_text) as MaterialTextView).setText(R.string.sentry_enable_nag)
             findViewById<View>(R.id.feedback_submit).setOnClickListener { _: View? ->
                 Toast.makeText(
-                    this,
-                    R.string.sentry_dialogue_disabled,
-                    Toast.LENGTH_LONG
+                    this, R.string.sentry_dialogue_disabled, Toast.LENGTH_LONG
                 ).show()
             }
             // handle restart button

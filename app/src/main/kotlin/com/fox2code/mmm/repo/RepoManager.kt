@@ -70,7 +70,7 @@ class RepoManager private constructor(mainApplication: MainApplication) : SyncMa
             for (repoData in repoData.values) {
                 if (repoData === androidacyRepoData) {
                     if (x) {
-                        Timber.e("Multiple Androidacy repo detected")
+                        //
                     } else {
                         x = true
                     }
@@ -229,7 +229,7 @@ class RepoManager private constructor(mainApplication: MainApplication) : SyncMa
             for (i in repoDatas.indices) {
                 // If repo is not enabled, skip
                 if (!repoDatas[i].isEnabled) {
-                    if (BuildConfig.DEBUG) Timber.d("Skipping " + repoDatas[i].name + " because it's disabled")
+                    if (BuildConfig.DEBUG) Timber.d("Skipping ${repoDatas[i].name} because it's disabled")
                     continue
                 }
                 if (BuildConfig.DEBUG) Timber.d("Finishing: %s", repoUpdaters[i]!!.repoData.name)
