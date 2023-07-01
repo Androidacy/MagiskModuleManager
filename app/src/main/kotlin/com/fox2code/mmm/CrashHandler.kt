@@ -51,26 +51,32 @@ class CrashHandler : FoxActivity() {
             stacktrace = stacktrace.replace(",", "\n     ")
             crashDetails.text = getString(R.string.crash_full_stacktrace, stacktrace)
         }
-        val lastEventId = intent.getStringExtra("lastEventId")
+        // force sentry to send all events
+        Sentry.flush(2000)
+        val lastEventId = MainApplication.getSharedPreferences("sentry")?.getString("lastEventId", "")
         Timber.d(
             "CrashHandler.onCreate: lastEventId=%s, crashReportingEnabled=%s",
             lastEventId,
             crashReportingEnabled
         )
-        if (lastEventId == null && crashReportingEnabled) {
+
+        // get name, email, and message fields
+        val name = findViewById<EditText>(R.id.feedback_name)
+        val email = findViewById<EditText>(R.id.feedback_email)
+        val description = findViewById<EditText>(R.id.feedback_message)
+        val submit = findViewById<View>(R.id.feedback_submit)
+        if (lastEventId == "" && crashReportingEnabled) {
             // if lastEventId is null, hide the feedback button
-            findViewById<View>(R.id.feedback).visibility = View.GONE
             Timber.d("CrashHandler.onCreate: lastEventId is null but crash reporting is enabled. This may indicate a bug in the crash reporting system.")
         } else {
-            // if lastEventId is not null, show the feedback button
-            findViewById<View>(R.id.feedback).visibility = View.VISIBLE
+            // if lastEventId is not null, enable the feedback name, email, message, and submit button
+            email.isEnabled = true
+            name.isEnabled = true
+            description.isEnabled = true
+            submit.isEnabled = true
         }
         // disable feedback if sentry is disabled
         if (crashReportingEnabled && lastEventId != null) {
-            // get name, email, and message fields
-            val name = findViewById<EditText>(R.id.feedback_name)
-            val email = findViewById<EditText>(R.id.feedback_email)
-            val description = findViewById<EditText>(R.id.feedback_message)
             // get submit button
             findViewById<View>(R.id.feedback_submit).setOnClickListener { _: View? ->
                 // require the feedback_message, rest is optional
@@ -84,12 +90,10 @@ class CrashHandler : FoxActivity() {
                     arrayOf(if (name.text.toString() == "") "Anonymous" else name.text.toString())
                 val emailString =
                     arrayOf(if (email.text.toString() == "") "Anonymous" else email.text.toString())
-                // get sentryException passed in intent
-                @Suppress("NAME_SHADOWING") val lastEventId = Sentry.getLastEventId()
                 Thread {
                     try {
                         val userFeedback =
-                            UserFeedback(SentryId(lastEventId.toString()))
+                            UserFeedback(SentryId(lastEventId))
                         // Setups the JSON body
                         if (nameString[0] == "") nameString[0] = "Anonymous"
                         if (emailString[0] == "") emailString[0] = "Anonymous"
@@ -132,19 +136,9 @@ class CrashHandler : FoxActivity() {
                 startActivity(packageManager.getLaunchIntentForPackage(packageName))
             }
         } else {
-            // disable feedback if sentry is disabled
-            findViewById<View>(R.id.feedback_name).isEnabled = false
-            findViewById<View>(R.id.feedback_email).isEnabled = false
-            findViewById<View>(R.id.feedback_message).isEnabled = false
-            // fade out all the fields
-            findViewById<View>(R.id.feedback_name).alpha = 0.5f
-            findViewById<View>(R.id.feedback_email).alpha = 0.5f
-            findViewById<View>(R.id.feedback_message).alpha = 0.5f
-            // fade out the submit button
-            findViewById<View>(R.id.feedback_submit).alpha = 0.5f
             // set feedback_text to "Crash reporting is disabled"
             (findViewById<View>(R.id.feedback_text) as MaterialTextView).setText(R.string.sentry_enable_nag)
-            findViewById<View>(R.id.feedback_submit).setOnClickListener { _: View? ->
+            submit.setOnClickListener { _: View? ->
                 Toast.makeText(
                     this, R.string.sentry_dialogue_disabled, Toast.LENGTH_LONG
                 ).show()

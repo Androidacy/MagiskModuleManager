@@ -107,6 +107,7 @@
                 <!-- feedback form name -->
                 <EditText
                     android:id="@+id/feedback_name"
+                    android:enabled="false"
                     android:layout_width="320dp"
                     android:layout_height="48dp"
                     android:layout_margin="10dp"
@@ -118,6 +119,7 @@
                     android:id="@+id/feedback_email"
                     android:layout_width="320dp"
                     android:layout_height="48dp"
+                    android:enabled="false"
                     android:layout_margin="10dp"
                     android:hint="@string/feedback_email"
                     android:inputType="textEmailAddress" />
@@ -125,57 +127,62 @@
                 <!-- feedback form message -->
                 <EditText
                     android:id="@+id/feedback_message"
+                    android:enabled="false"
                     android:layout_width="320dp"
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
                     android:hint="@string/feedback_message"
                     android:inputType="textMultiLine" />
 
-                <!-- button group for submit feedback & restart / restart only -->
-                <LinearLayout
-                    android:layout_width="match_parent"
+            </LinearLayout>
+
+
+            <!-- button group for submit feedback & restart / restart only -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <!-- submit feedback button -->
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/feedback_submit"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:enabled="false"
+                    android:layout_margin="10dp"
+                    android:text="@string/submit_feedback" />
 
-                    <!-- submit feedback button -->
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/feedback_submit"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="10dp"
-                        android:text="@string/feedback_submit" />
-
-                    <!-- restart button -->
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/restart"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="10dp"
-                        android:text="@string/restart" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
+                <!-- restart button -->
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/restart"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                    android:layout_margin="10dp"
+                    android:text="@string/restart" />
 
-                    <com.google.android.material.textview.MaterialTextView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_margin="10dp"
-                        android:gravity="fill"
-                        android:text="@string/reset_warning"
-                        android:textSize="16sp" />
+            </LinearLayout>
 
-                    <!-- reset app button -->
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/reset"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="10dp"
-                        android:text="@string/reset_app" />
-                </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="10dp"
+                    android:gravity="fill"
+                    android:text="@string/reset_warning"
+                    android:textSize="16sp" />
+
+                <!-- reset app button -->
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/reset"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:text="@string/reset_app" />
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>

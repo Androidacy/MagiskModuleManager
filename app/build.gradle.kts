@@ -473,14 +473,7 @@ dependencies {
     // Chromium cronet from androidacy
     implementation("org.chromium.net:cronet-embedded:113.5672.61")
 
-    // protobuf - fixes a crash on some devices
-    // implementation("com.google.protobuf:protobuf-javalite:3.22.2")
-
-    // google guava, maybe fix a bug
-    implementation("com.google.guava:guava:32.0.1-jre")
-
-
-    val libsuVersion = "5.0.5"
+    val libsuVersion = "5.1.0"
     // The core module that provides APIs to a shell
     implementation("com.github.topjohnwu.libsu:core:${libsuVersion}")
 

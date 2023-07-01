@@ -52,7 +52,6 @@ import com.fox2code.mmm.utils.io.net.Http
 import com.fox2code.mmm.utils.sentry.SentryBreadcrumb
 import com.fox2code.mmm.utils.sentry.SentryMain
 import com.google.android.material.bottomnavigation.BottomNavigationItemView
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.progressindicator.LinearProgressIndicator
 import com.topjohnwu.superuser.CallbackList
@@ -206,7 +205,7 @@ class InstallerActivity : FoxActivity() {
             )
             var errMessage = "Failed to download module zip"
             // Set this to the error message if it's a HTTP error
-            var rawModule: ByteArray? = ByteArray(0)
+            var rawModule: ByteArray?
             try {
                 Timber.i(
                     "%s%s", if (urlMode) "Downloading: " else "Loading: ", AndroidacyUtil.hideToken(
@@ -239,7 +238,7 @@ class InstallerActivity : FoxActivity() {
                     }
                 }
                 if (canceled) return@Runnable
-                fixJavaZipHax(rawModule!!)
+                fixJavaZipHax(rawModule)
                 // checks to make sure zip is not a source archive, and if it is, unzips the folder within, switches to it, and zips up the contents of it
                 fixSourceArchiveShit(rawModule)
                 var noPatch = false

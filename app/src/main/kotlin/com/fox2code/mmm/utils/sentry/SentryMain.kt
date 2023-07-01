@@ -10,6 +10,7 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.net.Uri
 import android.os.Process
+import com.fox2code.mmm.BuildConfig
 import com.fox2code.mmm.CrashHandler
 import com.fox2code.mmm.MainApplication
 import com.fox2code.mmm.androidacy.AndroidacyUtil.Companion.hideToken
@@ -37,32 +38,17 @@ object SentryMain {
      * Sentry is used for crash reporting and performance monitoring.
      */
     @JvmStatic
-    @SuppressLint("RestrictedApi", "UnspecifiedImmutableFlag")
+    @SuppressLint("RestrictedApi", "UnspecifiedImmutableFlag", "ApplySharedPref")
     fun initialize(mainApplication: MainApplication) {
         Thread.setDefaultUncaughtExceptionHandler { _: Thread?, throwable: Throwable ->
             isCrashing = true
             TrackHelper.track().exception(throwable).with(MainApplication.INSTANCE!!.tracker)
-            val editor =
-                MainApplication.INSTANCE!!.getSharedPreferences("sentry", Context.MODE_PRIVATE)
-                    .edit()
-            editor.putString("lastExitReason", "crash")
-            editor.putLong("lastExitTime", System.currentTimeMillis())
-            editor.putString("lastExitReason", "crash")
-            editor.putString("lastExitId", Sentry.getLastEventId().toString())
-            editor.apply()
-            Timber.e(
-                "Uncaught exception with sentry ID %s and stacktrace %s",
-                Sentry.getLastEventId(),
-                throwable.stackTrace
-            )
             // open crash handler and exit
             val intent = Intent(mainApplication, CrashHandler::class.java)
             // pass the entire exception to the crash handler
             intent.putExtra("exception", throwable)
             // add stacktrace as string
             intent.putExtra("stacktrace", throwable.stackTrace)
-            // put lastEventId in intent (get from preferences)
-            intent.putExtra("lastEventId", Sentry.getLastEventId().toString())
             // serialize Sentry.captureException and pass it to the crash handler
             intent.putExtra("sentryException", throwable)
             // pass crashReportingEnabled to crash handler
@@ -127,11 +113,21 @@ object SentryMain {
                 options.isEnableUncaughtExceptionHandler = true
                 // Add a callback that will be used before the event is sent to Sentry.
                 // With this callback, you can modify the event or, when returning null, also discard the event.
+                options.environment = BuildConfig.BUILD_TYPE
                 options.beforeSend = BeforeSendCallback { event: SentryEvent?, _: Hint? ->
                     // in the rare event that crash reporting has been disabled since we started the app, we don't want to send the crash report
-                    if (!isSentryEnabled || isCrashing) {
+                    if (!isSentryEnabled) {
                         return@BeforeSendCallback null
                     }
+                    // store eventid in prefs
+                    val editor =
+                        MainApplication.INSTANCE!!.getSharedPreferences(
+                            "sentry",
+                            Context.MODE_PRIVATE
+                        )
+                            .edit()
+                    editor.putString("lastEventId", event!!.eventId.toString())
+                    editor.commit() // commit so we immediately cache if crashing
                     event
                 }
                 // Filter breadcrumb content from crash report.

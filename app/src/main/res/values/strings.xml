@@ -385,4 +385,5 @@
     <string name="download_latest">Download latest</string>
     <string name="logs_saved">Saved logs successfully</string>
     <string name="error_opening_notes">Error in opening module notes. Logs may have the reason.</string>
+    <string name="submit_feedback">Submit feedback</string>
 </resources>
