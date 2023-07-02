@@ -342,12 +342,12 @@ open class RepoData(url: String, cacheRoot: File) : XRepo() {
                 readProperties(
                     moduleInfo,
                     file.absolutePath,
-                    repoModule.repoName + "/" + moduleInfo.name,
+                    "${repoModule.repoName}/${moduleInfo.name}",
                     false
                 )
                 moduleInfo.flags = moduleInfo.flags and ModuleInfo.FLAG_METADATA_INVALID.inv()
                 if (moduleInfo.version == null) {
-                    moduleInfo.version = "v" + moduleInfo.versionCode
+                    moduleInfo.version = "v${moduleInfo.versionCode}"
                 }
                 return true
             } catch (ignored: Exception) {

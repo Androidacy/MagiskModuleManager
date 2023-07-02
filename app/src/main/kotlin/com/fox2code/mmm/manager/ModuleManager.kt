@@ -207,14 +207,14 @@ class ModuleManager private constructor() : SyncManager() {
 
     var modules: HashMap<String, LocalModuleInfo> = HashMap()
         get() {
-            Timber.d("getModules")
             afterScan()
             return moduleInfos
         }
         set(value) {
-            Timber.d("setModules")
+            // add to MainApplication.INSTANCE!!.localModules hashmap
             field = value
             moduleInfos = value
+            MainApplication.INSTANCE!!.localModules = value
         }
     
     @Suppress("unused")

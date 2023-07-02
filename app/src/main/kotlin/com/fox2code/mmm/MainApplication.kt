@@ -28,6 +28,8 @@ import com.fox2code.foxcompat.app.internal.FoxProcessExt
 import com.fox2code.foxcompat.view.FoxThemeWrapper
 import com.fox2code.mmm.installer.InstallerInitializer
 import com.fox2code.mmm.installer.InstallerInitializer.Companion.peekMagiskVersion
+import com.fox2code.mmm.manager.LocalModuleInfo
+import com.fox2code.mmm.repo.RepoModule
 import com.fox2code.mmm.utils.TimberUtils.configTimber
 import com.fox2code.mmm.utils.io.FileUtils
 import com.fox2code.mmm.utils.io.GMSProviderInstaller.Companion.installIfNeeded
@@ -78,6 +80,9 @@ class MainApplication : FoxApplication(), Configuration.Provider {
     var tracker: Tracker? = null
     private var makingNewKey = false
     private var isCrashHandler = false
+
+    var localModules: HashMap<String, LocalModuleInfo> = HashMap()
+    var repoModules: HashMap<String, RepoModule> = HashMap()
 
     init {
         check(!(INSTANCE != null && INSTANCE !== this)) { "Duplicate application instance!" }
@@ -620,9 +625,9 @@ class MainApplication : FoxApplication(), Configuration.Provider {
             get() = getSharedPreferences("mmm")!!.getBoolean("pref_dns_over_https", true)
         val isMonetEnabled: Boolean
             get() = Build.VERSION.SDK_INT >= Build.VERSION_CODES.S && getSharedPreferences("mmm")!!.getBoolean(
-                    "pref_enable_monet",
-                    true
-                )
+                "pref_enable_monet",
+                true
+            )
         val isBlurEnabled: Boolean
             get() = getSharedPreferences("mmm")!!.getBoolean("pref_enable_blur", false)
 
@@ -630,15 +635,15 @@ class MainApplication : FoxApplication(), Configuration.Provider {
         val isDeveloper: Boolean
             get() {
                 return if (BuildConfig.DEBUG) true else getSharedPreferences("mmm")!!.getBoolean(
-                        "developer",
-                        false
-                    )
+                    "developer",
+                    false
+                )
             }
         val isDisableLowQualityModuleFilter: Boolean
             get() = getSharedPreferences("mmm")!!.getBoolean(
-                    "pref_disable_low_quality_module_filter",
-                    false
-                ) && isDeveloper
+                "pref_disable_low_quality_module_filter",
+                false
+            ) && isDeveloper
         val isUsingMagiskCommand: Boolean
             get() = (peekMagiskVersion() >= Constants.MAGISK_VER_CODE_INSTALL_COMMAND) && getSharedPreferences(
                 "mmm"
@@ -652,17 +657,17 @@ class MainApplication : FoxApplication(), Configuration.Provider {
                 }
                 val wrapped = isWrapped
                 val updateCheckBgTemp = !wrapped && getSharedPreferences("mmm")!!.getBoolean(
-                        "pref_background_update_check",
-                        true
-                    )
+                    "pref_background_update_check",
+                    true
+                )
                 updateCheckBg = updateCheckBgTemp.toString()
                 return java.lang.Boolean.parseBoolean(updateCheckBg)
             }
         val isAndroidacyTestMode: Boolean
             get() = isDeveloper && getSharedPreferences("mmm")!!.getBoolean(
-                    "pref_androidacy_test_mode",
-                    false
-                )
+                "pref_androidacy_test_mode",
+                false
+            )
 
         fun setHasGottenRootAccess(bool: Boolean) {
             getSharedPreferences("mmm")!!.edit().putBoolean("has_root_access", bool).apply()
@@ -670,9 +675,9 @@ class MainApplication : FoxApplication(), Configuration.Provider {
 
         val isCrashReportingEnabled: Boolean
             get() = SentryMain.IS_SENTRY_INSTALLED && getSharedPreferences("mmm")!!.getBoolean(
-                    "pref_crash_reporting",
-                    BuildConfig.DEFAULT_ENABLE_CRASH_REPORTING
-                )
+                "pref_crash_reporting",
+                BuildConfig.DEFAULT_ENABLE_CRASH_REPORTING
+            )
         val bootSharedPreferences: SharedPreferences?
             get() = getSharedPreferences("mmm_boot")
 
@@ -689,9 +694,9 @@ class MainApplication : FoxApplication(), Configuration.Provider {
         @JvmStatic
         fun isMatomoAllowed(): Boolean {
             return getSharedPreferences("mmm")!!.getBoolean(
-                    "pref_analytics_enabled",
-                    BuildConfig.DEFAULT_ENABLE_ANALYTICS
-                )
+                "pref_analytics_enabled",
+                BuildConfig.DEFAULT_ENABLE_ANALYTICS
+            )
         }
     }
 }

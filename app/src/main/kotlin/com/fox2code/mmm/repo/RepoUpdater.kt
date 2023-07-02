@@ -97,6 +97,8 @@ class RepoUpdater(repoData2: RepoData) {
             toUpdate = repoData.populate(JSONObject(String(indexRaw!!, StandardCharsets.UTF_8)))
             // Since we reuse instances this should work
             toApply = HashSet(repoData.moduleHashMap.values)
+            // add toApply to the hashmap MainApplication.INSTANCE!!.repoModules
+            MainApplication.INSTANCE!!.repoModules.putAll(repoData.moduleHashMap)
             (toUpdate as MutableList<RepoModule>?)?.let {
                 (toApply as HashSet<RepoModule>).removeAll(
                     it.toSet()
