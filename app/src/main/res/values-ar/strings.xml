@@ -347,4 +347,15 @@
     <string name="app_name_v2">اندرويداسي مدير الإضافات</string>
     <string name="app_name_short_v2">AMM</string>
     <string name="search">بحث</string>
+    <string name="title_activity_expired">نشاط منتهي</string>
+    <string name="title_home">القائمة الرئيسية</string>
+    <string name="title_dashboard">لوحة المعلومات</string>
+    <string name="title_notifications">الإشعارات</string>
+    <string name="expired">هذا الإصدار منتهي!</string>
+    <string name="expired_message">الإصدار الذي تستخدمه منتهي وليس قابل للتشغيل بعد الآن. الرجاء التحديث إلى آخر اصدار مستقر.</string>
+    <string name="download_latest">تنزيل الأحدث</string>
+    <string name="logs_saved">تم حفظ السجلات (Logs)</string>
+    <string name="error_opening_notes">‪خطأ في فتح ملاحظات الإضافة. قد يكون للسجلات السبب.</string>
+    <string name="reboot_extra_warning">أنت على وشك إعادة التشغيل إلى وضع EDL ، وهو وضع خاص ب OEM لتفليش وإصلاح المشاكل الخفيفة. ما لم تكن متأكدا من رغبتك في القيام بذلك ولديك الأدوات اللازمة للخروج من هذا الوضع أو استخدامه ، فإننا نشجعك بشدة على استخدام خيارات إعادة التشغيل الأخرى.</string>
+    <string name="submit_feedback">إرسال الملاحظات</string>
 </resources>

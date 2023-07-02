@@ -372,4 +372,6 @@
     <string name="download_latest">Descargar lo último</string>
     <string name="logs_saved">Registros guardados exitosamente</string>
     <string name="reboot_extra_warning">Estás a punto de reiniciar en modo EDL, un modo especial diseñado para que los OEM actualicen y solucionen problemas de bajo nivel. A menos que estés seguro de querer hacer esto y tengas las herramientas necesarias para salir de este modo o usarlo, te recomendamos que uses las otras opciones de reinicio.</string>
+    <string name="error_opening_notes">Error al abrir las notas del módulo. Los registros pueden tener la razón.</string>
+    <string name="submit_feedback">Enviar comentarios</string>
 </resources>

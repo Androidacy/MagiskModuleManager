@@ -350,4 +350,14 @@
     <string name="androidacy_api_error">Ошибка при обмене данными с API: %d</string>
     <string name="reboot_bootloader">Перезагрузка в загрузчик</string>
     <string name="reboot_edl">Перезагрузка в режим EDL</string>
+    <string name="title_activity_expired">Просроченная активность</string>
+    <string name="title_home">Главная</string>
+    <string name="title_dashboard">Доска</string>
+    <string name="title_notifications">Уведомления</string>
+    <string name="expired">Эта сборка устарела!</string>
+    <string name="download_latest">Скачать последнюю</string>
+    <string name="logs_saved">Журнал успешно сохранён</string>
+    <string name="error_opening_notes">Ошибка при открытии примечаний к модулю. В логах может быть указана причина.</string>
+    <string name="reboot_extra_warning">Вы собираетесь перезагрузиться в EDL режим, специальный режим, предназначенный для прошивки и устранения проблем низкого уровня OEM-производителями. Если вы не уверены, что хотите это сделать, и у вас есть необходимые инструменты для выхода из этого режима или его использования, мы настоятельно рекомендуем вам использовать другие варианты перезагрузки.</string>
+    <string name="expired_message">Используемая сборка устарела и больше не будет работать. Обновитесь до последней стабильной сборки.</string>
 </resources>
