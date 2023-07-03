@@ -73,7 +73,6 @@ enum class Http {;
      * can help make the app to work later when the current DNS system
      * isn't functional or available.
      *
-     *
      * Note: DNS Cache is stored in user data.
      */
     private class FallBackDNS(context: Context, parent: Dns, vararg fallbacks: String?) : Dns {
@@ -429,8 +428,7 @@ enum class Http {;
         }
 
         private fun followRedirects(
-            builder: OkHttpClient.Builder,
-            followRedirects: Boolean
+            builder: OkHttpClient.Builder, followRedirects: Boolean
         ): OkHttpClient.Builder {
             return builder.followRedirects(followRedirects).followSslRedirects(followRedirects)
         }
@@ -464,14 +462,11 @@ enum class Http {;
             needCaptchaAndroidacyHost = null
         }
 
+        @Suppress("unused")
         @JvmStatic
         @SuppressLint("RestrictedApi")
         @Throws(IOException::class)
         fun doHttpGet(url: String, allowCache: Boolean): ByteArray {
-            if (BuildConfig.DEBUG_HTTP) {
-                // Log, but set all query parameters values to "****" while keeping the keys
-                Timber.d("doHttpGet: %s", url.replace("=[^&]*".toRegex(), "=****"))
-            }
             var response: Response?
             response = try {
                 (if (allowCache) getHttpClientWithCache() else getHttpClient())!!.newCall(
@@ -480,7 +475,16 @@ enum class Http {;
                     ).get().build()
                 ).execute()
             } catch (e: IOException) {
-                Timber.e(e, "Failed to fetch %s", url.replace("=[^&]*".toRegex(), "=****"))
+                Timber.e(e, "Failed to post %s", url)
+                // detect ssl errors, i.e., cert authority invalid by looking at the message
+                if (e.message != null && e.message!!.contains("_CERT_")) {
+                    MainActivity.getFoxActivity(MainApplication.INSTANCE!!).runOnUiThread {
+                        // show toast
+                        Toast.makeText(
+                            MainApplication.INSTANCE, R.string.ssl_error, Toast.LENGTH_LONG
+                        ).show()
+                    }
+                }
                 throw HttpException(e.message, 0)
             }
             if (BuildConfig.DEBUG_HTTP) {
@@ -550,6 +554,7 @@ enum class Http {;
             return responseBody?.bytes() ?: ByteArray(0)
         }
 
+        @Suppress("unused")
         @JvmStatic
         @Throws(IOException::class)
         fun doHttpPost(url: String, data: String, allowCache: Boolean): ByteArray {
@@ -560,11 +565,26 @@ enum class Http {;
         private fun doHttpPostRaw(url: String, data: String, allowCache: Boolean): Any {
             Timber.d("POST %s", url)
             var response: Response?
-            response = (if (allowCache) getHttpClientWithCache() else getHttpClient())!!.newCall(
-                Request.Builder().url(url).post(
-                    JsonRequestBody.from(data)
-                ).header("Content-Type", "application/json").build()
-            ).execute()
+            try {
+                response =
+                    (if (allowCache) getHttpClientWithCache() else getHttpClient())!!.newCall(
+                        Request.Builder().url(url).post(
+                            JsonRequestBody.from(data)
+                        ).header("Content-Type", "application/json").build()
+                    ).execute()
+            } catch (e: IOException) {
+                Timber.e(e, "Failed to post %s", url)
+                // detect ssl errors, i.e., cert authority invalid by looking at the message
+                if (e.message != null && e.message!!.contains("_CERT_")) {
+                    MainActivity.getFoxActivity(MainApplication.INSTANCE!!).runOnUiThread {
+                        // show toast
+                        Toast.makeText(
+                            MainApplication.INSTANCE, R.string.ssl_error, Toast.LENGTH_LONG
+                        ).show()
+                    }
+                }
+                throw HttpException(e.message, 0)
+            }
             if (response.isRedirect) {
                 // follow redirect with same method
                 Timber.d("doHttpPostRaw: following redirect: %s", response.header("Location"))
@@ -623,8 +643,23 @@ enum class Http {;
         @JvmStatic
         @Throws(IOException::class)
         fun doHttpGet(url: String, progressListener: ProgressListener): ByteArray {
-            val response =
-                getHttpClient()!!.newCall(Request.Builder().url(url).get().build()).execute()
+            val response: Response
+            try {
+                response =
+                    getHttpClient()!!.newCall(Request.Builder().url(url).get().build()).execute()
+            } catch (e: IOException) {
+                Timber.e(e, "Failed to post %s", url)
+                // detect ssl errors, i.e., cert authority invalid by looking at the message
+                if (e.message != null && e.message!!.contains("_CERT_")) {
+                    MainActivity.getFoxActivity(MainApplication.INSTANCE!!).runOnUiThread {
+                        // show toast
+                        Toast.makeText(
+                            MainApplication.INSTANCE, R.string.ssl_error, Toast.LENGTH_LONG
+                        ).show()
+                    }
+                }
+                throw HttpException(e.message, 0)
+            }
             if (response.code != 200 && response.code != 204) {
                 Timber.e("Failed to fetch " + url + ", code: " + response.code)
                 checkNeedCaptchaAndroidacy(url, response.code)
@@ -733,7 +768,7 @@ enum class Http {;
             // are we connected to a network with internet capabilities?
             val networkCapabilities =
                 connectivityManager.getNetworkCapabilities(connectivityManager.activeNetwork)
-            val systemSaysYes =  networkCapabilities != null && networkCapabilities.hasCapability(
+            val systemSaysYes = networkCapabilities != null && networkCapabilities.hasCapability(
                 NetworkCapabilities.NET_CAPABILITY_INTERNET
             )
             Timber.d("System says we have internet: $systemSaysYes")
@@ -757,17 +792,20 @@ enum class Http {;
             if (!systemSaysYes) return false
             // check ourselves
             val hasInternet = try {
-                val resp = doHttpGet("https://production-api.androidacy.com/ping", false)
+                val resp = doHttpGet("https://production-api.androidacy.com/cdn-cgi/trace", false)
                 val respString = String(resp)
                 Timber.d("Ping response: $respString")
-                true
+                // resp should include that scheme is https and h is production-api.androidacy.com
+                respString.contains("scheme=https") && respString.contains("h=production-api.androidacy.com")
             } catch (e: HttpException) {
                 Timber.e(e, "Failed to check internet connection")
                 false
             }
             Timber.d("We say we have internet: $hasInternet")
             lastConnectivityCheck = System.currentTimeMillis()
-            lastConnectivityResult = systemSaysYes && hasInternet
+            @Suppress("KotlinConstantConditions")
+            lastConnectivityResult =
+                systemSaysYes && hasInternet
             return lastConnectivityResult
         }
     }

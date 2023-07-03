@@ -300,7 +300,7 @@ class AndroidacyActivity : FoxActivity() {
             }
 
             override fun onConsoleMessage(consoleMessage: ConsoleMessage): Boolean {
-                if (BuildConfig.DEBUG_HTTP) {
+                return if (BuildConfig.DEBUG) {
                     when (consoleMessage.messageLevel()) {
                         MessageLevel.TIP -> Timber.tag("JSLog").i(consoleMessage.message())
                         MessageLevel.LOG -> Timber.tag("JSLog").d(consoleMessage.message())
@@ -308,8 +308,10 @@ class AndroidacyActivity : FoxActivity() {
                         MessageLevel.ERROR -> Timber.tag("JSLog").e(consoleMessage.message())
                         else -> Timber.tag("JSLog").v(consoleMessage.message())
                     }
+                    true
+                } else {
+                    false
                 }
-                return true
             }
 
             override fun onProgressChanged(view: WebView, newProgress: Int) {
@@ -323,8 +325,8 @@ class AndroidacyActivity : FoxActivity() {
                     Timber.i("Progress: %d, setting indeterminate to false", newProgress)
                     prgInd.isIndeterminate = false
                 }
-                prgInd.setProgressCompat(newProgress, true)
-                if (newProgress == 100 && prgInd.visibility != View.INVISIBLE) {
+                prgInd.setProgress(newProgress, true)
+                if (newProgress == 100 && prgInd.visibility != View.GONE) {
                     Timber.i("Progress: %d, hiding progress bar", newProgress)
                     prgInd.isIndeterminate = true
                     prgInd.visibility = View.GONE

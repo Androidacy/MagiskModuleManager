@@ -526,7 +526,7 @@ dependencies {
     implementation("org.jetbrains:annotations-java5:24.0.1")
 
     // debugging
-    debugImplementation("com.squareup.leakcanary:leakcanary-android:2.11")
+    debugImplementation("com.squareup.leakcanary:leakcanary-android:2.12")
 
     // desugaring
     coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.0.3")
