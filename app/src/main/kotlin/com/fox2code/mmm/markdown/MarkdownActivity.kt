@@ -108,7 +108,7 @@ class MarkdownActivity : FoxActivity() {
                 Timber.i("Done!")
                 runOnUiThread {
                     footer?.minimumHeight = this.navigationBarHeight
-                    MainApplication.INSTANCE!!.markwon!!.setMarkdown(
+                    MainApplication.INSTANCE!!.markwon?.setMarkdown(
                         textView,
                         MarkdownUrlLinker.urlLinkify(markdown)
                     )

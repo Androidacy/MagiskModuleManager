@@ -29,6 +29,7 @@ import com.fox2code.mmm.installer.InstallerInitializer.Companion.peekMagiskPath
 import com.fox2code.mmm.installer.InstallerInitializer.Companion.peekMagiskVersion
 import com.fox2code.mmm.utils.io.Files.Companion.makeBuffer
 import com.google.net.cronet.okhttptransport.CronetInterceptor
+import io.sentry.android.okhttp.SentryOkHttpInterceptor
 import okhttp3.Cache
 import okhttp3.Dns
 import okhttp3.HttpUrl.*
@@ -350,6 +351,9 @@ enum class Http {;
                 loggingInterceptor.setLevel(Level.BODY)
                 httpclientBuilder.addInterceptor(loggingInterceptor)
             }
+
+            // add sentry interceptor
+            httpclientBuilder.addInterceptor(SentryOkHttpInterceptor())
 
             // Add cronet interceptor
             // init cronet

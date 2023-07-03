@@ -207,7 +207,10 @@ class RepoManager private constructor(mainApplication: MainApplication) : SyncMa
                     Timber.e(e)
                 }
                 updatedModules++
-                updateListener.update(STEP1 + STEP2 / (if (moduleToUpdate != 0) moduleToUpdate else 1) * updatedModules)
+                // update the update listener with step1 + computed step 2 (which is updated modules / total modules / total repos)
+                updateListener.update(
+                    STEP1 + (STEP2 / (moduleToUpdate / updatedModules) / repoDatas.size)
+                )
             }
             for (repoModule in repoUpdaters[i]!!.toApply()!!) {
                 if (repoModule.moduleInfo.flags and ModuleInfo.FLAG_METADATA_INVALID == 0) {
@@ -268,11 +271,11 @@ class RepoManager private constructor(mainApplication: MainApplication) : SyncMa
                     }
                     repoLastErrorName = repoUpdaters[i]!!.repoData.name
                 }
-                updateListener.update(STEP1 + STEP2 + STEP3 / repoDatas.size * (i + 1))
+                updateListener.update(STEP1 + (STEP2 * (i / repoUpdaters.size)))
             }
         }
         Timber.i("Got " + modules.size + " modules!")
-        updateListener.update(1.0)
+        updateListener.update(STEP1 + STEP2 + STEP3)
     }
 
     fun updateEnabledStates() {

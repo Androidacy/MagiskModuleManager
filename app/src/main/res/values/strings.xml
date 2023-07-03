@@ -387,4 +387,5 @@
     <string name="error_opening_notes">Error in opening module notes. Logs may have the reason.</string>
     <string name="submit_feedback">Submit feedback</string>
     <string name="ssl_error">Potential SSL interception detected.</string>
+    <string name="no_sentry_id">Unable to sumbit feedback - no event ID from Sentry. The last event may not have sent.</string>
 </resources>

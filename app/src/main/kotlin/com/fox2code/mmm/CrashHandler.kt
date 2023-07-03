@@ -53,7 +53,11 @@ class CrashHandler : FoxActivity() {
         }
         // force sentry to send all events
         Sentry.flush(2000)
-        val lastEventId = MainApplication.getSharedPreferences("sentry")?.getString("lastEventId", "")
+        var lastEventId = intent.getStringExtra("lastEventId")
+        // if event id is all zeros, set it to "". test this by matching the regex ^0+$ (all zeros)
+        if (lastEventId?.matches("^0+$".toRegex()) == true) {
+            lastEventId = ""
+        }
         Timber.d(
             "CrashHandler.onCreate: lastEventId=%s, crashReportingEnabled=%s",
             lastEventId,
@@ -65,9 +69,11 @@ class CrashHandler : FoxActivity() {
         val email = findViewById<EditText>(R.id.feedback_email)
         val description = findViewById<EditText>(R.id.feedback_message)
         val submit = findViewById<View>(R.id.feedback_submit)
-        if (lastEventId == "" && crashReportingEnabled) {
+        if (lastEventId.isNullOrEmpty() && crashReportingEnabled) {
             // if lastEventId is null, hide the feedback button
             Timber.d("CrashHandler.onCreate: lastEventId is null but crash reporting is enabled. This may indicate a bug in the crash reporting system.")
+            submit.visibility = View.GONE
+            findViewById<MaterialTextView>(R.id.feedback_text).setText(R.string.no_sentry_id)
         } else {
             // if lastEventId is not null, enable the feedback name, email, message, and submit button
             email.isEnabled = true
@@ -135,7 +141,7 @@ class CrashHandler : FoxActivity() {
                 finish()
                 startActivity(packageManager.getLaunchIntentForPackage(packageName))
             }
-        } else {
+        } else if (!crashReportingEnabled) {
             // set feedback_text to "Crash reporting is disabled"
             (findViewById<View>(R.id.feedback_text) as MaterialTextView).setText(R.string.sentry_enable_nag)
             submit.setOnClickListener { _: View? ->

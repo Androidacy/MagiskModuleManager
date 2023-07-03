@@ -5,7 +5,6 @@
 package com.fox2code.mmm.utils.sentry
 
 import android.annotation.SuppressLint
-import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.net.Uri
@@ -25,6 +24,7 @@ import io.sentry.android.core.SentryAndroid
 import io.sentry.android.core.SentryAndroidOptions
 import io.sentry.android.fragment.FragmentLifecycleIntegration
 import io.sentry.android.timber.SentryTimberIntegration
+import io.sentry.protocol.SentryId
 import org.matomo.sdk.extra.TrackHelper
 import timber.log.Timber
 
@@ -32,6 +32,7 @@ object SentryMain {
     const val IS_SENTRY_INSTALLED = true
     private var isCrashing = false
     private var isSentryEnabled = false
+    private var crashExceptionId: SentryId? = null
 
     /**
      * Initialize Sentry
@@ -42,6 +43,7 @@ object SentryMain {
     fun initialize(mainApplication: MainApplication) {
         Thread.setDefaultUncaughtExceptionHandler { _: Thread?, throwable: Throwable ->
             isCrashing = true
+            MainApplication.clearCachedSharedPrefs()
             TrackHelper.track().exception(throwable).with(MainApplication.INSTANCE!!.tracker)
             // open crash handler and exit
             val intent = Intent(mainApplication, CrashHandler::class.java)
@@ -55,6 +57,12 @@ object SentryMain {
             intent.putExtra("crashReportingEnabled", isSentryEnabled)
             // add isCrashing to intent
             intent.putExtra("isCrashing", isCrashing)
+            // add crashExceptionId to intent
+            if (crashExceptionId != null) {
+                intent.putExtra("lastEventId", crashExceptionId!!.toString())
+            } else {
+                intent.putExtra("lastEventId", "")
+            }
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
             Timber.e("Starting crash handler")
             mainApplication.startActivity(intent)
@@ -119,15 +127,7 @@ object SentryMain {
                     if (!isSentryEnabled) {
                         return@BeforeSendCallback null
                     }
-                    // store eventid in prefs
-                    val editor =
-                        MainApplication.INSTANCE!!.getSharedPreferences(
-                            "sentry",
-                            Context.MODE_PRIVATE
-                        )
-                            .edit()
-                    editor.putString("lastEventId", event!!.eventId.toString())
-                    editor.commit() // commit so we immediately cache if crashing
+                    crashExceptionId = event?.eventId
                     event
                 }
                 // Filter breadcrumb content from crash report.

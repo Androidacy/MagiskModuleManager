@@ -54,7 +54,6 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Random
 import kotlin.math.abs
-import kotlin.math.max
 
 @Suppress("unused", "MemberVisibilityCanBePrivate")
 class MainApplication : FoxApplication(), Configuration.Provider {
@@ -129,7 +128,7 @@ class MainApplication : FoxApplication(), Configuration.Provider {
             markwonThemeContext = FoxThemeWrapper(this, managerThemeResId)
             contextThemeWrapper = markwonThemeContext
         }
-        val markwon =
+        this.markwon =
             Markwon.builder(contextThemeWrapper!!).usePlugin(HtmlPlugin.create()).usePlugin(
                 ImagesPlugin.create().addSchemeHandler(
                     OkHttpNetworkSchemeHandler.create(
@@ -337,6 +336,7 @@ class MainApplication : FoxApplication(), Configuration.Provider {
             Timber.w("ANDROIDACY_CLIENT_ID is empty, disabling AndroidacyRepoData 1")
             editor.apply()
         }
+        getMarkwon()
     }
 
     private val intent: Intent?
@@ -538,44 +538,12 @@ class MainApplication : FoxApplication(), Configuration.Provider {
             val mContext: Context? = INSTANCE
             name += "x"
             if (mSharedPrefs == null) {
-                Timber.d("Creating shared prefs map")
                 mSharedPrefs = HashMap()
             }
-            /*
-          this part is only here because with added encryption, parts of code that were previously calling this over and over again or on each invocation of a method are causing performance issues.
-         */
-            if (BuildConfig.DEBUG) {
-                // get file, function, and line number
-                val stackTrace = Thread.currentThread().stackTrace
-                // get the caller of this method
-                val caller = stackTrace[3]
-                Timber.d(
-                    "Shared prefs file: %s, caller: %s:%d in %s",
-                    name,
-                    caller.fileName,
-                    caller.lineNumber,
-                    caller.methodName
-                )
-                // add the caller to an array. if the last 3 callers are the same, then we are in a loop, log at error level
-                callers.add(name + ":" + caller.lineNumber + ":" + caller.methodName)
-                // get the last 3 callers
-                val last3: List<String> = callers.subList(max(callers.size - 3, 0), callers.size)
-                // if the last 3 callers are the same, then we are in a loop, log at error level
-                if (((last3.size == 3) && last3[0] == last3[1]) && last3[1] == last3[2]) {
-                    Timber.e(
-                        "Shared prefs loop detected. File: %s, caller: %s:%d",
-                        name,
-                        caller.methodName,
-                        caller.lineNumber
-                    )
-                }
-            }
             if (mSharedPrefs!!.containsKey(name)) {
-                Timber.d("Returning cached shared prefs")
                 return mSharedPrefs!![name] as SharedPreferences?
             }
             return try {
-                Timber.d("Creating encrypted shared prefs")
                 val masterKey =
                     MasterKey.Builder(mContext!!).setKeyScheme(MasterKey.KeyScheme.AES256_GCM)
                         .build()
@@ -592,6 +560,10 @@ class MainApplication : FoxApplication(), Configuration.Provider {
                 Timber.e(e, "Failed to create encrypted shared preferences")
                 mContext!!.getSharedPreferences(name, MODE_PRIVATE)
             }
+        }
+
+        fun clearCachedSharedPrefs() {
+            mSharedPrefs = null
         }
 
         fun checkSecret(intent: Intent?): Boolean {
