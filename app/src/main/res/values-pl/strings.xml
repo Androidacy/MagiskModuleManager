@@ -365,4 +365,8 @@
     <string name="reboot_extra_warning">Za chwilę nastąpi restart do trybu EDL, specjalnego trybu przeznaczonego dla producentów OEM do flashowania i naprawiania problemów niskiego poziomu. O ile nie jesteś pewien, że chcesz to zrobić i nie masz niezbędnych narzędzi, aby wyjść z tego trybu lub go użyć, zdecydowanie zachęcamy do korzystania z innych opcji restartu.</string>
     <string name="title_activity_expired">ExpiredActivity</string>
     <string name="expired_message">Używana wersja wygasła i nie będzie już działać. Prosimy o aktualizację do najnowszej stabilnej wersji.</string>
+    <string name="submit_feedback">Prześlij opinię</string>
+    <string name="ssl_error">Wykryto potencjalne przechwycenie SSL.</string>
+    <string name="error_opening_notes">Błąd podczas otwierania uwag modułu. Przyczyna może znajdować się w logach.</string>
+    <string name="no_sentry_id">Nie można przesłać informacji zwrotnej - brak ID zdarzenia z Sentry. Ostatnie zdarzenie mogło nie zostać wysłane.</string>
 </resources>

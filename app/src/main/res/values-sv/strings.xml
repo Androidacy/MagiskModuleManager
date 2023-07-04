@@ -1,5 +1,120 @@
-<?xml version="1.0" encoding="utf-8"?><!--
+<?xml version="1.0" encoding="utf-8"?>
+<!--
   ~ Copyright (c) 2023 to present Androidacy and contributors. Names, logos, icons, and the Androidacy name are all trademarks of Androidacy and may not be used without license. See LICENSE for more information.
-  -->
-
-<resources></resources>
+  --><resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="fail_magisk_missing">Magisk är inte installerat på denna enhet</string>
+    <string name="loading">Laddar…</string>
+    <string name="updatable">Uppgraderbar</string>
+    <string name="installed">Installerad</string>
+    <string name="online_repo">Onlineförråd</string>
+    <string name="showcase_mode">Appen är i nedstängt läge</string>
+    <string name="app_name_short_v2">AMH</string>
+    <string name="fail_root_denied">Rootbehörighet har nekats via Magiskappen</string>
+    <string name="failed_download">Kunde inte hämta filen</string>
+    <string name="no_web_view">Systemets WebView kunde inte öppnas</string>
+    <string name="title_activity_settings">Inställningsaktivitet</string>
+    <string name="module_repo">Förråd:</string>
+    <string name="module_by">av</string>
+    <string name="module_downloads">Nedladdningar:</string>
+    <string name="module_stars">Stjärnor:</string>
+    <string name="module_last_update">Senaste uppdatering:</string>
+    <string name="module_min_sdk_chip">Min. Android</string>
+    <string name="module_max_sdk_chip">Max. Android</string>
+    <string name="manage_repos_pref">Hantera förråd</string>
+    <string name="showcase_mode_pref">Nedlåsningsläge</string>
+    <string name="prevent_reboot_pref">Hindra omstart</string>
+    <string name="prevent_reboot_desc">Hindrar oväntade omstarter</string>
+    <string name="enable_monet">Aktivera Monet</string>
+    <string name="module_can_change_boot">Kan ej ändra uppstart</string>
+    <string name="module_can_change_boot_desc">Denna modul kan komma att ändra uppstartsbilden</string>
+    <string name="module_min_magisk_chip">Min. Magisk %s</string>
+    <string name="pref_category_info">Info</string>
+    <string name="show_licenses">Visa licenser</string>
+    <string name="module_id_prefix">Modul-ID:</string>
+    <string name="install_from_storage">Installera modul från lagring</string>
+    <string name="invalid_format">Den valda modulens format är ogiltigt</string>
+    <string name="low_quality_module">Lågkvalitetsmodul</string>
+    <string name="local_install_title">Lokal installation</string>
+    <string name="theme_pref">Tema</string>
+    <string name="source_code">Källkod</string>
+    <string name="magisk_builtin_module">Inbyggd modul i Magisk</string>
+    <string name="substratum_builtin_module">Inbyggd modul i Substratum</string>
+    <string name="force_dark_terminal_title">Mörk terminal</string>
+    <string name="remote_install_title">Fjärrinstallation</string>
+    <string name="androidacy_test_mode_pref">Androidacy testläge</string>
+    <string name="notification_update_title">Hittade %1$d moduluppdateringar</string>
+    <string name="notification_update_pref">Automatisk kontroll av moduluppdateringar</string>
+    <string name="notification_update_desc">Kan öka batterianvändningen</string>
+    <string name="notification_update_debug_pref">Testnotis</string>
+    <string name="language_translated_by">Översatt av slicke</string>
+    <string name="crash_reporting">Rapportera automatiskt buggar och prestanda till utvecklarna</string>
+    <string name="api_key">Apinyckel för Androidacy</string>
+    <string name="api_key_summary">Ange en egen apinyckel för Androidacy. Användbart för premiumprenumeranter, för att ta bort reklam mm.</string>
+    <string name="save_api_key">Validera</string>
+    <string name="warning">Varning!</string>
+    <string name="checking_api_key">Validerar apinyckeln…</string>
+    <string name="please_wait">Var god dröj</string>
+    <string name="api_key_removed">Lyckades återställa apinyckeln</string>
+    <string name="api_key_invalid">Kunde inte validera apinyckeln. Vänligen försök igen.</string>
+    <string name="api_key_valid">Apinyckeln är giltig.</string>
+    <string name="app_name_v2">Androidacy Modulhanterare</string>
+    <string name="fail_root_magisk">Kunde inte få åtkomst till root eller Magisk</string>
+    <string name="fail_internet">Kunde inte ansluta till internet</string>
+    <string name="module_needs_ramdisk">Kräver ramskiva</string>
+    <string name="module_needs_ramdisk_desc">Denna modul behöver startramskiva för att installera</string>
+    <string name="showcase_mode_desc">Nedlåsningsläge hindrar hanteraren att påverka moduler</string>
+    <string name="wrap_text_desc">Bryt text till fler rader istället för att visa allt på samma rad när moduler installeras.</string>
+    <string name="androidacy_repo_info">Detta förråd kan komma att visa icke-påträngande annonser för att täcka server- och utvecklingskostnader. Erbjuder betyg, viruskontroller, mm.</string>
+    <string name="androidacy_test_mode_desc">Använd Androidacys provmiljö istället för produktion. (Orsakar omstart av appen)</string>
+    <string name="language_support_outdated">Vissa översättningar för nuvarande språk är inte uppdaterade, överväg gärna att bidra till översättningar på GitHub</string>
+    <string name="app_update_available">En ny version av appen finns att tillgå</string>
+    <string name="no_desc_found">Ingen beskrivning hittades.</string>
+    <string name="download_module">Hämta modul</string>
+    <string name="install_module">Installera modul</string>
+    <string name="update_module">Uppgradera modul</string>
+    <string name="website">Sajt</string>
+    <string name="support">Support</string>
+    <string name="donate">Donera</string>
+    <string name="update">Uppdatera</string>
+    <string name="install">Installera</string>
+    <string name="description">Beskrivning</string>
+    <string name="uninstall">Avinstallera</string>
+    <string name="config">Konfig</string>
+    <string name="report_bugs">Rapportera buggar</string>
+    <string name="submit_modules">Skicka in en modul</string>
+    <string name="require_android_12">Kräver Android 12+</string>
+    <string name="install_terminal_reboot_now">Starta om</string>
+    <string name="language">Språk</string>
+    <string name="licenses">Licenser</string>
+    <string name="show_incompatible_pref">Visa inkompatibla moduler</string>
+    <string name="show_incompatible_desc">Visa moduler som troligen inte fungerar på din enhet baserat på deras metadata</string>
+    <string name="magisk_outdated">Den ny version av Magisk går att installera!</string>
+    <string name="pref_category_repos">Förråd</string>
+    <string name="pref_category_security">Säkerhet</string>
+    <string name="pref_category_appearance">Utseende</string>
+    <string name="master_delete">Radera modulens filer\?</string>
+    <string name="master_delete_no">Behåll</string>
+    <string name="master_delete_yes">Radera</string>
+    <string name="master_delete_fail">Kunde inte radera modulens filer</string>
+    <string name="file_picker_failure">Din nuvarande filväljare kunde inte få åtkomst till filen.</string>
+    <string name="file_picker_wierd">Din filväljare returnerade ett icke-standardsvar.</string>
+    <string name="use_magisk_install_command_pref" tools:ignore="TypographyDashes">Använd kommandot \"magisk --install-module\"</string>
+    <string name="use_magisk_install_command_desc">Under testning uppträdde problem i feldiagnosverktyget vid installation, därav är valet under gömt under utvecklarläget.
+\nAnvänd på egen risk!</string>
+    <string name="dev_mode_enabled">Slå på utvecklarläge</string>
+    <string name="dev_mode_disabled">Slå av utvecklarläge</string>
+    <string name="disable_low_quality_module_filter_pref">Visa moduler med låg kvalitet</string>
+    <string name="disable_low_quality_module_filter_desc">Vissa moduler redovisar inte sin metadata korrekt, vilket orsakar visuella fel och/eller låg modulivalitet.
+\nAkrivera på egen risk!</string>
+    <string name="dns_over_https_pref">DNS över HTTPS</string>
+    <string name="dns_over_https_desc">Åtgärdar anslutningsproblem i vissa fall. (Ej aktuellt för WebView.)</string>
+    <string name="wrap_text_pref">Radbrytning</string>
+    <string name="enable_blur_pref">Oskärpa</string>
+    <string name="repo_enabled">Förråd på</string>
+    <string name="repo_disabled">Förråd av</string>
+    <string name="add_repo">Lägg till förråd</string>
+    <string name="remove_repo">Ta bort förråd</string>
+    <string name="custom_url">Egen länk</string>
+    <string name="link_copied">Länk kopierad</string>
+    <string name="app_name">Foxs Modulhanterare för Magisk</string>
+</resources>
