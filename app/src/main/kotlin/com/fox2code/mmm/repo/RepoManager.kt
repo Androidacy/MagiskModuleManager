@@ -209,12 +209,9 @@ class RepoManager private constructor(mainApplication: MainApplication) : SyncMa
                     Timber.e(e)
                 }
                 updatedModules++
-                // update the update listener
-                // STEP1 is done so always add it
-                // step2 percentage is calculated by the number of modules updated out of total, then multiplied by the percentage of repos done
-                updateListener.update(
-                    STEP1 + STEP2 * ((updatedModules / moduleToUpdate) * (i + 1) / repoDatas.size)
-                )
+                val repoProgressIncrement = STEP2 / repoDatas.size.toDouble()
+                val moduleProgressIncrement = repoProgressIncrement / repoModules.size.toDouble()
+                updateListener.update((STEP1 + moduleProgressIncrement * updatedModules).toInt())
             }
             for (repoModule in repoUpdaters[i]!!.toApply()!!) {
                 if (repoModule.moduleInfo.flags and ModuleInfo.FLAG_METADATA_INVALID == 0) {
@@ -349,8 +346,8 @@ class RepoManager private constructor(mainApplication: MainApplication) : SyncMa
         private const val MAGISK_REPO_MANAGER =
             "https://magisk-modules-repo.github.io/submission/modules.json"
         private val lock = Any()
-        private const val STEP1 = 40
-        private const val STEP2 = 40
+        private const val STEP1 = 20
+        private const val STEP2 = 60
         private const val STEP3 = 20
 
         @Volatile
