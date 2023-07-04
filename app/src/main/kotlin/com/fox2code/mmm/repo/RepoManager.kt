@@ -141,7 +141,7 @@ class RepoManager private constructor(mainApplication: MainApplication) : SyncMa
             return
         }
         modules.clear()
-        updateListener.update(0.0)
+        updateListener.update(0)
         // Using LinkedHashSet to deduplicate Androidacy entry.
         val repoDatas = LinkedHashSet(repoData.values).toTypedArray()
         val repoUpdaters = arrayOfNulls<RepoUpdater>(repoDatas.size)
@@ -151,9 +151,11 @@ class RepoManager private constructor(mainApplication: MainApplication) : SyncMa
             return
         }
         for (i in repoDatas.indices) {
+            updateListener.update(STEP1 * (i / repoDatas.size))
             if (BuildConfig.DEBUG) Timber.d("Preparing to fetch: %s", repoDatas[i].name)
             moduleToUpdate += RepoUpdater(repoDatas[i]).also { repoUpdaters[i] = it }.fetchIndex()
-            updateListener.update(STEP1 / repoDatas.size * (i + 1))
+            // divvy the 40 of step1 to each repo
+            updateListener.update(STEP1 * ((i + 1) / repoDatas.size))
         }
         if (BuildConfig.DEBUG) Timber.d("Updating meta-data")
         var updatedModules = 0
@@ -207,9 +209,11 @@ class RepoManager private constructor(mainApplication: MainApplication) : SyncMa
                     Timber.e(e)
                 }
                 updatedModules++
-                // update the update listener with step1 + computed step 2 (which is updated modules / total modules / total repos)
+                // update the update listener
+                // STEP1 is done so always add it
+                // step2 percentage is calculated by the number of modules updated out of total, then multiplied by the percentage of repos done
                 updateListener.update(
-                    STEP1 + (STEP2 / (moduleToUpdate / updatedModules) / repoDatas.size)
+                    STEP1 + STEP2 * ((updatedModules / moduleToUpdate) * (i + 1) / repoDatas.size)
                 )
             }
             for (repoModule in repoUpdaters[i]!!.toApply()!!) {
@@ -345,9 +349,9 @@ class RepoManager private constructor(mainApplication: MainApplication) : SyncMa
         private const val MAGISK_REPO_MANAGER =
             "https://magisk-modules-repo.github.io/submission/modules.json"
         private val lock = Any()
-        private const val STEP1 = 0.1
-        private const val STEP2 = 0.8
-        private const val STEP3 = 0.1
+        private const val STEP1 = 40
+        private const val STEP2 = 40
+        private const val STEP3 = 20
 
         @Volatile
         private var INSTANCE: RepoManager? = null

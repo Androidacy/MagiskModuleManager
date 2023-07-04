@@ -452,14 +452,14 @@ class MainActivity : FoxActivity(), OnRefreshListener, SearchView.OnQueryTextLis
                 if (hasWebView()) {
                     val updateListener: SyncManager.UpdateListener =
                         object : SyncManager.UpdateListener {
-                            override fun update(value: Double) {
+                            override fun update(value: Int) {
                                 runOnUiThread(if (max == 0) Runnable {
                                     progressIndicator.setProgressCompat(
-                                        (value * PRECISION).toInt(), true
+                                        value, true
                                     )
                                 } else Runnable {
                                     progressIndicator.setProgressCompat(
-                                        (value * PRECISION * 0.75f).toInt(), true
+                                        value, true
                                     )
                                 })
                             }
@@ -508,7 +508,7 @@ class MainActivity : FoxActivity(), OnRefreshListener, SearchView.OnQueryTextLis
                                 val currentTmp = current
                                 runOnUiThread {
                                     progressIndicator.setProgressCompat(
-                                        (1f * currentTmp / max * PRECISION * 0.25f + PRECISION * 0.75f).toInt(),
+                                        currentTmp / max,
                                         true
                                     )
                                 }
@@ -673,10 +673,10 @@ class MainActivity : FoxActivity(), OnRefreshListener, SearchView.OnQueryTextLis
                     if (BuildConfig.DEBUG) Timber.i("Check Update")
                     val updateListener: SyncManager.UpdateListener =
                         object : SyncManager.UpdateListener {
-                            override fun update(value: Double) {
+                            override fun update(value: Int) {
                                 runOnUiThread {
                                     progressIndicator!!.setProgressCompat(
-                                        (value * PRECISION).toInt(), true
+                                        value, true
                                     )
                                 }
                             }
@@ -717,14 +717,14 @@ class MainActivity : FoxActivity(), OnRefreshListener, SearchView.OnQueryTextLis
             cleanDnsCache() // Allow DNS reload from network
             val max = instance!!.getUpdatableModuleCount()
             val updateListener: SyncManager.UpdateListener = object : SyncManager.UpdateListener {
-                override fun update(value: Double) {
+                override fun update(value: Int) {
                     runOnUiThread(if (max == 0) Runnable {
                         progressIndicator!!.setProgressCompat(
-                            (value * PRECISION).toInt(), true
+                            value, true
                         )
                     } else Runnable {
                         progressIndicator!!.setProgressCompat(
-                            (value * PRECISION * 0.75f).toInt(), true
+                            value, true
                         )
                     })
                 }
@@ -757,7 +757,7 @@ class MainActivity : FoxActivity(), OnRefreshListener, SearchView.OnQueryTextLis
                             val currentTmp = current
                             runOnUiThread {
                                 progressIndicator!!.setProgressCompat(
-                                    (1f * currentTmp / max * PRECISION * 0.25f + PRECISION * 0.75f).toInt(),
+                                    currentTmp / max,
                                     true
                                 )
                             }
@@ -914,7 +914,7 @@ class MainActivity : FoxActivity(), OnRefreshListener, SearchView.OnQueryTextLis
             return context as FoxActivity
         }
 
-        private const val PRECISION = 10000
+        private const val PRECISION = 100
 
         @JvmField
         var doSetupNowRunning = true

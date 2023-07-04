@@ -66,12 +66,12 @@ abstract class SyncManager {
     // This method can't be called twice at the same time.
     protected abstract fun scanInternal(updateListener: UpdateListener)
     interface UpdateListener {
-        fun update(value: Double)
+        fun update(value: Int)
     }
 
     companion object {
         private val NO_OP: UpdateListener = object : UpdateListener {
-            override fun update(value: Double) {
+            override fun update(value: Int) {
 
             }
         }
