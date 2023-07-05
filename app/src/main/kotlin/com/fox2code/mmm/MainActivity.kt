@@ -240,12 +240,12 @@ class MainActivity : FoxActivity(), OnRefreshListener, SearchView.OnQueryTextLis
         moduleList.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                 if (newState != RecyclerView.SCROLL_STATE_IDLE) searchView.clearFocus()
-                // hide search view  and reboot fab when scrolling
+                // hide search view  and reboot fab when scrolling - we have to account for padding, corners, and shadows
                 if (newState == RecyclerView.SCROLL_STATE_DRAGGING) {
-                    searchCard.animate().translationY(-searchCard.height.toFloat())
-                        .setInterpolator(AccelerateInterpolator(2f)).start()
-                    rebootFab.animate().translationY(rebootFab.height.toFloat())
-                        .setInterpolator(AccelerateInterpolator(2f)).start()
+                    searchCard.animate().translationY(-searchCard.height.toFloat() - 2 * 8 - 2 * 2)
+                        .setInterpolator(DecelerateInterpolator(2f)).start()
+                    rebootFab.animate().translationY(rebootFab.height.toFloat() + 2 * 8 + 2 * 2)
+                        .setInterpolator(DecelerateInterpolator(2f)).start()
                 }
             }
 
@@ -253,8 +253,8 @@ class MainActivity : FoxActivity(), OnRefreshListener, SearchView.OnQueryTextLis
                 super.onScrolled(recyclerView, dx, dy)
                 // if the user scrolled up, show the search bar
                 if (dy < 0) {
-                    searchCard.animate().translationY(0f)
-                        .setInterpolator(DecelerateInterpolator(2f)).start()
+                    searchCard.animate().translationY(0f).setInterpolator(DecelerateInterpolator(2f))
+                        .start()
                     rebootFab.animate().translationY(0f).setInterpolator(DecelerateInterpolator(2f))
                         .start()
                 }
@@ -266,10 +266,10 @@ class MainActivity : FoxActivity(), OnRefreshListener, SearchView.OnQueryTextLis
                 if (newState != RecyclerView.SCROLL_STATE_IDLE) searchView.clearFocus()
                 // hide search view when scrolling
                 if (newState == RecyclerView.SCROLL_STATE_DRAGGING) {
-                    searchCard.animate().translationY(-searchCard.height.toFloat())
-                        .setInterpolator(AccelerateInterpolator(2f)).start()
-                    rebootFab.animate().translationY(rebootFab.height.toFloat())
-                        .setInterpolator(AccelerateInterpolator(2f)).start()
+                    searchCard.animate().translationY(-searchCard.height.toFloat() - 2 * 8 - 2 * 2)
+                        .setInterpolator(DecelerateInterpolator(2f)).start()
+                    rebootFab.animate().translationY(rebootFab.height.toFloat() + 2 * 8 + 2 * 2)
+                        .setInterpolator(DecelerateInterpolator(2f)).start()
                 }
             }
 
