@@ -344,7 +344,7 @@ class RepoManager private constructor(mainApplication: MainApplication) : SyncMa
 
     private fun addAndroidacyRepoData(): AndroidacyRepoData {
         // cache dir is actually under app data
-        val cacheRoot = mainApplication.getDataDirWithPath("realms/repos/androidacy_repo")
+        val cacheRoot = mainApplication.getDataDirWithPath("repos/androidacy_repo")
         val repoData = AndroidacyRepoData(cacheRoot, isAndroidacyTestMode)
         this.repoData[ANDROIDACY_MAGISK_REPO_ENDPOINT] =
             repoData
