@@ -37,7 +37,7 @@ class RepoUpdater(repoData2: RepoData) {
             return 0
         }
         // if MainApplication.repoModules is not empty, return it
-        if (MainApplication.INSTANCE!!.repoModules.isNotEmpty()) {
+        /*if (MainApplication.INSTANCE!!.repoModules.isNotEmpty()) {
             Timber.d("Returning MainApplication.repoModules for %s", repoData.preferenceId)
             // convert to list for toUpdate
             val toUpdateList = ArrayList<RepoModule>()
@@ -48,7 +48,7 @@ class RepoUpdater(repoData2: RepoData) {
             // toapply is a collection of RepoModule, so we need to convert the list to a set
             toApply = HashSet(MainApplication.INSTANCE!!.repoModules.values)
             return toUpdate!!.size
-        }
+        }*/
         // if we shouldn't update, get the values from the ModuleListCache realm
         if (!repoData.shouldUpdate() && repoData.preferenceId == "androidacy_repo") { // for now, only enable cache reading for androidacy repo, until we handle storing module prop file values in cache
             Timber.d("Fetching index from cache for %s", repoData.preferenceId)

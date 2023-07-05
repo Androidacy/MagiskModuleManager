@@ -6,6 +6,8 @@ package com.fox2code.mmm.module
 
 import android.app.Activity
 import android.os.Build
+import android.os.Handler
+import android.os.Looper
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import com.fox2code.mmm.AppUpdateManager
@@ -32,6 +34,7 @@ class ModuleViewListBuilder(private val activity: Activity) {
     private var updating = false
     private var headerPx = 0
     private var footerPx = 0
+    private var tries = 0
     private var moduleSorter: ModuleSorter = ModuleSorter.UPDATE
     private var updateInsets = RUNNABLE
     fun addNotification(notificationType: NotificationType?) {
@@ -85,46 +88,62 @@ class ModuleViewListBuilder(private val activity: Activity) {
             repoManager?.runAfterUpdate {
                 Timber.i("A2: %s", repoManager.modules.size)
                 val no32bitSupport = Build.SUPPORTED_32_BIT_ABIS.isEmpty()
-                for (repoModule in repoManager.modules.values) {
-                    // add the remote module to the list in MainActivity
-                    MainActivity.onlineModuleInfoList += repoModule
-                    // if repoData is null, something is wrong
-                    @Suppress("SENSELESS_COMPARISON")
-                    if (repoModule.repoData == null) {
-                        Timber.w("RepoData is null for module %s", repoModule.id)
-                        continue
-                    }
-                    if (!repoModule.repoData.isEnabled) {
-                        Timber.i(
-                            "Repo %s is disabled, skipping module %s",
-                            repoModule.repoData.preferenceId,
-                            repoModule.id
-                        )
-                        continue
-                    }
-                    val moduleInfo = repoModule.moduleInfo
-                    if (!showIncompatible && (moduleInfo.minApi > Build.VERSION.SDK_INT || moduleInfo.maxApi != 0 && moduleInfo.maxApi < Build.VERSION.SDK_INT || peekMagiskPath() != null) && repoModule.moduleInfo.minMagisk > peekMagiskVersion() || no32bitSupport && (AppUpdateManager.getFlagsForModule(
-                            repoModule.id
-                        )
-                                and AppUpdateManager.FLAG_COMPAT_NEED_32BIT) != 0 || repoModule.moduleInfo.needRamdisk && !peekHasRamdisk()
-                    ) continue  // Skip adding incompatible modules
-                    var moduleHolder = mappedModuleHolders[repoModule.id]
-                    if (moduleHolder == null) {
-                        mappedModuleHolders[repoModule.id] = ModuleHolder(repoModule.id).also {
-                            moduleHolder = it
+                try {
+                    for (repoModule in repoManager.modules.values) {
+                        // add the remote module to the list in MainActivity
+                        MainActivity.onlineModuleInfoList += repoModule
+                        // if repoData is null, something is wrong
+                        @Suppress("SENSELESS_COMPARISON") if (repoModule.repoData == null) {
+                            Timber.w("RepoData is null for module %s", repoModule.id)
+                            continue
+                        }
+                        if (!repoModule.repoData.isEnabled) {
+                            Timber.i(
+                                "Repo %s is disabled, skipping module %s",
+                                repoModule.repoData.preferenceId,
+                                repoModule.id
+                            )
+                            continue
+                        }
+                        val moduleInfo = repoModule.moduleInfo
+                        if (!showIncompatible && (moduleInfo.minApi > Build.VERSION.SDK_INT || moduleInfo.maxApi != 0 && moduleInfo.maxApi < Build.VERSION.SDK_INT || peekMagiskPath() != null) && repoModule.moduleInfo.minMagisk > peekMagiskVersion() || no32bitSupport && (AppUpdateManager.getFlagsForModule(
+                                repoModule.id
+                            ) and AppUpdateManager.FLAG_COMPAT_NEED_32BIT) != 0 || repoModule.moduleInfo.needRamdisk && !peekHasRamdisk()
+                        ) continue  // Skip adding incompatible modules
+                        var moduleHolder = mappedModuleHolders[repoModule.id]
+                        if (moduleHolder == null) {
+                            mappedModuleHolders[repoModule.id] = ModuleHolder(repoModule.id).also {
+                                moduleHolder = it
+                            }
+                        }
+                        moduleHolder!!.repoModule = repoModule
+                        // check if local module is installed
+                        // iterate over MainActivity.localModuleInfoList until we hit the module with the same id
+                        for (localModuleInfo in MainActivity.localModuleInfoList) {
+                            if (localModuleInfo.id == repoModule.id) {
+                                moduleHolder!!.moduleInfo = localModuleInfo
+                                break
+                            }
                         }
                     }
-                    moduleHolder!!.repoModule = repoModule
-                    // check if local module is installed
-                    // iterate over MainActivity.localModuleInfoList until we hit the module with the same id
-                    for (localModuleInfo in MainActivity.localModuleInfoList) {
-                        if (localModuleInfo.id == repoModule.id) {
-                            moduleHolder!!.moduleInfo = localModuleInfo
-                            break
-                        }
+                } catch (e: Exception) {
+                    Timber.e(e, "appendRemoteModules() failed")
+                    // retry up to five times, waiting i * 100ms between each try
+                    if (tries < 5) {
+                        tries++
+                        Timber.i("appendRemoteModules() retrying in %dms", tries * 100)
+                        Handler(Looper.getMainLooper()).postDelayed({
+                            appendRemoteModules()
+                        }, tries * 100.toLong())
+                    } else {
+                        Timber.e(e, "appendRemoteModules() failed after %d tries", tries)
+                        tries = 0
                     }
                 }
-                Timber.i("appendRemoteModules() finished in %dms", System.currentTimeMillis() - startTime)
+                Timber.i(
+                    "appendRemoteModules() finished in %dms",
+                    System.currentTimeMillis() - startTime
+                )
             }
         }
     }
@@ -132,8 +151,7 @@ class ModuleViewListBuilder(private val activity: Activity) {
     fun refreshNotificationsUI(moduleViewAdapter: ModuleViewAdapter) {
         val notificationCount = notifications.size
         notifySizeChanged(
-            moduleViewAdapter, 0,
-            notificationCount, notificationCount
+            moduleViewAdapter, 0, notificationCount, notificationCount
         )
     }
 
@@ -195,7 +213,8 @@ class ModuleViewListBuilder(private val activity: Activity) {
                 newNotificationsLen = notifications.size + 1 - special
                 val headerTypes = EnumSet.of(
                     ModuleHolder.Type.SEPARATOR,
-                    ModuleHolder.Type.NOTIFICATION, ModuleHolder.Type.FOOTER
+                    ModuleHolder.Type.NOTIFICATION,
+                    ModuleHolder.Type.FOOTER
                 )
                 val moduleHolderIterator = mappedModuleHolders.values.iterator()
                 synchronized(queryLock) {
@@ -218,8 +237,7 @@ class ModuleViewListBuilder(private val activity: Activity) {
                                                 Thread(
                                                     { // Apply async
                                                         applyTo(moduleList, moduleViewAdapter)
-                                                    },
-                                                    "Sorter apply Thread"
+                                                    }, "Sorter apply Thread"
                                                 ).start()
                                             }
                                     }
@@ -256,9 +274,7 @@ class ModuleViewListBuilder(private val activity: Activity) {
                 if (notificationType != null) {
                     oldNotifications.add(notificationType)
                     if (!notificationType.special) oldNotificationsLen++
-                } else if (moduleHolder.footerPx != -1 &&
-                    moduleHolder.filterLevel == 1
-                ) oldNotificationsLen++ // Fix header
+                } else if (moduleHolder.footerPx != -1 && moduleHolder.filterLevel == 1) oldNotificationsLen++ // Fix header
                 if (moduleHolder.separator === ModuleHolder.Type.INSTALLABLE) break
                 oldOfflineModulesLen++
             }
@@ -274,25 +290,23 @@ class ModuleViewListBuilder(private val activity: Activity) {
             val oldLen = moduleViewAdapter.moduleHolders.size
             moduleViewAdapter.moduleHolders.clear()
             moduleViewAdapter.moduleHolders.addAll(moduleHolders)
-            if (oldNotificationsLen != newNotificationsLen ||
-                oldNotifications != notifications
-            ) {
+            if (oldNotificationsLen != newNotificationsLen || oldNotifications != notifications) {
                 notifySizeChanged(
-                    moduleViewAdapter, 0,
-                    oldNotificationsLen, newNotificationsLen
+                    moduleViewAdapter, 0, oldNotificationsLen, newNotificationsLen
                 )
             } else {
                 notifySizeChanged(moduleViewAdapter, 0, 1, 1)
             }
             if (newLen - newNotificationsLen == 0) {
                 notifySizeChanged(
-                    moduleViewAdapter, newNotificationsLen,
-                    oldLen - oldNotificationsLen, 0
+                    moduleViewAdapter, newNotificationsLen, oldLen - oldNotificationsLen, 0
                 )
             } else {
                 notifySizeChanged(
-                    moduleViewAdapter, newNotificationsLen,
-                    oldOfflineModulesLen, newOfflineModulesLen
+                    moduleViewAdapter,
+                    newNotificationsLen,
+                    oldOfflineModulesLen,
+                    newOfflineModulesLen
                 )
                 notifySizeChanged(
                     moduleViewAdapter,
@@ -306,8 +320,7 @@ class ModuleViewListBuilder(private val activity: Activity) {
             updateInsets = Runnable {
                 notifySizeChanged(moduleViewAdapter, 0, 1, 1)
                 notifySizeChanged(
-                    moduleViewAdapter,
-                    moduleHolders.size, 1, 1
+                    moduleViewAdapter, moduleHolders.size, 1, 1
                 )
             }
         }
@@ -350,8 +363,7 @@ class ModuleViewListBuilder(private val activity: Activity) {
     companion object {
         private val RUNNABLE = Runnable {}
         private fun notifySizeChanged(
-            moduleViewAdapter: ModuleViewAdapter,
-            index: Int, oldLen: Int, newLen: Int
+            moduleViewAdapter: ModuleViewAdapter, index: Int, oldLen: Int, newLen: Int
         ) {
             // Timber.i("A: " + index + " " + oldLen + " " + newLen);
             if (oldLen == newLen) {

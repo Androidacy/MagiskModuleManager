@@ -32,7 +32,6 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import timber.log.Timber
 import java.io.File
 import java.nio.charset.StandardCharsets
-import java.util.concurrent.Executors
 
 @Suppress("NAME_SHADOWING", "unused")
 class RepoManager private constructor(mainApplication: MainApplication) : SyncManager() {
@@ -173,44 +172,19 @@ class RepoManager private constructor(mainApplication: MainApplication) : SyncMa
             val repoModules = repoUpdaters[i]!!.toUpdate()
             val repoData = repoDatas[i]
             if (BuildConfig.DEBUG) Timber.d("Registering %s", repoData.name)
-            // max threads is equal to the number of cores
-            val executor = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors())
             for (repoModule in repoModules!!) {
                 try {
                     if (repoModule.propUrl != null && repoModule.propUrl!!.isNotEmpty()) {
-                        executor.execute {
-                            repoData.storeMetadata(
-                                repoModule, doHttpGet(
-                                    repoModule.propUrl!!, false
-                                )
+                        repoData.storeMetadata(
+                            repoModule, doHttpGet(
+                                repoModule.propUrl!!, false
                             )
-                            write(
-                                File(repoData.cacheRoot, repoModule.id + ".prop"), doHttpGet(
-                                    repoModule.propUrl!!, false
-                                )
+                        )
+                        write(
+                            File(repoData.cacheRoot, repoModule.id + ".prop"), doHttpGet(
+                                repoModule.propUrl!!, false
                             )
-
-                            if (repoData.tryLoadMetadata(repoModule) && (allowLowQualityModules || !isLowQualityModule(
-                                    repoModule.moduleInfo
-                                ))
-                            ) {
-                                // Note: registeredRepoModule may not be null if registered by multiple repos
-                                val registeredRepoModule = modules[repoModule.id]
-                                if (registeredRepoModule == null) {
-                                    modules[repoModule.id] = repoModule
-                                } else if (instance.isEnabled && registeredRepoModule.repoData === androidacyRepoData) {
-                                    // empty
-                                } else if (instance.isEnabled && repoModule.repoData === androidacyRepoData) {
-                                    modules[repoModule.id] = repoModule
-                                } else if (repoModule.moduleInfo.versionCode > registeredRepoModule.moduleInfo.versionCode) {
-                                    modules[repoModule.id] = repoModule
-                                }
-                            } else {
-                                repoModule.moduleInfo.flags =
-                                    repoModule.moduleInfo.flags or ModuleInfo.FLAG_METADATA_INVALID
-                            }
-                            return@execute
-                        }
+                        )
                     }
                     if (repoData.tryLoadMetadata(repoModule) && (allowLowQualityModules || !isLowQualityModule(
                             repoModule.moduleInfo
@@ -253,6 +227,7 @@ class RepoManager private constructor(mainApplication: MainApplication) : SyncMa
                     }
                 }
             }
+            MainApplication.INSTANCE!!.repoModules.putAll(modules)
         }
         if (BuildConfig.DEBUG) Timber.d("Finishing update")
         if (hasConnectivity()) {
