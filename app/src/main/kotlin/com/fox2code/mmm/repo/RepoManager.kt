@@ -189,6 +189,27 @@ class RepoManager private constructor(mainApplication: MainApplication) : SyncMa
                                     repoModule.propUrl!!, false
                                 )
                             )
+
+                            if (repoData.tryLoadMetadata(repoModule) && (allowLowQualityModules || !isLowQualityModule(
+                                    repoModule.moduleInfo
+                                ))
+                            ) {
+                                // Note: registeredRepoModule may not be null if registered by multiple repos
+                                val registeredRepoModule = modules[repoModule.id]
+                                if (registeredRepoModule == null) {
+                                    modules[repoModule.id] = repoModule
+                                } else if (instance.isEnabled && registeredRepoModule.repoData === androidacyRepoData) {
+                                    // empty
+                                } else if (instance.isEnabled && repoModule.repoData === androidacyRepoData) {
+                                    modules[repoModule.id] = repoModule
+                                } else if (repoModule.moduleInfo.versionCode > registeredRepoModule.moduleInfo.versionCode) {
+                                    modules[repoModule.id] = repoModule
+                                }
+                            } else {
+                                repoModule.moduleInfo.flags =
+                                    repoModule.moduleInfo.flags or ModuleInfo.FLAG_METADATA_INVALID
+                            }
+                            return@execute
                         }
                     }
                     if (repoData.tryLoadMetadata(repoModule) && (allowLowQualityModules || !isLowQualityModule(
