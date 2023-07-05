@@ -32,6 +32,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import timber.log.Timber
 import java.io.File
 import java.nio.charset.StandardCharsets
+import java.util.concurrent.Executors
 
 @Suppress("NAME_SHADOWING", "unused")
 class RepoManager private constructor(mainApplication: MainApplication) : SyncManager() {
@@ -172,19 +173,23 @@ class RepoManager private constructor(mainApplication: MainApplication) : SyncMa
             val repoModules = repoUpdaters[i]!!.toUpdate()
             val repoData = repoDatas[i]
             if (BuildConfig.DEBUG) Timber.d("Registering %s", repoData.name)
+            // max threads is equal to the number of cores
+            val executor = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors())
             for (repoModule in repoModules!!) {
                 try {
                     if (repoModule.propUrl != null && repoModule.propUrl!!.isNotEmpty()) {
-                        repoData.storeMetadata(
-                            repoModule, doHttpGet(
-                                repoModule.propUrl!!, false
+                        executor.execute {
+                            repoData.storeMetadata(
+                                repoModule, doHttpGet(
+                                    repoModule.propUrl!!, false
+                                )
                             )
-                        )
-                        write(
-                            File(repoData.cacheRoot, repoModule.id + ".prop"), doHttpGet(
-                                repoModule.propUrl!!, false
+                            write(
+                                File(repoData.cacheRoot, repoModule.id + ".prop"), doHttpGet(
+                                    repoModule.propUrl!!, false
+                                )
                             )
-                        )
+                        }
                     }
                     if (repoData.tryLoadMetadata(repoModule) && (allowLowQualityModules || !isLowQualityModule(
                             repoModule.moduleInfo

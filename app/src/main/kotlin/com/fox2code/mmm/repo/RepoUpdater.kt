@@ -72,14 +72,17 @@ class RepoUpdater(repoData2: RepoData) {
                 repoData.preferenceId,
                 results.size
             )
+            val jsonObject = JSONObject()
             // apply the toApply list to the toUpdate list
             try {
-                val jsonObject = JSONObject()
                 jsonObject.put("modules", JSONArray(results))
                 toUpdate = repoData.populate(jsonObject)
             } catch (e: Exception) {
                 Timber.e(e)
             }
+            // log first 100 chars of indexRaw
+            indexRaw = jsonObject.toString().toByteArray()
+            Timber.d("Index raw: %s", String(indexRaw!!, StandardCharsets.UTF_8).subSequence(0, 100))
             // Since we reuse instances this should work
             toApply = HashSet(repoData.moduleHashMap.values)
             (toApply as HashSet<RepoModule>).removeAll(toUpdate!!.toSet())
@@ -125,15 +128,19 @@ class RepoUpdater(repoData2: RepoData) {
 
     fun finish(): Boolean {
         val success = AtomicBoolean(false)
+        Timber.d("Finishing update for %s", repoData.preferenceId)
         // If repo is not enabled we don't need to do anything, just return true
         if (!repoData.isEnabled) {
+            Timber.d("Repo %s is disabled, skipping", repoData.preferenceId)
             return true
         }
         if (indexRaw != null) {
+            val tmpIndexRaw = indexRaw!!
+            Timber.d("Updating database for %s", repoData.preferenceId)
             // new thread to update the database
             val thread = Thread {
                 val startTime = System.currentTimeMillis()
-                Timber.d("Updating database for %s", repoData.preferenceId)
+                Timber.d("Updating database thread for %s", repoData.preferenceId)
                 try {
                     // iterate over modules, using this.supportedProperties as a template to attempt to get each property from the module. everything that is not null is added to the module
                     // use room to insert to
@@ -145,23 +152,30 @@ class RepoUpdater(repoData2: RepoData) {
                     ).build()
                     // all except first six can be null
                     // this.indexRaw is the raw index file (json)
-                    val modules = JSONObject(String(indexRaw!!, StandardCharsets.UTF_8))
+                    val modules = JSONObject(String(tmpIndexRaw, StandardCharsets.UTF_8))
                     // androidacy repo uses "data" key, others should use "modules" key. Both are JSONArrays
-                    val modulesArray: JSONArray = if (repoData.preferenceId == "androidacy_repo") {
-                        // get modules from "data" key. This is a JSONArray so we need to convert it to a JSONObject
+                    val modulesArray = try {
                         modules.getJSONArray("data")
-                    } else {
-                        // get modules from "modules" key. This is a JSONArray so we need to convert it to a JSONObject
+                    } catch (e: Exception) {
                         modules.getJSONArray("modules")
+                    } catch (e: Exception) {
+                        Timber.e(e)
+                        Timber.w("No modules were found in the index file for %s", repoData.preferenceId)
+                        Timber.d("Finished updating database for %s in %dms", repoData.preferenceId, System.currentTimeMillis() - startTime)
+                        success.set(false)
+                        return@Thread
                     }
+                    Timber.d("Got modules for %s", repoData.preferenceId)
                     val moduleListCacheDao = db.moduleListCacheDao()
                     moduleListCacheDao.deleteByRepoId(repoData.preferenceId!!)
+                    Timber.d("Deleted old modules for %s", repoData.preferenceId)
                     if (modulesArray.length() == 0) {
                         Timber.w("No modules were found in the index file for %s", repoData.preferenceId)
                         Timber.d("Finished updating database for %s in %dms", repoData.preferenceId, System.currentTimeMillis() - startTime)
                         success.set(false)
                         return@Thread
                     }
+                    Timber.d("Iterating over modules for %s", repoData.preferenceId)
                     // iterate over modules
                     for (n in 0 until modulesArray.length()) {
                         // get module
@@ -169,7 +183,7 @@ class RepoUpdater(repoData2: RepoData) {
                         try {
                             // get module id
                             // if codename is present, prefer that over id
-                            val id: String? =
+                            val id: String  =
                                 if (module.has("codename") && module.getString("codename") != "") {
                                     module.getString("codename")
                                 } else {
@@ -294,7 +308,7 @@ class RepoUpdater(repoData2: RepoData) {
                                 safe = safe,
                                 lastUpdate = lastUpdate.toLong(),
                                 stats = downloads,
-                                codename = id ?: ""
+                                codename = id
                             )
                             moduleListCacheDao.insert(moduleListCache)
                         } catch (ignored: Exception) {
@@ -320,6 +334,7 @@ class RepoUpdater(repoData2: RepoData) {
             db.close()
             success.set(true)
         } else {
+            Timber.d("No index file found for %s", repoData.preferenceId)
             success.set(true) // assume we're reading from cache. this may be unsafe but it's better than nothing
         }
         return success.get()
