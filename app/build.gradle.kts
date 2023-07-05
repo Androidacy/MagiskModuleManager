@@ -392,7 +392,7 @@ sentry {
 
     autoInstallation {
         enabled.set(true)
-        sentryVersion.set("6.18.1")
+        sentryVersion.set("6.25.0")
     }
 
     includeDependenciesReport.set(true)

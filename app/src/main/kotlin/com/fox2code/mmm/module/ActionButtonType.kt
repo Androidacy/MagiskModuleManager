@@ -6,6 +6,7 @@ package com.fox2code.mmm.module
 import android.annotation.SuppressLint
 import android.content.DialogInterface
 import android.net.Uri
+import android.text.Html
 import android.text.Spanned
 import android.widget.TextView
 import android.widget.Toast
@@ -381,6 +382,154 @@ enum class ActionButtonType {
                 R.string.understand
             ) { _: DialogInterface?, _: Int -> }
                 .create().show()
+        }
+    },
+    REMOTE {
+        @Suppress("NAME_SHADOWING")
+        override fun doAction(button: Chip, moduleHolder: ModuleHolder) {
+            Timber.d("doAction: remote module for %s", moduleHolder.moduleInfo?.name ?: "null")
+            // that module is from remote repo
+            val name: String? = if (moduleHolder.moduleInfo != null) {
+                moduleHolder.moduleInfo!!.name
+            } else {
+                moduleHolder.repoModule?.moduleInfo?.name
+            }
+            // positive button executes install logic and says reinstall. negative button does nothing
+            TrackHelper.track().event("remote_module", name).with(INSTANCE!!.getTracker())
+            val madb = MaterialAlertDialogBuilder(button.context)
+            madb.setTitle(R.string.remote_module)
+            val moduleInfo: ModuleInfo = if (moduleHolder.mainModuleInfo != null) {
+                moduleHolder.mainModuleInfo
+            } else {
+                moduleHolder.repoModule?.moduleInfo ?: return
+            }
+            var updateZipUrl = moduleHolder.updateZipUrl
+            if (updateZipUrl.isNullOrEmpty()) {
+                // try repoModule.zipUrl
+                val repoModule = moduleHolder.repoModule
+                if (repoModule?.zipUrl.isNullOrEmpty()) {
+                    Timber.e("No repo update zip url for %s", moduleInfo.name)
+                } else {
+                    updateZipUrl = repoModule?.zipUrl
+                }
+                // next try localModuleInfo.updateZipUrl
+                if (updateZipUrl.isNullOrEmpty()) {
+                    val localModuleInfo = moduleHolder.moduleInfo
+                    if (localModuleInfo != null) {
+                        updateZipUrl = localModuleInfo.updateZipUrl
+                    } else {
+                        Timber.e("No local update zip url for %s", moduleInfo.name)
+                    }
+                }
+                if (updateZipUrl.isNullOrEmpty()) {
+                    Timber.e("No update zip url at all for %s", moduleInfo.name)
+                    // last ditch effort try moduleinfo
+                    updateZipUrl = moduleHolder.moduleInfo?.updateZipUrl
+                }
+                // LAST LAST ditch effort try localModuleInfo.remoteModuleInfo.zipUrl
+                if (updateZipUrl.isNullOrEmpty()) {
+                    val localModuleInfo = moduleHolder.moduleInfo
+                    if (localModuleInfo != null) {
+                        updateZipUrl = localModuleInfo.remoteModuleInfo?.zipUrl
+                    } else {
+                        Timber.e("No local update zip url for %s", moduleInfo.name)
+                    }
+                }
+            }
+            if (!updateZipUrl.isNullOrEmpty()) {
+                madb.setMessage(Html.fromHtml(button.context.getString(R.string.remote_message, name), Html.FROM_HTML_MODE_COMPACT))
+                madb.setPositiveButton(
+                    R.string.reinstall
+                ) { _: DialogInterface?, _: Int ->
+                    Timber.d("Set moduleinfo to %s", moduleInfo.name)
+                    val name: String? = if (moduleHolder.moduleInfo != null) {
+                        moduleHolder.moduleInfo!!.name
+                    } else {
+                        moduleHolder.repoModule?.moduleInfo?.name
+                    }
+                    Timber.d("doAction: remote module for %s", name)
+                    TrackHelper.track().event("view_update_install", name)
+                        .with(INSTANCE!!.getTracker())
+                    // Androidacy manage the selection between download and install
+                    if (isAndroidacyLink(updateZipUrl)) {
+                        Timber.d("Androidacy link detected")
+                        openUrlAndroidacy(
+                            button.context,
+                            updateZipUrl,
+                            true,
+                            moduleInfo.name,
+                            moduleInfo.config
+                        )
+                        return@setPositiveButton
+                    }
+                    val hasRoot = peekMagiskPath() != null && !isShowcaseMode
+                    val builder = MaterialAlertDialogBuilder(button.context)
+                    builder.setTitle(moduleInfo.name).setCancelable(true)
+                        .setIcon(R.drawable.ic_baseline_extension_24)
+                    var desc: CharSequence? = moduleInfo.description
+                    var markwon: Markwon? = null
+                    val localModuleInfo = moduleHolder.moduleInfo
+                    if (localModuleInfo != null && localModuleInfo.updateChangeLog.isNotEmpty()) {
+                        markwon = INSTANCE!!.getMarkwon()
+                        // Re-render each time in cse of config changes
+                        desc = markwon!!.toMarkdown(localModuleInfo.updateChangeLog)
+                    }
+                    if (desc.isNullOrEmpty()) {
+                        builder.setMessage(R.string.no_desc_found)
+                    } else {
+                        builder.setMessage(desc)
+                    }
+                    Timber.i("URL: %s", updateZipUrl)
+                    builder.setNegativeButton(R.string.download_module) { _: DialogInterface?, _: Int ->
+                        openCustomTab(
+                            button.context,
+                            updateZipUrl
+                        )
+                    }
+                    if (hasRoot) {
+                        builder.setPositiveButton(if (moduleHolder.hasUpdate()) R.string.update_module else R.string.install_module) { _: DialogInterface?, _: Int ->
+                            val updateZipChecksum = moduleHolder.updateZipChecksum
+                            openInstaller(
+                                button.context,
+                                updateZipUrl,
+                                moduleInfo.name,
+                                moduleInfo.config,
+                                updateZipChecksum,
+                                moduleInfo.mmtReborn
+                            )
+                        }
+                    }
+                    ExternalHelper.INSTANCE.injectButton(
+                        builder,
+                        { Uri.parse(updateZipUrl) },
+                        moduleHolder.updateZipRepo
+                    )
+                    val dim5dp = FoxDisplay.dpToPixel(5f)
+                    builder.setBackgroundInsetStart(dim5dp).setBackgroundInsetEnd(dim5dp)
+                    val alertDialog = builder.show()
+                    for (i in -3..-1) {
+                        val alertButton = alertDialog.getButton(i)
+                        if (alertButton != null && alertButton.paddingStart > dim5dp) {
+                            alertButton.setPadding(dim5dp, dim5dp, dim5dp, dim5dp)
+                        }
+                    }
+                    if (markwon != null) {
+                        val messageView =
+                            alertDialog.window!!.findViewById<TextView>(android.R.id.message)
+                        markwon.setParsedMarkdown(messageView, (desc as Spanned?)!!)
+                    }
+                }
+            } else {
+                madb.setMessage(button.context.getString(R.string.remote_message_no_update, name))
+            }
+            madb.setNegativeButton(R.string.cancel, null)
+            madb.create().show()
+        }
+
+        override fun update(button: Chip, moduleHolder: ModuleHolder) {
+            val icon: Int = R.drawable.baseline_cloud_download_24
+            button.chipIcon = button.context.getDrawable(icon)
+            button.setText(R.string.online)
         }
     };
 

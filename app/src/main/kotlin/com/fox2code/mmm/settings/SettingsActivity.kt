@@ -1395,6 +1395,7 @@ class SettingsActivity : FoxActivity(), LanguageActivity {
                         "magisk_alt_repo",
                         java.lang.Boolean.parseBoolean(newValue.toString())
                     )
+                    INSTANCE!!.repoModules.clear()
                     true
                 }
             // Disable toggling the pref_androidacy_repo_enabled on builds without an
@@ -1433,6 +1434,7 @@ class SettingsActivity : FoxActivity(), LanguageActivity {
                         val enabled = androidacyRepoEnabled.isChecked
                         // save the new state
                         db.reposListDao().setEnabled("androidacy_repo", enabled)
+                        INSTANCE!!.repoModules.clear()
                         true
                     }
                 if (androidacyRepoEnabledPref) {
@@ -1961,6 +1963,7 @@ class SettingsActivity : FoxActivity(), LanguageActivity {
                             R.string.repo_enabled_changed,
                             BaseTransientBottomBar.LENGTH_LONG
                         ).show()
+                        INSTANCE!!.repoModules.clear()
                         true
                     }
                 }

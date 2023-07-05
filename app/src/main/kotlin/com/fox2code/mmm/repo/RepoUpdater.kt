@@ -36,6 +36,19 @@ class RepoUpdater(repoData2: RepoData) {
             toApply = emptySet()
             return 0
         }
+        // if MainApplication.repoModules is not empty, return it
+        if (MainApplication.INSTANCE!!.repoModules.isNotEmpty()) {
+            Timber.d("Returning MainApplication.repoModules for %s", repoData.preferenceId)
+            // convert to list for toUpdate
+            val toUpdateList = ArrayList<RepoModule>()
+            for (module in MainApplication.INSTANCE!!.repoModules) {
+                toUpdateList.add(module.value)
+            }
+            toUpdate = toUpdateList
+            // toapply is a collection of RepoModule, so we need to convert the list to a set
+            toApply = HashSet(MainApplication.INSTANCE!!.repoModules.values)
+            return toUpdate!!.size
+        }
         // if we shouldn't update, get the values from the ModuleListCache realm
         if (!repoData.shouldUpdate() && repoData.preferenceId == "androidacy_repo") { // for now, only enable cache reading for androidacy repo, until we handle storing module prop file values in cache
             Timber.d("Fetching index from cache for %s", repoData.preferenceId)
@@ -127,13 +140,13 @@ class RepoUpdater(repoData2: RepoData) {
     }
 
     fun finish(): Boolean {
-        val success = AtomicBoolean(false)
-        Timber.d("Finishing update for %s", repoData.preferenceId)
         // If repo is not enabled we don't need to do anything, just return true
         if (!repoData.isEnabled) {
             Timber.d("Repo %s is disabled, skipping", repoData.preferenceId)
             return true
         }
+        val success = AtomicBoolean(false)
+        Timber.d("Finishing update for %s", repoData.preferenceId)
         if (indexRaw != null) {
             val tmpIndexRaw = indexRaw!!
             Timber.d("Updating database for %s", repoData.preferenceId)

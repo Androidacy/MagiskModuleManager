@@ -5,6 +5,7 @@
 package com.fox2code.mmm.repo
 
 import androidx.annotation.StringRes
+import com.fox2code.mmm.MainApplication
 import com.fox2code.mmm.manager.ModuleInfo
 
 class RepoModule {
@@ -78,7 +79,11 @@ class RepoModule {
         moduleInfo.support = support
         moduleInfo.version = version
         moduleInfo.versionCode = versionCode.toLong()
-        moduleInfo.flags = moduleInfo.flags or ModuleInfo.FLAG_METADATA_INVALID
+        moduleInfo.flags = moduleInfo.flags or ModuleInfo.FLAG_METADATA_INVALID and ModuleInfo.FLAG_MM_REMOTE_MODULE
         safe = moduleInfo.safe
+        // if mainapplication.repomodules has this module, set the flag for remote module
+        if (MainApplication.INSTANCE!!.repoModules.containsKey(id)) {
+            moduleInfo.flags = moduleInfo.flags or ModuleInfo.FLAG_MM_REMOTE_MODULE
+        }
     }
 }

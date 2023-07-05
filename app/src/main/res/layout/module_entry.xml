@@ -201,6 +201,14 @@
                         android:text="@string/loading"
                         android:visibility="gone"
                         app:chipIcon="@drawable/ic_baseline_error_24" />
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/button_action8"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/loading"
+                        android:visibility="gone"
+                        app:chipIcon="@drawable/ic_baseline_error_24" />
                 </com.google.android.material.chip.ChipGroup>
             </HorizontalScrollView>
         </androidx.constraintlayout.widget.ConstraintLayout>

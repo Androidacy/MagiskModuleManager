@@ -328,6 +328,10 @@ class MainActivity : FoxActivity(), OnRefreshListener, SearchView.OnQueryTextLis
                     // clear search view
                     searchView.setQuery("", false)
                     searchView.clearFocus()
+                    // reset reboot and search card
+                    searchCard.animate().translationY(0f).setInterpolator(DecelerateInterpolator(2f))
+                        .start()
+                    rebootFab.animate().translationY(0f).setInterpolator(DecelerateInterpolator(2f))
                 }
 
                 R.id.installed_menu_item -> {
@@ -346,6 +350,10 @@ class MainActivity : FoxActivity(), OnRefreshListener, SearchView.OnQueryTextLis
                     // set search view to cleared
                     searchView.setQuery("", false)
                     searchView.clearFocus()
+                    // reset reboot and search card
+                    searchCard.animate().translationY(0f).setInterpolator(DecelerateInterpolator(2f))
+                        .start()
+                    rebootFab.animate().translationY(0f).setInterpolator(DecelerateInterpolator(2f))
                 }
             }
             true
@@ -712,6 +720,8 @@ class MainActivity : FoxActivity(), OnRefreshListener, SearchView.OnQueryTextLis
         progressIndicator!!.visibility = View.VISIBLE
         progressIndicator!!.setProgressCompat(0, false)
         swipeRefreshBlocker = System.currentTimeMillis() + 5000L
+
+        MainApplication.INSTANCE!!.repoModules.clear()
         // this.swipeRefreshLayout.setRefreshing(true); ??
         Thread({
             cleanDnsCache() // Allow DNS reload from network

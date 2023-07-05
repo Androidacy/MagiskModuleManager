@@ -23,7 +23,7 @@ import com.fox2code.mmm.utils.io.net.Http.Companion.hasWebView
 import timber.log.Timber
 import java.util.Objects
 
-@Suppress("unused", "KotlinConstantConditions")
+@Suppress("unused", "KotlinConstantConditions", "RedundantSetter")
 class ModuleHolder : Comparable<ModuleHolder?> {
     val moduleId: String
     val notificationType: NotificationType?
@@ -68,8 +68,9 @@ class ModuleHolder : Comparable<ModuleHolder?> {
         get() = notificationType == null && separator == null && footerPx == -1
     val mainModuleInfo: ModuleInfo
         get() = if (repoModule != null && (moduleInfo == null || moduleInfo!!.versionCode < repoModule!!.moduleInfo.versionCode)) repoModule!!.moduleInfo else moduleInfo!!
-    val updateZipUrl: String?
+    var updateZipUrl: String? = null
         get() = if (moduleInfo == null || repoModule != null && moduleInfo!!.updateVersionCode < repoModule!!.moduleInfo.versionCode) repoModule!!.zipUrl else moduleInfo!!.updateZipUrl
+        set
     val updateZipRepo: String?
         get() = if (moduleInfo == null || repoModule != null && moduleInfo!!.updateVersionCode < repoModule!!.moduleInfo.versionCode) repoModule!!.repoData.preferenceId else "update_json"
     val updateZipChecksum: String?
@@ -117,17 +118,23 @@ class ModuleHolder : Comparable<ModuleHolder?> {
             Timber.i("Module %s is updateable", moduleId)
             var ignoreUpdate = false
             try {
-                if (getSharedPreferences("mmm")?.getStringSet("pref_background_update_check_excludes", HashSet())!!
+                if (getSharedPreferences("mmm")?.getStringSet(
+                        "pref_background_update_check_excludes",
+                        HashSet()
+                    )!!
                         .contains(
-                        moduleInfo!!.id
-                    )
+                            moduleInfo!!.id
+                        )
                 ) ignoreUpdate = true
             } catch (ignored: Exception) {
             }
             // now, we just had to make it more fucking complicated, didn't we?
             // we now have pref_background_update_check_excludes_version, which is a id:version stringset of versions the user may want to "skip"
             // oh, and because i hate myself, i made ^ at the beginning match that version and newer, and $ at the end match that version and older
-            val stringSetT = getSharedPreferences("mmm")?.getStringSet("pref_background_update_check_excludes_version", HashSet())
+            val stringSetT = getSharedPreferences("mmm")?.getStringSet(
+                "pref_background_update_check_excludes_version",
+                HashSet()
+            )
             var version = ""
             Timber.d(stringSetT.toString())
             // unfortunately, stringset.contains() doesn't work for partial matches
@@ -231,8 +238,28 @@ class ModuleHolder : Comparable<ModuleHolder?> {
         if (repoModule != null && repoModule!!.notesUrl != null) {
             buttonTypeList.add(ActionButtonType.INFO)
         }
-        if (repoModule != null || localModuleInfo?.updateZipUrl != null) {
+        // in below case, module cannot be in both repo and local if version codes are the same (if same, add online button, otherwise add update button)
+        if (repoModule != null || localModuleInfo?.updateZipUrl != null && localModuleInfo.updateVersionCode > localModuleInfo.versionCode) {
             buttonTypeList.add(ActionButtonType.UPDATE_INSTALL)
+        }
+        if (localModuleInfo != null && localModuleInfo.updateVersionCode <= localModuleInfo.versionCode) {
+            buttonTypeList.add(ActionButtonType.REMOTE)
+            // set updatezipurl on moduleholder
+
+            if (localModuleInfo.updateZipUrl != null) {
+                Timber.d("localModuleInfo: %s", localModuleInfo.updateZipUrl)
+                updateZipUrl = localModuleInfo.updateZipUrl
+            }
+            if (repoModule != null) {
+                Timber.d("repoModule: %s", repoModule!!.zipUrl)
+                updateZipUrl = repoModule!!.zipUrl
+            }
+            // last ditch effort, try to get remoteModuleInfo from localModuleInfo
+            if (localModuleInfo.remoteModuleInfo != null) {
+                Timber.d("remoteModuleInfo: %s", localModuleInfo.remoteModuleInfo!!.zipUrl)
+                updateZipUrl = localModuleInfo.remoteModuleInfo!!.zipUrl
+                moduleInfo?.updateZipUrl = localModuleInfo.remoteModuleInfo!!.zipUrl
+            }
         }
         val config = mainModuleConfig
         if (config != null) {
@@ -261,8 +288,6 @@ class ModuleHolder : Comparable<ModuleHolder?> {
         }
         if (moduleInfo.safe) {
             buttonTypeList.add(ActionButtonType.SAFE)
-        } else {
-            Timber.d("Module %s is not safe", moduleId)
         }
     }
 
@@ -303,7 +328,8 @@ class ModuleHolder : Comparable<ModuleHolder?> {
                 }
                 return 0
             }
-        }, SEPARATOR(R.string.loading, false, false) {
+        },
+        SEPARATOR(R.string.loading, false, false) {
             override fun compare(o1: ModuleHolder?, o2: ModuleHolder?): Int {
                 if (o1 != null && o2 != null) {
                     return o1.separator!!.compareTo(o2.separator!!)
@@ -378,7 +404,8 @@ class ModuleHolder : Comparable<ModuleHolder?> {
                 }
                 return 0
             }
-        }, INSTALLABLE(
+        },
+        INSTALLABLE(
             R.string.online_repo,
             true,
             true

@@ -29,6 +29,7 @@ import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
 import java.io.InputStreamReader
+import java.util.Date
 import java.util.zip.ZipFile
 
 
@@ -45,8 +46,27 @@ enum class NotificationType constructor(
     DEBUG(
         R.string.debug_build,
         R.drawable.ic_baseline_bug_report_24,
-        com.google.android.material.R.attr.colorSecondary,
-        com.google.android.material.R.attr.colorOnSecondary
+        com.google.android.material.R.attr.colorPrimary, com.google.android.material.R.attr.colorOnPrimary,
+        // on click show a toast formatted with commit hash and build date, plus number of days before expiration (builds expire 30 days after build date)
+        View.OnClickListener { v: View ->
+            val buildTime = BuildConfig.BUILD_TIME
+            val buildTimeDays = (System.currentTimeMillis() - buildTime) / 86400000
+            // builddatepretty is created from build_time as YYYY-MM-DD
+            val sdf = android.icu.text.SimpleDateFormat("yyyy-MM-dd", java.util.Locale.US)
+            val netDate = Date(buildTime)
+            val buildDatePretty = sdf.format(netDate)
+            val toastText = v.context.getString(
+                R.string.debug_build_toast,
+                BuildConfig.COMMIT_HASH,
+                buildDatePretty,
+                30 - buildTimeDays
+            )
+            Toast.makeText(
+                v.context,
+                toastText,
+                Toast.LENGTH_LONG
+            ).show()
+        }
     ) {
         override fun shouldRemove(): Boolean {
             return !BuildConfig.DEBUG
@@ -56,7 +76,7 @@ enum class NotificationType constructor(
     @JvmStatic
     SHOWCASE_MODE(
         R.string.showcase_mode, R.drawable.ic_baseline_lock_24,
-        androidx.appcompat.R.attr.colorPrimary, com.google.android.material.R.attr.colorOnPrimary
+        com.google.android.material.R.attr.colorPrimary, com.google.android.material.R.attr.colorOnPrimary
     ) {
         override fun shouldRemove(): Boolean {
             return !MainApplication.isShowcaseMode
@@ -175,7 +195,7 @@ enum class NotificationType constructor(
                 compatActivity.cacheDir,
                 "installer" + File.separator + "module.zip"
             )
-            IntentHelper.openFileTo(compatActivity, module, { d: File, u: Uri, s: Int ->
+            IntentHelper.openFileTo(compatActivity, module) { d: File, u: Uri, s: Int ->
                 if (s == IntentHelper.RESPONSE_FILE) {
                     try {
                         if (needPatch(d)) {
@@ -217,7 +237,7 @@ enum class NotificationType constructor(
                                 InstallerInitializer.peekMagiskPath() == null
                     )
                 }
-            })
+            }
         },
         false
     ) {

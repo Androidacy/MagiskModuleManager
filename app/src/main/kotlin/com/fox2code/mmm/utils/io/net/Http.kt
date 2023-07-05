@@ -798,7 +798,6 @@ enum class Http {;
             val hasInternet = try {
                 val resp = doHttpGet("https://production-api.androidacy.com/cdn-cgi/trace", false)
                 val respString = String(resp)
-                Timber.d("Ping response: $respString")
                 // resp should include that scheme is https and h is production-api.androidacy.com
                 respString.contains("scheme=https") && respString.contains("h=production-api.androidacy.com")
             } catch (e: HttpException) {
