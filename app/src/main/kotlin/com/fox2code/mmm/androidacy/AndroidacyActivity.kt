@@ -334,7 +334,6 @@ class AndroidacyActivity : FoxActivity() {
             }
         }
         wbv?.setDownloadListener(DownloadListener setDownloadListener@{ downloadUrl: String, _: String?, _: String?, _: String?, _: Long ->
-            Timber.i("Downloadable URL: %s", downloadUrl)
             val pageUrl = wbv.url
             if (downloadMode && isDownloadUrl(downloadUrl)) {
                 megaIntercept(pageUrl, downloadUrl)
