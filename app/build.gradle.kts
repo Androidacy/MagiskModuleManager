@@ -53,7 +53,7 @@ android {
         applicationId = "com.fox2code.mmm"
         minSdk = 24
         targetSdk = 33
-        versionCode = 79
+        versionCode = 80
         versionName = "2.2.2"
         vectorDrawables {
             useSupportLibrary = true
