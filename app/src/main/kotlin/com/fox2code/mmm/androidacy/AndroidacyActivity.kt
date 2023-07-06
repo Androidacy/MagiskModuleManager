@@ -429,7 +429,6 @@ class AndroidacyActivity : FoxActivity() {
             "https://staging-api.androidacy.com/magisk/file/"
         )) { // Make both staging and non staging act the same
             if (url.startsWith(prefix)) {
-                Timber.i("File URL: %s", url)
                 return true
             }
 
@@ -443,7 +442,6 @@ class AndroidacyActivity : FoxActivity() {
             "https://staging-api.androidacy.com/magisk/file/"
         )) { // Make both staging and non staging act the same
             if (url.startsWith(prefix)) {
-                Timber.i("Download URL: %s", url)
                 return true
             }
         }
