@@ -242,7 +242,8 @@ class ModuleHolder : Comparable<ModuleHolder?> {
         if (repoModule != null || localModuleInfo?.updateZipUrl != null && localModuleInfo.updateVersionCode > localModuleInfo.versionCode) {
             buttonTypeList.add(ActionButtonType.UPDATE_INSTALL)
         }
-        if (localModuleInfo != null && localModuleInfo.updateVersionCode <= localModuleInfo.versionCode) {
+        val rInfo = localModuleInfo?.remoteModuleInfo
+        if (localModuleInfo != null && rInfo != null && rInfo.moduleInfo.versionCode <= localModuleInfo.versionCode || localModuleInfo != null && localModuleInfo.updateVersionCode != Long.MIN_VALUE && localModuleInfo.updateVersionCode <= localModuleInfo.versionCode) {
             buttonTypeList.add(ActionButtonType.REMOTE)
             // set updatezipurl on moduleholder
 
@@ -255,10 +256,10 @@ class ModuleHolder : Comparable<ModuleHolder?> {
                 updateZipUrl = repoModule!!.zipUrl
             }
             // last ditch effort, try to get remoteModuleInfo from localModuleInfo
-            if (localModuleInfo.remoteModuleInfo != null) {
-                Timber.d("remoteModuleInfo: %s", localModuleInfo.remoteModuleInfo!!.zipUrl)
-                updateZipUrl = localModuleInfo.remoteModuleInfo!!.zipUrl
-                moduleInfo?.updateZipUrl = localModuleInfo.remoteModuleInfo!!.zipUrl
+            if (rInfo != null) {
+                Timber.d("remoteModuleInfo: %s", rInfo.zipUrl)
+                updateZipUrl = rInfo.zipUrl
+                moduleInfo?.updateZipUrl = rInfo.zipUrl
             }
         }
         val config = mainModuleConfig

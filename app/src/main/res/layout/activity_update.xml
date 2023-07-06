@@ -24,7 +24,7 @@
         <ImageView
             android:id="@+id/update_icon"
             android:layout_width="101dp"
-            android:layout_height="93dp"
+            android:layout_height="101dp"
             android:layout_gravity="center"
             android:layout_margin="8dp"
             android:contentDescription="@string/update"
@@ -76,7 +76,21 @@
             android:text="@string/update_debug_warning"
             android:textAppearance="?attr/textAppearanceBody2"
             android:visibility="gone" />
-
+        <com.google.android.material.button.MaterialButton
+                    android:id="@+id/action_update"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"                                                   android:layout_marginEnd="4dp"
+                    android:padding="12dp"
+                    android:text="@string/please_wait"
+                    android:textSize="16sp"
+                    app:icon="@drawable/ic_baseline_warning_24"
+                    app:iconGravity="textStart"
+                    app:iconPadding="8dp"
+                    app:iconTintMode="src_in"
+                    android:visibility="invisible"
+                    app:rippleColor="@color/gray_800"
+                    android:layout_width="match_parent"
+                    tools:ignore="DuplicateSpeakableTextCheck" />
 
         <!-- Changelog view -->
         <LinearLayout

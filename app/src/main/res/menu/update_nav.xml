@@ -11,11 +11,4 @@
         android:visible="true"
         app:showAsAction="ifRoom" />
 
-    <item
-        android:id="@+id/action_update"
-        android:enabled="false"
-        android:icon="@drawable/ic_baseline_refresh_24"
-        android:title="@string/update_button"
-        android:visible="true"
-        app:showAsAction="ifRoom" />
 </menu>

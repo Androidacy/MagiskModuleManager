@@ -31,6 +31,7 @@ import java.io.FileOutputStream
 import java.io.IOException
 import java.sql.Timestamp
 import java.util.Objects
+import com.google.android.material.button.MaterialButton
 
 class UpdateActivity : FoxActivity() {
     private var chgWv: WebView? = null
@@ -266,10 +267,6 @@ class UpdateActivity : FoxActivity() {
             statusTextView.setText(R.string.no_update_available)
             val changelogWebView = chgWv!!
             changelogWebView.loadUrl(url.replace("updates/check", "changelog"))
-            // execute javascript to make #rfrsh-btn just reload the page
-            changelogWebView.evaluateJavascript(
-                "(function() { document.getElementById('rfrsh-btn').onclick = function() { location.reload(); }; })();"
-            ) { }
         }
         // check for update
         val shouldUpdate = AppUpdateManager.appUpdateManager.checkUpdate(true)
@@ -279,11 +276,14 @@ class UpdateActivity : FoxActivity() {
                 // set status text to update available
                 statusTextView.setText(R.string.update_available)
                 // set button text to download
-                val button = findViewById<BottomNavigationItemView>(R.id.action_update)
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    button.tooltipText = getString(R.string.download_update)
-                }
+                val button = findViewById<MaterialButton>(R.id.action_update)
+                button.text = getString(R.string.download_update)
+                button.icon = getDrawable(R.drawable.baseline_cloud_download_24)
                 button.isEnabled = true
+                button.visibility = View.VISIBLE
+                button.setOnClickListener({
+                    downloadUpdate()
+                })
             }
             // return
         }
