@@ -531,7 +531,6 @@ enum class Http {;
                                 }
                                 return doHttpGet(url, allowCache)
                             } else {
-                                Timber.e("Failed to fetch " + url + ", code: " + response.code)
                                 throw HttpException(response.code)
                             }
                         }
