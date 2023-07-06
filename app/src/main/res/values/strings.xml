@@ -390,6 +390,6 @@
     <string name="no_sentry_id">Unable to submit feedback - no event ID from Sentry. The last event may not have sent.</string>
     <string name="remote_module">Available from an online repo</string>
     <string name="remote_message">%s is available from a online repo. <b>We strongly advise you to clean install it because most modules do not handle re-installation gracefully,</b> but you can reinstall instead at your own risk.</string>
-    <string name="debug_build_toast">AMM debug build %s built on %s with %d days remaining</string>
+    <string name="debug_build_toast">AMM debug build %1$s built on %2$s with %3$d days remaining</string>
     <string name="remote_message_no_update">%s is available from a online repo. Please uninstall it to see it in the online tab.</string>
 </resources>
