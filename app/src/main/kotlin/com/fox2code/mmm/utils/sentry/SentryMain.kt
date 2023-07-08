@@ -56,7 +56,7 @@ object SentryMain {
             // pass crashReportingEnabled to crash handler
             intent.putExtra("crashReportingEnabled", isSentryEnabled)
             // add isCrashing to intent
-            intent.putExtra("isCrashing", isCrashing)
+            intent.putExtra("isCrashing", true)
             // add crashExceptionId to intent
             if (crashExceptionId != null) {
                 intent.putExtra("lastEventId", crashExceptionId!!.toString())
