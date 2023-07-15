@@ -369,4 +369,8 @@
     <string name="ssl_error">Wykryto potencjalne przechwycenie SSL.</string>
     <string name="error_opening_notes">Błąd podczas otwierania uwag modułu. Przyczyna może znajdować się w logach.</string>
     <string name="no_sentry_id">Nie można przesłać informacji zwrotnej - brak ID zdarzenia z Sentry. Ostatnie zdarzenie mogło nie zostać wysłane.</string>
+    <string name="debug_build_toast">AMM debug %1$s, zbudowano w %2$s, będzie działać %3$d dni</string>
+    <string name="remote_message_no_update">%s jest dostępny w repozytorium online. Odinstaluj ten moduł, aby zobaczyć go w zakładce online.</string>
+    <string name="remote_module">Dostępne z repozytorium online</string>
+    <string name="remote_message">%s jest dostępny z repozytorium online. <b>Zalecana instalacja na czysto, ponieważ większość modułów nie radzi sobie z ponowną instalacją</b>, ale możesz przeinstalować na własne ryzyko.</string>
 </resources>

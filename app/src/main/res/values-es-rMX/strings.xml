@@ -375,4 +375,9 @@
     <string name="error_opening_notes">Error al abrir las notas del módulo. Los registros pueden tener la razón.</string>
     <string name="submit_feedback">Enviar comentarios</string>
     <string name="ssl_error">Intercepción potencial de SSL detectada.</string>
+    <string name="no_sentry_id">No se pueden enviar comentarios - no hay ID de evento de Centinela. Es posible que el último evento no se haya enviado.</string>
+    <string name="remote_module">Disponible desde un repositorio en línea</string>
+    <string name="debug_build_toast">Compilación de depuración de AMM %1$s construida sobre %2$s con %3$d días restantes</string>
+    <string name="remote_message_no_update">%s está disponible en un repositorio en línea. Desinstálelo para verlo en la pestaña en línea.</string>
+    <string name="remote_message">%s esta disponible desde un repositorio en línea. <b>Le recomendamos encarecidamente que lo instale porque la mayoría de los módulos no manejan la reinstalación correctamente,</b> pero puede reinstalarlo en cambio bajo su propio riesgo.</string>
 </resources>

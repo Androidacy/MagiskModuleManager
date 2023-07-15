@@ -1,1 +1,1 @@
-Sebuah aplikasi manajemen modul untuk Magisk karena aplikasi resmi Magisk sudah tidak mendukung manajemen modul lagi.
+Sebuah manajer modul untuk Magisk karena Magisk sudah tidak menyediakannya lagi.
