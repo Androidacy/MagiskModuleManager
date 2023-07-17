@@ -13,7 +13,7 @@ buildscript {
         gradlePluginPortal()
     }
     dependencies {
-        classpath("com.android.tools.build:gradle:8.1.0-rc01")
+        classpath("com.android.tools.build:gradle:8.0.2")
         classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.8.22")
         classpath("com.mikepenz.aboutlibraries.plugin:aboutlibraries-plugin:10.8.0")
 

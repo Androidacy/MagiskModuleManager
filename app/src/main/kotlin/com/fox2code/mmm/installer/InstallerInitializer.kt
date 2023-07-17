@@ -160,11 +160,11 @@ class InstallerInitializer : Shell.Initializer() {
                 Companion.mgskVerCode = mgskVerCode
                 return mgskPth
             } catch (ignored: Exception) {
-                return if (tries <= 5) {
+                return if (tries <= 10) {
                     tries++
                     // sleep tries * 25ms
                     try {
-                        Thread.sleep(tries * 25L)
+                        Thread.sleep(tries * 50L)
                     } catch (e: InterruptedException) {
                         Timber.e(e)
                     }

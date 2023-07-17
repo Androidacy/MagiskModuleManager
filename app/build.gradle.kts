@@ -53,8 +53,8 @@ android {
         applicationId = "com.fox2code.mmm"
         minSdk = 24
         targetSdk = 33
-        versionCode = 80
-        versionName = "2.2.2"
+        versionCode = 81
+        versionName = "2.2.3"
         vectorDrawables {
             useSupportLibrary = true
         }
@@ -462,7 +462,7 @@ dependencies {
     implementation("com.github.KieronQuinn:MonetCompat:0.4.1")
     implementation("com.github.Fox2Code.FoxCompat:foxcompat:1.2.14")
     implementation("com.github.Fox2Code.FoxCompat:hiddenapis:1.2.14")
-    implementation("com.mikepenz:aboutlibraries:10.8.0")
+    implementation("com.mikepenz:aboutlibraries:10.8.2")
 
     // Utils
     implementation("androidx.work:work-runtime:2.8.1")
@@ -487,12 +487,12 @@ dependencies {
     implementation("com.github.Fox2Code:AndroidANSI:1.2.1")
 
     // sentry
-    implementation("io.sentry:sentry-android:6.25.0")
-    implementation("io.sentry:sentry-android-timber:6.25.0")
-    implementation("io.sentry:sentry-android-fragment:6.25.0")
-    implementation("io.sentry:sentry-android-okhttp:6.25.0")
-    implementation("io.sentry:sentry-kotlin-extensions:6.25.0")
-    implementation("io.sentry:sentry-android-ndk:6.25.0")
+    implementation("io.sentry:sentry-android:6.25.2")
+    implementation("io.sentry:sentry-android-timber:6.25.2")
+    implementation("io.sentry:sentry-android-fragment:6.25.2")
+    implementation("io.sentry:sentry-android-okhttp:6.25.2")
+    implementation("io.sentry:sentry-kotlin-extensions:6.25.2")
+    implementation("io.sentry:sentry-android-ndk:6.25.2")
 
     // Markdown
     // TODO: switch to an updated implementation

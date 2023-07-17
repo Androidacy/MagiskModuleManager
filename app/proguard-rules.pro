@@ -211,6 +211,12 @@
 -keep class com.topjohnwu.superuser.Shell$Result
 -keep class com.topjohnwu.superuser.Shell
 
+# fix for Parameter specified as non-null is null: method com.fox2code.mmm.installer.InstallerInitializer.a, parameter context which extends com.topjohnwu.superuser.Shell$Initializer
+# a is actually onInit and the code is in kotlin
+-keepclassmembers class com.fox2code.mmm.installer.InstallerInitializer {
+    public onInit(android.content.Context, com.topjohnwu.superuser.Shell);
+}
+
 # dontwarn
 -dontwarn android.os.SystemProperties
 -dontwarn android.view.ThreadedRenderer
