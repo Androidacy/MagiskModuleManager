@@ -119,6 +119,9 @@ android {
             renderscriptOptimLevel = 3
             signingConfig = signingConfigs.getByName("release")
             multiDexEnabled = true
+            isDebuggable = false
+            isJniDebuggable = false
+            isRenderscriptDebuggable = false
         }
         getByName("debug") {
             applicationIdSuffix = ".debug"
@@ -462,7 +465,7 @@ dependencies {
     implementation("com.github.KieronQuinn:MonetCompat:0.4.1")
     implementation("com.github.Fox2Code.FoxCompat:foxcompat:1.2.14")
     implementation("com.github.Fox2Code.FoxCompat:hiddenapis:1.2.14")
-    implementation("com.mikepenz:aboutlibraries:10.8.2")
+    implementation("com.mikepenz:aboutlibraries:10.8.3")
 
     // Utils
     implementation("androidx.work:work-runtime:2.8.1")

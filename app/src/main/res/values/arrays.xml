@@ -22,4 +22,21 @@
         <item>@string/theme_transparent_light</item>
         <item>@string/theme_light</item>
     </string-array>
+    <string-array name="notification_update_frequency_entries" translatable="false">
+        <!-- 15, 30 min then 1 hour, six hours, 12 hours, daily -->
+        <item>@string/update_frequency_15</item>
+        <item>@string/update_frequency_30</item>
+        <item>@string/update_frequency_60</item>
+        <item>@string/update_frequency_360</item>
+        <item>@string/update_frequency_720</item>
+        <item>@string/update_frequency_1440</item>
+    </string-array>
+    <string-array name="notification_update_frequency_values" translatable="false">
+        <item>15</item>
+        <item>30</item>
+        <item>60</item>
+        <item>360</item>
+        <item>720</item>
+        <item>1440</item>
+    </string-array>
 </resources>

@@ -162,7 +162,9 @@
         </activity>
         <activity
             android:name="com.mikepenz.aboutlibraries.ui.LibsActivity"
-            tools:node="remove" />
+            android:exported="false"
+            android:parentActivityName=".settings.SettingsActivity"
+            android:theme="@style/Theme.MagiskModuleManager.NoActionBar" />
 
         <provider
             android:name="androidx.startup.InitializationProvider"

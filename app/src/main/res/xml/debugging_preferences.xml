@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <PreferenceCategory app:title="@string/debug_cat">
+
+        <SwitchPreferenceCompat
+            app:defaultValue="false"
+            app:icon="@drawable/ic_baseline_hide_source_24"
+            app:key="pref_show_incompatible"
+            app:singleLineTitle="false"
+            app:summary="@string/show_incompatible_desc"
+            app:title="@string/show_incompatible_pref" />
+
+        <SwitchPreferenceCompat
+            app:defaultValue="false"
+            app:icon="@drawable/ic_baseline_warning_24"
+            app:key="pref_disable_low_quality_module_filter"
+            app:singleLineTitle="false"
+            app:summary="@string/disable_low_quality_module_filter_desc"
+            app:title="@string/disable_low_quality_module_filter_pref" />
+
+        <SwitchPreferenceCompat
+            app:defaultValue="false"
+            app:icon="@drawable/ic_baseline_numbers_24"
+            app:key="pref_use_magisk_install_command"
+            app:singleLineTitle="false"
+            app:summary="@string/use_magisk_install_command_desc"
+            app:title="@string/use_magisk_install_command_pref" />
+        <!-- Purposely crash the app -->
+        <Preference
+            app:icon="@drawable/ic_baseline_bug_report_24"
+            app:key="pref_test_crash"
+            app:singleLineTitle="false"
+            app:title="@string/crash" />
+        <!-- Pref to clear the app data -->
+        <Preference
+            app:icon="@drawable/ic_baseline_delete_24"
+            app:key="pref_clear_data"
+            app:singleLineTitle="false"
+            app:title="@string/clear_app_data" />
+        <!-- clear app cache -->
+        <Preference
+            app:icon="@drawable/ic_baseline_delete_24"
+            app:key="pref_clear_cache"
+            app:singleLineTitle="false"
+            app:summary="@string/clear_app_cache_desc"
+            app:title="@string/clear_app_cache" />
+        <!-- Save logs -->
+        <Preference
+            app:icon="@drawable/baseline_save_24"
+            app:key="pref_save_logs"
+            app:singleLineTitle="false"
+            app:title="@string/save_logs" />
+    </PreferenceCategory>
+
+</PreferenceScreen>

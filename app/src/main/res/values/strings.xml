@@ -392,4 +392,13 @@
     <string name="remote_message">%s is available from a online repo. <b>We strongly advise you to clean install it because most modules do not handle re-installation gracefully,</b> but you can reinstall instead at your own risk.</string>
     <string name="debug_build_toast">AMM debug build %1$s built on %2$s with %3$d days remaining</string>
     <string name="remote_message_no_update">%s is available from a online repo. Please uninstall it to see it in the online tab.</string>
+    <string name="credits">Credits</string>
+    <string name="notification_update_frequency_pref">Background check frequency</string>
+    <string name="notification_update_frequency_desc">How often to check for updates in the background. Setting too low a value could result in battery drain.</string>
+    <string name="update_frequency_15">15 minutes</string>
+    <string name="update_frequency_30">30 minutes</string>
+    <string name="update_frequency_60">Hourly</string>
+    <string name="update_frequency_360">6 hours</string>
+    <string name="update_frequency_720">12 hours</string>
+    <string name="update_frequency_1440">Daily</string>
 </resources>

@@ -420,13 +420,16 @@ class BackgroundUpdateChecker(context: Context, workerParams: WorkerParameters) 
                 ).build()
             )
             notificationManagerCompat.cancel(NOTIFICATION_ID_ONGOING)
-            // schedule periodic check for updates every 6 hours (6 * 60 * 60 = 21600) and not on low battery
             Timber.d("Scheduling periodic background check")
+            // use pref_background_update_check_frequency to set frequency. value is in minutes
+            val frequency = MainApplication.getSharedPreferences("mmm")!!
+                .getInt("pref_background_update_check_frequency", 60).toLong()
+            Timber.d("Frequency: $frequency minutes")
             WorkManager.getInstance(context).enqueueUniquePeriodicWork(
                 "background_checker",
                 ExistingPeriodicWorkPolicy.UPDATE,
                 PeriodicWorkRequest.Builder(
-                    BackgroundUpdateChecker::class.java, 21600, TimeUnit.SECONDS
+                    BackgroundUpdateChecker::class.java, frequency, TimeUnit.MINUTES
                 ).setConstraints(
                     Constraints.Builder().setRequiresBatteryNotLow(true).build()
                 ).build()

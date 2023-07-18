@@ -5,317 +5,83 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <PreferenceCategory
-        app:icon="@drawable/ic_baseline_info_24"
+    <Preference
+        app:icon="@drawable/ic_baseline_warning_24"
+        android:enabled="false"
         app:title="@string/warning_pls_restart" />
 
-    <!-- Custom repos has been announced, check https://github.com/Androidacy/MagiskModuleManager/issues/131 -->
-    <PreferenceCategory app:title="@string/pref_category_repos">
-        <Preference
-            app:icon="@drawable/ic_baseline_extension_24"
-            app:key="pref_manage_repos"
-            app:singleLineTitle="false"
-            app:title="@string/manage_repos_pref" />
+    <Preference
+        android:fragment="com.fox2code.mmm.settings.RepoFragment"
+        app:icon="@drawable/ic_baseline_extension_24"
+        app:key="pref_manage_repos"
+        app:singleLineTitle="false"
+        app:title="@string/manage_repos_pref" />
 
-        <SwitchPreferenceCompat
-            app:defaultValue="false"
-            app:icon="@drawable/ic_baseline_hide_source_24"
-            app:key="pref_show_incompatible"
-            app:singleLineTitle="false"
-            app:summary="@string/show_incompatible_desc"
-            app:title="@string/show_incompatible_pref" />
+    <!-- updates, appearance, security, privacy, info, debugging, credits, etc. -->
 
-        <SwitchPreferenceCompat
-            app:defaultValue="false"
-            app:icon="@drawable/ic_baseline_warning_24"
-            app:key="pref_disable_low_quality_module_filter"
-            app:singleLineTitle="false"
-            app:summary="@string/disable_low_quality_module_filter_desc"
-            app:title="@string/disable_low_quality_module_filter_pref" />
+    <Preference
+        android:fragment="com.fox2code.mmm.settings.UpdateFragment"
+        app:icon="@drawable/ic_baseline_update_24"
+        app:key="pref_updates_screen"
+        app:singleLineTitle="false"
+        app:title="@string/pref_category_updates" />
 
-        <SwitchPreferenceCompat
-            app:defaultValue="false"
-            app:icon="@drawable/ic_baseline_numbers_24"
-            app:key="pref_use_magisk_install_command"
-            app:singleLineTitle="false"
-            app:summary="@string/use_magisk_install_command_desc"
-            app:title="@string/use_magisk_install_command_pref" />
-    </PreferenceCategory>
+    <Preference
+        android:fragment="com.fox2code.mmm.settings.AppearanceFragment"
+        app:icon="@drawable/ic_baseline_palette_24"
+        app:key="pref_appearance"
+        app:singleLineTitle="false"
+        app:title="@string/pref_category_appearance" />
 
-    <PreferenceCategory app:title="@string/pref_category_updates">
+    <Preference
+        android:fragment="com.fox2code.mmm.settings.SecurityFragment"
+        app:icon="@drawable/ic_baseline_security_24"
+        app:key="pref_security"
+        app:singleLineTitle="false"
+        app:title="@string/pref_category_security" />
 
-        <SwitchPreferenceCompat
-            app:defaultValue="true"
-            app:icon="@drawable/ic_baseline_notifications_24"
-            app:key="pref_background_update_check"
-            app:singleLineTitle="false"
-            app:summary="@string/notification_update_desc"
-            app:title="@string/notification_update_pref" />
+    <Preference
+        android:fragment="com.fox2code.mmm.settings.PrivacyFragment"
+        app:icon="@drawable/baseline_privacy_tip_24"
+        app:key="pref_privacy"
+        app:singleLineTitle="false"
+        app:title="@string/pref_category_privacy" />
 
-        <!-- check for app updates -->
-        <SwitchPreferenceCompat
-            app:defaultValue="true"
-            app:icon="@drawable/ic_baseline_app_settings_alt_24"
-            app:key="pref_background_update_check_app"
-            app:singleLineTitle="false"
-            app:summary="@string/notification_update_app_desc"
-            app:title="@string/notification_update_app_pref" />
 
-        <!-- require wifi -->
-        <SwitchPreferenceCompat
-            app:defaultValue="true"
-            app:dependency="pref_background_update_check"
-            app:icon="@drawable/baseline_network_wifi_24"
-            app:key="pref_background_update_check_wifi"
-            app:singleLineTitle="false"
-            app:summary="@string/notification_update_wifi_pref"
-            app:title="@string/notification_update_wifi_desc" />
+    <Preference
+        android:fragment="com.fox2code.mmm.settings.DebugFragment"
+        app:icon="@drawable/ic_baseline_bug_report_24"
+        app:key="pref_debug"
+        app:singleLineTitle="false"
+        app:title="@string/debug_cat" />
 
-        <!-- Ignore updates for preference. Used to ignore updates for specific modules -->
-        <Preference
-            app:icon="@drawable/baseline_block_24"
-            app:key="pref_background_update_check_excludes"
-            app:singleLineTitle="false"
-            app:summary="@string/notification_update_ignore_desc"
-            app:title="@string/notification_update_ignore_pref" />
+    <Preference
+        android:fragment="com.fox2code.mmm.settings.InfoFragment"
+        app:icon="@drawable/ic_baseline_info_24"
+        app:key="pref_info"
+        app:singleLineTitle="false"
+        app:title="@string/pref_category_info" />
 
-        <!-- exclude specific versions -->
+    <Preference
+        android:fragment="com.fox2code.mmm.settings.CreditsFragment"
+        app:icon="@drawable/baseline_people_24"
+        app:key="pref_credits"
+        app:singleLineTitle="false"
+        app:title="@string/credits" />
 
-        <Preference
-            app:icon="@drawable/baseline_block_24"
-            app:key="pref_background_update_check_excludes_version"
-            app:singleLineTitle="false"
-            app:summary="@string/notification_update_ignore_version_desc"
-            app:title="@string/notification_update_ignore_version_pref" />
 
-        <Preference
-            app:icon="@drawable/baseline_notification_important_24"
-            app:key="pref_background_update_check_debug"
-            app:singleLineTitle="false"
-            app:title="@string/notification_update_debug_pref" />
+    <Preference
+        app:icon="@drawable/ic_baseline_list_24"
+        app:key="pref_show_licenses"
+        app:singleLineTitle="false"
+        app:title="@string/show_licenses" />
 
-        <!-- For debugging: launch update activity with download action -->
-        <Preference
-            app:icon="@drawable/ic_baseline_download_24"
-            app:key="pref_background_update_check_debug_download"
-            app:singleLineTitle="false"
-            app:title="@string/update_debug_download_pref" />
 
-        <com.fox2code.mmm.settings.LongClickablePreference
-            app:icon="@drawable/ic_baseline_system_update_24"
-            app:key="pref_update"
-            app:singleLineTitle="false"
-            app:title="@string/check_for_updates" />
-    </PreferenceCategory>
-
-    <PreferenceCategory app:title="@string/pref_category_appearance">
-        <ListPreference
-            app:defaultValue="system"
-            app:entries="@array/theme_values_names"
-            app:entryValues="@array/theme_values"
-            app:icon="@drawable/ic_baseline_palette_24"
-            app:key="pref_theme"
-            app:singleLineTitle="false"
-            app:title="@string/theme_pref" />
-
-        <Preference
-            app:icon="@drawable/ic_baseline_language_24"
-            app:key="pref_language_selector"
-            app:title="@string/language" />
-
-        <!-- Call to action for translators -->
-        <com.fox2code.mmm.settings.LongClickablePreference
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="8sp"
-            app:icon="@drawable/ic_baseline_info_24"
-            app:key="pref_language_selector_cta"
-            app:singleLineTitle="false"
-            app:summary="@string/language_cta_desc"
-            app:title="@string/language_cta" />
-
-        <SwitchPreferenceCompat
-            app:defaultValue="false"
-            app:icon="@drawable/ic_baseline_blur_on_24"
-            app:key="pref_enable_blur"
-            app:singleLineTitle="false"
-            app:summary="@string/blur_desc"
-            app:title="@string/enable_blur_pref" />
-
-        <SwitchPreferenceCompat
-            app:defaultValue="false"
-            app:icon="@drawable/ic_baseline_list_24"
-            app:key="pref_force_dark_terminal"
-            app:singleLineTitle="false"
-            app:title="@string/force_dark_terminal_title" />
-
-        <SwitchPreferenceCompat
-            app:defaultValue="@bool/monet_enabled_by_default"
-            app:icon="@drawable/ic_baseline_design_services_24"
-            app:key="pref_enable_monet"
-            app:singleLineTitle="false"
-            app:title="@string/enable_monet" />
-
-        <SwitchPreferenceCompat
-            app:defaultValue="false"
-            app:icon="@drawable/ic_baseline_keyboard_return_24"
-            app:key="pref_wrap_text"
-            app:singleLineTitle="false"
-            app:summary="@string/wrap_text_desc"
-            app:title="@string/wrap_text_pref" />
-    </PreferenceCategory>
-
-    <PreferenceCategory app:title="@string/pref_category_security">
-        <SwitchPreferenceCompat
-            app:defaultValue="true"
-            app:icon="@drawable/ic_baseline_security_24"
-            app:key="pref_dns_over_https"
-            app:singleLineTitle="false"
-            app:summary="@string/dns_over_https_desc"
-            app:title="@string/dns_over_https_pref" />
-
-        <!-- TO DO: figure out why the f*** we need a showcase mode -->
-        <!-- like seriously, why? -->
-        <SwitchPreferenceCompat
-            app:defaultValue="false"
-            app:icon="@drawable/ic_baseline_lock_24"
-            app:key="pref_showcase_mode"
-            app:singleLineTitle="false"
-            app:summary="@string/showcase_mode_desc"
-            app:title="@string/showcase_mode_pref" />
-
-        <SwitchPreferenceCompat
-            app:defaultValue="true"
-            app:icon="@drawable/ic_reboot_24"
-            app:key="pref_prevent_reboot"
-            app:singleLineTitle="false"
-            app:summary="@string/prevent_reboot_desc"
-            app:title="@string/prevent_reboot_pref" />
-    </PreferenceCategory>
-    <PreferenceCategory app:title="@string/pref_category_privacy">
-        <!-- Crash reporting -->
-        <SwitchPreferenceCompat
-            app:defaultValue="true"
-            app:icon="@drawable/ic_baseline_bug_report_24"
-            app:key="pref_crash_reporting"
-            app:singleLineTitle="false"
-            app:summary="@string/crash_reporting_desc"
-            app:title="@string/crash_reporting" />
-        <!-- allow pii in crash reports -->
-        <SwitchPreferenceCompat
-            app:defaultValue="false"
-            app:dependency="pref_crash_reporting"
-            app:icon="@drawable/ic_baseline_bug_report_24"
-            app:key="pref_crash_reporting_pii"
-            app:singleLineTitle="false"
-            app:summary="@string/crash_reporting_pii_desc"
-            app:title="@string/crash_reporting_pii" />
-        <!-- analytics enabled -->
-        <SwitchPreferenceCompat
-            app:defaultValue="false"
-            app:icon="@drawable/ic_baseline_info_24"
-            app:key="pref_analytics_enabled"
-            app:singleLineTitle="false"
-            app:summary="@string/analytics_desc"
-            app:title="@string/setup_app_analytics" />
-
-    </PreferenceCategory>
-    <PreferenceCategory app:title="@string/debug_cat">
-        <!-- Purposely crash the app -->
-        <Preference
-            app:icon="@drawable/ic_baseline_bug_report_24"
-            app:key="pref_test_crash"
-            app:singleLineTitle="false"
-            app:title="@string/crash" />
-        <!-- Pref to clear the app data -->
-        <Preference
-            app:icon="@drawable/ic_baseline_delete_24"
-            app:key="pref_clear_data"
-            app:singleLineTitle="false"
-            app:title="@string/clear_app_data" />
-        <!-- clear app cache -->
-        <Preference
-            app:icon="@drawable/ic_baseline_delete_24"
-            app:key="pref_clear_cache"
-            app:singleLineTitle="false"
-            app:summary="@string/clear_app_cache_desc"
-            app:title="@string/clear_app_cache" />
-        <!-- Save logs -->
-        <Preference
-            app:icon="@drawable/baseline_save_24"
-            app:key="pref_save_logs"
-            app:singleLineTitle="false"
-            app:title="@string/save_logs" />
-    </PreferenceCategory>
-
-    <PreferenceCategory app:title="@string/pref_category_info">
-        <!-- donate buttons for fox2code and androidacy -->
-        <com.fox2code.mmm.settings.LongClickablePreference
-            app:icon="@drawable/ic_baseline_monetization_on_24"
-            app:key="pref_donate_fox"
-            app:singleLineTitle="false"
-            app:title="@string/donate_fox" />
-        <com.fox2code.mmm.settings.LongClickablePreference
-            app:icon="@drawable/ic_baseline_monetization_on_24"
-            app:key="pref_donate_androidacy"
-            app:singleLineTitle="false"
-            app:summary="@string/donate_androidacy_sum"
-            app:title="@string/donate_androidacy" />
-        <com.fox2code.mmm.settings.LongClickablePreference
-            app:icon="@drawable/ic_baseline_bug_report_24"
-            app:key="pref_report_bug"
-            app:singleLineTitle="false"
-            app:title="@string/report_bugs" />
-        <com.fox2code.mmm.settings.LongClickablePreference
-            app:icon="@drawable/ic_github"
-            app:key="pref_source_code"
-            app:singleLineTitle="false"
-            app:title="@string/source_code" />
-        <com.fox2code.mmm.settings.LongClickablePreference
-            app:icon="@drawable/ic_baseline_telegram_24"
-            app:key="pref_support"
-            app:singleLineTitle="false"
-            app:title="@string/support" />
-        <com.fox2code.mmm.settings.LongClickablePreference
-            app:icon="@drawable/ic_baseline_telegram_24"
-            app:key="pref_announcements"
-            app:singleLineTitle="false"
-            app:title="@string/announcements" />
-        <Preference
-            app:icon="@drawable/ic_baseline_info_24"
-            app:key="pref_show_licenses"
-            app:singleLineTitle="false"
-            app:title="@string/show_licenses" />
-    </PreferenceCategory>
-    <PreferenceCategory app:title="@string/pref_category_contributors">
-        <!-- Small lil thanks to Androidacy -->
-        <com.fox2code.mmm.settings.LongClickablePreference
-            app:icon="@drawable/baseline_favorite_24"
-            app:key="pref_androidacy_thanks"
-            app:singleLineTitle="false"
-            app:summary="@string/androidacy_thanks_desc"
-            app:title="@string/androidacy_thanks" />
-        <!-- Small lil thanks to Fox2Code -->
-        <com.fox2code.mmm.settings.LongClickablePreference
-            app:icon="@drawable/baseline_favorite_24"
-            app:key="pref_fox2code_thanks"
-            app:singleLineTitle="false"
-            app:summary="@string/fox2code_thanks_desc"
-            app:title="@string/fox2code_thanks" />
-        <!-- OKay, so we'll thank all the other contributors too -->
-        <com.fox2code.mmm.settings.LongClickablePreference
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            app:iconSpaceReserved="false"
-            app:key="pref_contributors"
-            app:singleLineTitle="false"
-            app:title="@string/contributors" />
-        <!-- And the translators -->
-        <Preference
-            app:enabled="true"
-            app:iconSpaceReserved="false"
-            app:key="pref_pkg_info"
-            app:singleLineTitle="false"
-            app:summary="@string/loading" />
-    </PreferenceCategory>
+    <Preference
+        app:enabled="true"
+        app:iconSpaceReserved="false"
+        app:key="pref_pkg_info"
+        app:singleLineTitle="false"
+        app:summary="@string/loading" />
 
 </PreferenceScreen>

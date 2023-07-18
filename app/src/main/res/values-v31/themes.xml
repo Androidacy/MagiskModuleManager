@@ -70,6 +70,12 @@
     </style>
 
     <!-- I have no idea why this is needed, but it is -->
+    <style name="Theme.MagiskModuleManager.NoActionBar" parent="Theme.MagiskModuleManager.Monet">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:windowActionBar">false</item>
+        <item name="android:windowNoTitle">true</item>
+    </style>
 
 
     <!-- Base application theme. -->

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+    <PreferenceCategory app:title="@string/pref_category_appearance">
+        <ListPreference
+            app:defaultValue="system"
+            app:entries="@array/theme_values_names"
+            app:entryValues="@array/theme_values"
+            app:icon="@drawable/ic_baseline_palette_24"
+            app:key="pref_theme"
+            app:singleLineTitle="false"
+            app:title="@string/theme_pref" />
+
+        <Preference
+            app:icon="@drawable/ic_baseline_language_24"
+            app:key="pref_language_selector"
+            app:title="@string/language" />
+
+        <!-- Call to action for translators -->
+        <com.fox2code.mmm.settings.LongClickablePreference
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="8sp"
+            app:icon="@drawable/ic_baseline_info_24"
+            app:key="pref_language_selector_cta"
+            app:singleLineTitle="false"
+            app:summary="@string/language_cta_desc"
+            app:title="@string/language_cta" />
+
+        <SwitchPreferenceCompat
+            app:defaultValue="false"
+            app:icon="@drawable/ic_baseline_blur_on_24"
+            app:key="pref_enable_blur"
+            app:singleLineTitle="false"
+            app:summary="@string/blur_desc"
+            app:title="@string/enable_blur_pref" />
+
+        <SwitchPreferenceCompat
+            app:defaultValue="false"
+            app:icon="@drawable/ic_baseline_list_24"
+            app:key="pref_force_dark_terminal"
+            app:singleLineTitle="false"
+            app:title="@string/force_dark_terminal_title" />
+
+        <SwitchPreferenceCompat
+            app:defaultValue="@bool/monet_enabled_by_default"
+            app:icon="@drawable/ic_baseline_design_services_24"
+            app:key="pref_enable_monet"
+            app:singleLineTitle="false"
+            app:title="@string/enable_monet" />
+
+        <SwitchPreferenceCompat
+            app:defaultValue="false"
+            app:icon="@drawable/ic_baseline_keyboard_return_24"
+            app:key="pref_wrap_text"
+            app:singleLineTitle="false"
+            app:summary="@string/wrap_text_desc"
+            app:title="@string/wrap_text_pref" />
+    </PreferenceCategory>
+
+</PreferenceScreen>

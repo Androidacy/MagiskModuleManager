@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <PreferenceCategory app:title="@string/pref_category_updates">
+
+        <SwitchPreferenceCompat
+            app:defaultValue="true"
+            app:icon="@drawable/ic_baseline_notifications_24"
+            app:key="pref_background_update_check"
+            app:singleLineTitle="false"
+            app:summary="@string/notification_update_desc"
+            app:title="@string/notification_update_pref" />
+
+        <!-- check for app updates -->
+        <SwitchPreferenceCompat
+            app:defaultValue="true"
+            app:icon="@drawable/ic_baseline_app_settings_alt_24"
+            app:key="pref_background_update_check_app"
+            app:singleLineTitle="false"
+            app:summary="@string/notification_update_app_desc"
+            app:title="@string/notification_update_app_pref" />
+
+        <!-- require wifi -->
+        <SwitchPreferenceCompat
+            app:defaultValue="true"
+            app:icon="@drawable/baseline_network_wifi_24"
+            app:key="pref_background_update_check_wifi"
+            app:singleLineTitle="false"
+            app:summary="@string/notification_update_wifi_pref"
+            app:title="@string/notification_update_wifi_desc" />
+
+        <!-- update check frequency -->
+        <ListPreference
+            app:defaultValue="0"
+            app:entries="@array/notification_update_frequency_entries"
+            app:entryValues="@array/notification_update_frequency_values"
+            app:icon="@drawable/baseline_access_time_24"
+            app:key="pref_background_update_check_frequency"
+            app:singleLineTitle="false"
+            android:defaultValue="360"
+            app:summary="@string/notification_update_frequency_desc"
+            app:title="@string/notification_update_frequency_pref" />
+
+        <!-- Ignore updates for preference. Used to ignore updates for specific modules -->
+        <Preference
+            app:icon="@drawable/baseline_block_24"
+            android:dependency="pref_background_update_check"
+            app:key="pref_background_update_check_excludes"
+            app:singleLineTitle="false"
+            app:summary="@string/notification_update_ignore_desc"
+            app:title="@string/notification_update_ignore_pref" />
+
+        <!-- exclude specific versions -->
+
+        <Preference
+            app:icon="@drawable/baseline_block_24"
+            android:dependency="pref_background_update_check"
+            app:key="pref_background_update_check_excludes_version"
+            app:singleLineTitle="false"
+            app:summary="@string/notification_update_ignore_version_desc"
+            app:title="@string/notification_update_ignore_version_pref" />
+
+        <Preference
+            app:icon="@drawable/baseline_notification_important_24"
+            app:key="pref_background_update_check_debug"
+            app:singleLineTitle="false"
+            app:title="@string/notification_update_debug_pref" />
+
+        <!-- For debugging: launch update activity with download action -->
+        <Preference
+            app:icon="@drawable/ic_baseline_download_24"
+            app:key="pref_background_update_check_debug_download"
+            app:singleLineTitle="false"
+            app:title="@string/update_debug_download_pref" />
+
+        <com.fox2code.mmm.settings.LongClickablePreference
+            app:icon="@drawable/ic_baseline_system_update_24"
+            app:key="pref_update"
+            app:singleLineTitle="false"
+            app:title="@string/check_for_updates" />
+    </PreferenceCategory>
+
+</PreferenceScreen>

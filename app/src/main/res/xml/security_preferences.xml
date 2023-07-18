@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+    <PreferenceCategory app:title="@string/pref_category_security">
+        <SwitchPreferenceCompat
+            app:defaultValue="true"
+            app:icon="@drawable/ic_baseline_security_24"
+            app:key="pref_dns_over_https"
+            app:singleLineTitle="false"
+            app:summary="@string/dns_over_https_desc"
+            app:title="@string/dns_over_https_pref" />
+
+        <!-- TO DO: figure out why the f*** we need a showcase mode -->
+        <!-- like seriously, why? -->
+        <SwitchPreferenceCompat
+            app:defaultValue="false"
+            app:icon="@drawable/ic_baseline_lock_24"
+            app:key="pref_showcase_mode"
+            app:singleLineTitle="false"
+            app:summary="@string/showcase_mode_desc"
+            app:title="@string/showcase_mode_pref" />
+
+        <SwitchPreferenceCompat
+            app:defaultValue="true"
+            app:icon="@drawable/ic_reboot_24"
+            app:key="pref_prevent_reboot"
+            app:singleLineTitle="false"
+            app:summary="@string/prevent_reboot_desc"
+            app:title="@string/prevent_reboot_pref" />
+    </PreferenceCategory>
+
+</PreferenceScreen>
