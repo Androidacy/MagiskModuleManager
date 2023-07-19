@@ -139,7 +139,6 @@ class SettingsActivity : FoxActivity(), LanguageActivity {
             val masterKey: MasterKey
             val preferenceManager = preferenceManager
             val dataStore: SharedPreferenceDataStore
-            val editor: SharedPreferences.Editor
             try {
                 masterKey =
                     MasterKey.Builder(context!!).setKeyScheme(MasterKey.KeyScheme.AES256_GCM)
@@ -155,7 +154,6 @@ class SettingsActivity : FoxActivity(), LanguageActivity {
                 )
                 preferenceManager!!.preferenceDataStore = dataStore
                 preferenceManager.sharedPreferencesName = "mmm"
-                editor = dataStore.sharedPreferences.edit()
             } catch (e: Exception) {
                 Timber.e(e, "Failed to create encrypted shared preferences")
                 throw RuntimeException(getString(R.string.error_encrypted_shared_preferences))
@@ -195,26 +193,32 @@ class SettingsActivity : FoxActivity(), LanguageActivity {
                 Preference.OnPreferenceClickListener { p: Preference ->
                     versionClicks++
                     Timber.d("Version clicks: %d", versionClicks)
-                    // if it's been 3 clicks, toast "yer a wizard, harry" or "keep tapping to enter hogwarts"
-                    if (versionClicks == 3) {
-                        Toast.makeText(
-                            p.context,
-                            R.string.keep_tapping_to_enter_hogwarts,
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    }
                     if (versionClicks == 7) {
                         versionClicks = 0
                         openUrl(p.context, "https://www.youtube.com/watch?v=dQw4w9WgXcQ")
                     }
-                    // enable dev mode
-                    editor.putBoolean("developer", true)
+                    // enable dev mode if it's disabled otherwise disable it
+                    val editor = dataStore.sharedPreferences.edit()
+                    if (dataStore.sharedPreferences.getBoolean("developer", false)) {
+                        editor.putBoolean("developer", false)
+                        Toast.makeText(
+                            p.context,
+                            R.string.dev_mode_disabled,
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    } else {
+                        Toast.makeText(
+                            p.context,
+                            R.string.dev_mode_enabled,
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
                     editor.apply()
                     // toast yer a wizard harry
                     if (versionClicks == 3) {
                         Toast.makeText(
                             p.context,
-                            R.string.yer_a_wizard_harry,
+                            R.string.keep_tapping_to_enter_hogwarts,
                             Toast.LENGTH_LONG
                         ).show()
                     }

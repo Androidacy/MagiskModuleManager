@@ -211,8 +211,16 @@
 -keep class com.topjohnwu.superuser.Shell$Result
 -keep class com.topjohnwu.superuser.Shell
 
-# keep settings fragments Appearance, Credits, Debug, Info, Privacy, Repo, Security, and Update
--keep,allowobfuscation class com.fox2code.mmm.settings.* { *; }
+# keep settings fragments Appearance, Credits, Debug, Info, Privacy, Repo, Security, and Update. they all extend preferencefragmentcompat
+-keep class com.fox2code.mmm.settings.RepoFragment
+-keep class com.fox2code.mmm.settings.AppearanceFragment
+-keep class com.fox2code.mmm.settings.CreditsFragment
+-keep class com.fox2code.mmm.settings.DebugFragment
+-keep class com.fox2code.mmm.settings.InfoFragment
+-keep class com.fox2code.mmm.settings.PrivacyFragment
+-keep class com.fox2code.mmm.settings.SecurityFragment
+-keep class com.fox2code.mmm.settings.UpdateFragment
+
 # dontwarn
 -dontwarn android.os.SystemProperties
 -dontwarn android.view.ThreadedRenderer
