@@ -502,10 +502,7 @@ class MainApplication : FoxApplication(), Configuration.Provider {
 
         init {
             Shell.setDefaultBuilder(Shell.Builder.create()
-                .setFlags(Shell.FLAG_REDIRECT_STDERR or Shell.FLAG_MOUNT_MASTER).setTimeout(15)
-                .setInitializers(
-                    InstallerInitializer::class.java
-                ).also { shellBuilder = it })
+                .setFlags(Shell.FLAG_REDIRECT_STDERR or Shell.FLAG_MOUNT_MASTER).setTimeout(15))
             val random = Random()
             do {
                 secret = random.nextLong()

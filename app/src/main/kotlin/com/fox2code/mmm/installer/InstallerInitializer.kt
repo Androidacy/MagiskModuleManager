@@ -4,7 +4,6 @@
 
 package com.fox2code.mmm.installer
 
-import android.content.Context
 import com.fox2code.mmm.Constants
 import com.fox2code.mmm.MainApplication
 import com.fox2code.mmm.NotificationType
@@ -15,15 +14,10 @@ import timber.log.Timber
 import java.io.File
 
 @Suppress("unused")
-class InstallerInitializer : Shell.Initializer() {
+class InstallerInitializer {
     interface Callback {
         fun onPathReceived(path: String?)
         fun onFailure(error: Int)
-    }
-
-    override fun onInit(context: Context, shell: Shell): Boolean {
-        return if (!shell.isRoot) true else shell.newJob().add("export ASH_STANDALONE=1")
-            .exec().isSuccess
     }
 
     companion object {
@@ -160,7 +154,9 @@ class InstallerInitializer : Shell.Initializer() {
                 Companion.mgskVerCode = mgskVerCode
                 return mgskPth
             } catch (ignored: Exception) {
-                return if (tries <= 10) {
+                // TODO: REMOVE THIS
+                throw IllegalStateException(ignored)
+                /*return if (tries <= 10) {
                     tries++
                     // sleep tries * 25ms
                     try {
@@ -171,7 +167,7 @@ class InstallerInitializer : Shell.Initializer() {
                     tryGetMagiskPath(true)
                 } else {
                     null
-                }
+                }*/
             }
         }
     }
