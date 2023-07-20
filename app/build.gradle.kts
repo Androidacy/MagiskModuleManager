@@ -395,10 +395,15 @@ sentry {
 
     autoInstallation {
         enabled.set(true)
-        sentryVersion.set("6.25.0")
     }
 
     includeDependenciesReport.set(true)
+    includeSourceContext.set(hasSentryConfig)
+
+    // Includes additional source directories into the source bundle.
+    // These directories are resolved relative to the project directory.
+    additionalSourceDirsForSourceContext.set(setOf("src/main/java", "src/main/kotlin"))
+
 }
 
 val abiCodes = mapOf("armeabi-v7a" to 1, "x86" to 2, "x86_64" to 3)
