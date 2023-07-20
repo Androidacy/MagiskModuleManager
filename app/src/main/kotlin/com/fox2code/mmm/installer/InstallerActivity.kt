@@ -380,7 +380,7 @@ class InstallerActivity : FoxActivity() {
             }
             installerMonitor = InstallerMonitor(installScript)
             installJob = Shell.cmd(
-                "export ASH_STANDALONE=1",
+                "export ASH_STANDALONE=1 exec /data/adb/magisk/busybox ash",
                 "export MMM_EXT_SUPPORT=1",
                 "export MMM_USER_LANGUAGE=" + this.resources.configuration.locales[0].toLanguageTag(),
                 "export MMM_APP_VERSION=" + BuildConfig.VERSION_NAME,

@@ -154,11 +154,9 @@ class InstallerInitializer {
                 Companion.mgskVerCode = mgskVerCode
                 return mgskPth
             } catch (ignored: Exception) {
-                // TODO: REMOVE THIS
-                throw IllegalStateException(ignored)
-                /*return if (tries <= 10) {
+                // work around edge case
+                return if (tries <= 10) {
                     tries++
-                    // sleep tries * 25ms
                     try {
                         Thread.sleep(tries * 50L)
                     } catch (e: InterruptedException) {
@@ -167,7 +165,7 @@ class InstallerInitializer {
                     tryGetMagiskPath(true)
                 } else {
                     null
-                }*/
+                }
             }
         }
     }
