@@ -293,7 +293,12 @@ class AndroidacyRepoData(cacheRoot: File?, testMode: Boolean) : RepoData(
         )
         var lastLastUpdate: Long = 0
         for (i in 0 until len) {
-            jsonObject = jsonArray.getJSONObject(i)
+            try {
+                jsonObject = jsonArray.getJSONObject(i)
+            } catch (e: JSONException) {
+                Timber.e(e, "Failed to parse module")
+                continue
+            }
             val moduleId: String = try {
                 jsonObject.getString("codename")
             } catch (e: JSONException) {

@@ -61,46 +61,51 @@ class RepoUpdater(repoData2: RepoData) {
             val moduleListCacheDao = db.moduleListCacheDao()
             // now we have the cache, we need to check if it's up to date
             val results = moduleListCacheDao.getByRepoId(repoData.preferenceId!!)
-            toUpdate = emptyList()
-            toApply = HashSet()
-            for (moduleListCache in results) {
-                (toApply as HashSet<RepoModule>).add(
-                    RepoModule(
-                        repoData,
-                        moduleListCache.codename,
-                        moduleListCache.name,
-                        moduleListCache.description,
-                        moduleListCache.author,
-                        moduleListCache.donate,
-                        moduleListCache.config,
-                        moduleListCache.support,
-                        moduleListCache.version,
-                        moduleListCache.versionCode
+            if (results.isNotEmpty()) {
+                toUpdate = emptyList()
+                toApply = HashSet()
+                for (moduleListCache in results) {
+                    (toApply as HashSet<RepoModule>).add(
+                        RepoModule(
+                            repoData,
+                            moduleListCache.codename,
+                            moduleListCache.name,
+                            moduleListCache.description,
+                            moduleListCache.author,
+                            moduleListCache.donate,
+                            moduleListCache.config,
+                            moduleListCache.support,
+                            moduleListCache.version,
+                            moduleListCache.versionCode
+                        )
                     )
+                }
+                Timber.d(
+                    "Fetched %d modules from cache for %s, from %s records",
+                    (toApply as HashSet<RepoModule>).size,
+                    repoData.preferenceId,
+                    results.size
                 )
+                val jsonObject = JSONObject()
+                // apply the toApply list to the toUpdate list
+                try {
+                    jsonObject.put("modules", JSONArray(results))
+                    toUpdate = repoData.populate(jsonObject)
+                } catch (e: Exception) {
+                    Timber.e(e)
+                }
+                // log first 100 chars of indexRaw
+                indexRaw = jsonObject.toString().toByteArray()
+                Timber.d(
+                    "Index raw: %s",
+                    String(indexRaw!!, StandardCharsets.UTF_8).subSequence(0, 100)
+                )
+                // Since we reuse instances this should work
+                toApply = HashSet(repoData.moduleHashMap.values)
+                (toApply as HashSet<RepoModule>).removeAll(toUpdate!!.toSet())
+                // Return repo to update
+                return toUpdate!!.size
             }
-            Timber.d(
-                "Fetched %d modules from cache for %s, from %s records",
-                (toApply as HashSet<RepoModule>).size,
-                repoData.preferenceId,
-                results.size
-            )
-            val jsonObject = JSONObject()
-            // apply the toApply list to the toUpdate list
-            try {
-                jsonObject.put("modules", JSONArray(results))
-                toUpdate = repoData.populate(jsonObject)
-            } catch (e: Exception) {
-                Timber.e(e)
-            }
-            // log first 100 chars of indexRaw
-            indexRaw = jsonObject.toString().toByteArray()
-            Timber.d("Index raw: %s", String(indexRaw!!, StandardCharsets.UTF_8).subSequence(0, 100))
-            // Since we reuse instances this should work
-            toApply = HashSet(repoData.moduleHashMap.values)
-            (toApply as HashSet<RepoModule>).removeAll(toUpdate!!.toSet())
-            // Return repo to update
-            return toUpdate!!.size
         }
         return try {
             if (!repoData.prepare()) {
