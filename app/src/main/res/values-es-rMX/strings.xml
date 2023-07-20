@@ -4,7 +4,7 @@
   --><resources>
     <string name="app_name">Fox Magisk Module Manager</string>
     <string name="fail_root_magisk">No fue posible obtener acceso root o Magisk</string>
-    <string name="fail_root_denied">El Acceso Root ha sido negado desde la aplicación Magisk</string>
+    <string name="fail_root_denied">El Acceso Root ha sido denegado desde la aplicación Magisk</string>
     <string name="fail_magisk_missing">Magisk no se encuentra instalado en este dispositivo</string>
     <string name="loading">Cargando…</string>
     <string name="updatable">Actualización disponible</string>
@@ -56,18 +56,18 @@
     <string name="showcase_mode_pref">Modo Lockdown</string>
     <string name="showcase_mode_desc">Modo Lockdown previene que la aplicación haga cambios en los módulos</string>
     <string name="prevent_reboot_pref">Evitar reinicio</string>
-    <string name="prevent_reboot_desc">Evita los reincios inesperados</string>
+    <string name="prevent_reboot_desc">Evita los reinicios inesperados</string>
     <string name="enable_monet">Habilitar Monet</string>
     <string name="pref_category_info">Info</string>
     <string name="show_licenses">Mostrar licencias</string>
     <string name="licenses">Licencias</string>
     <string name="show_incompatible_pref">Mostrar módulos incompatibles</string>
-    <string name="show_incompatible_desc">Muestra los módulos que son incompatibles con su dispositivo basandose en sus metadatos</string>
-    <string name="magisk_outdated">Magisk está desactualizado!</string>
+    <string name="show_incompatible_desc">Muestra los módulos que son incompatibles con su dispositivo basándose en sus metadatos</string>
+    <string name="magisk_outdated">¡Magisk está desactualizado!</string>
     <string name="pref_category_repos">Repositorios</string>
     <string name="pref_category_security">Seguridad</string>
     <string name="pref_category_appearance">Apariencia</string>
-    <string name="master_delete">Desea borrar los archivos del módulo?</string>
+    <string name="master_delete">¿Desea borrar los archivos del módulo\?</string>
     <string name="master_delete_no">Mantener archivos</string>
     <string name="master_delete_yes">Borrar archivos</string>
     <string name="master_delete_fail">No fue posible borrar los archivos del módulo</string>
@@ -81,17 +81,17 @@
     <string name="magisk_builtin_module">Módulo incorporado de Magisk</string>
     <string name="substratum_builtin_module">Módulo incorporado de Substratum</string>
     <string name="force_dark_terminal_title">Forzar el modo oscuro en la terminal</string>
-    <string name="file_picker_failure">Su administrador de archivos no pudo dar acceso a los archivos.</string>
+    <string name="file_picker_failure">Su actual administrador de archivos no pudo acceder al archivo.</string>
     <string name="remote_install_title">Instalación remota</string>
     <string name="file_picker_wierd">Su administrador de archivos retorno una respuesta no esperada.</string>
     <string name="use_magisk_install_command_pref">Usa el siguiente comando: \"magisk —install-module\"</string>
     <string name="use_magisk_install_command_desc">Durante las pruebas causó problemas a la herramienta de diagnóstico de errores de instalación de módulo, así que escondí esta opción en el modo desarrollador.
-\nActívala bajo tu propio riesgo!</string>
+\n¡Actívala bajo tu propio riesgo!</string>
     <string name="dev_mode_enabled">Modo desarrollador activado</string>
     <string name="dev_mode_disabled">Modo desarrollador desactivado</string>
     <string name="disable_low_quality_module_filter_pref">Desactivar el filtro de módulos de baja calidad</string>
-    <string name="disable_low_quality_module_filter_desc">Algunos módulos no declaran de manera adecuada sus metadatos causando errores visuales y/o indicando una mala calidad del módulo. 
-\nActívalo bajo tu propio riesgo!</string>
+    <string name="disable_low_quality_module_filter_desc">Algunos módulos no declaran de manera adecuada sus metadatos causando errores visuales y/o indicando una mala calidad del módulo.
+\n¡Actívalo bajo tu propio riesgo!</string>
     <string name="dns_over_https_desc">
         En algunos casos puede solucionar problemas de conexión
         (No se aplica al WebView)
@@ -118,7 +118,7 @@
     <integer name="language_support_level">1</integer>
     <string name="language_support_outdated">Algunas traducciones del lenguaje seleccionado no están actualizadas, por favor considera contribuir con las traducciones de la aplicación en GitHub</string>
     <!-- Replace with your own username when translating // Staging y non-production endpoint = canal de prueba, release endpoint = Canal estable (quizas se cambie la traducción en futuras actualizaciones) -->
-    <string name="language_translated_by">Traducido por Leshu7w7, Sebastián</string>
+    <string name="language_translated_by">Traducido por Leshu7w7, y por Sebastián</string>
     <string name="crash_reporting">Informa automáticamente de errores y rendimiento a los desarrolladores</string>
     <string name="crash_reporting_desc">Si desactivas esto, el desarrollador no tendrá informes automáticos de errores, y esto puede dificultar la resolución de problemas</string>
     <string name="api_key">Clave API de Androidacy</string>
@@ -129,25 +129,25 @@
     <string name="please_wait">Por favor, espera un momento</string>
     <string name="api_key_removed">Se ha restaurado la clave API satisfactoriamente</string>
     <string name="save_api_key">Validar</string>
-    <string name="warning">Advertencia!</string>
-    <string name="androidacy_test_mode_warning">Está configurando la aplicación para usar un canal de prueba de Androidacy. Esto puede resultar en la inestabilidad de la aplicación y cuasar fallas cargando el repositorio en línea. NO informar de errores si tienes activado este canal. La aplicación se reiniciará para volver a cargar los repositorios.</string>
+    <string name="warning">¡Advertencia!</string>
+    <string name="androidacy_test_mode_warning">Está configurando la aplicación para usar un canal de prueba de Androidacy. Esto puede resultar en la inestabilidad de la aplicación y causar fallas cargando el repositorio en línea. NO informar de errores si tienes activado este canal. La aplicación se reiniciará para volver a cargar los repositorios.</string>
     <string name="crash">Detén la aplicación por motivos de prueba</string>
-    <string name="crash_reporting_restart_title">Desea reinicar la aplicación para que los cambios se realicen?</string>
+    <string name="crash_reporting_restart_title">¿Desea reiniciar la aplicación para que los cambios se apliquen\?</string>
     <string name="crash_reporting_restart_message">La aplicación necesita ser reiniciada para que los cambios sean aplicados</string>
     <string name="restart">Reiniciar</string>
     <string name="androidacy_test_mode_disable_warning">La aplicación se reiniciará para deshabilitar el canal de prueba</string>
-    <string name="permission_notification_title">Permitir notificaciones\?</string>
+    <string name="permission_notification_title">¿Permitir notificaciones\?</string>
     <string name="permission_notification_grant">Conceder permiso</string>
     <string name="repos">Repositorios</string>
     <string name="finish">Finalizar</string>
     <string name="link_copied">Enlace copiado</string>
     <string name="androidacy_repo_disabled">Este repositorio esta actualmente desactivado</string>
-    <string name="setup_magisk_alt_repo">Activar el Magisk Alt Repositorio</string>
+    <string name="setup_magisk_alt_repo">Activar el Repositorio Alternativo de Magisk</string>
     <string name="official">Oficial</string>
     <string name="unofficial">No oficial</string>
     <string name="zip_unpacking">Inspeccionando módulo…</string>
     <string name="androidacy_thanks">Desarrollado en parte por Androidacy</string>
-    <string name="language_cta">No ves tu idioma\?</string>
+    <string name="language_cta">¿No ves tu idioma\?</string>
     <string name="dns_over_https_pref">DNS sobre HTTPS</string>
     <string name="dont_ask_again">No volver a preguntar</string>
     <string name="download_full_app">Descargar la versión completa</string>
@@ -164,7 +164,7 @@
     <string name="download_update">Descargar actualización</string>
     <string name="checking_for_update">Comprobando actualizaciones…</string>
     <string name="update_available">Actualización encontrada</string>
-    <string name="no_update_available">Estás al día!</string>
+    <string name="no_update_available">¡Estás al día!</string>
     <string name="installing_update">Instalando actualización…</string>
     <string name="no_file_found">ERROR: No se pudo encontrar el paquete de actualización.</string>
     <string name="feedback_email">Correo electrónico (opcional)</string>
@@ -185,9 +185,9 @@
     <string name="auto_updates_notifs">Notifica cuando se encuentran actualizaciones de módulos</string>
     <string name="notification_group_updates">Actualizaciones</string>
     <string name="safe_module">Módulo seguro verificado</string>
-    <string name="notification_channel_background_update_app">Actualización de la aplicación disponible!</string>
+    <string name="notification_channel_background_update_app">¡Actualización de la aplicación disponible!</string>
     <string name="cache_clear_failed">No se pudo borrar la caché</string>
-    <string name="clear_cache_dialogue_title">Borrar la caché\?</string>
+    <string name="clear_cache_dialogue_title">¿Borrar la caché\?</string>
     <string name="pref_category_privacy">Privacidad</string>
     <string name="repo_already_added">El repositorio ya existe.</string>
     <string name="debug_cat">Depuración</string>
@@ -208,26 +208,26 @@
     <string name="clear_app_cache_desc">Normalmente no debería ser necesario pero puede ayudar a solucionar algunos problemas.</string>
     <string name="crash_reporting_pii">Enviar información adicional</string>
     <string name="zip_prop_load_failed">No se puede cargar las propiedades del módulo</string>
-    <string name="zip_security_warning">Instalar %s\?</string>
+    <string name="zip_security_warning">¿Instalar %s\?</string>
     <string name="zip_load_failed">No se puede cargar el archivo zip</string>
     <string name="background_update_check_permission_required">Por favor activa las notificaciones para esta opción.</string>
     <string name="repo_update_failed">Algunos repositorios han fallado al actualizarse</string>
     <string name="setup_custom_repos">Puedes agregar repositorios personalizados después en ajustes.</string>
     <string name="theme_black">AMOLED Negro</string>
     <string name="setup_title">Configuración inicial</string>
-    <string name="language_cta_desc">Ayúdanos traduciéndolo! Pulsa aquí para averiguar más.</string>
+    <string name="language_cta_desc">¡Ayúdanos traduciéndolo! Pulsa aquí para averiguar más.</string>
     <string name="install_terminal_reboot_now_message">Estas a punto de reiniciar tu dispositivo. Si guardaste tu trabajo, pulsa OK para continuar. De lo contrario, pulsa cancelar.</string>
     <string name="repo_update_failed_message">Los siguientes repositorios han fallado al actualizarse:
 \n
 \n%s</string>
-    <string name="setup_message">Bienvenido! Esta aplicación lo ayudará a instalar y administrar módulos Magisk. Para empezar, por favor seleccione las opciones debajo. Estos y más pueden ser configurados en los ajustes más adelante.</string>
-    <string name="contributors">Y por supuesto, gracias a todos nuestros colaboradores, ya sean traducciones, código, o simplemente pasar el rato con ellos! Los queremos a todos.</string>
+    <string name="setup_message">¡Bienvenido! Esta aplicación lo ayudará a instalar y administrar módulos Magisk. Para empezar, por favor seleccione las opciones debajo. Estos y más pueden ser configurados en los ajustes más adelante.</string>
+    <string name="contributors">¡Y por supuesto, gracias a todos nuestros colaboradores, ya sean traducciones, código, o simplemente pasar el rato con ellos! Los queremos a todos.</string>
     <string name="no_file_provided">No se proporcionó ningún archivo al intentar abrir el zip.</string>
     <string name="api_key_unchanged">La clave API que ingresa ya está en uso.</string>
     <string name="androidacy_need_captcha">Actualización de Androidacy bloqueada por Captcha</string>
     <string name="clear_app_data">Borrar datos de la aplicación</string>
-    <string name="magisk_alt_repo_name">Magisk Repositorio Alternativo</string>
-    <string name="clear_data_dialogue_title">Borrar datos de la aplicación\?</string>
+    <string name="magisk_alt_repo_name">Repositorio Alternativo Magisk</string>
+    <string name="clear_data_dialogue_title">¿Borrar datos de la aplicación\?</string>
     <string name="clear_data_dialogue_message">Estás a punto de borrar los datos de la aplicación. Por favor confirma esta acción.</string>
     <string name="debug_build">Esta es una compilación de depuración. Espere algunos errores y un peor rendimiento.</string>
     <string name="repo_enabled_changed">Ha activado o desactivado un repositorio. Por favor actualice la lista de módulos o reinicie la aplicación.</string>
@@ -235,7 +235,7 @@
     <string name="error_download_update">Ocurrió un error al descargar la información de actualización.</string>
     <string name="feedback_submit">Enviar y reiniciar</string>
     <string name="sentry_dialogue_empty_message">No especificó comentarios adicionales.</string>
-    <string name="crash_details_copied">Stacktrace copiado al portapapeles!</string>
+    <string name="crash_details_copied">¡Stacktrace copiado al portapapeles!</string>
     <string name="upgraded">Premium activo</string>
     <string name="reset_app_confirmation">Esto borrará por completo los datos de la aplicación, pero no afectará a los módulos.</string>
     <string name="error_adding">No se pudo agregar el repositorio personalizado</string>
@@ -281,21 +281,21 @@
     <string name="permission_notification_message">Necesitamos el permiso de notificaciones para notificarle sobre actualizaciones de aplicaciones y módulos. Si no concede este permiso, no se ejecutarán las comprobaciones de las actualizaciones automáticas.</string>
     <string name="androidacy_failed_to_parse_token">No se pudo recuperar el token de Androidacy. Por favor, inténtelo de nuevo más tarde.</string>
     <string name="androidacy_failed_to_validate_token">No se pudo validar el token para Androidacy. Por favor, inténtelo de nuevo más tarde.</string>
-    <string name="yer_a_wizard_harry">Eres un mago, Harry!</string>
-    <string name="keep_tapping_to_enter_hogwarts">Sigue pulsando para ser admitido en Hogwarts!</string>
+    <string name="yer_a_wizard_harry">¡Eres un mago, Harry!</string>
+    <string name="keep_tapping_to_enter_hogwarts">¡Sigue pulsando para ser admitido en Hogwarts!</string>
     <string name="setup_androidacy_repo_summary">Presenta reseñas de usuarios, escaneos automáticos de virus, actualizaciones rápidas, una amplia selección y está respaldado por Androidacy.</string>
     <string name="setup_magisk_alt_repo_summary">Mucho más laxa que la original. Tiene muchos módulos a costa de cierta seguridad.</string>
     <string name="setup_crash_reporting">Activar Centinela</string>
-    <string name="low_performance_device_dialogue_message">Está intentando activar blur en un dispositivo que puede no funcionar bien con él.
+    <string name="low_performance_device_dialogue_message">Está intentando activar el desenfoque en un dispositivo que puede no funcionar bien con él.
 \nPuede activarlo, pero esto puede conducir a una mala experiencia de usuario y le recomendamos que no lo haga.</string>
     <string name="error_no_extras">ERROR: datos inválidos recibidos en el lanzamiento</string>
     <string name="update_debug_warning">Parece que está ejecutando una compilación de depuración. Las compilaciones de depuración deben actualizarse manualmente y no admiten actualizaciones en la aplicación</string>
     <string name="downloading_update">Descargando actualización… %1$d%%</string>
     <string name="upgrade_androidacy_promo_desc">La actualización a premium eliminará anuncios, captchas y descargas para el repositorio de Androidacy y admitirá a Androidacy y los autores del módulo.</string>
-    <string name="crash_text">Uh-oh, nos encontramos con un obstáculo!</string>
+    <string name="crash_text">¡Uh-oh, nos encontramos con un obstáculo!</string>
     <string name="sentry_enable_nag">Parece que los informes de fallas están desactivados. Actívelos para enviar comentarios.</string>
     <string name="crash_icon">Icono de bloqueo</string>
-    <string name="crash_full_stacktrace">Seguimiento de pila:
+    <string name="crash_full_stacktrace">Stacktrace:
 \n%1$s</string>
     <string name="upgraded_summary">Eres bastante increíble! Parece que ya actualizó su suscripción y estará apoyando a Androidacy.</string>
     <string name="api_key_mismatch">La clave API tiene un formato inválido</string>
@@ -325,7 +325,7 @@
     <string name="analytics_desc">Permítanos rastrear el uso y las instalaciones de la aplicación. Totalmente compatible con GDPR y utiliza Matomo, alojado por Androidacy.</string>
     <string name="reinstall">Reinstalar</string>
     <string name="warning_pls_restart">Tenga en cuenta que es posible que algunas configuraciones no surtan efecto hasta que reinicie la aplicación.</string>
-    <string name="promo_code_copied">Use el código copiado para obtener la mitad de descuento en su primer mes!</string>
+    <string name="promo_code_copied">¡Use el código copiado para obtener la mitad de descuento en su primer mes!</string>
     <string name="donate_androidacy_sum">Compre una suscripción premium a Androidacy para apoyar la aplicación y el repositorio.</string>
     <string name="notification_update_ignore_version_pref">Excluir versión(es) de las comprobaciones de actualización</string>
     <string name="background_update_check_excludes_version">Excluir versión(es) de módulos de las comprobaciones</string>
@@ -333,20 +333,20 @@
     <string name="module_remote_version">Versión remota</string>
     <string name="background_update_check_excludes_version_hint">Código de versión para ignorar</string>
     <string name="upgrade_now">Mejora</string>
-    <string name="androidacy_thanks_up_title">Ya has actualizado!</string>
-    <string name="zip_intent_module_install">De verdad quieres instalar este módulo \"%1$s\" desde el archivo ZIP \"%2$s\"\?
+    <string name="androidacy_thanks_up_title">¡Ya has actualizado!</string>
+    <string name="zip_intent_module_install">¿De verdad quieres instalar este módulo \"%1$s\" desde el archivo ZIP \"%2$s\"\?
 \n
 \nAsegúrese de confiar en la fuente de este módulo, ya que los módulos son muy poderosos y pueden hacer casi cualquier cosa.</string>
-    <string name="notification_update_ignore_version_desc">Ignore versiones específicas cuando busque actualizaciones de módulos. Desactivar las comprobaciones de actualización por módulo anterior anula esta configuración!</string>
+    <string name="notification_update_ignore_version_desc">Ignore versiones específicas cuando busque actualizaciones de módulos. ¡Desactivar las comprobaciones de actualización por módulo anterior anula esta configuración!</string>
     <string name="setup_scroll_down_v2">Para activar el botón Finalizar, desplácese hasta la parte inferior y reconozca que ha leído y acepta el EULA y la(s) licencia(s).</string>
-    <string name="upgrade_snackbar">Androidacy Premium ofrece descargas más rápidas, una experiencia sin publicidad y más!</string>
+    <string name="upgrade_snackbar">¡Androidacy Premium ofrece descargas más rápidas, una experiencia sin publicidad y más!</string>
     <string name="language_not_available">Idioma %s no ha sido traducido. ¿Ayuda a traducirlo\?</string>
     <string name="blur_desc">Crea un efecto de desenfoque detrás de algunos diálogos y elementos. Tenga en cuenta que el desenfoque puede no funcionar bien en algunos dispositivos y puede no funcionar para todos.</string>
-    <string name="source_code_summary"><b>Confirmar</b> %1$s @ %2$s</string>
+    <string name="source_code_summary"><b>Confirmado</b> %1$s @ %2$s</string>
     <string name="background_update_check_excludes_version_summary">Especifique una versión de las actualizaciones del módulo que le gustaría ignorar. Utilice únicamente el código de la versión. Puede encontrar esto manteniendo presionada la versión en la lista de módulos. Use ^ al principio para que coincida con esa versión y más reciente. Use $ al final para hacer coincidir hasta esa versión.</string>
     <string name="eula_agree_v2">Usted acepta estar sujeto a la licencia LGPL-3.0 (https://www.gnu.org/licenses/lgpl-3.0.en.html) y al EULA (https://www.androidacy.com/foxmmm-eula/), además de los términos de terceros, y que los autores de esta aplicación no son responsables del uso que usted haga de ella, ni ofrecemos garantías expresas o implícitas.</string>
-    <string name="androidacy_thanks_up">Gracias por actualizar! las descargas de módulos y los archivos READMEs no mostrarán anuncios y las descargas no se acelerarán. En el futuro, podrá descargar módulos directamente con un solo clic.</string>
-    <string name="crash_details_suggestion">El seguimiento de pila se puede encontrar a continuación. Sin embargo, nos <b> fuertemente </b> le recomendamos que utilice el formulario de comentarios a continuación para enviar sus comentarios. De esta forma, en lugar de copiar manualmente el seguimiento de pila, nos lo enviará automáticamente. También se desofusca de esa manera y los detalles adicionales se informan automáticamente.</string>
+    <string name="androidacy_thanks_up">¡Gracias por actualizar! las descargas de módulos y los archivos READMEs no mostrarán anuncios y las descargas no se acelerarán. En el futuro, podrá descargar módulos directamente con un solo clic.</string>
+    <string name="crash_details_suggestion">El stacktrace se puede encontrar a continuación. Sin embargo, nos <b> fuertemente </b> le recomendamos que utilice el formulario de comentarios a continuación para enviar sus comentarios. De esta forma, en lugar de copiar manualmente el seguimiento de pila, nos lo enviará automáticamente. También se desofusca de esa manera y los detalles adicionales se informan automáticamente.</string>
     <string name="reinstall_warning">La mayoría de los módulos deben desinstalarse y luego reinstalarse limpiamente. Por esta razón, AMM no admite la reinstalación de módulos mientras están instalados en el dispositivo.</string>
     <string name="eula_agree_v2_headline">EULA y Términos</string>
     <string name="build_expired">Esta compilación ha caducado. Por favor actualice a la última versión.</string>
@@ -365,7 +365,7 @@
     <string name="androidacy_api_error">Error al comunicarse con la API: %d</string>
     <string name="title_activity_expired">Actividad expirada</string>
     <string name="title_home">Home</string>
-    <string name="title_dashboard">Panel</string>
+    <string name="title_dashboard">Panel de control</string>
     <string name="title_notifications">Notificaciones</string>
     <string name="expired">¡Esta compilación ha expirado!</string>
     <string name="expired_message">La compilación que estás utilizando ha expirado y ya no se ejecutará. Actualiza a la última versión estable.</string>
