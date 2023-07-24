@@ -358,4 +358,19 @@
     <string name="error_opening_notes">‪خطأ في فتح ملاحظات الإضافة. قد يكون للسجلات السبب.</string>
     <string name="reboot_extra_warning">أنت على وشك إعادة التشغيل إلى وضع EDL ، وهو وضع خاص ب OEM لتفليش وإصلاح المشاكل الخفيفة. ما لم تكن متأكدا من رغبتك في القيام بذلك ولديك الأدوات اللازمة للخروج من هذا الوضع أو استخدامه ، فإننا نشجعك بشدة على استخدام خيارات إعادة التشغيل الأخرى.</string>
     <string name="submit_feedback">إرسال الملاحظات</string>
+    <string name="remote_module">متاح عبر ريبو عن بعد</string>
+    <string name="debug_build_toast">بناء التصحيح %1$s تم البناء على %2$s مع %3$d أيام متبقية</string>
+    <string name="update_frequency_15">15 دقيقة</string>
+    <string name="update_frequency_30">30 دقيقة</string>
+    <string name="update_frequency_60">ساعة</string>
+    <string name="update_frequency_1440">يومي</string>
+    <string name="ssl_error">تم اكتشاف اعتراض محتمل لSSL.</string>
+    <string name="no_sentry_id">تعذر إرسال ملاحظات - لا يوجد معرف حدث من Sentry. ربما لم يتم إرسال الحدث الأخير.</string>
+    <string name="remote_message">%s متاح عبر ريبو على الإنترنت. <b> ننصح بشدة بتنظيف ملفات الإضافة لان أغلبية الإضافات لا تتحمل إعادة التثبيت بشكل أمن، </b> لكن يمكنك إعادة التثبيت على مسؤليتك الخاصة.</string>
+    <string name="remote_message_no_update">%s متوفر على ريبو على الإنترنت. الرجاء إلغاء تثبيته لكي تراه في قائمة الإنترنت</string>
+    <string name="credits">المساهمين</string>
+    <string name="notification_update_frequency_pref">فترة التحقق من التحديثات في الخلفية</string>
+    <string name="notification_update_frequency_desc">كم مرة للتحقق من وجود تحديثات في الخلفية. قد يؤدي تعيين قيمة منخفضة جدا إلى استنزاف البطارية.</string>
+    <string name="update_frequency_360">6 ساعات‌</string>
+    <string name="update_frequency_720">12 ساعة</string>
 </resources>

@@ -380,4 +380,13 @@
     <string name="debug_build_toast">Compilación de depuración de AMM %1$s construida sobre %2$s con %3$d días restantes</string>
     <string name="remote_message_no_update">%s está disponible en un repositorio en línea. Desinstálelo para verlo en la pestaña en línea.</string>
     <string name="remote_message">%s esta disponible desde un repositorio en línea. <b>Le recomendamos encarecidamente que lo instale porque la mayoría de los módulos no manejan la reinstalación correctamente,</b> pero puede reinstalarlo en cambio bajo su propio riesgo.</string>
+    <string name="credits">Créditos</string>
+    <string name="notification_update_frequency_pref">Frecuencia de verificación de antecedentes</string>
+    <string name="notification_update_frequency_desc">Con que frecuencia buscar actualizaciones en segundo plano. Si establece un valor demasiado bajo, podría agotarse la batería.</string>
+    <string name="update_frequency_15">15 minutos</string>
+    <string name="update_frequency_30">30 minutos</string>
+    <string name="update_frequency_60">Cada hora</string>
+    <string name="update_frequency_360">6 horas</string>
+    <string name="update_frequency_720">12 horas</string>
+    <string name="update_frequency_1440">A diario</string>
 </resources>

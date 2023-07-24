@@ -373,4 +373,13 @@
     <string name="remote_message_no_update">%s jest dostępny w repozytorium online. Odinstaluj ten moduł, aby zobaczyć go w zakładce online.</string>
     <string name="remote_module">Dostępne z repozytorium online</string>
     <string name="remote_message">%s jest dostępny z repozytorium online. <b>Zalecana instalacja na czysto, ponieważ większość modułów nie radzi sobie z ponowną instalacją</b>, ale możesz przeinstalować na własne ryzyko.</string>
+    <string name="update_frequency_15">15 minut</string>
+    <string name="update_frequency_30">30 minut</string>
+    <string name="update_frequency_360">6 godzin</string>
+    <string name="update_frequency_720">12 godzin</string>
+    <string name="update_frequency_60">1 godzinę</string>
+    <string name="credits">Podziękowania</string>
+    <string name="notification_update_frequency_pref">Sprawdzaj aktualizacje co…</string>
+    <string name="notification_update_frequency_desc">Jak często sprawdzać dostępność aktualizacji w tle. Ustawienie zbyt niskiej wartości może powodować szybsze rozładowanie baterii.</string>
+    <string name="update_frequency_1440">24 godziny</string>
 </resources>
