@@ -1,0 +1,4 @@
+Den här appen stöda inte officiellt av Magisk eller dess utvecklare.
+
+Modulerna som visas i den här appen är inte tillhandahållna i samröre med den. Vänligen
+kontakta förrådsägare istället.

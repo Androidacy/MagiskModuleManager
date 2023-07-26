@@ -108,7 +108,7 @@
     <string name="module_downloads">다운로드:</string>
     <string name="module_stars">스타:</string>
     <string name="module_needs_ramdisk">램 디스크 필요</string>
-    <string name="module_can_change_boot">부팅 변경 가능</string>
+    <string name="module_can_change_boot">부팅과정을 변경할수 있습니다</string>
     <string name="module_can_change_boot_desc">이 모듈은 부트 이미지를 바꿀 수도 있습니다</string>
     <string name="module_min_magisk_chip">최소 Magisk %s</string>
     <string name="module_min_sdk_chip">최소. 안드로이드</string>
@@ -207,4 +207,27 @@
 \n
 \n모듈의 설치는 모듈에게 엄청난 권한을 부여하는 것이므로, 이 모듈의 소스가 신뢰할 수 있는지 확인 해주세요.</string>
     <string name="androidacy_thanks">부분적으로 Androidacy에서 개발 되었습니다</string>
+    <string name="setup_magisk_alt_repo_summary">원본보다 훨씬 낮은 버전입니다. 약간의 안전으로 더 많은 모듈을 사용할수 있습니다.</string>
+    <string name="pref_category_contributors">기여자</string>
+    <string name="fox2code_thanks_desc">Fox2Code는 앱의 최초 제작자입니다. 그가 없었다면 지금 이앱은 결코 존재하지 않았을 것입니다.</string>
+    <string name="fox2code_thanks">Fox2Code에 의해서 만들어 졌습니다</string>
+    <string name="error_saving_logs">로그를 저장할 수 없습니다</string>
+    <string name="save_logs">저장소에 로그 저장 및 공유</string>
+    <string name="share_logs">AMM 로그 공유</string>
+    <string name="sentry_dialogue_disabled">충돌 보고가 비활성화되었습니다. 피드백을 제출하려면 활성화하십시오.</string>
+    <string name="feedback_name">이름 (선택)</string>
+    <string name="feedback_email">이메일 (선택)</string>
+    <string name="sentry_dialogue_empty_message">추가 피드백을 지정하지 않았습니다.</string>
+    <string name="crash_icon">Crash 아이콘</string>
+    <string name="copy_button">텍스크 복사</string>
+    <string name="crash_details">원인불명</string>
+    <string name="not_official_build">이 앱은 비공식 AMM 입니다.</string>
+    <string name="upgrade_androidacy_promo_desc">프리미엄으로 업그레이드하면 Androidacy 저장소에 대한 광고, 보안 문자 및 다운로드가 제거되고 Androidacy 및 모듈 제작자가 지원됩니다.</string>
+    <string name="crash_text">어-오, 뭔가 이상해 졌어요!</string>
+    <string name="feedback_message">이 일이 발생했을 때에 대해 자세히 알려주십시오. 자세할수록 더 편리해질 것입니다!</string>
+    <string name="feedback_submit">제출 및 다시 시작</string>
+    <string name="crash_details_copied">스택트레이스를 클립보드에 복사했습니다!</string>
+    <string name="crash_full_stacktrace">스택트레이스:
+\n%1$s</string>
+    <string name="please_feedback">저희에게 무엇을 하고 게셨는지 알려주십시오.</string>
 </resources>
