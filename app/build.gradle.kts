@@ -398,12 +398,15 @@ sentry {
     }
 
     includeDependenciesReport.set(true)
-    includeSourceContext.set(hasSentryConfig)
+    includeSourceContext.set(true)
 
     // Includes additional source directories into the source bundle.
     // These directories are resolved relative to the project directory.
     additionalSourceDirsForSourceContext.set(setOf("src/main/java", "src/main/kotlin"))
 
+    org.set("androidacy")
+    projectName.set("foxmmm")
+    uploadNativeSymbols.set(true)
 }
 
 val abiCodes = mapOf("armeabi-v7a" to 1, "x86" to 2, "x86_64" to 3)
