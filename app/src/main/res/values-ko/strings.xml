@@ -230,4 +230,24 @@
     <string name="crash_full_stacktrace">스택트레이스:
 \n%1$s</string>
     <string name="please_feedback">저희에게 무엇을 하고 게셨는지 알려주십시오.</string>
+    <string name="reset">초기화</string>
+    <string name="reset_app_confirmation">이는 앱을 완전히 초기화 할것입니다만, 모듈에는 영향을 끼치지 않습니다.</string>
+    <string name="api_key_mismatch">API키 포멧이 옳지 않습니다</string>
+    <string name="notification_update_ignore_pref">모듈 제외</string>
+    <string name="pref_category_updates">업데이트</string>
+    <string name="notification_update_ignore_desc">업데이트에서 제외될 모듈 목록</string>
+    <string name="update_title">앱 업데이트</string>
+    <string name="update_message">AMM에 대한 업데이트를 확인하고 설치하는 동안 잠시 기다려 주십시오. 이 작업은 몇 분 정도 걸릴 수 있습니다</string>
+    <string name="update_button">잠시 가다려주세요…</string>
+    <string name="error_no_extras">에러: 실행중 옳지 않은 정보를 받았습니다</string>
+    <string name="update_debug_warning">디버그 빌드를 실행 중인 것 같습니다. 디버그 빌드는 수동으로 업데이트해야 하며 인앱 업데이트를 지원하지 않습니다</string>
+    <string name="update_available">업데이트 발견</string>
+    <string name="error_no_action">오류: 잘못된 작업이 지정되었습니다. 계속할수 없습니다.</string>
+    <string name="sentry_enable_nag">Crash 보고가 비활성화 되어있는것 같습니다 . 피드백을 전송하려면 활성화 해주세요.</string>
+    <string name="reset_app">앱 리셋</string>
+    <string name="upgraded_summary">대단하시네요! 이미 Androidacy를 구독 및 후원하고 계셨답니다.</string>
+    <string name="upgraded">프리미엄 활성화</string>
+    <string name="reset_warning">계속 이 화면을 보고 계시다면, 앱을 초기화 하시는것이 효과적일 겁니다. 이는 앱 데이터를 지우지만, 설치 되어있는 모듈에는 영향을 주지 않습니다.</string>
+    <string name="error_adding">커스텀 저장소 추가 실패</string>
+    <string name="background_update_check_excludes">자동 업데이트에서 제외될 모듈</string>
 </resources>

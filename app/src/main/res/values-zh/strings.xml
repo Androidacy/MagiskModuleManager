@@ -362,4 +362,20 @@
     <string name="upgrade_snackbar">Androidacy Premium 提供更快的下载速度、无广告体验等等!</string>
     <string name="upgrade_now">升级</string>
     <string name="crash_details_suggestion">堆栈跟踪可以在下面找到。 但是，我们<b>strongly</b>建议您使用下面的反馈表来提交反馈。 这样，它就不会手动复制堆栈跟踪，而是自动将其发送给我们。 它还可以通过这种方式进行反混淆，并自动报告其他详细信息。</string>
+    <string name="reboot_extra_warning">您即将重启进入EDL模式，这是一个专为OEM制造商设定，用于刷机和修复底层问题的高级模式。除非您确定想要这样做，并具备能够退出此模式或使用该模式所需的工具，否则我们强烈建议您使用其他重启选项。</string>
+    <string name="title_notifications">通知</string>
+    <string name="expired">此版本已过期！</string>
+    <string name="expired_message">您正在使用的版本已过期，将无法继续运行。请更新至最新的稳定版本。</string>
+    <string name="download_latest">下载最新版本</string>
+    <string name="logs_saved">日志保存成功</string>
+    <string name="submit_feedback">提交反馈</string>
+    <string name="no_sentry_id">无法提交反馈 - 从Sentry获得事件ID失败。最后一次事件可能未发送成功。</string>
+    <string name="remote_module">可从线上仓库获取</string>
+    <string name="notification_update_frequency_desc">设置后台检查更新的频率。设置过低的值可能导致电池电量消耗过快。</string>
+    <string name="update_frequency_15">15分钟</string>
+    <string name="update_frequency_30">30分钟</string>
+    <string name="update_frequency_60">每小时</string>
+    <string name="update_frequency_360">6小时</string>
+    <string name="update_frequency_720">12小时</string>
+    <string name="update_frequency_1440">每天</string>
 </resources>
