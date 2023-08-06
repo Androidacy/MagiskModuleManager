@@ -250,4 +250,5 @@
     <string name="reset_warning">계속 이 화면을 보고 계시다면, 앱을 초기화 하시는것이 효과적일 겁니다. 이는 앱 데이터를 지우지만, 설치 되어있는 모듈에는 영향을 주지 않습니다.</string>
     <string name="error_adding">커스텀 저장소 추가 실패</string>
     <string name="background_update_check_excludes">자동 업데이트에서 제외될 모듈</string>
+    <string name="checking_for_update">업데이트 확인중…</string>
 </resources>
