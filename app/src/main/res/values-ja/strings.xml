@@ -1,17 +1,16 @@
-<?xml version="1.0" encoding="utf-8"?><!--
+<?xml version="1.0" encoding="utf-8"?>
+<!--
   ~ Copyright (c) 2023 to present Androidacy and contributors. Names, logos, icons, and the Androidacy name are all trademarks of Androidacy and may not be used without license. See LICENSE for more information.
-  -->
-
-<resources xmlns:tools="http://schemas.android.com/tools">
+  --><resources xmlns:tools="http://schemas.android.com/tools">
     <string name="fail_root_magisk">Root または Magisk にアクセスできません</string>
     <string name="loading">読み込み中…</string>
-    <string name="updatable">アップデート可能</string>
+    <string name="updatable">アップデートがあります</string>
     <string name="installed">インストール済</string>
     <string name="online_repo">オンラインリポジトリ</string>
     <string name="showcase_mode">アプリは現在ロックダウンモードです</string>
     <string name="failed_download">ファイルのダウンロードに失敗しました</string>
     <string name="fail_internet">インターネットに接続できません</string>
-    <string name="app_update_available">アプリの最新版を利用できます</string>
+    <string name="app_update_available">アプリの最新版が公開されています</string>
     <!-- Module section translation -->
     <string name="module_last_update">最終更新:</string>
     <string name="module_repo">リポジトリ:</string>
@@ -228,7 +227,7 @@
     <string name="zip_intent_module_install">本当に ZIP ファイル \"%2$s\" からモジュール \"%1$s\" をインストールしますか\? 
 \n 
 \nモジュールはとても強力で何でもできるため、ソースを信頼できるか確認してください。</string>
-    <string name="fox2code_thanks_desc">Fox2Code はこのアプリの元になったアプリです。それがなければおそらくこのアプリも完成しませんでした。</string>
+    <string name="fox2code_thanks_desc">Fox2Code はこのアプリのオリジナルになります。彼がいなかったら実現はしていなかったでしょう。</string>
     <string name="crash_text">うわっ、何かが間違っています!</string>=
     <string name="feedback_message">これが発生した状況と経緯を送信してください。できるだけ詳細にご記入いただくと大変助かります!</string>
     <string name="please_feedback">これが発生した経緯を送信してアプリの開発に協力してください。</string>
@@ -323,4 +322,58 @@
     <string name="reinstall">再インストール</string>
     <string name="eula_agree_v2">LGPL-3.0 (https://www.gnu.org/licenses/lgpl-3.0.en.html) と EULA (https://www.androidacy.com/foxmmm-eula/) ライセンスに同意することになります。第三者からの条件も含め、このアプリの開発者はアプリ使用時に発生した問題に関する一切の責任を負いません。また、それに関わる保証も提供しません。</string>
     <string name="setup_scroll_down_v2">完了ボタンを有効化するには、下にスクロールして EULA とライセンスに同意する必要があります。</string>
+    <string name="reboot_extra_warning">EDL モードは OEM が低レベルの問題を修正するための特別な機能です。EDL モードを解除したり、必要なツールをお持ちでない限りは他の再起動オプションを使用する事を強く推奨します。</string>
+    <string name="title_activity_expired">ExpiredActivity</string>
+    <string name="title_home">ホーム</string>
+    <string name="title_dashboard">ダッシュボード</string>
+    <string name="title_notifications">通知</string>
+    <string name="expired">このビルドは期限切れです!</string>
+    <string name="expired_message">使用中のビルドは有効期限が切れており、実行はできません。最新の安定版ビルドに更新してください。</string>
+    <string name="download_latest">最新のダウンロード</string>
+    <string name="error_opening_notes">モジュールノートを開くときにエラーが発生しました。ログに問題がある可能性があります。</string>
+    <string name="submit_feedback">フィードバックを送信</string>
+    <string name="ssl_error">SSL 傍受の可能性が検出されました。</string>
+    <string name="error_creating_modulelistcache_database">モジュールキャッシュ DB の作成に失敗しました</string>
+    <string name="build_expired">このビルドは有効期限が切れています。最新版にアップデートをしてください。</string>
+    <string name="credits">クレジット</string>
+    <string name="update_frequency_15">15 分</string>
+    <string name="update_frequency_30">30 分</string>
+    <string name="update_frequency_60">毎時</string>
+    <string name="update_frequency_360">6 時間</string>
+    <string name="update_frequency_720">12 時間</string>
+    <string name="update_frequency_1440">毎日</string>
+    <string name="background_update_check_excludes_version_summary">更新の確認を無視するモジュールのバージョンを指定してください。バージョンコードのみを使用するようにしてください。モジュールのリストでバージョンを長押しする事で表示されます。そのバージョン以降と一致をさせるには、先頭に ^ を使用してください。そのバージョンまで一致させるには、最後に $ を使用してください。</string>
+    <string name="crash_details_suggestion">スタックトレースは以下にあります。ですが、以下のフィードバックフォームを使用してフィードバックを送信する事を<b>強く</b>推奨します。この方法では、スタックトレースを手動でコピーする代わりに自動的に開発者へ送信されます。また、この方法では難読化が解除され追加の詳細が自動的に報告されます。</string>
+    <string name="reinstall_warning">ほとんどのモジュールは、アンインストール後にクリーンに再インストールをする必要があります。このため、AMM はデバイスにインストールされているモジュールの再インストールをサポートしていません。</string>
+    <string name="eula_agree_v2_headline">EULA および利用規約</string>
+    <string name="error_creating_repos_database">リポジトリ DB を作成できませんでした</string>
+    <string name="blur_performance_warning_summary">デバイスはぼかし効果に非対応です</string>
+    <string name="search">検索</string>
+    <string name="logs_saved">ログの保存に成功しました</string>
+    <string name="no_sentry_id">フィードバックを送信できません。最後のイベントが送信できていない可能性があります。</string>
+    <string name="remote_module">オンラインリポジトリから入手できます</string>
+    <string name="remote_message">%s はオンラインリポジトリから入手できます。<b>ほとんどのモジュールは再インストールを丁寧に扱わない</b>ので、クリーンインストールを行なう事を推奨します。</string>
+    <string name="debug_build_toast">AMM デバッグビルド %1$s は %2$s にビルドされ、アプリを使用可能な残り日数は %3$d 日です</string>
+    <string name="remote_message_no_update">%s はオンラインリポジトリから入手できます。オンラインタブで表示するにはアンインストールをしてください。</string>
+    <string name="notification_update_frequency_pref">バックグラウンドでの確認の頻度</string>
+    <string name="notification_update_frequency_desc">バックグラウンドでアップデートを確認する頻度です。値を低く設定し過ぎるとバッテリーの消耗が激しくなる可能性があります。</string>
+    <string name="reboot">再起動</string>
+    <string name="reboot_system">通常の再起動</string>
+    <string name="reboot_recovery">リカバリーで再起動</string>
+    <string name="reboot_bootloader">ブートローダーで再起動</string>
+    <string name="reboot_edl">EDL モードで再起動</string>
+    <string name="install_terminal_reboot_prevented">アプリの設定で再起動が無効化されています</string>
+    <string name="androidacy_api_error">API との通信中にエラーが発生しました: %d</string>
+    <string name="app_name_v2">Androidacy Module Manager</string>
+    <string name="app_name_short_v2">AMM</string>
+    <string name="notification_update_ignore_version_desc">モジュールのアップデートを確認する際に特定のバージョンを無視します。上記のモジュールごとの更新の確認を無効化する事でこの設定は上書きされます!</string>
+    <string name="notification_update_ignore_version_pref">アップデートの確認からバージョンを除外</string>
+    <string name="background_update_check_excludes_version">モジュールのバージョンの確認を除外</string>
+    <string name="module_version">"バージョン: "</string>
+    <string name="module_remote_version">リモートバージョン</string>
+    <string name="androidacy_thanks_up">アップグレードありがとうございます!モジュールのダウンロードとREADMEに広告が表示されなくなります。将来的にはワンクリックでモジュールを直接的にダウンロードができるようにもなります。</string>
+    <string name="androidacy_thanks_up_title">既にアップグレード済みです!</string>
+    <string name="upgrade_snackbar">Androidacy Premium は、より高速なダウンロードと広告の非表示などの体験を提供します!</string>
+    <string name="upgrade_now">アップグレード</string>
+    <string name="background_update_check_excludes_version_hint">無視をするバージョンコード</string>
 </resources>
