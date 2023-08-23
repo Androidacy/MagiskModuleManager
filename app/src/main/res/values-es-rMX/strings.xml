@@ -7,7 +7,7 @@
     <string name="fail_root_denied">El Acceso Root ha sido denegado desde la aplicación Magisk</string>
     <string name="fail_magisk_missing">Magisk no se encuentra instalado en este dispositivo</string>
     <string name="loading">Cargando…</string>
-    <string name="updatable">Actualización disponible</string>
+    <string name="updatable">Actualizable</string>
     <string name="installed">Instalado</string>
     <string name="online_repo">Repositorio en linea</string>
     <string name="showcase_mode">La aplicación está en modo Lockdown</string>
@@ -15,7 +15,7 @@
     <string name="fail_internet">No fue posible conectarse a Internet</string>
     <string name="no_web_view">No se pudo abrir el WebView del sistema</string>
     <string name="title_activity_settings">SettingsActivity</string>
-    <string name="app_update_available">Actualización disponible</string>
+    <string name="app_update_available">Una nueva versión de la aplicación está disponible</string>
     <string name="no_desc_found">Sin descripción.</string>
     <string name="download_module">Descargar módulo</string>
     <string name="install_module">Instalar módulo</string>
