@@ -1,18 +1,17 @@
-<?xml version="1.0" encoding="utf-8"?><!--
+<?xml version="1.0" encoding="utf-8"?>
+<!--
   ~ Copyright (c) 2023 to present Androidacy and contributors. Names, logos, icons, and the Androidacy name are all trademarks of Androidacy and may not be used without license. See LICENSE for more information.
-  -->
-
-<resources xmlns:tools="http://schemas.android.com/tools">
+  --><resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">Gestor de módulos Magisk de Fox</string>
-    <string name="fail_root_magisk">No se pudo acceder a Root o Magisk</string>
-    <string name="fail_root_denied">Root ha sido denegado a través de la aplicación Magisk</string>
+    <string name="fail_root_magisk">No se puede acceder a Magisk o Root</string>
+    <string name="fail_root_denied">Root denegado por la aplicación Magisk</string>
     <string name="fail_magisk_missing">Magisk no está instalado en este dispositivo</string>
     <string name="loading">Cargando…</string>
     <string name="updatable">Actualizable</string>
     <string name="installed">Instalado</string>
     <string name="online_repo">Repositorio en línea</string>
     <string name="showcase_mode">La aplicación está en modo de bloqueo</string>
-    <string name="fail_internet">No se ha podido conectar a Internet</string>
+    <string name="fail_internet">No se puede conectar a Internet</string>
     <string name="title_activity_settings">Ajustes de Actividad</string>
     <string name="app_update_available">Una nueva versión de la aplicación está disponible</string>
     <string name="no_desc_found">No se ha encontrado ninguna descripción.</string>
@@ -22,9 +21,9 @@
     <string name="website">Sitio web</string>
     <string name="support">Soporte</string>
     <string name="donate">Donar</string>
-    <string name="failed_download">No se pudo descargar el archivo</string>
-    <string name="no_web_view">No se ha podido abrir el WebView del sistema</string>
-    <string name="update">Actualización</string>
+    <string name="failed_download">No se puede descansar el archivo</string>
+    <string name="no_web_view">No se puede abrir el WebView del sistema</string>
+    <string name="update">Actualizar</string>
     <string name="install">Instalar</string>
     <string name="description">Descripción</string>
     <string name="uninstall">Desinstalar</string>
@@ -33,29 +32,29 @@
     <string name="submit_modules">Enviar módulo</string>
     <string name="install_terminal_reboot_now">Reiniciar</string>
     <string name="language">Idioma</string>
-    <string name="module_last_update">Última versión:</string>
+    <string name="module_last_update">Última actualización:</string>
     <string name="module_repo">Repositorio:</string>
-    <string name="module_by">por</string>
+    <string name="module_by">creado por</string>
     <string name="module_downloads">Descargas:</string>
     <string name="module_stars">Estrellas:</string>
     <string name="module_needs_ramdisk">Necesita ramdisk</string>
-    <string name="module_needs_ramdisk_desc">Este módulo necesita un boot ramdisk para ser instalado</string>
+    <string name="module_needs_ramdisk_desc">El módulo necesita configurar el arranque de ramdisk para ser instalado</string>
     <string name="module_can_change_boot">Puede cambiar el arranque</string>
     <string name="module_can_change_boot_desc">Este módulo puede cambiar la imagen de arranque</string>
     <string name="module_min_magisk_chip">:v Min. Magisk %s</string>
     <string name="module_min_sdk_chip">:v Min. Android</string>
     <string name="module_max_sdk_chip">:v Max. Android</string>
-    <string name="manage_repos_pref">Gestionar repositorios</string>
+    <string name="manage_repos_pref">Administrar repositorios</string>
     <string name="showcase_mode_pref">Modo bloqueo</string>
-    <string name="showcase_mode_desc">El modo bloqueo impide que el gestor realice acciones en los módulos</string>
+    <string name="showcase_mode_desc">El modo bloqueo impide que el administrador realice acciones en los módulos</string>
     <string name="prevent_reboot_pref">Previene el reinicio</string>
-    <string name="prevent_reboot_desc">Evita los reinicios inesperados</string>
+    <string name="prevent_reboot_desc">previene los reinicios inesperados</string>
     <string name="enable_monet">Activar Monet</string>
     <string name="pref_category_info">Información</string>
     <string name="show_licenses">Mostrar licencias</string>
     <string name="licenses">Licencias</string>
     <string name="show_incompatible_pref">Mostrar módulos incompatibles</string>
-    <string name="show_incompatible_desc">Mostrar los módulos que probablemente no funcionen en su dispositivo en función de sus metadatos</string>
+    <string name="show_incompatible_desc">Mostrar los módulos que probablemente no funcionen en su dispositivo por función de sus meta datos</string>
     <string name="magisk_outdated">¡Hay una nueva versión de Magisk para instalar!</string>
     <string name="pref_category_repos">Repositorios</string>
     <string name="pref_category_security">Seguridad</string>
@@ -333,4 +332,5 @@
     <string name="no_browser">No tienes un navegador instalado. Por favor instalar uno para continuar.</string>
     <string name="crash_details_suggestion">El seguimiento de pila se puede encontrar a continuación. Sin embargo, <b>recomendamos mucho</b> que utilices el formulario de comentarios que se encuentra a continuación para enviar tus comentarios. De esta manera, en lugar de copiar manualmente el seguimiento de pila, se enviará automáticamente. Además, de esta manera se desofuscará y se informarán automáticamente detalles adicionales.</string>
     <string name="reinstall_warning">La mayoría de los módulos deben desinstalarse y luego reinstalarse limpiamente. Por este motivo, AMM no admite la reinstalación de módulos mientras están instalados en el dispositivo.</string>
+    <string name="app_name_v2">Androidacy Administrador de módulos</string>
 </resources>
