@@ -45,6 +45,7 @@ class InfoFragment : PreferenceFragmentCompat() {
         }
 
         setPreferencesFromResource(R.xml.app_info_preferences, rootKey)
+        SettingsActivity.applyMaterial3(preferenceScreen)
 
         val clipboard =
             requireContext().getSystemService(FoxActivity.CLIPBOARD_SERVICE) as ClipboardManager

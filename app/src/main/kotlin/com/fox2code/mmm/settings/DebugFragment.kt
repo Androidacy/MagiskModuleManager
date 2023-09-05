@@ -53,6 +53,7 @@ class DebugFragment : PreferenceFragmentCompat() {
         }
         setPreferencesFromResource(R.xml.debugging_preferences, rootKey)
 
+        SettingsActivity.applyMaterial3(preferenceScreen)
 
         if (!MainApplication.isDeveloper) {
             findPreference<Preference>("pref_disable_low_quality_module_filter")!!.isVisible = false

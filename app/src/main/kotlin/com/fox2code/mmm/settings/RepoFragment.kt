@@ -848,28 +848,10 @@ class RepoFragment : PreferenceFragmentCompat() {
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         preferenceManager.sharedPreferencesName = "mmm"
         setPreferencesFromResource(R.xml.repo_preferences, rootKey)
-        applyMaterial3(preferenceScreen)
+        SettingsActivity.applyMaterial3(preferenceScreen)
         setRepoData(RepoManager.MAGISK_ALT_REPO)
         setRepoData(RepoManager.ANDROIDACY_MAGISK_REPO_ENDPOINT)
         updateCustomRepoList(true)
         onCreatePreferencesAndroidacy()
-    }
-
-    companion object {
-        /**
-         * *says proudly*: I stole it
-         *
-         *
-         * namely, from [neo wellbeing](https://github.com/NeoApplications/Neo-Wellbeing/blob/9fca4136263780c022f9ec6433c0b43d159166db/app/src/main/java/org/eu/droid_ng/wellbeing/prefs/SettingsActivity.java#L101)
-         */
-        fun applyMaterial3(p: Preference) {
-            if (p is PreferenceGroup) {
-                for (i in 0 until p.preferenceCount) {
-                    applyMaterial3(p.getPreference(i))
-                }
-            }
-            (p as? SwitchPreferenceCompat)?.widgetLayoutResource =
-                R.layout.preference_material_switch
-        }
     }
 }
