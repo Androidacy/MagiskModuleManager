@@ -13,6 +13,7 @@ import android.widget.Toast
 import androidx.annotation.DrawableRes
 import com.fox2code.foxcompat.app.FoxActivity
 import com.fox2code.foxcompat.view.FoxDisplay
+import com.fox2code.mmm.BuildConfig
 import com.fox2code.mmm.MainApplication.Companion.INSTANCE
 import com.fox2code.mmm.MainApplication.Companion.isShowcaseMode
 import com.fox2code.mmm.R
@@ -387,7 +388,7 @@ enum class ActionButtonType {
     REMOTE {
         @Suppress("NAME_SHADOWING")
         override fun doAction(button: Chip, moduleHolder: ModuleHolder) {
-            Timber.d("doAction: remote module for %s", moduleHolder.moduleInfo?.name ?: "null")
+            if (BuildConfig.DEBUG) Timber.d("doAction: remote module for %s", moduleHolder.moduleInfo?.name ?: "null")
             // that module is from remote repo
             val name: String? = if (moduleHolder.moduleInfo != null) {
                 moduleHolder.moduleInfo!!.name
@@ -441,18 +442,18 @@ enum class ActionButtonType {
                 madb.setPositiveButton(
                     R.string.reinstall
                 ) { _: DialogInterface?, _: Int ->
-                    Timber.d("Set moduleinfo to %s", moduleInfo.name)
+                    if (BuildConfig.DEBUG) Timber.d("Set moduleinfo to %s", moduleInfo.name)
                     val name: String? = if (moduleHolder.moduleInfo != null) {
                         moduleHolder.moduleInfo!!.name
                     } else {
                         moduleHolder.repoModule?.moduleInfo?.name
                     }
-                    Timber.d("doAction: remote module for %s", name)
+                    if (BuildConfig.DEBUG) Timber.d("doAction: remote module for %s", name)
                     TrackHelper.track().event("view_update_install", name)
                         .with(INSTANCE!!.getTracker())
                     // Androidacy manage the selection between download and install
                     if (isAndroidacyLink(updateZipUrl)) {
-                        Timber.d("Androidacy link detected")
+                        if (BuildConfig.DEBUG) Timber.d("Androidacy link detected")
                         openUrlAndroidacy(
                             button.context,
                             updateZipUrl,

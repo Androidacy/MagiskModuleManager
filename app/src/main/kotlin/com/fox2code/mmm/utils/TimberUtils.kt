@@ -27,8 +27,8 @@ object TimberUtils {
                 plant(
                     SentryTimberTree(
                         Sentry.getCurrentHub(),
-                        SentryLevel.ERROR,
-                        SentryLevel.ERROR
+                        SentryLevel.WARNING,
+                        SentryLevel.WARNING
                     )
                 )
             } else {

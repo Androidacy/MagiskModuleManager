@@ -82,7 +82,7 @@ class AndroidacyRepoData(cacheRoot: File?, testMode: Boolean) : RepoData(
             // response is JSON
             val jsonObject = JSONObject(String(resp))
             memberLevel = jsonObject.getString("role")
-            Timber.d("Member level: %s", memberLevel)
+            if (BuildConfig.DEBUG) Timber.d("Member level: %s", memberLevel)
             val memberPermissions = jsonObject.getJSONArray("permissions")
             // set role and permissions on userInfo property
             userInfo = arrayOf(
@@ -133,13 +133,12 @@ class AndroidacyRepoData(cacheRoot: File?, testMode: Boolean) : RepoData(
             "https://" + host + "/auth/register?fmt=json&device_id=" + deviceId + "&client_id=" + BuildConfig.ANDROIDACY_CLIENT_ID,
             false
         )
-        var token: String
-	try {
+        val token: String = try {
             val jsonObject = JSONObject(String(resp))
-            token = jsonObject.getString("token")
+            jsonObject.getString("token")
         } catch (e: JSONException) {
             if (String(resp).count() == 64) {
-                token = String(resp)
+                String(resp)
             } else {
                 return ""
             }
@@ -264,7 +263,7 @@ class AndroidacyRepoData(cacheRoot: File?, testMode: Boolean) : RepoData(
     @Throws(JSONException::class)
     override fun populate(jsonObject: JSONObject): List<RepoModule>? {
         var jsonObject = jsonObject
-        Timber.d("AndroidacyRepoData populate start")
+        if (BuildConfig.DEBUG) Timber.d("AndroidacyRepoData populate start")
         val name = jsonObject.optString("name", "Androidacy Modules Repo")
         val nameForModules =
             if (name.endsWith(" (Official)")) name.substring(0, name.length - 11) else name
@@ -285,18 +284,16 @@ class AndroidacyRepoData(cacheRoot: File?, testMode: Boolean) : RepoData(
         }
         val newModules = ArrayList<RepoModule>()
         val len = jsonArray.length()
-        // stringify json array for logging but only log the first 200 characters
-        val tempJsonArray = jsonArray.toString()
-        Timber.d(
-            "AndroidacyRepoData populate loop start with json %s",
-            if (tempJsonArray.length > 200) tempJsonArray.substring(0, 200) else tempJsonArray
-        )
         var lastLastUpdate: Long = 0
         for (i in 0 until len) {
             try {
-                jsonObject = jsonArray.getJSONObject(i)
+                if (!jsonArray.isNull(i)) {
+                    jsonObject = jsonArray.getJSONObject(i)
+                } else {
+                    if (BuildConfig.DEBUG) Timber.d("Skipping null module at index %d", i)
+                    continue
+                }
             } catch (e: JSONException) {
-                Timber.e(e, "Failed to parse module")
                 continue
             }
             val moduleId: String = try {

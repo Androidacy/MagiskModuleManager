@@ -264,24 +264,24 @@ class MainApplication : FoxApplication(), Configuration.Provider {
             fileUtils.ensureCacheDirs()
             fileUtils.ensureURLHandler(this)
         }
-        Timber.d("Initializing AMM")
-        Timber.d("Started from background: %s", !isInForeground)
-        Timber.d("AMM is running in debug mode")
+        if (BuildConfig.DEBUG) Timber.d("Initializing AMM")
+        if (BuildConfig.DEBUG) Timber.d("Started from background: %s", !isInForeground)
+        if (BuildConfig.DEBUG) Timber.d("AMM is running in debug mode")
         // analytics
-        Timber.d("Initializing matomo")
+        if (BuildConfig.DEBUG) Timber.d("Initializing matomo")
         getTracker()
         if (!isMatomoAllowed()) {
-            Timber.d("Matomo is not allowed")
+            if (BuildConfig.DEBUG) Timber.d("Matomo is not allowed")
             tracker!!.isOptOut = true
         } else {
             tracker!!.isOptOut = false
         }
         if (getSharedPreferences("matomo")!!.getBoolean("install_tracked", false)) {
             TrackHelper.track().download().with(INSTANCE!!.getTracker())
-            Timber.d("Sent install event to matomo")
+            if (BuildConfig.DEBUG) Timber.d("Sent install event to matomo")
             getSharedPreferences("matomo")!!.edit().putBoolean("install_tracked", true).apply()
         } else {
-            Timber.d("Matomo already has install")
+            if (BuildConfig.DEBUG) Timber.d("Matomo already has install")
         }
         try {
             @Suppress("DEPRECATION") @SuppressLint("PackageManagerGetSignatures") val s =
@@ -413,12 +413,12 @@ class MainApplication : FoxApplication(), Configuration.Provider {
             val activityManager = this.getSystemService(ACTIVITY_SERVICE) as ActivityManager
             val appProcesses = activityManager.runningAppProcesses
             if (appProcesses == null) {
-                Timber.d("appProcesses is null")
+                if (BuildConfig.DEBUG) Timber.d("appProcesses is null")
                 return false
             }
             val packageName = this.packageName
             for (appProcess in appProcesses) {
-                Timber.d(
+                if (BuildConfig.DEBUG) Timber.d(
                     "Process: %s, Importance: %d", appProcess.processName, appProcess.importance
                 )
                 if (appProcess.importance == RunningAppProcessInfo.IMPORTANCE_FOREGROUND && appProcess.processName == packageName) {
@@ -503,6 +503,14 @@ class MainApplication : FoxApplication(), Configuration.Provider {
         init {
             Shell.setDefaultBuilder(Shell.Builder.create()
                 .setFlags(Shell.FLAG_REDIRECT_STDERR or Shell.FLAG_MOUNT_MASTER).setTimeout(15))
+            // set verbose logging for debug builds
+            if (BuildConfig.DEBUG) {
+                Shell.enableVerboseLogging = true
+            }
+            // prewarm shell
+            Shell.getShell {
+                // do nothing
+            }
             val random = Random()
             do {
                 secret = random.nextLong()

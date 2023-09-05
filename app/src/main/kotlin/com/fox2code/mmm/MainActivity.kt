@@ -139,7 +139,7 @@ class MainActivity : FoxActivity(), OnRefreshListener, SearchView.OnQueryTextLis
             if (ts.time > buildTime.time) {
                 val pm = packageManager
                 val intent = Intent(this, ExpiredActivity::class.java)
-                @Suppress("DEPRECATION") val resolveInfo = pm.queryIntentActivities(intent, 0)
+                val resolveInfo = pm.queryIntentActivities(intent, 0)
                 if (resolveInfo.size > 0) {
                     startActivity(intent)
                     finish()
@@ -231,11 +231,8 @@ class MainActivity : FoxActivity(), OnRefreshListener, SearchView.OnQueryTextLis
                 .create()
             rebootDialog.show()
         }
+        // get background color and elevation of reboot fab
         val searchCard = searchCard!!
-        // copy reboot fab style to search card
-        searchCard.elevation = rebootFab.elevation
-        searchCard.translationY = rebootFab.translationY
-        searchCard.foreground = rebootFab.foreground
         moduleList.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                 if (newState != RecyclerView.SCROLL_STATE_IDLE) searchView.clearFocus()
@@ -307,8 +304,6 @@ class MainActivity : FoxActivity(), OnRefreshListener, SearchView.OnQueryTextLis
                     TrackHelper.track().event("view_list", "settings")
                         .with(MainApplication.INSTANCE!!.tracker)
                     startActivity(Intent(this@MainActivity, SettingsActivity::class.java))
-                    overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
-                    finish()
                 }
 
                 R.id.online_menu_item -> {
@@ -388,9 +383,17 @@ class MainActivity : FoxActivity(), OnRefreshListener, SearchView.OnQueryTextLis
         tryGetMagiskPathAsync(object : InstallerInitializer.Callback {
             override fun onPathReceived(path: String?) {
                 Timber.i("Got magisk path: %s", path)
-                if (peekMagiskVersion() < Constants.MAGISK_VER_CODE_INSTALL_COMMAND) moduleViewListBuilder.addNotification(
-                    NotificationType.MAGISK_OUTDATED
-                )
+                if (peekMagiskVersion() < Constants.MAGISK_VER_CODE_INSTALL_COMMAND) {
+                    if (!InstallerInitializer.isKsu) {
+                        moduleViewListBuilder.addNotification(
+                            NotificationType.MAGISK_OUTDATED
+                        )
+                    } else {
+                        moduleViewListBuilder.addNotification(
+                            NotificationType.KSU_EXPERIMENTAL
+                        )
+                    }
+                }
                 if (!MainApplication.isShowcaseMode) moduleViewListBuilder.addNotification(
                     NotificationType.INSTALL_FROM_STORAGE
                 )
@@ -409,7 +412,7 @@ class MainActivity : FoxActivity(), OnRefreshListener, SearchView.OnQueryTextLis
 
             fun commonNext() {
                 if (BuildConfig.DEBUG) {
-                    Timber.d("Common next")
+                    if (BuildConfig.DEBUG) Timber.d("Common next")
                     moduleViewListBuilder.addNotification(NotificationType.DEBUG)
                 }
                 NotificationType.NO_INTERNET.autoAdd(moduleViewListBuilderOnline)
@@ -426,7 +429,7 @@ class MainActivity : FoxActivity(), OnRefreshListener, SearchView.OnQueryTextLis
                 updateScreenInsets() // Fix an edge case
                 val context: Context = this@MainActivity
                 if (runtimeUtils!!.waitInitialSetupFinished(context, this@MainActivity)) {
-                    Timber.d("waiting...")
+                    if (BuildConfig.DEBUG) Timber.d("waiting...")
                     return
                 }
                 swipeRefreshBlocker = System.currentTimeMillis() + 5000L
@@ -869,7 +872,7 @@ class MainActivity : FoxActivity(), OnRefreshListener, SearchView.OnQueryTextLis
             // wait for up to 10 seconds for AndroidacyRepoData to be initialized
             var i: Int
             if (AndroidacyRepoData.instance.isEnabled && AndroidacyRepoData.instance.memberLevel == null) {
-                Timber.d("Member level is null, waiting for it to be initialized")
+                if (BuildConfig.DEBUG) Timber.d("Member level is null, waiting for it to be initialized")
                 i = 0
                 while (AndroidacyRepoData.instance.memberLevel == null && i < 20) {
                     i++

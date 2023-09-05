@@ -86,7 +86,7 @@ class UpdateFragment : PreferenceFragmentCompat() {
                     do {
                         fakeVersion = random.nextInt(10)
                     } while (fakeVersion == 0)
-                    Timber.d("Fake version: %s, count: %s", fakeVersion, i)
+                    if (BuildConfig.DEBUG) Timber.d("Fake version: %s, count: %s", fakeVersion, i)
                     updateableModules["FakeModule $i"] = "1.0.$fakeVersion"
                 }
                 BackgroundUpdateChecker.postNotification(
@@ -158,7 +158,7 @@ class UpdateFragment : PreferenceFragmentCompat() {
                         moduleNames[i] = localModuleInfo!!.name
                         // Stringset uses id, we show name
                         checkedItems[i] = stringSet.contains(localModuleInfo.id)
-                        Timber.d("name: %s, checked: %s", moduleNames[i], checkedItems[i])
+                        if (BuildConfig.DEBUG) Timber.d("name: %s, checked: %s", moduleNames[i], checkedItems[i])
                     }
                     MaterialAlertDialogBuilder(requireContext()).setTitle(R.string.background_update_check_excludes)
                         .setMultiChoiceItems(
@@ -205,7 +205,7 @@ class UpdateFragment : PreferenceFragmentCompat() {
                 val stringSet = sharedPreferences.getStringSet(
                     "pref_background_update_check_excludes_version", HashSet()
                 )
-                Timber.d("stringSet: %s", stringSet)
+                if (BuildConfig.DEBUG) Timber.d("stringSet: %s", stringSet)
                 // for every module, add it's name and a text field to the dialog. the text field should accept a comma separated list of versions
                 val localModuleInfos: Collection<LocalModuleInfo?> =
                     ModuleManager.instance!!.modules.values
@@ -263,7 +263,7 @@ class UpdateFragment : PreferenceFragmentCompat() {
                         .setView(scrollView).setPositiveButton(
                             R.string.ok
                         ) { _: DialogInterface?, _: Int ->
-                            Timber.d("ok clicked")
+                            if (BuildConfig.DEBUG) Timber.d("ok clicked")
                             // for every module, get the text field and save it to the stringset
                             val stringSetTemp: MutableSet<String> = HashSet()
                             var prevMod = ""
@@ -287,9 +287,9 @@ class UpdateFragment : PreferenceFragmentCompat() {
                                                 localModuleInfo!!.name.equals(finalprevMod)
                                             }.findFirst().orElse(null)!!.id + ":" + text
                                     )
-                                    Timber.d("text is %s for %s", text, editText.hint.toString())
+                                    if (BuildConfig.DEBUG) Timber.d("text is %s for %s", text, editText.hint.toString())
                                 } else {
-                                    Timber.d("text is empty for %s", editText.hint.toString())
+                                    if (BuildConfig.DEBUG) Timber.d("text is empty for %s", editText.hint.toString())
                                 }
                             }
                             sharedPreferences.edit().putStringSet(

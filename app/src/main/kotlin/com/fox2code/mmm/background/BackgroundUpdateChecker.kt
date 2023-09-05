@@ -179,7 +179,7 @@ class BackgroundUpdateChecker(context: Context, workerParams: WorkerParameters) 
                     builder.setContentText(context.getString(R.string.notification_channel_background_update_description))
                     notificationManager.notify(NOTIFICATION_ID_ONGOING, builder.build())
                 } else {
-                    Timber.d("Not posting notification because of missing permission")
+                    if (BuildConfig.DEBUG) Timber.d("Not posting notification because of missing permission")
                 }
                 ModuleManager.instance!!.scanAsync()
                 RepoManager.getINSTANCE()!!.update(null)
@@ -212,7 +212,7 @@ class BackgroundUpdateChecker(context: Context, workerParams: WorkerParameters) 
                         for (s in stringSet!!) {
                             if (s.startsWith(localModuleInfo.id)) {
                                 version = s
-                                Timber.d("igV: %s", version)
+                                if (BuildConfig.DEBUG) Timber.d("igV: %s", version)
                                 break
                             }
                         }
@@ -223,7 +223,7 @@ class BackgroundUpdateChecker(context: Context, workerParams: WorkerParameters) 
                             remoteVersionCode = repoModule.moduleInfo.versionCode.toString()
                         }
                         if (version.isNotEmpty()) {
-                            Timber.d("igV found: %s", version)
+                            if (BuildConfig.DEBUG) Timber.d("igV found: %s", version)
                             val remoteVersionCodeInt = remoteVersionCode.toInt()
                             val wantsVersion =
                                 version.split(":".toRegex()).dropLastWhile { it.isEmpty() }
@@ -233,23 +233,23 @@ class BackgroundUpdateChecker(context: Context, workerParams: WorkerParameters) 
                             version = version.split(":".toRegex()).dropLastWhile { it.isEmpty() }
                                 .toTypedArray()[1]
                             if (version.startsWith("^")) {
-                                Timber.d("igV: newer")
+                                if (BuildConfig.DEBUG) Timber.d("igV: newer")
                                 // the wantsversion and newer
                                 if (remoteVersionCodeInt >= wantsVersion) {
-                                    Timber.d("igV: skipping")
+                                    if (BuildConfig.DEBUG) Timber.d("igV: skipping")
                                     // if it is, we skip it
                                     continue
                                 }
                             } else if (version.endsWith("$")) {
-                                Timber.d("igV: older")
+                                if (BuildConfig.DEBUG) Timber.d("igV: older")
                                 // this wantsversion and older
                                 if (remoteVersionCodeInt <= wantsVersion) {
-                                    Timber.d("igV: skipping")
+                                    if (BuildConfig.DEBUG) Timber.d("igV: skipping")
                                     // if it is, we skip it
                                     continue
                                 }
                             } else if (wantsVersion == remoteVersionCodeInt) {
-                                Timber.d("igV: equal")
+                                if (BuildConfig.DEBUG) Timber.d("igV: equal")
                                 // if it is, we skip it
                                 continue
                             }
@@ -273,7 +273,7 @@ class BackgroundUpdateChecker(context: Context, workerParams: WorkerParameters) 
                         }
                     }
                     if (moduleUpdateCount != 0) {
-                        Timber.d("Found %d updates", moduleUpdateCount)
+                        if (BuildConfig.DEBUG) Timber.d("Found %d updates", moduleUpdateCount)
                         postNotification(context, updateableModules, moduleUpdateCount, false)
                     }
                 }
@@ -287,10 +287,10 @@ class BackgroundUpdateChecker(context: Context, workerParams: WorkerParameters) 
                         try {
                             val shouldUpdate = AppUpdateManager.appUpdateManager.checkUpdate(true)
                             if (shouldUpdate) {
-                                Timber.d("Found app update")
+                                if (BuildConfig.DEBUG) Timber.d("Found app update")
                                 postNotificationForAppUpdate(context)
                             } else {
-                                Timber.d("No app update found")
+                                if (BuildConfig.DEBUG) Timber.d("No app update found")
                             }
                         } catch (e: Exception) {
                             Timber.e("Failed to check for app update")
@@ -303,7 +303,7 @@ class BackgroundUpdateChecker(context: Context, workerParams: WorkerParameters) 
                         Manifest.permission.POST_NOTIFICATIONS
                     ) == PackageManager.PERMISSION_GRANTED
                 ) {
-                    Timber.d("Removing notification")
+                    if (BuildConfig.DEBUG) Timber.d("Removing notification")
                     val notificationManager = NotificationManagerCompat.from(context)
                     notificationManager.cancel(NOTIFICATION_ID_ONGOING)
                 }
@@ -420,11 +420,11 @@ class BackgroundUpdateChecker(context: Context, workerParams: WorkerParameters) 
                 ).build()
             )
             notificationManagerCompat.cancel(NOTIFICATION_ID_ONGOING)
-            Timber.d("Scheduling periodic background check")
+            if (BuildConfig.DEBUG) Timber.d("Scheduling periodic background check")
             // use pref_background_update_check_frequency to set frequency. value is in minutes
             val frequency = MainApplication.getSharedPreferences("mmm")!!
                 .getInt("pref_background_update_check_frequency", 60).toLong()
-            Timber.d("Frequency: $frequency minutes")
+            if (BuildConfig.DEBUG) Timber.d("Frequency: $frequency minutes")
             WorkManager.getInstance(context).enqueueUniquePeriodicWork(
                 "background_checker",
                 ExistingPeriodicWorkPolicy.UPDATE,

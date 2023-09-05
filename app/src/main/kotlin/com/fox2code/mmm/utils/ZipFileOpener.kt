@@ -35,7 +35,7 @@ class ZipFileOpener : FoxActivity() {
         super.onCreate(savedInstanceState)
         loading = build(this, R.string.loading, R.string.zip_unpacking)
         Thread(Runnable {
-            Timber.d("onCreate: %s", intent)
+            if (BuildConfig.DEBUG) Timber.d("onCreate: %s", intent)
             val zipFile: File
             val uri = intent.data
             if (uri == null) {
@@ -103,7 +103,7 @@ class ZipFileOpener : FoxActivity() {
                 }
                 return@Runnable
             } else {
-                Timber.d("onCreate: Zip file is " + zipFile.length() + " bytes")
+                if (BuildConfig.DEBUG) Timber.d("onCreate: Zip file is " + zipFile.length() + " bytes")
             }
             var entry: ZipEntry?
             var zip: ZipFile? = null
@@ -116,13 +116,13 @@ class ZipFileOpener : FoxActivity() {
                     Timber.e("onCreate: Zip file is not a valid magisk module")
                     if (BuildConfig.DEBUG) {
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                            Timber.d(
+                            if (BuildConfig.DEBUG) Timber.d(
                                 "onCreate: Zip file contents: %s",
                                 zip.stream().map { obj: ZipEntry -> obj.name }
                                     .reduce { a: String, b: String -> "$a, $b" }.orElse("empty")
                             )
                         } else {
-                            Timber.d("onCreate: Zip file contents cannot be listed on this version of android")
+                            if (BuildConfig.DEBUG) Timber.d("onCreate: Zip file contents cannot be listed on this version of android")
                         }
                     }
                     runOnUiThread {
@@ -146,7 +146,7 @@ class ZipFileOpener : FoxActivity() {
                 }
                 return@Runnable
             }
-            Timber.d("onCreate: Zip file is valid")
+            if (BuildConfig.DEBUG) Timber.d("onCreate: Zip file is valid")
             var moduleInfo: String?
             try {
                 moduleInfo = readModulePropSimple(zip.getInputStream(entry), "name")

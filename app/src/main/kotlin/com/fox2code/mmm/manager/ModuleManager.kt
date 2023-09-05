@@ -58,7 +58,7 @@ class ModuleManager private constructor() : SyncManager() {
         if (!FORCE_NEED_FALLBACK && needFallback) {
             Timber.e("using fallback instead.")
         }
-        if (BuildConfig.DEBUG) Timber.d("Scan")
+        if (BuildConfig.DEBUG) if (BuildConfig.DEBUG) Timber.d("Scan")
         val modulesList = StringBuilder()
         if (modules != null) {
             Timber.i("Found %d modules on device in data", modules.size)
@@ -69,7 +69,7 @@ class ModuleManager private constructor() : SyncManager() {
             ).allowMainThreadQueries().build()
             for (module in modules) {
                 if (!SuFile("/data/adb/modules/$module").isDirectory) continue  // Ignore non directory files inside modules folder
-                Timber.d("Found module %s", module)
+                if (BuildConfig.DEBUG) Timber.d("Found module %s", module)
                 var moduleInfo = moduleInfos[module]
                 // next, merge the module info with a record from ModuleListCache room db if it exists
                 // initialize modulelistcache db
@@ -80,7 +80,7 @@ class ModuleManager private constructor() : SyncManager() {
                     moduleInfo = LocalModuleInfo(module)
                 }
                 if (moduleListCacheDao.exists(module)) {
-                    Timber.d("Found cache for %s", module)
+                    if (BuildConfig.DEBUG) Timber.d("Found cache for %s", module)
                     val moduleListCache: ModuleListCache = moduleListCacheDao.getByCodename(module)
                     moduleInfo.name =
                         if (moduleListCache.name != "") moduleListCache.name else module
@@ -130,7 +130,7 @@ class ModuleManager private constructor() : SyncManager() {
                         moduleInfo, "/data/adb/modules/$module/module.prop", true
                     )
                 } catch (e: Exception) {
-                    if (BuildConfig.DEBUG) Timber.d(e)
+                    if (BuildConfig.DEBUG) if (BuildConfig.DEBUG) Timber.d(e)
                     moduleInfo.flags = moduleInfo.flags or FLAG_MM_INVALID
                 }
                 moduleInfos[module] = moduleInfo
@@ -148,12 +148,12 @@ class ModuleManager private constructor() : SyncManager() {
         // send list to matomo
         TrackHelper.track().event("installed_modules", modulesList.toString())
             .with(MainApplication.INSTANCE!!.tracker)
-        if (BuildConfig.DEBUG) Timber.d("Scan update")
+        if (BuildConfig.DEBUG) if (BuildConfig.DEBUG) Timber.d("Scan update")
         val modulesUpdate = SuFile("/data/adb/modules_update").list()
         if (modulesUpdate != null) {
             for (module in modulesUpdate) {
                 if (!SuFile("/data/adb/modules_update/$module").isDirectory) continue  // Ignore non directory files inside modules folder
-                if (BuildConfig.DEBUG) Timber.d(module)
+                if (BuildConfig.DEBUG) if (BuildConfig.DEBUG) Timber.d(module)
                 var moduleInfo = moduleInfos[module]
                 if (moduleInfo == null) {
                     moduleInfo = LocalModuleInfo(module)
@@ -166,17 +166,17 @@ class ModuleManager private constructor() : SyncManager() {
                         moduleInfo, "/data/adb/modules_update/$module/module.prop", true
                     )
                 } catch (e: Exception) {
-                    if (BuildConfig.DEBUG) Timber.d(e)
+                    if (BuildConfig.DEBUG) if (BuildConfig.DEBUG) Timber.d(e)
                     moduleInfo.flags = moduleInfo.flags or FLAG_MM_INVALID
                 }
             }
         }
-        if (BuildConfig.DEBUG) Timber.d("Finalize scan")
+        if (BuildConfig.DEBUG) if (BuildConfig.DEBUG) Timber.d("Finalize scan")
         updatableModuleCount = 0
         val moduleInfoIterator = moduleInfos.values.iterator()
         while (moduleInfoIterator.hasNext()) {
             val moduleInfo = moduleInfoIterator.next()
-            if (BuildConfig.DEBUG) Timber.d(moduleInfo.id)
+            if (BuildConfig.DEBUG) if (BuildConfig.DEBUG) Timber.d(moduleInfo.id)
             if (moduleInfo.flags and FLAG_MM_UNPROCESSED != 0) {
                 moduleInfoIterator.remove()
                 continue  // Don't process fallbacks if unreferenced
@@ -225,7 +225,7 @@ class ModuleManager private constructor() : SyncManager() {
 
     @Suppress("unused")
     fun setEnabledState(moduleInfo: ModuleInfo, checked: Boolean): Boolean {
-        Timber.d("setEnabledState(%s, %s)", moduleInfo.id, checked)
+        if (BuildConfig.DEBUG) Timber.d("setEnabledState(%s, %s)", moduleInfo.id, checked)
         if (moduleInfo.hasFlag(ModuleInfo.FLAG_MODULE_UPDATING) && !checked) return false
         val disable = SuFile("/data/adb/modules/" + moduleInfo.id + "/disable")
         if (checked) {

@@ -123,7 +123,7 @@ class DebugFragment : PreferenceFragmentCompat() {
                 )
             }
         }
-        if (InstallerInitializer.peekMagiskVersion() < Constants.MAGISK_VER_CODE_INSTALL_COMMAND || !MainApplication.isDeveloper) {
+        if (InstallerInitializer.peekMagiskVersion() < Constants.MAGISK_VER_CODE_INSTALL_COMMAND || !MainApplication.isDeveloper || InstallerInitializer.isKsu) {
             findPreference<Preference>("pref_use_magisk_install_command")!!.isVisible = false
         }
 

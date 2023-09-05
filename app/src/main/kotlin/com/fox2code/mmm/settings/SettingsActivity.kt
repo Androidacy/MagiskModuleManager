@@ -38,7 +38,8 @@ import timber.log.Timber
 import java.sql.Timestamp
 
 @Suppress("SENSELESS_COMPARISON")
-class SettingsActivity : FoxActivity(), LanguageActivity {
+class SettingsActivity : FoxActivity(), LanguageActivity,
+    PreferenceFragmentCompat.OnPreferenceStartFragmentCallback {
     lateinit var sharedPreferences: SharedPreferences
 
     @SuppressLint("RestrictedApi")
@@ -94,7 +95,7 @@ class SettingsActivity : FoxActivity(), LanguageActivity {
             if (ts.time > buildTime.time) {
                 val pm = packageManager
                 val intent = Intent(this, ExpiredActivity::class.java)
-                @Suppress("DEPRECATION") val resolveInfo = pm.queryIntentActivities(intent, 0)
+                val resolveInfo = pm.queryIntentActivities(intent, 0)
                 if (resolveInfo.size > 0) {
                     startActivity(intent)
                     finish()
@@ -192,7 +193,7 @@ class SettingsActivity : FoxActivity(), LanguageActivity {
             findPreference<Preference>("pref_pkg_info")!!.onPreferenceClickListener =
                 Preference.OnPreferenceClickListener { p: Preference ->
                     versionClicks++
-                    Timber.d("Version clicks: %d", versionClicks)
+                    if (BuildConfig.DEBUG) Timber.d("Version clicks: %d", versionClicks)
                     if (versionClicks == 7) {
                         versionClicks = 0
                         openUrl(p.context, "https://www.youtube.com/watch?v=dQw4w9WgXcQ")
@@ -266,7 +267,7 @@ class SettingsActivity : FoxActivity(), LanguageActivity {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
                     points += 1
                 }
-                Timber.d("Device performance class: %d", points)
+                if (BuildConfig.DEBUG) Timber.d("Device performance class: %d", points)
                 return if (points <= 7) {
                     PERFORMANCE_CLASS_LOW
                 } else if (points <= 12) {
@@ -275,5 +276,20 @@ class SettingsActivity : FoxActivity(), LanguageActivity {
                     PERFORMANCE_CLASS_HIGH
                 }
             }
+    }
+
+    override fun onPreferenceStartFragment(
+        caller: PreferenceFragmentCompat,
+        pref: Preference
+    ): Boolean {
+        val fragment = supportFragmentManager.fragmentFactory.instantiate(
+            classLoader, pref.fragment.toString()
+        )
+        fragment.arguments = pref.extras
+        @Suppress("DEPRECATION") fragment.setTargetFragment(caller, 0)
+        supportFragmentManager.beginTransaction().replace(R.id.settings, fragment)
+            .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN).addToBackStack(null)
+            .commit()
+        return true
     }
 }

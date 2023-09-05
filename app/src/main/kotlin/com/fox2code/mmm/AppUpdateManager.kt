@@ -44,7 +44,7 @@ class AppUpdateManager private constructor() {
             lastChecked < System.currentTimeMillis() - 60000L
         ) return force && peekShouldUpdate()
         synchronized(updateLock) {
-            Timber.d("Checking for app updates")
+            if (BuildConfig.DEBUG) Timber.d("Checking for app updates")
             if (lastChecked != this.lastChecked) return peekShouldUpdate()
             // make a request to https://production-api.androidacy.com/amm/updates/check with appVersionCode and token/device_id/client_id
             var token = AndroidacyRepoData.token
@@ -59,7 +59,7 @@ class AppUpdateManager private constructor() {
             val response = doHttpGet(url, false)
             // convert response to string
             val responseString = String(response, Charsets.UTF_8)
-            Timber.d("Response: $responseString")
+            if (BuildConfig.DEBUG) Timber.d("Response: $responseString")
             // json response has a boolean shouldUpdate and an int latestVersion
             JSONObject(responseString).let {
                 if (it.getBoolean("shouldUpdate")) {
@@ -105,7 +105,7 @@ class AppUpdateManager private constructor() {
     @Throws(IOException::class)
     private fun parseCompatibilityFlags(inputStream: InputStream) {
         compatDataId.clear()
-        Timber.d("Not implemented")
+        if (BuildConfig.DEBUG) Timber.d("Not implemented")
     }
 
     fun getCompatibilityFlags(moduleId: String): Int {

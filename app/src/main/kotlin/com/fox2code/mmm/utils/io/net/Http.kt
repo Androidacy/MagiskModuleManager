@@ -248,7 +248,7 @@ enum class Http {;
                     0, dot
                 ).toInt()
             }
-            Timber.d(
+            if (BuildConfig.DEBUG) Timber.d(
                 "Webview version: %s (%d)", webviewVersion, webviewVersionCode
             )
             hasWebView =
@@ -492,7 +492,7 @@ enum class Http {;
                 throw HttpException(e.message, 0)
             }
             if (BuildConfig.DEBUG_HTTP) {
-                Timber.d("doHttpGet: request executed")
+                if (BuildConfig.DEBUG) Timber.d("doHttpGet: request executed")
             }
             // 200/204 == success, 304 == cache valid
             if (response != null) {
@@ -513,7 +513,7 @@ enum class Http {;
                         if (retryAfter != null) {
                             try {
                                 val seconds = Integer.parseInt(retryAfter)
-                                Timber.d("Sleeping for $seconds seconds")
+                                if (BuildConfig.DEBUG) Timber.d("Sleeping for $seconds seconds")
                                 Thread.sleep(seconds * 1000L)
                             } catch (e: NumberFormatException) {
                                 Timber.e(e, "Failed to parse Retry-After header")
@@ -523,7 +523,7 @@ enum class Http {;
                         } else {// start with one second and try up to five times
                             if (limitedRetries < 5) {
                                 limitedRetries++
-                                Timber.d("Sleeping for 1 second")
+                                if (BuildConfig.DEBUG) Timber.d("Sleeping for 1 second")
                                 try {
                                     Thread.sleep(1000L * limitedRetries)
                                 } catch (e: InterruptedException) {
@@ -539,7 +539,7 @@ enum class Http {;
                 }
             }
             if (BuildConfig.DEBUG_HTTP) {
-                Timber.d("doHttpGet: " + url.replace("=[^&]*".toRegex(), "=****") + " succeeded")
+                if (BuildConfig.DEBUG) Timber.d("doHttpGet: " + url.replace("=[^&]*".toRegex(), "=****") + " succeeded")
             }
             var responseBody = response?.body
             // Use cache api if used cached response
@@ -551,7 +551,7 @@ enum class Http {;
             }
             if (BuildConfig.DEBUG_HTTP) {
                 if (responseBody != null) {
-                    Timber.d("doHttpGet: returning " + responseBody.contentLength() + " bytes")
+                    if (BuildConfig.DEBUG) Timber.d("doHttpGet: returning " + responseBody.contentLength() + " bytes")
                 }
             }
             return responseBody?.bytes() ?: ByteArray(0)
@@ -566,7 +566,7 @@ enum class Http {;
 
         @Throws(IOException::class)
         private fun doHttpPostRaw(url: String, data: String, allowCache: Boolean): Any {
-            Timber.d("POST %s", url)
+            if (BuildConfig.DEBUG) Timber.d("POST %s", url)
             var response: Response?
             try {
                 response =
@@ -590,7 +590,7 @@ enum class Http {;
             }
             if (response.isRedirect) {
                 // follow redirect with same method
-                Timber.d("doHttpPostRaw: following redirect: %s", response.header("Location"))
+                if (BuildConfig.DEBUG) Timber.d("doHttpPostRaw: following redirect: %s", response.header("Location"))
                 response =
                     (if (allowCache) getHttpClientWithCache() else getHttpClient())!!.newCall(
                         Request.Builder().url(
@@ -609,7 +609,7 @@ enum class Http {;
                     if (retryAfter != null) {
                         try {
                             val seconds = Integer.parseInt(retryAfter)
-                            Timber.d("Sleeping for $seconds seconds")
+                            if (BuildConfig.DEBUG) Timber.d("Sleeping for $seconds seconds")
                             Thread.sleep(seconds * 1000L)
                         } catch (e: NumberFormatException) {
                             Timber.e(e, "Failed to parse Retry-After header")
@@ -619,7 +619,7 @@ enum class Http {;
                     } else {// start with one second and try up to five times
                         if (limitedRetries < 5) {
                             limitedRetries++
-                            Timber.d("Sleeping for 1 second")
+                            if (BuildConfig.DEBUG) Timber.d("Sleeping for 1 second")
                             try {
                                 Thread.sleep(1000L * limitedRetries)
                             } catch (e: InterruptedException) {
@@ -672,7 +672,7 @@ enum class Http {;
                     if (retryAfter != null) {
                         try {
                             val seconds = Integer.parseInt(retryAfter)
-                            Timber.d("Sleeping for $seconds seconds")
+                            if (BuildConfig.DEBUG) Timber.d("Sleeping for $seconds seconds")
                             Thread.sleep(seconds * 1000L)
                         } catch (e: NumberFormatException) {
                             Timber.e(e, "Failed to parse Retry-After header")
@@ -682,7 +682,7 @@ enum class Http {;
                     } else {// start with one second and try up to five times
                         if (limitedRetries < 5) {
                             limitedRetries++
-                            Timber.d("Sleeping for 1 second")
+                            if (BuildConfig.DEBUG) Timber.d("Sleeping for 1 second")
                             try {
                                 Thread.sleep(1000L * limitedRetries)
                             } catch (e: InterruptedException) {
@@ -774,19 +774,19 @@ enum class Http {;
             val systemSaysYes = networkCapabilities != null && networkCapabilities.hasCapability(
                 NetworkCapabilities.NET_CAPABILITY_INTERNET
             )
-            Timber.d("System says we have internet: $systemSaysYes")
+            if (BuildConfig.DEBUG) Timber.d("System says we have internet: $systemSaysYes")
             // if we don't already have a listener, add one, so we can invalidate the cache when the network changes
             if (connectivityListener == null) {
                 connectivityListener = object : ConnectivityManager.NetworkCallback() {
                     override fun onAvailable(network: Network) {
                         super.onAvailable(network)
-                        Timber.d("Network became available")
+                        if (BuildConfig.DEBUG) Timber.d("Network became available")
                         lastConnectivityCheck = 0
                     }
 
                     override fun onLost(network: Network) {
                         super.onLost(network)
-                        Timber.d("Network became unavailable")
+                        if (BuildConfig.DEBUG) Timber.d("Network became unavailable")
                         lastConnectivityCheck = 0
                     }
                 }
@@ -803,7 +803,7 @@ enum class Http {;
                 Timber.e(e, "Failed to check internet connection")
                 false
             }
-            Timber.d("We say we have internet: $hasInternet")
+            if (BuildConfig.DEBUG) Timber.d("We say we have internet: $hasInternet")
             lastConnectivityCheck = System.currentTimeMillis()
             @Suppress("KotlinConstantConditions")
             lastConnectivityResult =

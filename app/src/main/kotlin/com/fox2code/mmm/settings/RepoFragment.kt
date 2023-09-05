@@ -92,7 +92,7 @@ class RepoFragment : PreferenceFragmentCompat() {
                                     requireContext().getSystemService(ALARM_SERVICE) as AlarmManager
                                 mgr[AlarmManager.RTC, System.currentTimeMillis() + 100] =
                                     mPendingIntent
-                                Timber.d(
+                                if (BuildConfig.DEBUG) Timber.d(
                                     "Restarting app to save staging endpoint preference: %s",
                                     newValue
                                 )
@@ -134,7 +134,7 @@ class RepoFragment : PreferenceFragmentCompat() {
                                     requireContext().getSystemService(ALARM_SERVICE) as AlarmManager
                                 mgr[AlarmManager.RTC, System.currentTimeMillis() + 100] =
                                     mPendingIntent
-                                Timber.d(
+                                if (BuildConfig.DEBUG) Timber.d(
                                     "Restarting app to save staging endpoint preference: %s",
                                     newValue
                                 )
@@ -319,7 +319,7 @@ class RepoFragment : PreferenceFragmentCompat() {
                                                 requireContext().getSystemService(ALARM_SERVICE) as AlarmManager
                                             mgr[AlarmManager.RTC, System.currentTimeMillis() + 100] =
                                                 mPendingIntent
-                                            Timber.d(
+                                            if (BuildConfig.DEBUG) Timber.d(
                                                 "Restarting app to save token preference: %s",
                                                 newValue
                                             )
@@ -407,7 +407,7 @@ class RepoFragment : PreferenceFragmentCompat() {
                                                     ) as AlarmManager
                                                     mgr[AlarmManager.RTC, System.currentTimeMillis() + 100] =
                                                         mPendingIntent
-                                                    Timber.d(
+                                                    if (BuildConfig.DEBUG) Timber.d(
                                                         "Restarting app to save token preference: %s",
                                                         newValue
                                                     )
@@ -462,13 +462,13 @@ class RepoFragment : PreferenceFragmentCompat() {
                 customRepos.add(id)
             }
         }
-        Timber.d("%d repos: %s", custRepoEntries, customRepos)
+        if (BuildConfig.DEBUG) Timber.d("%d repos: %s", custRepoEntries, customRepos)
         val customRepoManager = RepoManager.getINSTANCE()!!.customRepoManager
         for (i in 0 until custRepoEntries) {
             // get the id of the repo at current index in customRepos
             val repoData = customRepoManager!!.getRepo(customRepos[i])
             // convert repoData to a json string for logging
-            Timber.d("RepoData for %d is %s", i, repoData.toJSON())
+            if (BuildConfig.DEBUG) Timber.d("RepoData for %d is %s", i, repoData.toJSON())
             setRepoData(repoData, "pref_custom_repo_$i")
             if (initial) {
                 val preference = findPreference<Preference>("pref_custom_repo_" + i + "_delete")
@@ -594,25 +594,25 @@ class RepoFragment : PreferenceFragmentCompat() {
                             // show error if string is empty, does not start with https://, or contains spaces
                             if (charSequence.toString().isEmpty()) {
                                 input.error = getString(R.string.empty_field)
-                                Timber.d("No input for repo")
+                                if (BuildConfig.DEBUG) Timber.d("No input for repo")
                                 positiveButton.isEnabled = false
                             } else if (!charSequence.toString()
                                     .matches("^https://.*".toRegex())
                             ) {
                                 input.error = getString(R.string.invalid_repo_url)
-                                Timber.d("Non https link for repo")
+                                if (BuildConfig.DEBUG) Timber.d("Non https link for repo")
                                 positiveButton.isEnabled = false
                             } else if (charSequence.toString().contains(" ")) {
                                 input.error = getString(R.string.invalid_repo_url)
-                                Timber.d("Repo url has space")
+                                if (BuildConfig.DEBUG) Timber.d("Repo url has space")
                                 positiveButton.isEnabled = false
                             } else if (!customRepoManager.canAddRepo(charSequence.toString())) {
                                 input.error = getString(R.string.repo_already_added)
-                                Timber.d("Could not add repo for misc reason")
+                                if (BuildConfig.DEBUG) Timber.d("Could not add repo for misc reason")
                                 positiveButton.isEnabled = false
                             } else {
                                 // enable ok button
-                                Timber.d("Repo URL is ok")
+                                if (BuildConfig.DEBUG) Timber.d("Repo URL is ok")
                                 positiveButton.isEnabled = true
                             }
                         }
@@ -638,7 +638,7 @@ class RepoFragment : PreferenceFragmentCompat() {
 
     private fun setRepoData(repoData: RepoData?, preferenceName: String) {
         if (repoData == null) return
-        Timber.d("Setting preference $preferenceName to $repoData")
+        if (BuildConfig.DEBUG) Timber.d("Setting preference $preferenceName to $repoData")
         val clipboard = requireContext().getSystemService(CLIPBOARD_SERVICE) as ClipboardManager
         var preference = findPreference<Preference>(preferenceName) ?: return
         if (!preferenceName.contains("androidacy") && !preferenceName.contains("magisk_alt_repo")) {
@@ -649,13 +649,13 @@ class RepoFragment : PreferenceFragmentCompat() {
                     "ReposList.db"
                 ).allowMainThreadQueries().build()
                 val reposList = db.reposListDao().getById(repoData.preferenceId!!)
-                Timber.d("Setting preference $preferenceName because it is not the Androidacy repo or the Magisk Alt Repo")
+                if (BuildConfig.DEBUG) Timber.d("Setting preference $preferenceName because it is not the Androidacy repo or the Magisk Alt Repo")
                 if (repoData.isForceHide || reposList == null) {
-                    Timber.d("Hiding preference $preferenceName because it is null or force hidden")
+                    if (BuildConfig.DEBUG) Timber.d("Hiding preference $preferenceName because it is null or force hidden")
                     hideRepoData(preferenceName)
                     return
                 } else {
-                    Timber.d(
+                    if (BuildConfig.DEBUG) Timber.d(
                         "Showing preference %s because the forceHide status is %s and the RealmResults is %s",
                         preferenceName,
                         repoData.isForceHide,
@@ -718,7 +718,7 @@ class RepoFragment : PreferenceFragmentCompat() {
                     }
                 }
             } else {
-                Timber.d("Hiding preference $preferenceName because it's data is null")
+                if (BuildConfig.DEBUG) Timber.d("Hiding preference $preferenceName because it's data is null")
                 hideRepoData(preferenceName)
                 return
             }

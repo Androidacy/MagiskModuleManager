@@ -78,7 +78,7 @@ class InfoFragment : PreferenceFragmentCompat() {
         var userRepo = BuildConfig.REMOTE_URL
         // remove .git
         userRepo = userRepo.replace("\\.git$".toRegex(), "")
-        Timber.d("userRepo: %s", userRepo)
+        if (BuildConfig.DEBUG) Timber.d("userRepo: %s", userRepo)
 
         // finalUserRepo is the user/repo part of REMOTE_URL
         // get everything after .com/ or .org/ or .io/ or .me/ or .net/ or .xyz/ or .tk/ or .co/ minus .git
@@ -89,7 +89,7 @@ class InfoFragment : PreferenceFragmentCompat() {
         linkClickable!!.summary = String.format(
             getString(R.string.source_code_summary), BuildConfig.COMMIT_HASH, finalUserRepo
         )
-        Timber.d("finalUserRepo: %s", finalUserRepo)
+        if (BuildConfig.DEBUG) Timber.d("finalUserRepo: %s", finalUserRepo)
         val finalUserRepo1 = userRepo
         linkClickable.onPreferenceClickListener =
             Preference.OnPreferenceClickListener setOnPreferenceClickListener@{ p: Preference ->
@@ -178,7 +178,6 @@ class InfoFragment : PreferenceFragmentCompat() {
         } else {
             prefDonateAndroidacy!!.isVisible = false
         }
-
 
         linkClickable = findPreference("pref_support")
         linkClickable!!.onPreferenceClickListener =

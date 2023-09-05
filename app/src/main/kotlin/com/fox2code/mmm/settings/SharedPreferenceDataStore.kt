@@ -6,19 +6,20 @@ package com.fox2code.mmm.settings
 
 import android.content.SharedPreferences
 import androidx.preference.PreferenceDataStore
+import com.fox2code.mmm.BuildConfig
 import timber.log.Timber
 
 class SharedPreferenceDataStore(sharedPreferences: SharedPreferences) : PreferenceDataStore() {
     private val mSharedPreferences: SharedPreferences
 
     init {
-        Timber.d("SharedPreferenceDataStore: %s", sharedPreferences)
+        if (BuildConfig.DEBUG) Timber.d("SharedPreferenceDataStore: %s", sharedPreferences)
         mSharedPreferences = sharedPreferences
     }
 
     val sharedPreferences: SharedPreferences
         get() {
-            Timber.d("getSharedPreferences: %s", mSharedPreferences)
+            if (BuildConfig.DEBUG) Timber.d("getSharedPreferences: %s", mSharedPreferences)
             return mSharedPreferences
         }
 

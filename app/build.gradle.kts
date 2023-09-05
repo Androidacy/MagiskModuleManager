@@ -34,7 +34,7 @@ android {
     val timestamp = System.currentTimeMillis()
 
     namespace = "com.fox2code.mmm"
-    compileSdk = 33
+    compileSdk = 34
     ndkVersion = "25.2.9519653"
     signingConfigs {
         create("release") {
@@ -52,9 +52,9 @@ android {
     defaultConfig {
         applicationId = "com.fox2code.mmm"
         minSdk = 24
-        targetSdk = 33
-        versionCode = 81
-        versionName = "2.2.3"
+        targetSdk = 34
+        versionCode = 82
+        versionName = "2.3.0"
         vectorDrawables {
             useSupportLibrary = true
         }
@@ -460,11 +460,11 @@ dependencies {
     // UI
     implementation("androidx.appcompat:appcompat:1.6.1")
     implementation("androidx.activity:activity-ktx:1.7.2")
-    implementation("androidx.emoji2:emoji2:1.3.0")
-    implementation("androidx.emoji2:emoji2-views-helper:1.3.0")
-    implementation("androidx.preference:preference-ktx:1.2.0")
+    implementation("androidx.emoji2:emoji2:1.4.0")
+    implementation("androidx.emoji2:emoji2-views-helper:1.4.0")
+    implementation("androidx.preference:preference-ktx:1.2.1")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
-    implementation("androidx.recyclerview:recyclerview:1.3.0")
+    implementation("androidx.recyclerview:recyclerview:1.3.1")
     implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
     implementation("androidx.webkit:webkit:1.7.0")
     implementation("com.google.android.material:material:1.9.0")
@@ -498,12 +498,12 @@ dependencies {
     implementation("com.github.Fox2Code:AndroidANSI:1.2.1")
 
     // sentry
-    implementation("io.sentry:sentry-android:6.25.2")
-    implementation("io.sentry:sentry-android-timber:6.25.2")
-    implementation("io.sentry:sentry-android-fragment:6.25.2")
-    implementation("io.sentry:sentry-android-okhttp:6.25.2")
-    implementation("io.sentry:sentry-kotlin-extensions:6.25.2")
-    implementation("io.sentry:sentry-android-ndk:6.25.2")
+    implementation("io.sentry:sentry-android:6.28.0")
+    implementation("io.sentry:sentry-android-timber:6.28.0")
+    implementation("io.sentry:sentry-android-fragment:6.28.0")
+    implementation("io.sentry:sentry-android-okhttp:6.28.0")
+    implementation("io.sentry:sentry-kotlin-extensions:6.28.0")
+    implementation("io.sentry:sentry-android-ndk:6.28.0")
 
     // Markdown
     // TODO: switch to an updated implementation
@@ -543,7 +543,7 @@ dependencies {
     coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.0.3")
 
     // yes
-    implementation("com.github.fingerprintjs:fingerprint-android:2.0.0")
+    implementation("com.github.fingerprintjs:fingerprint-android:2.0.2")
 
     // room
     implementation("androidx.room:room-runtime:2.5.2")

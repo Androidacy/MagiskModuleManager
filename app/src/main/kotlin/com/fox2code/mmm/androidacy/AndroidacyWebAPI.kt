@@ -74,7 +74,7 @@ class AndroidacyWebAPI(
         checksum: String?,
         canInstall: Boolean
     ) {
-        if (BuildConfig.DEBUG) Timber.d(
+        if (BuildConfig.DEBUG) if (BuildConfig.DEBUG) Timber.d(
             "ModuleDialog, downloadUrl: " + hideToken(
                 moduleUrl!!
             ) + ", moduleId: " + moduleId + ", installTitle: " + installTitle + ", checksum: " + checksum + ", canInstall: " + canInstall
@@ -174,7 +174,7 @@ class AndroidacyWebAPI(
     fun notifyCompatModeRaw(value: Int) {
         var value = value
         if (consumedAction) return
-        if (BuildConfig.DEBUG) Timber.d("Androidacy Compat mode: %s", value)
+        if (BuildConfig.DEBUG) if (BuildConfig.DEBUG) Timber.d("Androidacy Compat mode: %s", value)
         notifiedCompatMode = value
         if (value < 0) {
             value = 0
@@ -208,7 +208,7 @@ class AndroidacyWebAPI(
         if (consumedAction) return
         consumedAction = true
         downloadMode = false
-        if (BuildConfig.DEBUG) Timber.d("Received openUrl request: %s", url)
+        if (BuildConfig.DEBUG) if (BuildConfig.DEBUG) Timber.d("Received openUrl request: %s", url)
         if (Uri.parse(url).scheme == "https") {
             openUrl(activity, url)
         }
@@ -222,7 +222,7 @@ class AndroidacyWebAPI(
         if (consumedAction) return
         consumedAction = true
         downloadMode = false
-        if (BuildConfig.DEBUG) Timber.d("Received openCustomTab request: %s", url)
+        if (BuildConfig.DEBUG) if (BuildConfig.DEBUG) Timber.d("Received openCustomTab request: %s", url)
         if (Uri.parse(url).scheme == "https") {
             openCustomTab(activity, url)
         }
@@ -266,7 +266,7 @@ class AndroidacyWebAPI(
         }
         consumedAction = true
         downloadMode = false
-        if (BuildConfig.DEBUG) Timber.d("Received install request: $moduleUrl $installTitle $checksum")
+        if (BuildConfig.DEBUG) if (BuildConfig.DEBUG) Timber.d("Received install request: $moduleUrl $installTitle $checksum")
         if (!isAndroidacyLink(moduleUrl)) {
             forceQuitRaw("Non Androidacy module link used on Androidacy")
             return

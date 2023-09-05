@@ -4,6 +4,7 @@
 
 package com.fox2code.mmm.installer
 
+import com.fox2code.mmm.BuildConfig
 import com.fox2code.mmm.Constants
 import com.fox2code.mmm.MainApplication
 import com.fox2code.mmm.NotificationType
@@ -21,6 +22,7 @@ class InstallerInitializer {
     }
 
     companion object {
+        var isKsu: Boolean = false
         private val MAGISK_SBIN = File("/sbin/magisk")
         private val MAGISK_SYSTEM = File("/system/bin/magisk")
         private val MAGISK_SYSTEM_EX = File("/system/xbin/magisk")
@@ -120,13 +122,18 @@ class InstallerInitializer {
             var hsRmdsk = hsRmdsk
             if (mgskPth != null && !forceCheck) return mgskPth
             val output = ArrayList<String>()
+            if (Shell.isAppGrantedRoot() == null || !Shell.isAppGrantedRoot()!!) {
+                return null
+            }
             try {
                 if (!Shell.cmd(
                         "if grep ' / ' /proc/mounts | grep -q '/dev/root' &> /dev/null; " + "then echo true; else echo false; fi",
-                        "magisk -V",
-                        "magisk --path"
+                        "su -V",
                     ).to(output).exec().isSuccess
                 ) {
+                    if (BuildConfig.DEBUG) {
+                        Timber.i("Failed to search for ramdisk")
+                    }
                     if (output.size != 0) {
                         hsRmdsk = "false" == output[0] || "true".equals(
                             System.getProperty("ro.build.ab_update"), ignoreCase = true
@@ -135,21 +142,45 @@ class InstallerInitializer {
                     Companion.hsRmdsk = hsRmdsk
                     return null
                 }
-                mgskPth = if (output.size < 3) "" else output[2]
+                if (BuildConfig.DEBUG) {
+                    Timber.i("Found ramdisk: %s", output[0])
+                    Timber.i("Searching for Magisk path. Current path: %s", mgskPth)
+                }
+                // reset output
+                output.clear()
+                // try to use magisk --path. if that fails, check for /data/adb/ksu for kernelsu support
+                if (Shell.cmd("magisk --path", "su -V").to(output).exec().isSuccess) {
+                    mgskPth = output[0]
+                    if (BuildConfig.DEBUG) {
+                        Timber.i("Magisk path 1: %s", mgskPth)
+                    }
+                } else if (Shell.cmd("if [ -f /data/adb/ksu ]; then echo true; else echo false; fi").to(
+                        output
+                    ).exec().isSuccess && "true" == output[0]
+                ) {
+                    mgskPth = "/data/adb"
+                    isKsu = true
+                }
                 Timber.i("Magisk runtime path: %s", mgskPth)
                 mgskVerCode = output[1].toInt()
                 Timber.i("Magisk version code: %s", mgskVerCode)
-                if (mgskVerCode >= Constants.MAGISK_VER_CODE_FLAT_MODULES && mgskVerCode < Constants.MAGISK_VER_CODE_PATH_SUPPORT && (mgskPth.isEmpty() || !File(
-                        mgskPth
-                    ).exists())
-                ) {
-                    mgskPth = "/sbin"
+                if (mgskPth != null) {
+                    if (mgskVerCode >= Constants.MAGISK_VER_CODE_FLAT_MODULES && mgskVerCode < Constants.MAGISK_VER_CODE_PATH_SUPPORT && (mgskPth.isEmpty() || !File(
+                            mgskPth
+                        ).exists())
+                    ) {
+                        mgskPth = "/sbin"
+                    }
                 }
-                if (mgskPth.isNotEmpty() && existsSU(File(mgskPth))) {
-                    Companion.mgskPth = mgskPth
+                if (mgskPth != null) {
+                    if (mgskPth.isNotEmpty() && existsSU(File(mgskPth))) {
+                        Companion.mgskPth = mgskPth
+                    } else {
+                        Timber.e("Failed to get Magisk path (Got $mgskPth)")
+                        mgskPth = null
+                    }
                 } else {
-                    Timber.e("Failed to get Magisk path (Got $mgskPth)")
-                    mgskPth = null
+                    Timber.e("Failed to get Magisk path (Got null)")
                 }
                 Companion.mgskVerCode = mgskVerCode
                 return mgskPth

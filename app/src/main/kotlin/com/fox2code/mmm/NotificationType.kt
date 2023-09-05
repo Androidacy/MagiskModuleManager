@@ -3,12 +3,16 @@
  */
 
 @file:Suppress(
-    "KotlinConstantConditions", "UNINITIALIZED_ENUM_COMPANION_WARNING",
-    "ktConcatNullable", "BlockingMethodInNonBlockingContext", "UnusedEquals"
+    "KotlinConstantConditions",
+    "UNINITIALIZED_ENUM_COMPANION_WARNING",
+    "ktConcatNullable",
+    "BlockingMethodInNonBlockingContext",
+    "UnusedEquals"
 )
 
 package com.fox2code.mmm
 
+import android.content.Intent
 import android.net.Uri
 import android.view.View
 import android.widget.Toast
@@ -33,7 +37,7 @@ import java.util.Date
 import java.util.zip.ZipFile
 
 
-enum class NotificationType constructor(
+enum class NotificationType(
     @field:StringRes @param:StringRes @JvmField val textId: Int,
     @field:DrawableRes @JvmField val iconId: Int,
     @field:AttrRes @JvmField val backgroundAttr: Int = androidx.appcompat.R.attr.colorError,
@@ -43,10 +47,10 @@ enum class NotificationType constructor(
 ) : NotificationTypeCst {
 
     @JvmStatic
-    DEBUG(
-        R.string.debug_build,
+    DEBUG(R.string.debug_build,
         R.drawable.ic_baseline_bug_report_24,
-        com.google.android.material.R.attr.colorPrimary, com.google.android.material.R.attr.colorOnPrimary,
+        com.google.android.material.R.attr.colorPrimary,
+        com.google.android.material.R.attr.colorOnPrimary,
         // on click show a toast formatted with commit hash and build date, plus number of days before expiration (builds expire 30 days after build date)
         View.OnClickListener { v: View ->
             val buildTime = BuildConfig.BUILD_TIME
@@ -62,12 +66,9 @@ enum class NotificationType constructor(
                 30 - buildTimeDays
             )
             Toast.makeText(
-                v.context,
-                toastText,
-                Toast.LENGTH_LONG
+                v.context, toastText, Toast.LENGTH_LONG
             ).show()
-        }
-    ) {
+        }) {
         override fun shouldRemove(): Boolean {
             return !BuildConfig.DEBUG
         }
@@ -75,8 +76,10 @@ enum class NotificationType constructor(
 
     @JvmStatic
     SHOWCASE_MODE(
-        R.string.showcase_mode, R.drawable.ic_baseline_lock_24,
-        com.google.android.material.R.attr.colorPrimary, com.google.android.material.R.attr.colorOnPrimary
+        R.string.showcase_mode,
+        R.drawable.ic_baseline_lock_24,
+        com.google.android.material.R.attr.colorPrimary,
+        com.google.android.material.R.attr.colorOnPrimary
     ) {
         override fun shouldRemove(): Boolean {
             return !MainApplication.isShowcaseMode
@@ -84,13 +87,11 @@ enum class NotificationType constructor(
     },
 
     @JvmStatic
-    NO_MAGISK(
-        R.string.fail_magisk_missing,
+    NO_MAGISK(R.string.fail_magisk_missing,
         R.drawable.ic_baseline_numbers_24,
         View.OnClickListener { v: View ->
             IntentHelper.openUrl(
-                v.context,
-                "https://github.com/topjohnwu/Magisk/blob/master/docs/install.md"
+                v.context, "https://github.com/topjohnwu/Magisk/blob/master/docs/install.md"
             )
         }) {
         override fun shouldRemove(): Boolean {
@@ -111,19 +112,15 @@ enum class NotificationType constructor(
     },
 
     @JvmStatic
-    MAGISK_OUTDATED(
-        R.string.magisk_outdated,
+    MAGISK_OUTDATED(R.string.magisk_outdated,
         R.drawable.ic_baseline_update_24,
         View.OnClickListener { v: View ->
             IntentHelper.openUrl(
-                v.context,
-                "https://github.com/topjohnwu/Magisk/releases"
+                v.context, "https://github.com/topjohnwu/Magisk/releases"
             )
         }) {
         override fun shouldRemove(): Boolean {
-            return InstallerInitializer.peekMagiskPath() == null ||
-                    InstallerInitializer.peekMagiskVersion() >=
-                    Constants.MAGISK_VER_CODE_INSTALL_COMMAND
+            return InstallerInitializer.peekMagiskPath() == null || InstallerInitializer.peekMagiskVersion() >= Constants.MAGISK_VER_CODE_INSTALL_COMMAND
         }
     },
 
@@ -142,18 +139,15 @@ enum class NotificationType constructor(
     },
 
     @JvmStatic
-    NEED_CAPTCHA_ANDROIDACY(
-        R.string.androidacy_need_captcha,
+    NEED_CAPTCHA_ANDROIDACY(R.string.androidacy_need_captcha,
         R.drawable.ic_baseline_refresh_24,
         View.OnClickListener { v: View ->
             IntentHelper.openUrlAndroidacy(
-                v.context,
-                "https://" + Http.needCaptchaAndroidacyHost() + "/", false
+                v.context, "https://" + Http.needCaptchaAndroidacyHost() + "/", false
             )
         }) {
         override fun shouldRemove(): Boolean {
-            return (!RepoManager.isAndroidacyRepoEnabled
-                    || !Http.needCaptchaAndroidacy())
+            return (!RepoManager.isAndroidacyRepoEnabled || !Http.needCaptchaAndroidacy())
         }
     },
 
@@ -171,10 +165,21 @@ enum class NotificationType constructor(
         androidx.appcompat.R.attr.colorPrimary,
         com.google.android.material.R.attr.colorOnPrimary,
         View.OnClickListener { v: View ->
-            IntentHelper.openUrl(
+            // launch update activity with action download
+            val pendingIntent = android.app.PendingIntent.getActivity(
                 v.context,
-                "https://github.com/Androidacy/MagiskModuleManager/releases"
+                0,
+                Intent(
+                    v.context,
+                    UpdateActivity::class.java
+                ).setAction(UpdateActivity.ACTIONS.DOWNLOAD.toString()),
+                android.app.PendingIntent.FLAG_UPDATE_CURRENT
             )
+            try {
+                pendingIntent.send()
+            } catch (e: android.app.PendingIntent.CanceledException) {
+                Timber.e(e)
+            }
         },
         false
     ) {
@@ -192,30 +197,31 @@ enum class NotificationType constructor(
         View.OnClickListener { v: View? ->
             val compatActivity = FoxActivity.getFoxActivity(v)
             val module = File(
-                compatActivity.cacheDir,
-                "installer" + File.separator + "module.zip"
+                compatActivity.cacheDir, "installer" + File.separator + "module.zip"
             )
             IntentHelper.openFileTo(compatActivity, module) { d: File, u: Uri, s: Int ->
                 if (s == IntentHelper.RESPONSE_FILE) {
                     try {
                         if (needPatch(d)) {
                             patchModuleSimple(
-                                read(d),
-                                FileOutputStream(d)
+                                read(d), FileOutputStream(d)
                             )
                         }
                         if (needPatch(d)) {
                             if (d.exists() && !d.delete()) Timber.w("Failed to delete non module zip")
                             Toast.makeText(
-                                compatActivity,
-                                R.string.invalid_format, Toast.LENGTH_SHORT
+                                compatActivity, R.string.invalid_format, Toast.LENGTH_SHORT
                             ).show()
                         } else {
                             IntentHelper.openInstaller(
-                                compatActivity, d.absolutePath,
+                                compatActivity,
+                                d.absolutePath,
                                 compatActivity.getString(
                                     R.string.local_install_title
-                                ), null, null, false,
+                                ),
+                                null,
+                                null,
+                                false,
                                 BuildConfig.DEBUG &&  // Use debug mode if no root
                                         InstallerInitializer.peekMagiskPath() == null
                             )
@@ -223,17 +229,14 @@ enum class NotificationType constructor(
                     } catch (ignored: IOException) {
                         if (d.exists() && !d.delete()) Timber.w("Failed to delete invalid module")
                         Toast.makeText(
-                            compatActivity,
-                            R.string.invalid_format, Toast.LENGTH_SHORT
+                            compatActivity, R.string.invalid_format, Toast.LENGTH_SHORT
                         ).show()
                     }
                 } else if (s == IntentHelper.RESPONSE_URL) {
                     IntentHelper.openInstaller(
-                        compatActivity, u.toString(),
-                        compatActivity.getString(
+                        compatActivity, u.toString(), compatActivity.getString(
                             R.string.remote_install_title
-                        ), null, null, false,
-                        BuildConfig.DEBUG &&  // Use debug mode if no root
+                        ), null, null, false, BuildConfig.DEBUG &&  // Use debug mode if no root
                                 InstallerInitializer.peekMagiskPath() == null
                     )
                 }
@@ -242,9 +245,19 @@ enum class NotificationType constructor(
         false
     ) {
         override fun shouldRemove(): Boolean {
-            return !BuildConfig.DEBUG &&
-                    (MainApplication.isShowcaseMode ||
-                            InstallerInitializer.peekMagiskPath() == null)
+            return !BuildConfig.DEBUG && (MainApplication.isShowcaseMode || InstallerInitializer.peekMagiskPath() == null)
+        }
+    },
+    KSU_EXPERIMENTAL(
+        R.string.ksu_experimental,
+        R.drawable.ic_baseline_warning_24,
+        androidx.appcompat.R.attr.colorError,
+        com.google.android.material.R.attr.colorOnPrimary,
+        null,
+        false
+    ) {
+        override fun shouldRemove(): Boolean {
+            return !BuildConfig.DEBUG && (MainApplication.isShowcaseMode || InstallerInitializer.peekMagiskPath() == null || !InstallerInitializer.isKsu)
         }
     };
 

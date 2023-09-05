@@ -18,6 +18,7 @@ import io.sentry.Breadcrumb
 import io.sentry.Hint
 import io.sentry.Sentry
 import io.sentry.SentryEvent
+import io.sentry.SentryLevel
 import io.sentry.SentryOptions.BeforeBreadcrumbCallback
 import io.sentry.SentryOptions.BeforeSendCallback
 import io.sentry.android.core.SentryAndroid
@@ -76,8 +77,8 @@ object SentryMain {
         }
         isSentryEnabled = sharedPreferences.getBoolean("pref_crash_reporting_enabled", false)
         // set sentryEnabled on preference change of pref_crash_reporting_enabled
-        sharedPreferences.registerOnSharedPreferenceChangeListener { sharedPreferences1: SharedPreferences, s: String ->
-            if (s == "pref_crash_reporting_enabled") {
+        sharedPreferences.registerOnSharedPreferenceChangeListener { sharedPreferences1: SharedPreferences, s: String? ->
+            if (s!== null && s == "pref_crash_reporting_enabled") {
                 isSentryEnabled = sharedPreferences1.getBoolean(s, false)
             }
         }
@@ -128,6 +129,16 @@ object SentryMain {
                         return@BeforeSendCallback null
                     }
                     crashExceptionId = event?.eventId
+                    // if debug build, log everything, but for release only log warnings and errors
+                    if (!BuildConfig.DEBUG) {
+                        if (event?.level == SentryLevel.DEBUG || event?.level == SentryLevel.INFO) {
+                            return@BeforeSendCallback null
+                        }
+                    }
+                    // remove all failed to fetch data messages
+                    if (event?.message?.message?.contains("Failed to fetch") == true) {
+                        return@BeforeSendCallback null
+                    }
                     event
                 }
                 // Filter breadcrumb content from crash report.

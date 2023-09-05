@@ -357,7 +357,7 @@ open class RepoData(url: String, cacheRoot: File) : XRepo() {
                 }
             }
         } else {
-            Timber.d("Metadata file not found for %s", repoModule.id)
+            if (BuildConfig.DEBUG) Timber.d("Metadata file not found for %s", repoModule.id)
         }
         repoModule.moduleInfo.flags =
             repoModule.moduleInfo.flags or ModuleInfo.FLAG_METADATA_INVALID
@@ -412,7 +412,7 @@ open class RepoData(url: String, cacheRoot: File) : XRepo() {
 
     // should update (lastUpdate > 15 minutes)
     fun shouldUpdate(): Boolean {
-        Timber.d("Repo $preferenceId should update check called")
+        if (BuildConfig.DEBUG) Timber.d("Repo $preferenceId should update check called")
         val db = Room.databaseBuilder(
             INSTANCE!!.applicationContext,
             ReposListDatabase::class.java,
@@ -432,12 +432,12 @@ open class RepoData(url: String, cacheRoot: File) : XRepo() {
                 val currentTime = System.currentTimeMillis()
                 val diff = currentTime - lastUpdate
                 val diffMinutes = diff / (60 * 1000) % 60
-                Timber.d("Repo $preferenceId updated: $diffMinutes minutes ago")
+                if (BuildConfig.DEBUG) Timber.d("Repo $preferenceId updated: $diffMinutes minutes ago")
                 db.close()
                 db2.close()
                 diffMinutes > if (BuildConfig.DEBUG) 15 else 30
             } else {
-                Timber.d("Repo $preferenceId shouldUpdate true: lastUpdate is " + repo.lastUpdate + " and moduleListCache is " + moduleListCache.size)
+                if (BuildConfig.DEBUG) Timber.d("Repo $preferenceId shouldUpdate true: lastUpdate is " + repo.lastUpdate + " and moduleListCache is " + moduleListCache.size)
                 db.close()
                 db2.close()
                 true

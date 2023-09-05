@@ -15,6 +15,7 @@ import com.fox2code.mmm.BuildConfig
 import com.fox2code.mmm.MainActivity
 import com.fox2code.mmm.MainApplication
 import com.fox2code.mmm.NotificationType
+import com.fox2code.mmm.installer.InstallerInitializer
 import com.fox2code.mmm.installer.InstallerInitializer.Companion.peekHasRamdisk
 import com.fox2code.mmm.installer.InstallerInitializer.Companion.peekMagiskPath
 import com.fox2code.mmm.installer.InstallerInitializer.Companion.peekMagiskVersion
@@ -106,7 +107,7 @@ class ModuleViewListBuilder(private val activity: Activity) {
                             continue
                         }
                         val moduleInfo = repoModule.moduleInfo
-                        if (!showIncompatible && (moduleInfo.minApi > Build.VERSION.SDK_INT || moduleInfo.maxApi != 0 && moduleInfo.maxApi < Build.VERSION.SDK_INT || peekMagiskPath() != null) && repoModule.moduleInfo.minMagisk > peekMagiskVersion() || no32bitSupport && (AppUpdateManager.getFlagsForModule(
+                        if (!showIncompatible && (moduleInfo.minApi > Build.VERSION.SDK_INT || moduleInfo.maxApi != 0 && moduleInfo.maxApi < Build.VERSION.SDK_INT || peekMagiskPath() != null) && (!InstallerInitializer.isKsu && repoModule.moduleInfo.minMagisk > peekMagiskVersion()) || no32bitSupport && (AppUpdateManager.getFlagsForModule(
                                 repoModule.id
                             ) and AppUpdateManager.FLAG_COMPAT_NEED_32BIT) != 0 || repoModule.moduleInfo.needRamdisk && !peekHasRamdisk()
                         ) continue  // Skip adding incompatible modules

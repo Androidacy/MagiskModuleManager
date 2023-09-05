@@ -28,7 +28,7 @@ class CrashHandler : FoxActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         Timber.i("CrashHandler.onCreate(%s)", savedInstanceState)
         // log intent with extras
-        Timber.d("CrashHandler.onCreate: intent=%s", intent)
+        if (BuildConfig.DEBUG) Timber.d("CrashHandler.onCreate: intent=%s", intent)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_crash_handler)
         // set crash_details MaterialTextView to the exception passed in the intent or unknown if null
@@ -58,7 +58,7 @@ class CrashHandler : FoxActivity() {
         if (lastEventId?.matches("^0+$".toRegex()) == true) {
             lastEventId = ""
         }
-        Timber.d(
+        if (BuildConfig.DEBUG) Timber.d(
             "CrashHandler.onCreate: lastEventId=%s, crashReportingEnabled=%s",
             lastEventId,
             crashReportingEnabled
@@ -71,7 +71,7 @@ class CrashHandler : FoxActivity() {
         val submit = findViewById<View>(R.id.feedback_submit)
         if (lastEventId.isNullOrEmpty() && crashReportingEnabled) {
             // if lastEventId is null, hide the feedback button
-            Timber.d("CrashHandler.onCreate: lastEventId is null but crash reporting is enabled. This may indicate a bug in the crash reporting system.")
+            if (BuildConfig.DEBUG) Timber.d("CrashHandler.onCreate: lastEventId is null but crash reporting is enabled. This may indicate a bug in the crash reporting system.")
             submit.visibility = View.GONE
             findViewById<MaterialTextView>(R.id.feedback_text).setText(R.string.no_sentry_id)
         } else {

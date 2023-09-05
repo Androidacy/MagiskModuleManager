@@ -401,4 +401,5 @@
     <string name="update_frequency_360">6 hours</string>
     <string name="update_frequency_720">12 hours</string>
     <string name="update_frequency_1440">Daily</string>
+    <string name="ksu_experimental"><![CDATA[KernelSU support is currently <b>experimental</b> and may have issues. Compatibility with modules is not guaraunteed.]]></string>
 </resources>

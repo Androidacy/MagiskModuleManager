@@ -76,7 +76,7 @@ enum class IntentHelper {;
 
         @JvmOverloads
         fun openUrl(context: Context, url: String?, forceBrowser: Boolean = false) {
-            Timber.d("Opening url: %s, forced browser %b", url, forceBrowser)
+            if (BuildConfig.DEBUG) Timber.d("Opening url: %s, forced browser %b", url, forceBrowser)
             try {
                 val myIntent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
                 myIntent.flags = FLAG_GRANT_URI_PERMISSION
@@ -85,7 +85,7 @@ enum class IntentHelper {;
                 }
                 startActivity(context, myIntent, false)
             } catch (e: ActivityNotFoundException) {
-                Timber.d(e, "Could not find suitable activity to handle url")
+                if (BuildConfig.DEBUG) Timber.d(e, "Could not find suitable activity to handle url")
                 Toast.makeText(
                     context, FoxActivity.getFoxActivity(context).getString(
                         R.string.no_browser
@@ -96,7 +96,7 @@ enum class IntentHelper {;
 
         @JvmStatic
         fun openCustomTab(context: Context, url: String?) {
-            Timber.d("Opening url: %s in custom tab", url)
+            if (BuildConfig.DEBUG) Timber.d("Opening url: %s in custom tab", url)
             try {
                 val viewIntent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
                 viewIntent.flags = FLAG_GRANT_URI_PERMISSION
@@ -105,7 +105,7 @@ enum class IntentHelper {;
                 tabIntent.addCategory(Intent.CATEGORY_BROWSABLE)
                 startActivityEx(context, tabIntent, viewIntent)
             } catch (e: ActivityNotFoundException) {
-                Timber.d(e, "Could not find suitable activity to handle url")
+                if (BuildConfig.DEBUG) Timber.d(e, "Could not find suitable activity to handle url")
                 Toast.makeText(
                     context, FoxActivity.getFoxActivity(context).getString(
                         R.string.no_browser
@@ -389,7 +389,7 @@ enum class IntentHelper {;
             compatActivity.startActivityForResult(intent, param) { result: Int, data: Intent? ->
                 val uri = data?.data
                 if (uri == null || result == Activity.RESULT_CANCELED) {
-                    Timber.d("invalid uri recieved")
+                    if (BuildConfig.DEBUG) Timber.d("invalid uri recieved")
                     callback.onReceived(destination, null, RESPONSE_ERROR)
                     return@startActivityForResult
                 }

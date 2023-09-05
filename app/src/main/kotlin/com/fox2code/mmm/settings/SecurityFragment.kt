@@ -13,6 +13,7 @@ import androidx.preference.TwoStatePreference
 import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKey
 import com.fox2code.foxcompat.app.FoxActivity
+import com.fox2code.mmm.BuildConfig
 import com.fox2code.mmm.MainActivity
 import com.fox2code.mmm.MainApplication
 import com.fox2code.mmm.R
@@ -88,7 +89,7 @@ class SecurityFragment : PreferenceFragmentCompat() {
                                 requireContext().getSystemService(FoxActivity.ALARM_SERVICE) as AlarmManager
                             mgr[AlarmManager.RTC, System.currentTimeMillis() + 100] =
                                 mPendingIntent
-                            Timber.d("Restarting app to save showcase mode preference: %s", v)
+                            if (BuildConfig.DEBUG) Timber.d("Restarting app to save showcase mode preference: %s", v)
                             exitProcess(0) // Exit app process
                         }.setNegativeButton(R.string.cancel) { _: DialogInterface?, _: Int ->
                             // Revert to showcase mode on
@@ -111,7 +112,7 @@ class SecurityFragment : PreferenceFragmentCompat() {
                                 requireContext().getSystemService(FoxActivity.ALARM_SERVICE) as AlarmManager
                             mgr[AlarmManager.RTC, System.currentTimeMillis() + 100] =
                                 mPendingIntent
-                            Timber.d("Restarting app to save showcase mode preference: %s", v)
+                            if (BuildConfig.DEBUG) Timber.d("Restarting app to save showcase mode preference: %s", v)
                             exitProcess(0) // Exit app process
                         }.show()
                 }

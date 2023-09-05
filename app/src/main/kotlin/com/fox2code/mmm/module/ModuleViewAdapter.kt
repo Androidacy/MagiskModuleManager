@@ -27,6 +27,7 @@ import androidx.cardview.widget.CardView
 import androidx.core.graphics.ColorUtils
 import androidx.recyclerview.widget.RecyclerView
 import com.fox2code.foxcompat.view.FoxDisplay
+import com.fox2code.mmm.BuildConfig
 import com.fox2code.mmm.MainApplication
 import com.fox2code.mmm.R
 import com.fox2code.mmm.manager.ModuleInfo
@@ -406,7 +407,7 @@ ${getString(R.string.module_repo)} ${moduleHolder.repoName}""" + if ((repoModule
                 // get string value of Theme
                 val themeName = theme.toString()
                 if (theme.resources.getBoolean(R.bool.force_transparency) || themeName.contains("transparent")) {
-                    Timber.d("Theme is transparent, fixing bgColor")
+                    if (BuildConfig.DEBUG) Timber.d("Theme is transparent, fixing bgColor")
                     bgColor = ColorUtils.setAlphaComponent(bgColor, 0x70)
                 }
                 titleText.setTextColor(fgColor)
