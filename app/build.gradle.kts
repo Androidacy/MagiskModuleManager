@@ -71,8 +71,8 @@ android {
                 "fr",
                 "hu",
                 "id",
+                "it",
                 "ja",
-                "hu",
                 "nl",
                 "pl",
                 "pt",
@@ -80,6 +80,7 @@ android {
                 "ru",
                 "tr",
                 "uk",
+                "vi",
                 "zh",
                 "zh-rTW",
                 "en"

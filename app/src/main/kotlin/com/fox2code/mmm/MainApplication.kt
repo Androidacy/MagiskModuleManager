@@ -229,8 +229,8 @@ class MainApplication : FoxApplication(), Configuration.Provider {
                 "fr",
                 "hu",
                 "id",
+                "it",
                 "ja",
-                "hu",
                 "nl",
                 "pl",
                 "pt",
@@ -238,6 +238,7 @@ class MainApplication : FoxApplication(), Configuration.Provider {
                 "ru",
                 "tr",
                 "uk",
+                "vi",
                 "zh",
                 "zh-rTW",
                 "en"
@@ -288,7 +289,7 @@ class MainApplication : FoxApplication(), Configuration.Provider {
                 this.packageManager.getPackageInfo(
                     this.packageName, PackageManager.GET_SIGNATURES
                 ).signatures
-            @Suppress("SpellCheckingInspection") val osh = arrayOf(
+            val osh = arrayOf(
                 "7bec7c4462f4aac616612d9f56a023ee3046e83afa956463b5fab547fd0a0be6",
                 "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
                 "e8ce7deca880304d7ff09f8fc37656cfa927cee7f6a0bb7b3feda6a5942931f5",
@@ -624,7 +625,7 @@ class MainApplication : FoxApplication(), Configuration.Provider {
         val isUsingMagiskCommand: Boolean
             get() = (peekMagiskVersion() >= Constants.MAGISK_VER_CODE_INSTALL_COMMAND) && getSharedPreferences(
                 "mmm"
-            )!!.getBoolean("pref_use_magisk_install_command", false) && isDeveloper
+            )!!.getBoolean("pref_use_magisk_install_command", false) && isDeveloper && !InstallerInitializer.isKsu
 
         @JvmStatic
         val isBackgroundUpdateCheckEnabled: Boolean
