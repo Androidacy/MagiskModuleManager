@@ -8,25 +8,37 @@
     android:id="@+id/root_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="4dp"
     app:layout_constraintTop_toTopOf="parent"
     tools:context=".MainActivity">
 
     <!-- FrameLayout is the best way to fix blurring -->            <!-- search layout using textinputlayout and textinputedittext from material design in a linearlayout -->
+
+    <com.google.android.material.progressindicator.LinearProgressIndicator
+        android:id="@+id/progress_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:indeterminate="true"
+        android:visibility="visible"
+        app:hideAnimationBehavior="inward"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toTopOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/search_input_layout"
+        app:showAnimationBehavior="outward" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/search_input_layout"
         style="@style/ThemeOverlay.Material3.Search"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/search"
         android:layout_marginHorizontal="10dp"
-        android:layout_marginVertical="6dp"
+        android:layout_marginBottom="6dp"
+        android:hint="@string/search"
+        app:boxStrokeWidth="1dp"
         app:layout_constraintBottom_toTopOf="@id/swipe_refresh"
-        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:boxStrokeWidth="1dp">
+        app:layout_constraintTop_toTopOf="parent">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/search_input"
@@ -51,8 +63,8 @@
         <FrameLayout
             android:id="@+id/blur_frame"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:paddingBottom="84dp">
+            android:paddingHorizontal="6dp"
+            android:layout_height="0dp">
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/module_list"
@@ -65,58 +77,30 @@
                 android:layout_height="wrap_content"
                 android:visibility="gone" />
         </FrameLayout>
+
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
-    <com.google.android.material.progressindicator.LinearProgressIndicator
-        android:id="@+id/progress_bar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:indeterminate="true"
-        android:visibility="visible"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/root_container"
-        app:showAnimationBehavior="outward" />
 
-    <LinearLayout
-        android:id="@+id/search_container"
+
+    <!-- reboot fab, floating to the left of the search bar -->
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/reboot_fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="12dp"
-        android:layout_marginVertical="8dp"
-        android:filterTouchesWhenObscured="true"
-        android:gravity="bottom|end"
+        android:layout_margin="12dp"
+        android:clickable="true"
+        android:contentDescription="@string/reboot"
+        android:focusable="true"
+        android:src="@drawable/baseline_restart_alt_24"
         android:visibility="visible"
         app:layout_constraintBottom_toTopOf="@id/bottom_navigation"
-        app:layout_constraintEnd_toEndOf="parent"
-        tools:ignore="RtlHardcoded">
-
-        <!-- reboot fab, floating to the left of the search bar -->
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/reboot_fab"
-            android:layout_width="56dp"
-            android:layout_height="56dp"
-            android:layout_marginEnd="4dp"
-            android:layout_marginBottom="2dp"
-            android:clickable="true"
-            android:contentDescription="@string/reboot"
-            android:elevation="0dp"
-            android:focusable="true"
-            android:src="@drawable/baseline_restart_alt_24"
-            android:visibility="visible"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-    </LinearLayout>
+        app:layout_constraintEnd_toEndOf="parent" />
     <!-- bottom md3 navigation bar -->
     <!-- used for local and remote module list -->
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_navigation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingBottom="0dp"
         android:visibility="visible"
         app:compatShadowEnabled="true"
         app:layout_constraintBottom_toBottomOf="parent"

@@ -13,7 +13,6 @@ import android.content.Intent
 import android.content.res.Configuration
 import android.graphics.Color
 import android.graphics.Rect
-import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -22,13 +21,15 @@ import android.text.TextWatcher
 import android.view.MenuItem
 import android.view.MotionEvent
 import android.view.View
-import android.view.ViewGroup.MarginLayoutParams
 import android.view.WindowManager
 import android.view.animation.DecelerateInterpolator
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.Toast
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsAnimationCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.room.Room
@@ -61,6 +62,7 @@ import com.fox2code.mmm.utils.io.net.Http.Companion.hasWebView
 import com.fox2code.mmm.utils.room.ReposListDatabase
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.elevation.SurfaceColors
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.progressindicator.LinearProgressIndicator
 import com.google.android.material.textfield.TextInputEditText
@@ -70,6 +72,7 @@ import java.sql.Timestamp
 
 
 class MainActivity : FoxActivity(), OnRefreshListener, OverScrollHelper {
+    private lateinit var bottomNavigationView: BottomNavigationView
     val moduleViewListBuilder: ModuleViewListBuilder = ModuleViewListBuilder(this)
     val moduleViewListBuilderOnline: ModuleViewListBuilder = ModuleViewListBuilder(this)
     var progressIndicator: LinearProgressIndicator? = null
@@ -96,6 +99,12 @@ class MainActivity : FoxActivity(), OnRefreshListener, OverScrollHelper {
 
     override fun onResume() {
         onMainActivityResume(this)
+        // check that installed or online is selected depending on which recyclerview is visible
+        if (moduleList!!.visibility == View.VISIBLE) {
+            bottomNavigationView.selectedItemId = R.id.installed_menu_item
+        } else {
+            bottomNavigationView.selectedItemId = R.id.online_menu_item
+        }
         super.onResume()
     }
 
@@ -159,22 +168,8 @@ class MainActivity : FoxActivity(), OnRefreshListener, OverScrollHelper {
         }
         setContentView(R.layout.activity_main)
         this.setTitle(R.string.app_name_v2)
-        // set window flags to ignore status bar
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            // ignore status bar space
-            this.window.setDecorFitsSystemWindows(false)
-        } else {
-            this.window.setFlags(
-                WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
-                WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS
-            )
-        }
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-            val layoutParams = this.window.attributes
-            layoutParams.layoutInDisplayCutoutMode =  // Support cutout in Android 9
-                WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_SHORT_EDGES
-            this.window.attributes = layoutParams
-        }
+        // set navigation bar color based on surfacecolors
+        window.navigationBarColor = SurfaceColors.SURFACE_2.getColor(this)
         progressIndicator = findViewById(R.id.progress_bar)
         swipeRefreshLayout = findViewById(R.id.swipe_refresh)
         val swipeRefreshLayout = swipeRefreshLayout!!
@@ -185,6 +180,45 @@ class MainActivity : FoxActivity(), OnRefreshListener, OverScrollHelper {
         moduleListOnline = findViewById(R.id.module_list_online)
         searchTextInputEditText = findViewById(R.id.search_input)
         val textInputEditText = searchTextInputEditText!!
+        val view = findViewById<View>(R.id.root_container)
+        var startBottom = 0f
+        var endBottom = 0f
+        ViewCompat.setWindowInsetsAnimationCallback(
+            view,
+            object : WindowInsetsAnimationCompat.Callback(DISPATCH_MODE_STOP) {
+                // Override methods…
+                override fun onProgress(
+                    insets: WindowInsetsCompat,
+                    runningAnimations: MutableList<WindowInsetsAnimationCompat>
+                ): WindowInsetsCompat {
+                    // Find an IME animation.
+                    val imeAnimation = runningAnimations.find {
+                        it.typeMask and WindowInsetsCompat.Type.ime() != 0
+                    } ?: return insets
+                    Timber.d("IME animation progress: %f", imeAnimation.interpolatedFraction)
+                    // smoothly offset the view based on the interpolated fraction of the IME animation.
+                    view.translationY =
+                        (startBottom - endBottom) * (1 - imeAnimation.interpolatedFraction)
+
+                    return insets
+                }
+
+                override fun onStart(
+                    animation: WindowInsetsAnimationCompat,
+                    bounds: WindowInsetsAnimationCompat.BoundsCompat
+                ): WindowInsetsAnimationCompat.BoundsCompat {
+                    // Record the position of the view after the IME transition.
+                    endBottom = view.bottom.toFloat()
+                    Timber.d("IME animation start: %f", endBottom)
+                    return bounds
+                }
+
+                override fun onPrepare(animation: WindowInsetsAnimationCompat) {
+                    startBottom = view.bottom.toFloat()
+                    Timber.d("IME animation prepare: %f", startBottom)
+                }
+            }
+        )
         // set search view listeners for text edit. filter the appropriate list based on visibility. do the filtering as the user types not just on submit as a background task
         textInputEditText.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(
@@ -314,11 +348,17 @@ class MainActivity : FoxActivity(), OnRefreshListener, OverScrollHelper {
         // get background color and elevation of reboot fab
         moduleList.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-                if (newState != RecyclerView.SCROLL_STATE_IDLE) textInputEditText.clearFocus()
-                // hide search view  and reboot fab when scrolling - we have to account for padding, corners, and shadows
+                if (newState != RecyclerView.SCROLL_STATE_IDLE) {
+                    textInputEditText.clearFocus()
+                }
+                // hide reboot fab on scroll by fading it out
                 if (newState == RecyclerView.SCROLL_STATE_DRAGGING) {
-                    rebootFab.animate().translationY(rebootFab.height.toFloat() + 2 * 8 + 2 * 2)
-                        .setInterpolator(DecelerateInterpolator(2f)).start()
+                    rebootFab.animate().alpha(0f).setDuration(300)
+                        .setListener(object : AnimatorListenerAdapter() {
+                            override fun onAnimationEnd(animation: Animator) {
+                                rebootFab.visibility = View.GONE
+                            }
+                        })
                 }
             }
 
@@ -326,8 +366,8 @@ class MainActivity : FoxActivity(), OnRefreshListener, OverScrollHelper {
                 super.onScrolled(recyclerView, dx, dy)
                 // if the user scrolled up, show the search bar
                 if (dy < 0) {
-                    rebootFab.animate().translationY(0f).setInterpolator(DecelerateInterpolator(2f))
-                        .start()
+                    rebootFab.visibility = View.VISIBLE
+                    rebootFab.animate().alpha(1f).setDuration(300).setListener(null)
                 }
             }
         })
@@ -337,16 +377,23 @@ class MainActivity : FoxActivity(), OnRefreshListener, OverScrollHelper {
                 if (newState != RecyclerView.SCROLL_STATE_IDLE) textInputEditText.clearFocus()
                 // hide search view when scrolling
                 if (newState == RecyclerView.SCROLL_STATE_DRAGGING) {
-                    rebootFab.animate().translationY(rebootFab.height.toFloat() + 2 * 8 + 2 * 2)
-                        .setInterpolator(DecelerateInterpolator(2f)).start()
+                    textInputEditText.clearFocus()
+                    // animate reboot fab out
+                    rebootFab.animate().alpha(0f).setDuration(300)
+                        .setListener(object : AnimatorListenerAdapter() {
+                            override fun onAnimationEnd(animation: Animator) {
+                                rebootFab.visibility = View.GONE
+                            }
+                        })
                 }
             }
 
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
-                // if the user scrolled up, show the search bar
+                // if the user scrolled up, show the reboot fab
                 if (dy < 0) {
-                    rebootFab.animate().translationY(0f)
+                    rebootFab.visibility = View.VISIBLE
+                    rebootFab.animate().alpha(1f).setDuration(300).setListener(null)
                 }
             }
         })
@@ -357,13 +404,19 @@ class MainActivity : FoxActivity(), OnRefreshListener, OverScrollHelper {
         this.updateScreenInsets(this.resources.configuration)
 
         // on the bottom nav, there's a settings item. open the settings activity when it's clicked.
-        val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottom_navigation)
+        bottomNavigationView = findViewById(R.id.bottom_navigation)
         bottomNavigationView.setOnItemSelectedListener { item: MenuItem ->
             when (item.itemId) {
                 R.id.settings_menu_item -> {
                     TrackHelper.track().event("view_list", "settings")
                         .with(MainApplication.INSTANCE!!.tracker)
-                    startActivity(Intent(this@MainActivity, SettingsActivity::class.java))
+                    // start settings activity so that when user presses back, they go back to main activity and on api34 they see a preview of the main activity. tell settings activity current active tab so that it can be selected when user goes back to main activity
+                    val intent = Intent(this@MainActivity, SettingsActivity::class.java)
+                    when (bottomNavigationView.selectedItemId) {
+                        R.id.online_menu_item -> intent.putExtra("activeTab", "online")
+                        R.id.installed_menu_item -> intent.putExtra("activeTab", "installed")
+                    }
+                    startActivity(intent)
                 }
 
                 R.id.online_menu_item -> {
@@ -419,24 +472,6 @@ class MainActivity : FoxActivity(), OnRefreshListener, OverScrollHelper {
             bottomNavigationView.selectedItemId = R.id.online_menu_item
         } else {
             bottomNavigationView.selectedItemId = R.id.installed_menu_item
-        }
-        // update the padding of blur_frame to match the new bottom nav height
-        val blurFrame = findViewById<View>(R.id.blur_frame)
-        blurFrame.post {
-            blurFrame.setPadding(
-                blurFrame.paddingLeft,
-                blurFrame.paddingTop,
-                blurFrame.paddingRight,
-                bottomNavigationView.height
-            )
-        }
-        // for some reason, root_container has a margin at the top. remove it.
-        val rootContainer = findViewById<View>(R.id.root_container)
-        rootContainer.post {
-            val params = rootContainer.layoutParams as MarginLayoutParams
-            params.topMargin = 0
-            rootContainer.layoutParams = params
-            rootContainer.y = 0f
         }
         // reset update module and update module count in main application
         MainApplication.INSTANCE!!.resetUpdateModule()
@@ -646,8 +681,6 @@ class MainActivity : FoxActivity(), OnRefreshListener, OverScrollHelper {
         //this.actionBarBlur.invalidate();
         overScrollInsetTop = statusBarHeight
         overScrollInsetBottom = bottomInset
-        // set root_container to have zero padding
-        findViewById<View>(R.id.root_container).setPadding(0, statusBarHeight, 0, 0)
     }
 
     private fun updateBlurState() {
@@ -911,6 +944,15 @@ class MainActivity : FoxActivity(), OnRefreshListener, OverScrollHelper {
             }
         }
         return super.dispatchTouchEvent(event)
+    }
+
+    override fun setOnBackPressedCallback(onBackPressedCallback: OnBackPressedCallback?) {
+        // if is on online list, go back to installed list
+        if (moduleListOnline!!.visibility == View.VISIBLE) {
+            bottomNavigationView.selectedItemId = R.id.installed_menu_item
+        } else {
+            super.setOnBackPressedCallback(onBackPressedCallback)
+        }
     }
 
     companion object {

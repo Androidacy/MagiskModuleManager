@@ -42,7 +42,9 @@ import java.sql.Timestamp
 @Suppress("SENSELESS_COMPARISON")
 class SettingsActivity : FoxActivity(), LanguageActivity,
     PreferenceFragmentCompat.OnPreferenceStartFragmentCallback {
+    private lateinit var bottomNavigationView: BottomNavigationView
     lateinit var sharedPreferences: SharedPreferences
+    private lateinit var activeTabFromIntent: String
 
     @SuppressLint("RestrictedApi")
     private val onItemSelectedListener =
@@ -76,7 +78,8 @@ class SettingsActivity : FoxActivity(), LanguageActivity,
     override fun onCreate(savedInstanceState: Bundle?) {
         devModeStep = 0
         super.onCreate(savedInstanceState)
-
+        // get the active tab from the intent
+        activeTabFromIntent = intent.getStringExtra("activeTab") ?: "installed"
         PreferenceFragmentCompat.OnPreferenceStartFragmentCallback { preferenceFragmentCompat: PreferenceFragmentCompat, preference: Preference ->
             val fragment = supportFragmentManager.fragmentFactory.instantiate(
                 classLoader, preference.fragment.toString()
@@ -113,7 +116,7 @@ class SettingsActivity : FoxActivity(), LanguageActivity,
             }
         }
         //hideActionBar();
-        val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottom_navigation)
+        bottomNavigationView = findViewById(R.id.bottom_navigation)
         bottomNavigationView.setOnItemSelectedListener(onItemSelectedListener)
         if (savedInstanceState == null) {
             val settingsFragment = SettingsFragment()
@@ -304,5 +307,15 @@ class SettingsActivity : FoxActivity(), LanguageActivity,
             .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN).addToBackStack(null)
             .commit()
         return true
+    }
+
+    override fun setOnBackPressedCallback(onBackPressedCallback: OnBackPressedCallback?) {
+        super.setOnBackPressedCallback(onBackPressedCallback)
+        // set the active tab to the one from the intent
+        bottomNavigationView.selectedItemId = when (activeTabFromIntent) {
+            "installed" -> R.id.installed_menu_item
+            "online" -> R.id.online_menu_item
+            else -> R.id.installed_menu_item
+        }
     }
 }
