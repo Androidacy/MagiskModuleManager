@@ -12,20 +12,23 @@ import android.content.DialogInterface
 import android.content.Intent
 import android.content.res.Configuration
 import android.graphics.Color
+import android.graphics.Rect
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.util.TypedValue
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.MenuItem
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup.MarginLayoutParams
 import android.view.WindowManager
 import android.view.animation.DecelerateInterpolator
 import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputMethodManager
+import android.widget.EditText
 import android.widget.Toast
-import androidx.appcompat.widget.SearchView
-import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.room.Room
@@ -60,12 +63,13 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.progressindicator.LinearProgressIndicator
+import com.google.android.material.textfield.TextInputEditText
 import org.matomo.sdk.extra.TrackHelper
 import timber.log.Timber
 import java.sql.Timestamp
 
-class MainActivity : FoxActivity(), OnRefreshListener, SearchView.OnQueryTextListener,
-    SearchView.OnCloseListener, OverScrollHelper {
+
+class MainActivity : FoxActivity(), OnRefreshListener, OverScrollHelper {
     val moduleViewListBuilder: ModuleViewListBuilder = ModuleViewListBuilder(this)
     val moduleViewListBuilderOnline: ModuleViewListBuilder = ModuleViewListBuilder(this)
     var progressIndicator: LinearProgressIndicator? = null
@@ -81,8 +85,7 @@ class MainActivity : FoxActivity(), OnRefreshListener, SearchView.OnQueryTextLis
         private set
     private var moduleList: RecyclerView? = null
     private var moduleListOnline: RecyclerView? = null
-    private var searchCard: CardView? = null
-    private var searchView: SearchView? = null
+    private var searchTextInputEditText: TextInputEditText? = null
     private var rebootFab: FloatingActionButton? = null
     private var initMode = false
     private var runtimeUtils: RuntimeUtils? = null
@@ -180,15 +183,84 @@ class MainActivity : FoxActivity(), OnRefreshListener, SearchView.OnQueryTextLis
         swipeRefreshBlocker = Long.MAX_VALUE
         moduleList = findViewById(R.id.module_list)
         moduleListOnline = findViewById(R.id.module_list_online)
-        searchCard = findViewById(R.id.search_card)
-        searchView = findViewById(R.id.search_bar)
-        val searchView = searchView!!
-        searchView.isIconified = true
-        // when the search view is collapsed or user hits x, hide the search view
-        searchView.setOnCloseListener {
-            searchView.visibility = View.GONE
-            false
+        searchTextInputEditText = findViewById(R.id.search_input)
+        val textInputEditText = searchTextInputEditText!!
+        // set search view listeners for text edit. filter the appropriate list based on visibility. do the filtering as the user types not just on submit as a background task
+        textInputEditText.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(
+                s: CharSequence, start: Int, count: Int, after: Int
+            ) {
+                // do nothing
+            }
+
+            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+                // do nothing
+            }
+
+            override fun afterTextChanged(s: Editable) {
+                // filter the appropriate list based on visibility
+                if (initMode) return
+                val query = s.toString()
+                TrackHelper.track().search(query).with(MainApplication.INSTANCE!!.tracker)
+                Thread {
+                    if (moduleViewListBuilder.setQueryChange(query)) {
+                        Timber.i("Query submit: %s on offline list", query)
+                        Thread(
+                            { moduleViewListBuilder.applyTo(moduleList!!, moduleViewAdapter!!) },
+                            "Query update thread"
+                        ).start()
+                    }
+                    // same for online list
+                    if (moduleViewListBuilderOnline.setQueryChange(query)) {
+                        Timber.i("Query submit: %s on online list", query)
+                        Thread({
+                            moduleViewListBuilderOnline.applyTo(
+                                moduleListOnline!!, moduleViewAdapterOnline!!
+                            )
+                        }, "Query update thread").start()
+                    }
+                }.start()
+            }
+        })
+        // set on submit listener for search view. filter the appropriate list based on visibility
+        textInputEditText.setOnEditorActionListener { _, actionId, _ ->
+            if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                // filter the appropriate list based on visibility
+                val query = textInputEditText.text.toString()
+                TrackHelper.track().search(query).with(MainApplication.INSTANCE!!.tracker)
+                Thread {
+                    if (moduleViewListBuilder.setQueryChange(query)) {
+                        Timber.i("Query submit: %s on offline list", query)
+                        Thread(
+                            { moduleViewListBuilder.applyTo(moduleList!!, moduleViewAdapter!!) },
+                            "Query update thread"
+                        ).start()
+                    }
+                    // same for online list
+                    if (moduleViewListBuilderOnline.setQueryChange(query)) {
+                        Timber.i("Query submit: %s on online list", query)
+                        Thread({
+                            moduleViewListBuilderOnline.applyTo(
+                                moduleListOnline!!, moduleViewAdapterOnline!!
+                            )
+                        }, "Query update thread").start()
+                    }
+                }.start()
+                // hide keyboard
+                val imm = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+                imm.hideSoftInputFromWindow(textInputEditText.windowToken, 0)
+                true
+            } else {
+                false
+            }
         }
+        // set listener so when user clicks outside of search view, it loses focus
+        textInputEditText.setOnFocusChangeListener { _, hasFocus ->
+            if (!hasFocus) {
+                textInputEditText.clearFocus()
+            }
+        }
+
         moduleViewAdapter = ModuleViewAdapter()
         moduleViewAdapterOnline = ModuleViewAdapter()
         val moduleList = moduleList!!
@@ -222,8 +294,16 @@ class MainActivity : FoxActivity(), OnRefreshListener, SearchView.OnQueryTextLis
                 ) { _: DialogInterface?, which: Int ->
                     when (which) {
                         0 -> RuntimeUtils.reboot(this@MainActivity, RuntimeUtils.RebootMode.REBOOT)
-                        1 -> RuntimeUtils.reboot(this@MainActivity, RuntimeUtils.RebootMode.RECOVERY)
-                        2 -> RuntimeUtils.reboot(this@MainActivity, RuntimeUtils.RebootMode.BOOTLOADER)
+                        1 -> RuntimeUtils.reboot(
+                            this@MainActivity,
+                            RuntimeUtils.RebootMode.RECOVERY
+                        )
+
+                        2 -> RuntimeUtils.reboot(
+                            this@MainActivity,
+                            RuntimeUtils.RebootMode.BOOTLOADER
+                        )
+
                         3 -> RuntimeUtils.reboot(this@MainActivity, RuntimeUtils.RebootMode.EDL)
                     }
                 }
@@ -232,14 +312,11 @@ class MainActivity : FoxActivity(), OnRefreshListener, SearchView.OnQueryTextLis
             rebootDialog.show()
         }
         // get background color and elevation of reboot fab
-        val searchCard = searchCard!!
         moduleList.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-                if (newState != RecyclerView.SCROLL_STATE_IDLE) searchView.clearFocus()
+                if (newState != RecyclerView.SCROLL_STATE_IDLE) textInputEditText.clearFocus()
                 // hide search view  and reboot fab when scrolling - we have to account for padding, corners, and shadows
                 if (newState == RecyclerView.SCROLL_STATE_DRAGGING) {
-                    searchCard.animate().translationY(-searchCard.height.toFloat() - 2 * 8 - 2 * 2)
-                        .setInterpolator(DecelerateInterpolator(2f)).start()
                     rebootFab.animate().translationY(rebootFab.height.toFloat() + 2 * 8 + 2 * 2)
                         .setInterpolator(DecelerateInterpolator(2f)).start()
                 }
@@ -249,8 +326,6 @@ class MainActivity : FoxActivity(), OnRefreshListener, SearchView.OnQueryTextLis
                 super.onScrolled(recyclerView, dx, dy)
                 // if the user scrolled up, show the search bar
                 if (dy < 0) {
-                    searchCard.animate().translationY(0f).setInterpolator(DecelerateInterpolator(2f))
-                        .start()
                     rebootFab.animate().translationY(0f).setInterpolator(DecelerateInterpolator(2f))
                         .start()
                 }
@@ -259,11 +334,9 @@ class MainActivity : FoxActivity(), OnRefreshListener, SearchView.OnQueryTextLis
         // same for online
         moduleListOnline.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-                if (newState != RecyclerView.SCROLL_STATE_IDLE) searchView.clearFocus()
+                if (newState != RecyclerView.SCROLL_STATE_IDLE) textInputEditText.clearFocus()
                 // hide search view when scrolling
                 if (newState == RecyclerView.SCROLL_STATE_DRAGGING) {
-                    searchCard.animate().translationY(-searchCard.height.toFloat() - 2 * 8 - 2 * 2)
-                        .setInterpolator(DecelerateInterpolator(2f)).start()
                     rebootFab.animate().translationY(rebootFab.height.toFloat() + 2 * 8 + 2 * 2)
                         .setInterpolator(DecelerateInterpolator(2f)).start()
                 }
@@ -273,27 +346,14 @@ class MainActivity : FoxActivity(), OnRefreshListener, SearchView.OnQueryTextLis
                 super.onScrolled(recyclerView, dx, dy)
                 // if the user scrolled up, show the search bar
                 if (dy < 0) {
-                    searchCard.animate().translationY(0f)
-                        .setInterpolator(DecelerateInterpolator(2f)).start()
                     rebootFab.animate().translationY(0f)
                 }
             }
         })
-        searchView.minimumHeight = FoxDisplay.dpToPixel(16f)
-        searchView.imeOptions = EditorInfo.IME_ACTION_SEARCH or EditorInfo.IME_FLAG_NO_FULLSCREEN
-        searchView.setOnQueryTextListener(this)
-        searchView.setOnCloseListener(this)
-        searchView.setOnQueryTextFocusChangeListener { _: View?, h: Boolean ->
-            if (!h) {
-                val query = searchView.query.toString()
-                if (query.isEmpty()) {
-                    searchView.isIconified = true
-                }
-            }
-            cardIconifyUpdate()
-        }
-        searchView.isEnabled = false // Enabled later
-        cardIconifyUpdate()
+        textInputEditText.minimumHeight = FoxDisplay.dpToPixel(16f)
+        textInputEditText.imeOptions =
+            EditorInfo.IME_ACTION_SEARCH or EditorInfo.IME_FLAG_NO_FULLSCREEN
+        textInputEditText.isEnabled = false // Enabled later
         this.updateScreenInsets(this.resources.configuration)
 
         // on the bottom nav, there's a settings item. open the settings activity when it's clicked.
@@ -309,6 +369,8 @@ class MainActivity : FoxActivity(), OnRefreshListener, SearchView.OnQueryTextLis
                 R.id.online_menu_item -> {
                     TrackHelper.track().event("view_list", "online_modules")
                         .with(MainApplication.INSTANCE!!.tracker)
+                    searchTextInputEditText!!.clearFocus()
+                    searchTextInputEditText!!.text?.clear()
                     // set module_list_online as visible and module_list as gone. fade in/out
                     moduleListOnline.alpha = 0f
                     moduleListOnline.visibility = View.VISIBLE
@@ -319,18 +381,18 @@ class MainActivity : FoxActivity(), OnRefreshListener, SearchView.OnQueryTextLis
                                 moduleList.visibility = View.GONE
                             }
                         })
-                    // clear search view
-                    searchView.setQuery("", false)
-                    searchView.clearFocus()
+                    textInputEditText.clearFocus()
+                    // empty input for text input
+                    textInputEditText.text?.clear()
                     // reset reboot and search card
-                    searchCard.animate().translationY(0f).setInterpolator(DecelerateInterpolator(2f))
-                        .start()
                     rebootFab.animate().translationY(0f).setInterpolator(DecelerateInterpolator(2f))
                 }
 
                 R.id.installed_menu_item -> {
                     TrackHelper.track().event("view_list", "installed_modules")
                         .with(MainApplication.INSTANCE!!.tracker)
+                    searchTextInputEditText!!.clearFocus()
+                    searchTextInputEditText!!.text?.clear()
                     // set module_list_online as gone and module_list as visible. fade in/out
                     moduleList.alpha = 0f
                     moduleList.visibility = View.VISIBLE
@@ -342,11 +404,9 @@ class MainActivity : FoxActivity(), OnRefreshListener, SearchView.OnQueryTextLis
                             }
                         })
                     // set search view to cleared
-                    searchView.setQuery("", false)
-                    searchView.clearFocus()
+                    textInputEditText.clearFocus()
+                    textInputEditText.text?.clear()
                     // reset reboot and search card
-                    searchCard.animate().translationY(0f).setInterpolator(DecelerateInterpolator(2f))
-                        .start()
                     rebootFab.animate().translationY(0f).setInterpolator(DecelerateInterpolator(2f))
                 }
             }
@@ -488,7 +548,7 @@ class MainActivity : FoxActivity(), OnRefreshListener, SearchView.OnQueryTextLis
                         runOnUiThread {
                             progressIndicator.setProgressCompat(PRECISION, true)
                             progressIndicator.visibility = View.GONE
-                            searchView.isEnabled = false
+                            textInputEditText.isEnabled = false
                             updateScreenInsets(resources.configuration)
                         }
                         return
@@ -546,7 +606,7 @@ class MainActivity : FoxActivity(), OnRefreshListener, SearchView.OnQueryTextLis
                 runOnUiThread {
                     progressIndicator.setProgressCompat(PRECISION, true)
                     progressIndicator.visibility = View.GONE
-                    searchView.isEnabled = true
+                    textInputEditText.isEnabled = true
                     updateScreenInsets(resources.configuration)
                 }
                 maybeShowUpgrade()
@@ -567,18 +627,6 @@ class MainActivity : FoxActivity(), OnRefreshListener, SearchView.OnQueryTextLis
         initMode = false
     }
 
-    private fun cardIconifyUpdate() {
-        val iconified = searchView!!.isIconified
-        val backgroundAttr =
-            if (iconified) if (MainApplication.isMonetEnabled) com.google.android.material.R.attr.colorSecondaryContainer else  // Monet is special...
-                com.google.android.material.R.attr.colorSecondary else com.google.android.material.R.attr.colorPrimarySurface
-        val theme = searchCard!!.context.theme
-        val value = TypedValue()
-        theme.resolveAttribute(backgroundAttr, value, true)
-        searchCard!!.setCardBackgroundColor(value.data)
-        searchCard!!.alpha = if (iconified) 0.80f else 1f
-    }
-
     fun updateScreenInsets() {
         runOnUiThread { this.updateScreenInsets(this.resources.configuration) }
     }
@@ -594,8 +642,6 @@ class MainActivity : FoxActivity(), OnRefreshListener, SearchView.OnQueryTextLis
         )
         moduleViewListBuilder.setHeaderPx(statusBarHeight)
         moduleViewListBuilderOnline.setHeaderPx(statusBarHeight)
-        moduleViewListBuilder.setFooterPx(FoxDisplay.dpToPixel(4f) + bottomInset + searchCard!!.height)
-        moduleViewListBuilderOnline.setFooterPx(FoxDisplay.dpToPixel(4f) + bottomInset + searchCard!!.height)
         moduleViewListBuilder.updateInsets()
         //this.actionBarBlur.invalidate();
         overScrollInsetTop = statusBarHeight
@@ -624,10 +670,8 @@ class MainActivity : FoxActivity(), OnRefreshListener, SearchView.OnQueryTextLis
         if (initMode) return
         initMode = true
         Timber.i("Item Before")
-        searchView!!.setQuery("", false)
-        searchView!!.clearFocus()
-        searchView!!.isIconified = true
-        cardIconifyUpdate()
+        searchTextInputEditText!!.clearFocus()
+        searchTextInputEditText!!.text?.clear()
         this.updateScreenInsets()
         updateBlurState()
         moduleViewListBuilder.setQuery(null)
@@ -793,70 +837,6 @@ class MainActivity : FoxActivity(), OnRefreshListener, SearchView.OnQueryTextLis
         }, "Repo update thread").start()
     }
 
-    override fun onQueryTextSubmit(query: String): Boolean {
-        searchView!!.clearFocus()
-        if (initMode) return false
-        TrackHelper.track().search(query).with(MainApplication.INSTANCE!!.tracker)
-        if (moduleViewListBuilder.setQueryChange(query)) {
-            Timber.i("Query submit: %s on offline list", query)
-            Thread(
-                { moduleViewListBuilder.applyTo(moduleList!!, moduleViewAdapter!!) },
-                "Query update thread"
-            ).start()
-        }
-        // same for online list
-        if (moduleViewListBuilderOnline.setQueryChange(query)) {
-            Timber.i("Query submit: %s on online list", query)
-            Thread({
-                moduleViewListBuilderOnline.applyTo(
-                    moduleListOnline!!, moduleViewAdapterOnline!!
-                )
-            }, "Query update thread").start()
-        }
-        return true
-    }
-
-    override fun onQueryTextChange(query: String): Boolean {
-        if (initMode) return false
-        TrackHelper.track().search(query).with(MainApplication.INSTANCE!!.tracker)
-        if (moduleViewListBuilder.setQueryChange(query)) {
-            Timber.i("Query submit: %s on offline list", query)
-            Thread(
-                { moduleViewListBuilder.applyTo(moduleList!!, moduleViewAdapter!!) },
-                "Query update thread"
-            ).start()
-        }
-        // same for online list
-        if (moduleViewListBuilderOnline.setQueryChange(query)) {
-            Timber.i("Query submit: %s on online list", query)
-            Thread({
-                moduleViewListBuilderOnline.applyTo(
-                    moduleListOnline!!, moduleViewAdapterOnline!!
-                )
-            }, "Query update thread").start()
-        }
-        return false
-    }
-
-    override fun onClose(): Boolean {
-        if (initMode) return false
-        if (moduleViewListBuilder.setQueryChange(null)) {
-            Thread(
-                { moduleViewListBuilder.applyTo(moduleList!!, moduleViewAdapter!!) },
-                "Query update thread"
-            ).start()
-        }
-        // same for online list
-        if (moduleViewListBuilderOnline.setQueryChange(null)) {
-            Thread({
-                moduleViewListBuilderOnline.applyTo(
-                    moduleListOnline!!, moduleViewAdapterOnline!!
-                )
-            }, "Query update thread").start()
-        }
-        return false
-    }
-
     override fun onConfigurationChanged(newConfig: Configuration) {
         super.onConfigurationChanged(newConfig)
         this.updateScreenInsets()
@@ -915,6 +895,22 @@ class MainActivity : FoxActivity(), OnRefreshListener, SearchView.OnQueryTextLis
                 Timber.i("Unknown error, not showing upgrade snackbar 2")
             }
         }
+    }
+
+    override fun dispatchTouchEvent(event: MotionEvent): Boolean {
+        if (event.action == MotionEvent.ACTION_DOWN) {
+            val v = currentFocus
+            if (v is EditText) {
+                val outRect = Rect()
+                v.getGlobalVisibleRect(outRect)
+                if (!outRect.contains(event.rawX.toInt(), event.rawY.toInt())) {
+                    v.clearFocus()
+                    val imm = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+                    imm.hideSoftInputFromWindow(v.getWindowToken(), 0)
+                }
+            }
+        }
+        return super.dispatchTouchEvent(event)
     }
 
     companion object {
