@@ -2,7 +2,8 @@
   ~ Copyright (c) 2023 to present Androidacy and contributors. Names, logos, icons, and the Androidacy name are all trademarks of Androidacy and may not be used without license. See LICENSE for more information.
   -->
 
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/setup_box"
@@ -110,6 +111,14 @@
                 android:text="@string/repos"
                 android:textAppearance="@android:style/TextAppearance.Material.Headline" />
 
+            <!-- recommend users to enable androidacy repo and nothing else for an optimized experience -->
+            <com.google.android.material.textview.MaterialTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="2dp"
+                android:text="@string/setup_androidacy_repo_recommendation"
+                android:textAppearance="@style/TextAppearance.Material3.BodyMedium" />
+
             <com.google.android.material.materialswitch.MaterialSwitch
                 android:id="@+id/setup_androidacy_repo"
                 android:layout_width="match_parent"
@@ -156,6 +165,27 @@
                 android:layout_margin="2dp"
                 android:text="@string/setup_custom_repos"
                 android:textAppearance="@android:style/TextAppearance.Material.Caption" />
+
+            <!-- require security switch -->
+            <com.google.android.material.materialswitch.MaterialSwitch
+                android:id="@+id/setup_require_security"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:checked="false"
+                android:key="pref_require_security"
+                android:text="@string/setup_require_security"
+                android:textSize="18sp" />
+
+            <!-- description for require security switch -->
+            <com.google.android.material.textview.MaterialTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="4dp"
+                android:drawableStart="@drawable/ic_baseline_info_24"
+                android:drawablePadding="8dp"
+                android:text="@string/setup_require_security_summary"
+                android:textAppearance="@android:style/TextAppearance.Material.Small" />
 
             <com.google.android.material.textview.MaterialTextView
                 android:layout_width="match_parent"

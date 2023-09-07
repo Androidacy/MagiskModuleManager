@@ -72,7 +72,7 @@ object SentryMain {
         }
         // If first_launch pref is not false, refuse to initialize Sentry
         val sharedPreferences = MainApplication.getSharedPreferences("mmm")!!
-        if (sharedPreferences.getString("last_shown_setup", null) != "v3") {
+        if (sharedPreferences.getString("last_shown_setup", null) != "v4") {
             return
         }
         isSentryEnabled = sharedPreferences.getBoolean("pref_crash_reporting_enabled", false)

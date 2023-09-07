@@ -11,9 +11,6 @@
         <item name="chipStyle">@style/Widget.Material3.Chip.Assist.Elevated</item>
         <!-- fix bottom navigation bar color -->
         <item name="android:navigationBarColor">@color/system_accent2_100</item>
-        <!-- fonts -->
-        <item name="android:fontFamily">@font/inter</item>
-        <item name="font">@font/inter</item>
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
         <item name="android:windowActionBar">false</item>
@@ -28,9 +25,6 @@
         <item name="colorBackgroundFloating">@color/system_neutral1_800</item>
         <item name="android:windowBackground">@color/system_neutral1_900</item>
         <item name="chipStyle">@style/Widget.Material3.Chip.Assist.Elevated</item>
-        <!-- fonts -->
-        <item name="android:fontFamily">@font/inter</item>
-        <item name="font">@font/inter</item>
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
         <item name="android:windowActionBar">false</item>
@@ -57,9 +51,6 @@
         <item name="chipSurfaceColor">@color/system_accent2_700</item>
         <!-- chips should be dark, not black -->
         <item name="chipStyle">@style/Widget.Material3.Chip.Assist.Elevated</item>
-        <!-- fonts -->
-        <item name="android:fontFamily">@font/inter</item>
-        <item name="font">@font/inter</item>
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
         <item name="android:windowActionBar">false</item>

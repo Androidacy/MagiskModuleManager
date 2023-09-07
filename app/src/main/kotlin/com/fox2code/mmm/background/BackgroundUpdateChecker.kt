@@ -14,7 +14,6 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
-import android.os.Build
 import androidx.core.app.NotificationChannelCompat
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
@@ -381,19 +380,17 @@ class BackgroundUpdateChecker(context: Context, workerParams: WorkerParameters) 
         fun onMainActivityCreate(context: Context) {
             // Refuse to run if first_launch pref is not false
             if (MainApplication.getSharedPreferences("mmm")!!
-                    .getString("last_shown_setup", null) != "v3"
+                    .getString("last_shown_setup", null) != "v4"
             ) return
             // create notification channel group
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                val groupName: CharSequence = context.getString(R.string.notification_group_updates)
-                val mNotificationManager =
-                    ContextCompat.getSystemService(context, NotificationManager::class.java)
-                mNotificationManager?.createNotificationChannelGroup(
-                    NotificationChannelGroup(
-                        NOTFIICATION_GROUP, groupName
-                    )
+            val groupName: CharSequence = context.getString(R.string.notification_group_updates)
+            val mNotificationManager =
+                ContextCompat.getSystemService(context, NotificationManager::class.java)
+            mNotificationManager?.createNotificationChannelGroup(
+                NotificationChannelGroup(
+                    NOTFIICATION_GROUP, groupName
                 )
-            }
+            )
             val notificationManagerCompat = NotificationManagerCompat.from(context)
             notificationManagerCompat.createNotificationChannel(
                 NotificationChannelCompat.Builder(

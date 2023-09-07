@@ -14,6 +14,7 @@ import androidx.annotation.DrawableRes
 import com.fox2code.foxcompat.app.FoxActivity
 import com.fox2code.foxcompat.view.FoxDisplay
 import com.fox2code.mmm.BuildConfig
+import com.fox2code.mmm.MainApplication
 import com.fox2code.mmm.MainApplication.Companion.INSTANCE
 import com.fox2code.mmm.MainApplication.Companion.isShowcaseMode
 import com.fox2code.mmm.R
@@ -121,6 +122,19 @@ enum class ActionButtonType {
         }
 
         override fun doAction(button: Chip, moduleHolder: ModuleHolder) {
+            if (MainApplication.getSharedPreferences("mmm")?.getBoolean("pref_require_security", false) == true) {
+                // get safe status from either mainmoduleinfo or repo module
+                val safe = moduleHolder.mainModuleInfo.safe || moduleHolder.repoModule?.moduleInfo?.safe ?: false
+                if (!safe) {
+                    // block local install for safety
+                    MaterialAlertDialogBuilder(button.context)
+                        .setTitle(R.string.install_blocked)
+                        .setMessage(R.string.install_blocked_message)
+                        .setPositiveButton(android.R.string.ok, null)
+                        .show()
+                    return
+                }
+            }
             // if mainmoduleinfo is null, we are in repo mode
             val moduleInfo: ModuleInfo = if (moduleHolder.mainModuleInfo != null) {
                 moduleHolder.mainModuleInfo

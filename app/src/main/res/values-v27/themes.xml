@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="Theme.MagiskModuleManager.Light" parent="Theme.Material3.Light">
+        <item name="isLightTheme">true</item>
+        <!-- Primary brand color. -->
+        <item name="colorPrimary">@color/indigo_200</item>
+        <item name="colorPrimaryVariant">@color/white</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <!-- Secondary brand color. -->
+        <item name="colorSecondary">@color/blue_200</item>
+        <item name="colorSecondaryVariant">@color/blue_200</item>
+        <item name="colorOnSecondary">@color/white</item>
+        <!-- Status bar color. -->
+        <item name="android:statusBarColor">@color/status_bar_color</item>
+        <item name="android:navigationBarColor">@color/transparent</item>
+        <item name="android:windowLightStatusBar">true</item>
+        <item name="android:windowLightNavigationBar">true</item>
+        <!-- Customize your theme here. -->
+        <item name="android:windowActivityTransitions">true</item>
+        <!-- <item name="android:activityOpenEnterAnimation">@*android:anim/slide_in_right</item>
+        <item name="android:activityOpenExitAnimation">@*android:anim/slide_out_left</item>
+        <item name="android:activityCloseEnterAnimation">@*android:anim/slide_in_left</item>
+        <item name="android:activityCloseExitAnimation">@*android:anim/slide_out_right</item> -->
+        <item name="android:windowEnterAnimation">@android:anim/fade_in</item>
+        <item name="android:windowExitAnimation">@android:anim/fade_out</item>
+        <item name="colorBackgroundFloating">@color/light_colorBackgroundFloating</item>
+        <item name="backgroundColor">@color/light_backgroundColor</item>
+        <item name="chipStyle">@style/Widget.Material3.Chip.Assist.Elevated</item>
+        <item name="android:actionBarStyle">@style/Theme.Design.NoActionBar</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:windowActionBar">false</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="cornerRadius">@dimen/card_corner_radius</item>
+    </style>
+</resources>

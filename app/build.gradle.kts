@@ -499,12 +499,12 @@ dependencies {
     implementation("com.github.Fox2Code:AndroidANSI:1.2.1")
 
     // sentry
-    implementation("io.sentry:sentry-android:6.28.0")
-    implementation("io.sentry:sentry-android-timber:6.28.0")
-    implementation("io.sentry:sentry-android-fragment:6.28.0")
-    implementation("io.sentry:sentry-android-okhttp:6.28.0")
-    implementation("io.sentry:sentry-kotlin-extensions:6.28.0")
-    implementation("io.sentry:sentry-android-ndk:6.28.0")
+    implementation("io.sentry:sentry-android:6.29.0")
+    implementation("io.sentry:sentry-android-timber:6.29.0")
+    implementation("io.sentry:sentry-android-fragment:6.29.0")
+    implementation("io.sentry:sentry-android-okhttp:6.29.0")
+    implementation("io.sentry:sentry-kotlin-extensions:6.29.0")
+    implementation("io.sentry:sentry-android-ndk:6.29.0")
 
     // Markdown
     // TODO: switch to an updated implementation
@@ -554,6 +554,8 @@ dependencies {
 
     // optional - Kotlin Extensions and Coroutines support for Room
     implementation("androidx.room:room-ktx:2.5.2")
+
+    implementation("pl.droidsonroids.gif:android-gif-drawable:1.2.28")
 }
 
 android {
@@ -563,7 +565,7 @@ android {
         }
     }
 
-    ndkVersion = "25.2.9519653"
+    ndkVersion = "26.0.10636728 rc2"
     dependenciesInfo {
         includeInApk = false
         includeInBundle = false

@@ -7,7 +7,7 @@
     <!-- cancel and finish setup -->
     <item
         android:id="@+id/cancel_setup"
-        android:checked="false"
+        android:checked="true"
         android:enabled="true"
         android:icon="@drawable/baseline_close_24"
         android:title="@string/cancel"
@@ -17,8 +17,8 @@
     <item
         android:id="@+id/setup_finish"
         android:checked="false"
-        android:enabled="false"
-        android:icon="@drawable/baseline_check_24"
+        android:enabled="true"
+        android:icon="@drawable/baseline_keyboard_arrow_right_24"
         android:title="@string/finish"
         app:showAsAction="ifRoom" />
 </menu>

@@ -25,6 +25,7 @@ import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
 import java.io.InputStreamReader
+import java.util.Date
 
 class DebugFragment : PreferenceFragmentCompat() {
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
@@ -181,6 +182,17 @@ class DebugFragment : PreferenceFragmentCompat() {
                         } catch (ignored: IOException) {
                         }
                     }
+                }
+                // save logs to our external storage - name is current date and time
+                try {
+                    val extStorage = File(requireContext().getExternalFilesDir(null), "logs" + File.separator + "log-" + Date().toString() + ".txt")
+                    FileUtils.copyFile(logsFile, extStorage)
+                } catch (e: IOException) {
+                    e.printStackTrace()
+                    Toast.makeText(
+                        requireContext(), R.string.error_saving_logs, Toast.LENGTH_SHORT
+                    ).show()
+                    return@setOnPreferenceClickListener true
                 }
                 // Share logs
                 val shareIntent = Intent()

@@ -14,7 +14,8 @@
         android:id="@+id/install_horizontal_scroller"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:background="@color/black"
+        android:background="@null"
+        android:fontFamily="@font/jetbrainsmono"
         android:overScrollMode="never"
         app:layout_constraintBottom_toTopOf="@id/bottom_navigation"
         app:layout_constraintEnd_toEndOf="parent"
@@ -26,8 +27,8 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:background="@null"
-            android:padding="4dp"
             android:fontFamily="@font/jetbrainsmono"
+            android:padding="4dp"
             android:textSize="16sp" />
     </HorizontalScrollView>
 
@@ -44,8 +45,8 @@
         android:id="@+id/bottom_navigation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/install_horizontal_scroller"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/install_horizontal_scroller"
         app:menu="@menu/bottom_nav_install" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

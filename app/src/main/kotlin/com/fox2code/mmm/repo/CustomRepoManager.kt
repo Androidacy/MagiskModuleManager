@@ -30,7 +30,7 @@ class CustomRepoManager internal constructor(
     init {
         repoCount = 0
         // refuse to load if setup is not complete
-        if (getSharedPreferences("mmm")!!.getString("last_shown_setup", "") == "v3") {
+        if (getSharedPreferences("mmm")!!.getString("last_shown_setup", "") == "v4") {
             val i = 0
             val lastFilled = intArrayOf(0)
             // now the same as above but for room database

@@ -11,6 +11,7 @@ import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.content.res.Resources.Theme
+import android.net.Uri
 import android.os.Bundle
 import android.os.Process
 import android.view.View
@@ -46,6 +47,7 @@ class SetupActivity : FoxActivity(), LanguageActivity {
     private var cachedTheme = 0
 
     @SuppressLint("ApplySharedPref", "RestrictedApi")
+    @Suppress("KotlinConstantConditions", "NAME_SHADOWING")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         this.setTitle(R.string.setup_title)
@@ -69,7 +71,7 @@ class SetupActivity : FoxActivity(), LanguageActivity {
             if (ts.time > buildTime.time) {
                 val pm = packageManager
                 val intent = Intent(this, ExpiredActivity::class.java)
-                @Suppress("DEPRECATION") val resolveInfo = pm.queryIntentActivities(intent, 0)
+                val resolveInfo = pm.queryIntentActivities(intent, 0)
                 if (resolveInfo.size > 0) {
                     startActivity(intent)
                     finish()
@@ -85,6 +87,67 @@ class SetupActivity : FoxActivity(), LanguageActivity {
             }
         }
         val view: View = binding.root
+        // if our application id is "com.androidacy.mmm" or begins with it, check if com.fox2code.mmm is installed and offer to uninstall it. if we're com.fox2code.mmm, check if com.fox2code.mmm.fdroid or com.fox2code.mmm.debug is installed and offer to uninstall it
+        val ourPackageName = BuildConfig.APPLICATION_ID
+        val foxPkgName = "com.fox2code.mmm"
+        val foxPkgNameFdroid = "com.fox2code.mmm.fdroid"
+        val foxPkgNameDebug = "com.fox2code.mmm.debug"
+        val foxPkgNamePlay = "com.androidacy.mmm.play"
+        val androidacyPkgName = "com.androidacy.mmm"
+        val pm = packageManager
+        val intent = Intent(Intent.ACTION_MAIN, null)
+        intent.addCategory(Intent.CATEGORY_LAUNCHER)
+        val resolveInfoList = pm.queryIntentActivities(intent, 0)
+        for (resolveInfo in resolveInfoList) {
+            val packageName = resolveInfo.activityInfo.packageName
+            if (packageName == ourPackageName) {
+                continue
+            }
+            when (ourPackageName) {
+                foxPkgName -> {
+                    if (packageName == foxPkgNameDebug || packageName == foxPkgNameFdroid || packageName == foxPkgNamePlay) {
+                        val materialAlertDialogBuilder = MaterialAlertDialogBuilder(this)
+                        materialAlertDialogBuilder.setTitle(R.string.setup_uninstall_title)
+                        materialAlertDialogBuilder.setMessage(getString(R.string.setup_uninstall_message, packageName))
+                        materialAlertDialogBuilder.setPositiveButton(R.string.uninstall) { _: DialogInterface?, _: Int ->
+                            // start uninstall intent
+                            val intent = Intent(Intent.ACTION_DELETE)
+                            intent.data = Uri.parse("package:$packageName")
+                            startActivity(intent)
+                        }
+                        materialAlertDialogBuilder.setNegativeButton(R.string.cancel) { _: DialogInterface?, _: Int -> }
+                    }
+                }
+                androidacyPkgName -> {
+                    if (packageName == foxPkgName || packageName == foxPkgNameFdroid || packageName == foxPkgNameDebug || packageName == foxPkgNamePlay) {
+                        val materialAlertDialogBuilder = MaterialAlertDialogBuilder(this)
+                        materialAlertDialogBuilder.setTitle(R.string.setup_uninstall_title)
+                        materialAlertDialogBuilder.setMessage(getString(R.string.setup_uninstall_message, packageName))
+                        materialAlertDialogBuilder.setPositiveButton(R.string.uninstall) { _: DialogInterface?, _: Int ->
+                            // start uninstall intent
+                            val intent = Intent(Intent.ACTION_DELETE)
+                            intent.data = Uri.parse("package:$packageName")
+                            startActivity(intent)
+                        }
+                        materialAlertDialogBuilder.setNegativeButton(R.string.cancel) { _: DialogInterface?, _: Int -> }
+                    }
+                }
+                else -> {
+                    if (packageName == foxPkgNameDebug) {
+                        val materialAlertDialogBuilder = MaterialAlertDialogBuilder(this)
+                        materialAlertDialogBuilder.setTitle(R.string.setup_uninstall_title)
+                        materialAlertDialogBuilder.setMessage(getString(R.string.setup_uninstall_message, packageName))
+                        materialAlertDialogBuilder.setPositiveButton(R.string.uninstall) { _: DialogInterface?, _: Int ->
+                            // start uninstall intent
+                            val intent = Intent(Intent.ACTION_DELETE)
+                            intent.data = Uri.parse("package:$packageName")
+                            startActivity(intent)
+                        }
+                        materialAlertDialogBuilder.setNegativeButton(R.string.cancel) { _: DialogInterface?, _: Int -> }
+                    }
+                }
+            }
+        }
         (Objects.requireNonNull<Any>(view.findViewById(R.id.setup_background_update_check)) as MaterialSwitch).isChecked =
             BuildConfig.ENABLE_AUTO_UPDATER
         (Objects.requireNonNull<Any>(view.findViewById(R.id.setup_crash_reporting)) as MaterialSwitch).isChecked =
@@ -205,10 +268,16 @@ class SetupActivity : FoxActivity(), LanguageActivity {
         val setupButton = view.findViewById<BottomNavigationItemView>(R.id.setup_finish)
         // on clicking setup_agree_eula, enable the setup button if it's checked, if it's not, disable it
         val agreeEula = view.findViewById<MaterialCheckBox>(R.id.setup_agree_eula)
-        agreeEula.setOnCheckedChangeListener { _: CompoundButton?, isChecked: Boolean ->
-            setupButton.isEnabled = isChecked
-        }
         setupButton.setOnClickListener { _: View? ->
+            // if agreeEula is not checked, show a toast and return
+            if (!agreeEula.isChecked) {
+                Toast.makeText(
+                    this,
+                    R.string.setup_agree_eula_toast,
+                    Toast.LENGTH_LONG
+                ).show()
+                return@setOnClickListener
+            }
             Timber.i("Setup button clicked")
             // get instance of editor
             if (BuildConfig.DEBUG) Timber.d("Saving preferences")
@@ -247,6 +316,14 @@ class SetupActivity : FoxActivity(), LanguageActivity {
                 "pref_analytics_enabled",
                 (Objects.requireNonNull<Any>(view.findViewById(R.id.setup_app_analytics)) as MaterialSwitch).isChecked
             )
+            // setup_require_security -> pref_require_security
+            editor.putBoolean(
+                "pref_require_security", (Objects.requireNonNull<Any>(
+                    view.findViewById(
+                        R.id.setup_require_security
+                    )
+                ) as MaterialSwitch).isChecked
+            )
             if (BuildConfig.DEBUG) Timber.d("Saving preferences")
             // now basically do the same thing for room db
             val db = Room.databaseBuilder(
@@ -262,7 +339,7 @@ class SetupActivity : FoxActivity(), LanguageActivity {
             reposListDao.setEnabled(androidacyRepoRoomObj.id, androidacyRepoRoom)
             reposListDao.setEnabled(magiskAltRepoRoomObj.id, magiskAltRepoRoom)
             db.close()
-            editor.putString("last_shown_setup", "v3")
+            editor.putString("last_shown_setup", "v4")
             // Commit the changes
             editor.commit()
             // Log the changes
@@ -415,11 +492,11 @@ class SetupActivity : FoxActivity(), LanguageActivity {
                 safe = false,
                 stats = 0,
             )
+            moduleListCacheDao.deleteAll()
             // insert the modulelistcache into the database
             moduleListCacheDao.insert(moduleListCache)
             // now make sure reposlist is updated with 2 entries and modulelistcache is updated with 1 entry
             val reposList = reposListDao.getAll()
-            val moduleListCacheList = moduleListCacheDao.getAll()
             // make sure reposlist is updated with 2 entries
             if (reposList.size != 2) {
                 Timber.e("ReposList is not updated with 2 entries")
@@ -435,7 +512,7 @@ class SetupActivity : FoxActivity(), LanguageActivity {
                 if (BuildConfig.DEBUG) Timber.d("ReposList is updated with 2 entries")
             }
             // make sure modulelistcache is updated with 1 entry
-            if (moduleListCacheList.size != 1) {
+            if (moduleListCacheDao.getAll().size != 1) {
                 Timber.e("ModuleListCache is not updated with 1 entry")
                 // show a toast
                 runOnUiThread {

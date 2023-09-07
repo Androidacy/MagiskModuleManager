@@ -18,6 +18,7 @@
         android:fontFamily="@font/jetbrainsmono"
         android:overScrollMode="never"
         android:textSize="16sp"
+        app:flow_wrapMode="aligned"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintBottom_toTopOf="@id/bottom_navigation"

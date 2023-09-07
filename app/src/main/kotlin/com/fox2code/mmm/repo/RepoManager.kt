@@ -56,7 +56,7 @@ class RepoManager private constructor(mainApplication: MainApplication) : SyncMa
         repoData = LinkedHashMap()
         modules = HashMap()
         // refuse to load if setup is not complete
-        if (getSharedPreferences("mmm")!!.getString("last_shown_setup", "") == "v3") {
+        if (getSharedPreferences("mmm")!!.getString("last_shown_setup", "") == "v4") {
             // We do not have repo list config yet.
             androidacyRepoData = addAndroidacyRepoData()
             val altRepo = addRepoData(MAGISK_ALT_REPO, "Magisk Modules Alt Repo")
@@ -82,8 +82,8 @@ class RepoManager private constructor(mainApplication: MainApplication) : SyncMa
     }
 
     private fun populateDefaultCache(repoData: RepoData?) {
-        // if last_shown_setup is not "v3", them=n refuse to continue
-        if (getSharedPreferences("mmm")!!.getString("last_shown_setup", "") != "v3") {
+        // if last_shown_setup is not "v4", them=n refuse to continue
+        if (getSharedPreferences("mmm")!!.getString("last_shown_setup", "") != "v4") {
             return
         }
         // make sure repodata is not null

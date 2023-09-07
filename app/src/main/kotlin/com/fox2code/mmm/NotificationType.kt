@@ -27,6 +27,7 @@ import com.fox2code.mmm.utils.IntentHelper
 import com.fox2code.mmm.utils.io.Files.Companion.patchModuleSimple
 import com.fox2code.mmm.utils.io.Files.Companion.read
 import com.fox2code.mmm.utils.io.net.Http
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import timber.log.Timber
 import java.io.BufferedReader
 import java.io.File
@@ -195,6 +196,15 @@ enum class NotificationType(
         androidx.appcompat.R.attr.colorBackgroundFloating,
         com.google.android.material.R.attr.colorOnBackground,
         View.OnClickListener { v: View? ->
+            if (MainApplication.getSharedPreferences("mmm")?.getBoolean("pref_require_security", false) == true) {
+                // block local install for safety
+                MaterialAlertDialogBuilder(v!!.context)
+                    .setTitle(R.string.install_from_storage)
+                    .setMessage(R.string.install_from_storage_safe_modules)
+                    .setPositiveButton(android.R.string.ok, null)
+                    .show()
+                return@OnClickListener
+            }
             val compatActivity = FoxActivity.getFoxActivity(v)
             val module = File(
                 compatActivity.cacheDir, "installer" + File.separator + "module.zip"
