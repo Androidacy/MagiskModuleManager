@@ -23,4 +23,10 @@
     <color name="light_backgroundColor">#FFFFFFFF</color>
     <color name="gray_900">#3A3A3A</color>
     <color name="gray_800">#424242</color>
+    <color name="blue_200">#2196F3</color>
+    <color name="blue_500">#2196F3</color>
+    <color name="blue_700">#1976D2</color>
+    <color name="indigo_200">#3F51B5</color>
+    <color name="indigo_500">#3F51B5</color>
+    <color name="indigo_700">#303F9F</color>
 </resources>

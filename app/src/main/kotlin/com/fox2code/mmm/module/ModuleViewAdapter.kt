@@ -380,8 +380,8 @@ ${getString(R.string.module_repo)} ${moduleHolder.repoName}""" + if ((repoModule
                         backgroundAttr = moduleHolder.notificationType.backgroundAttr
                     }
                 } else if (type === ModuleHolder.Type.INSTALLED && moduleHolder.hasFlag(ModuleInfo.FLAG_METADATA_INVALID)) {
-                    invalidPropsChip.setOnClickListener { _view: View ->
-                        val builder = MaterialAlertDialogBuilder(_view.context)
+                    invalidPropsChip.setOnClickListener { view: View ->
+                        val builder = MaterialAlertDialogBuilder(view.context)
                         builder.setTitle(R.string.low_quality_module)
                             .setMessage(R.string.low_quality_module_desc).setCancelable(true)
                             .setPositiveButton(

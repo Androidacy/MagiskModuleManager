@@ -51,7 +51,7 @@ android {
     }
     defaultConfig {
         applicationId = "com.fox2code.mmm"
-        minSdk = 24
+        minSdk = 26
         targetSdk = 34
         versionCode = 82
         versionName = "2.3.0"
@@ -215,7 +215,7 @@ android {
         // play variant. pretty similiar to default, but with an empty inital online repo list, and use play_client_id instead of client_id
         create("play") {
             dimension = "type"
-            applicationIdSuffix = ".play"
+            versionNameSuffix = "-play"
             applicationId = "com.androidacy.mmm"
             // current timestamp of build
             buildConfigField("long", "BUILD_TIME", "$timestamp")
@@ -528,7 +528,7 @@ dependencies {
     implementation("androidx.security:security-crypto:1.1.0-alpha06")
 
     // some utils
-    implementation("commons-io:commons-io:20030203.000550")
+    implementation("commons-io:commons-io:2.13.0")
     implementation("org.apache.commons:commons-compress:1.23.0")
 
     // analytics
