@@ -37,6 +37,12 @@ The Androidacy Module Manager serves as a robust alternative to the official Mag
 - Repository Creation Wizard
 - Module Creation Tool
 
+### Screenshots
+
+#### Dark | Light
+
+<img src="docs/dark_screenshot.png" alt="Dark Screenshot" width="320"/> <img src="docs/light_screenshot.png" alt="Light Screenshot" width="320"/>
+
 ### Default Repositories
 
 - [Androidacy](https://www.androidacy.com/magisk-modules-repository/?utm_source=fox-readme&utm_medium=web&utm_campaign=github-readme): Fast, optimized, and secure. The official Androidacy repository. May display non-intrusive ads.
