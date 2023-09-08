@@ -45,7 +45,6 @@ class CreditsFragment : PreferenceFragmentCompat() {
         }
 
         setPreferencesFromResource(R.xml.credits_preferences, rootKey)
-        SettingsActivity.applyMaterial3(preferenceScreen)
 
 
 

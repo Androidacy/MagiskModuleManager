@@ -60,7 +60,6 @@ class UpdateFragment : PreferenceFragmentCompat() {
             throw RuntimeException(getString(R.string.error_encrypted_shared_preferences))
         }
         setPreferencesFromResource(R.xml.update_preferences, rootKey)
-        SettingsActivity.applyMaterial3(preferenceScreen)
         // track all non empty values
         val sharedPreferences = dataStore.sharedPreferences
         val debugNotification = findPreference<Preference>("pref_background_update_check_debug")

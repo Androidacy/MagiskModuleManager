@@ -52,7 +52,6 @@ class SecurityFragment : PreferenceFragmentCompat() {
         }
 
         setPreferencesFromResource(R.xml.security_preferences, rootKey)
-        SettingsActivity.applyMaterial3(preferenceScreen)
 
         findPreference<Preference>("pref_dns_over_https")!!.onPreferenceChangeListener =
             Preference.OnPreferenceChangeListener { _: Preference?, v: Any? ->

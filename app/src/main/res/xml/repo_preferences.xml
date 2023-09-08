@@ -9,6 +9,7 @@
         app:key="pref_androidacy_repo"
         app:title="@string/androidacy_repo_name">
         <SwitchPreferenceCompat
+            android:widgetLayout="@layout/preference_material_switch"
             app:icon="@drawable/ic_baseline_extension_24"
             app:key="pref_androidacy_repo_enabled"
             app:singleLineTitle="false"
@@ -25,6 +26,7 @@
             app:singleLineTitle="false"
             app:title="@string/api_key" />
         <SwitchPreferenceCompat
+            android:widgetLayout="@layout/preference_material_switch"
             app:defaultValue="false"
             app:dependency="pref_androidacy_repo_enabled"
             app:icon="@drawable/ic_baseline_bug_report_24"
@@ -69,6 +71,7 @@
         app:key="pref_magisk_alt_repo"
         app:title="@string/magisk_alt_repo_name">
         <SwitchPreferenceCompat
+            android:widgetLayout="@layout/preference_material_switch"
             app:icon="@drawable/ic_baseline_extension_24"
             app:key="pref_magisk_alt_repo_enabled"
             app:singleLineTitle="false"
@@ -108,6 +111,7 @@
         <!-- Custom repos can't be enabled/disabled. Instead, they must be deleted. Show a disabled
              switch to indicate that. -->
         <SwitchPreferenceCompat
+            android:widgetLayout="@layout/preference_material_switch"
             app:defaultValue="true"
             app:enabled="false"
             app:icon="@drawable/ic_baseline_extension_24"
@@ -146,6 +150,7 @@
         app:key="pref_custom_repo_1"
         app:title="@string/loading">
         <SwitchPreferenceCompat
+            android:widgetLayout="@layout/preference_material_switch"
             app:defaultValue="true"
             app:enabled="false"
             app:icon="@drawable/ic_baseline_extension_24"
@@ -184,6 +189,7 @@
         app:key="pref_custom_repo_2"
         app:title="@string/loading">
         <SwitchPreferenceCompat
+            android:widgetLayout="@layout/preference_material_switch"
             app:defaultValue="true"
             app:enabled="false"
             app:icon="@drawable/ic_baseline_extension_24"
@@ -222,6 +228,7 @@
         app:key="pref_custom_repo_3"
         app:title="@string/loading">
         <SwitchPreferenceCompat
+            android:widgetLayout="@layout/preference_material_switch"
             app:defaultValue="true"
             app:enabled="false"
             app:icon="@drawable/ic_baseline_extension_24"
@@ -260,6 +267,7 @@
         app:key="pref_custom_repo_4"
         app:title="@string/loading">
         <SwitchPreferenceCompat
+            android:widgetLayout="@layout/preference_material_switch"
             app:defaultValue="true"
             app:enabled="false"
             app:icon="@drawable/ic_baseline_extension_24"

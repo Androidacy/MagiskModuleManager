@@ -5,6 +5,7 @@
     <PreferenceCategory app:title="@string/pref_category_updates">
 
         <SwitchPreferenceCompat
+            android:widgetLayout="@layout/preference_material_switch"
             app:defaultValue="true"
             app:icon="@drawable/ic_baseline_notifications_24"
             app:key="pref_background_update_check"
@@ -14,6 +15,7 @@
 
         <!-- check for app updates -->
         <SwitchPreferenceCompat
+            android:widgetLayout="@layout/preference_material_switch"
             app:defaultValue="true"
             app:icon="@drawable/ic_baseline_app_settings_alt_24"
             app:key="pref_background_update_check_app"
@@ -23,6 +25,7 @@
 
         <!-- require wifi -->
         <SwitchPreferenceCompat
+            android:widgetLayout="@layout/preference_material_switch"
             app:defaultValue="true"
             app:icon="@drawable/baseline_network_wifi_24"
             app:key="pref_background_update_check_wifi"

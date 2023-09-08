@@ -21,7 +21,6 @@ import android.widget.Toast
 import androidx.preference.EditTextPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
-import androidx.preference.PreferenceGroup
 import androidx.preference.SwitchPreferenceCompat
 import androidx.preference.TwoStatePreference
 import androidx.room.Room
@@ -70,7 +69,7 @@ class RepoFragment : PreferenceFragmentCompat() {
                         MaterialAlertDialogBuilder(requireContext()).setTitle(R.string.warning)
                             .setCancelable(false).setMessage(
                                 R.string.androidacy_test_mode_warning
-                        )
+                            )
                             .setPositiveButton(android.R.string.ok) { _: DialogInterface?, _: Int ->
                                 // User clicked OK button
                                 MainApplication.getSharedPreferences("mmm")!!
@@ -115,7 +114,7 @@ class RepoFragment : PreferenceFragmentCompat() {
                         MaterialAlertDialogBuilder(requireContext()).setTitle(R.string.warning)
                             .setCancelable(false).setMessage(
                                 R.string.androidacy_test_mode_disable_warning
-                        )
+                            )
                             .setNeutralButton(android.R.string.ok) { _: DialogInterface?, _: Int ->
                                 // User clicked OK button
                                 val mStartActivity =
@@ -174,7 +173,7 @@ class RepoFragment : PreferenceFragmentCompat() {
                     MaterialAlertDialogBuilder(requireContext()).setTitle(R.string.androidacy_repo_disabled)
                         .setCancelable(false).setMessage(
                             R.string.androidacy_repo_disabled_message
-                    )
+                        )
                         .setPositiveButton(R.string.download_full_app) { _: DialogInterface?, _: Int ->
                             // User clicked OK button. Open GitHub releases page
                             val browserIntent = Intent(
@@ -367,7 +366,9 @@ class RepoFragment : PreferenceFragmentCompat() {
                                     // If the key is valid, save it
                                     if (valid) {
                                         originalApiKeyRef[0] = apiKey
-                                        RepoManager.getINSTANCE()!!.androidacyRepoData!!.setToken(apiKey)
+                                        RepoManager.getINSTANCE()!!.androidacyRepoData!!.setToken(
+                                            apiKey
+                                        )
                                         MainApplication.getSharedPreferences("androidacy")!!
                                             .edit()
                                             .putString("pref_androidacy_api_token", apiKey)
@@ -422,7 +423,10 @@ class RepoFragment : PreferenceFragmentCompat() {
                                                 BaseTransientBottomBar.LENGTH_SHORT
                                             ).show()
                                             // Save the original key
-                                            MainApplication.INSTANCE!!.getSharedPreferences("androidacy", 0)
+                                            MainApplication.INSTANCE!!.getSharedPreferences(
+                                                "androidacy",
+                                                0
+                                            )
                                                 .edit().putString(
                                                     "pref_androidacy_api_token",
                                                     originalApiKeyRef[0]
@@ -848,7 +852,6 @@ class RepoFragment : PreferenceFragmentCompat() {
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         preferenceManager.sharedPreferencesName = "mmm"
         setPreferencesFromResource(R.xml.repo_preferences, rootKey)
-        SettingsActivity.applyMaterial3(preferenceScreen)
         setRepoData(RepoManager.MAGISK_ALT_REPO)
         setRepoData(RepoManager.ANDROIDACY_MAGISK_REPO_ENDPOINT)
         updateCustomRepoList(true)

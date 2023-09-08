@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
 
     <PreferenceCategory app:title="@string/pref_category_privacy">
         <!-- Crash reporting -->
         <SwitchPreferenceCompat
+            android:widgetLayout="@layout/preference_material_switch"
             app:defaultValue="true"
             app:icon="@drawable/ic_baseline_bug_report_24"
             app:key="pref_crash_reporting"
@@ -13,6 +15,7 @@
             app:title="@string/crash_reporting" />
         <!-- allow pii in crash reports -->
         <SwitchPreferenceCompat
+            android:widgetLayout="@layout/preference_material_switch"
             app:defaultValue="false"
             app:dependency="pref_crash_reporting"
             app:icon="@drawable/ic_baseline_bug_report_24"
@@ -22,6 +25,7 @@
             app:title="@string/crash_reporting_pii" />
         <!-- analytics enabled -->
         <SwitchPreferenceCompat
+            android:widgetLayout="@layout/preference_material_switch"
             app:defaultValue="false"
             app:icon="@drawable/ic_baseline_info_24"
             app:key="pref_analytics_enabled"

@@ -50,7 +50,6 @@ class PrivacyFragment : PreferenceFragmentCompat() {
             throw RuntimeException(getString(R.string.error_encrypted_shared_preferences))
         }
         setPreferencesFromResource(R.xml.privacy_preferences, rootKey)
-        SettingsActivity.applyMaterial3(preferenceScreen)
         // Crash reporting
         val crashReportingPreference =
             findPreference<TwoStatePreference>("pref_crash_reporting")

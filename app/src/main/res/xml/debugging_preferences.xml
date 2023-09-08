@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
     <PreferenceCategory app:title="@string/debug_cat">
 
         <SwitchPreferenceCompat
+            android:widgetLayout="@layout/preference_material_switch"
             app:defaultValue="false"
             app:icon="@drawable/ic_baseline_hide_source_24"
             app:key="pref_show_incompatible"
@@ -12,6 +14,7 @@
             app:title="@string/show_incompatible_pref" />
 
         <SwitchPreferenceCompat
+            android:widgetLayout="@layout/preference_material_switch"
             app:defaultValue="false"
             app:icon="@drawable/ic_baseline_warning_24"
             app:key="pref_disable_low_quality_module_filter"
@@ -20,6 +23,7 @@
             app:title="@string/disable_low_quality_module_filter_pref" />
 
         <SwitchPreferenceCompat
+            android:widgetLayout="@layout/preference_material_switch"
             app:defaultValue="false"
             app:icon="@drawable/ic_baseline_numbers_24"
             app:key="pref_use_magisk_install_command"

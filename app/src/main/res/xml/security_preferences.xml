@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
 
     <PreferenceCategory app:title="@string/pref_category_security">
         <SwitchPreferenceCompat
+            android:widgetLayout="@layout/preference_material_switch"
             app:defaultValue="true"
             app:icon="@drawable/ic_baseline_security_24"
             app:key="pref_dns_over_https"
@@ -14,6 +16,7 @@
         <!-- TO DO: figure out why the f*** we need a showcase mode -->
         <!-- like seriously, why? -->
         <SwitchPreferenceCompat
+            android:widgetLayout="@layout/preference_material_switch"
             app:defaultValue="false"
             app:icon="@drawable/ic_baseline_lock_24"
             app:key="pref_showcase_mode"
@@ -22,6 +25,7 @@
             app:title="@string/showcase_mode_pref" />
 
         <SwitchPreferenceCompat
+            android:widgetLayout="@layout/preference_material_switch"
             app:defaultValue="true"
             app:icon="@drawable/ic_reboot_24"
             app:key="pref_prevent_reboot"
@@ -31,6 +35,7 @@
 
         <!-- require safe modules -->
         <SwitchPreferenceCompat
+            android:widgetLayout="@layout/preference_material_switch"
             app:defaultValue="false"
             app:icon="@drawable/ic_baseline_warning_24"
             app:key="pref_require_security"

@@ -54,7 +54,6 @@ class AppearanceFragment : PreferenceFragmentCompat() {
             throw RuntimeException(getString(R.string.error_encrypted_shared_preferences))
         }
         setPreferencesFromResource(R.xml.theme_preferences, rootKey)
-        SettingsActivity.applyMaterial3(preferenceScreen)
         val themePreference = findPreference<ListPreference>("pref_theme")
         // If transparent theme(s) are set, disable monet
         if (themePreference!!.value == "transparent_light") {

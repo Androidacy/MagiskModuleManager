@@ -17,8 +17,6 @@ import android.widget.Toast
 import androidx.fragment.app.FragmentTransaction
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
-import androidx.preference.PreferenceGroup
-import androidx.preference.SwitchPreferenceCompat
 import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKey
 import com.fox2code.foxcompat.app.FoxActivity
@@ -165,7 +163,6 @@ class SettingsActivity : FoxActivity(), LanguageActivity,
                 throw RuntimeException(getString(R.string.error_encrypted_shared_preferences))
             }
             setPreferencesFromResource(R.xml.root_preferences, rootKey)
-            applyMaterial3(preferenceScreen)
             // track all non empty values
             dataStore.sharedPreferences
             // disabled until EncryptedSharedPreferences fixes getAll()
@@ -282,16 +279,6 @@ class SettingsActivity : FoxActivity(), LanguageActivity,
                 }
             }
 
-
-        fun applyMaterial3(p: Preference) {
-            if (p is PreferenceGroup) {
-                for (i in 0 until p.preferenceCount) {
-                    applyMaterial3(p.getPreference(i))
-                }
-            }
-            (p as? SwitchPreferenceCompat)?.widgetLayoutResource =
-                R.layout.preference_material_switch
-        }
     }
 
     override fun onPreferenceStartFragment(
