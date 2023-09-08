@@ -1,189 +1,83 @@
 # Androidacy Module Manager
 
-### Developed by Androidacy. Find us on the web [here](https://www.androidacy.com/?utm_source=fox-readme&utm_medium=web&utm_campaign=github).
+## Introduction
 
-<sub>We'd like to thank Fox2Code for his initial work on the app. This app was previously known as Fox's Magisk Module Manager (FoxMMM) and may still be referred to as that. Androidacy thanks Fox2Code for their initial work on this app, and wishes him the best in his future endeavours.</sub>
+### Developed by Androidacy
 
-[![GitHub release (latest by date)](https://img.shields.io/github/v/release/Androidacy/AndroidacyModuleManager?color=neon&label=Latest%20release&style=for-the-badge)](https://www.androidacy.com/downloads/?view=FoxMMM)
+Explore our diverse range of offerings on our [official website](https://www.androidacy.com/?utm_source=fox-readme&utm_medium=web&utm_campaign=github-readme).
 
-## About
+<sub>Originally known as Fox's Magisk Module Manager (FoxMMM), we thank Fox2Code for the foundational work.</sub>
 
-The official Magisk Manager app has dropped it's support for downloading online modules, leaving users without a way to easily search for and download them. This app was created to help users download and install modules, and manage their own modules. We pride ourselves on our code quality, ease of use, and our commitment to the community.
+[![Latest Release](https://img.shields.io/github/v/release/Androidacy/AndroidacyModuleManager?color=neon&label=Latest%20release&style=for-the-badge)](https://www.androidacy.com/downloads/?view=FoxMMM&utm_source=fox-readme&utm_medium=web&utm_campaign=github-readme)
 
-**This app is not officially supported by Magisk, KernelSU, Google, or in any way affiliated with the above**
+## Overview and Purpose
 
-**The modules shown in this app are not affiliated with this app or Magisk**.
+The Androidacy Module Manager serves as a robust alternative to the official Magisk Manager app, which has discontinued support for online module downloads.
 
-## Features
-- Download and install modules
-- Manage your own modules
-- Search for and download modules
-- Supports custom repos
-- Separate lists of local and remote modules
-- Check for module updates automatically
-- Monet theming
-- Fully MD3 themed
-- Easy to use
-- (Androidacy Repo only) Automatic VirusTotal scans
-- (Androidacy Repo only) Module reviews
-- (Androidacy Repo only) Revenue sharing program
-- (Coming soon) Repo creation wizard
-- (Coming soon) Module creator
+**Disclaimer:** This application is not officially endorsed by Magisk, KernelSU, Google, or any other affiliated entities.
 
-## Community
+## Comprehensive Feature Set
 
-[![Telegram Group](https://img.shields.io/endpoint?color=neon&style=for-the-badge&url=https%3A%2F%2Ftg.sumanjay.workers.dev%2Fandroidacy_discussions)](https://telegram.dog/androidacy_discussions)
+- **Module Management:** Download, install, and manage your modules.
+- **Search Functionality:** Find new modules.
+- **Custom Repository Support:** Add your own repositories.
+- **Automatic Updates:** Keeps your system up-to-date.
+- **Theming:** Monet theming.
+- **User Interface:** Material Design 3 (MD3) compliant.
 
-<a href="http://translate.nift4.org/engage/foxmmm/">
-<img src="http://translate.nift4.org/widgets/foxmmm/-/287x66-white.png" alt="Translation status" />
-</a>
+### Exclusive to Androidacy Repository
 
-## Screenshots
+- **Security:** Automatic VirusTotal scans.
+- **Community Engagement:** Module reviews.
+- **Revenue Sharing:** Financially rewards module developers.
+- **Ad-Supported:** Ads allow us to keep this app and our repository free, but can be removed with a subscription. [Subscribe Now](https://www.androidacy.com/membership-join/?utm_source=fox-readme&utm_medium=web&utm_campaign=github-readme)
 
-Main activity:
+### Future Updates
 
-|                                  Dark theme                                   |                                   Light theme                                   |
-|:-----------------------------------------------------------------------------:|:-------------------------------------------------------------------------------:|
-| [<img src="docs/screenshot-dark.jpg" width="250"/>](docs/screenshot-dark.jpg) | [<img src="docs/screenshot-light.jpg" width="250"/>](docs/screenshot-light.jpg) |
+- Repository Creation Wizard
+- Module Creation Tool
 
-## Requirements
+### Default Repositories
 
-### Minimum / Recommended:
+- [Androidacy](https://www.androidacy.com/magisk-modules-repository/?utm_source=fox-readme&utm_medium=web&utm_campaign=github-readme): Fast, optimized, and secure. The official Androidacy repository. May display non-intrusive ads.
+- [Magisk Alt Repo](https://github.com/Magisk-Modules-Alt-Repo/): A community-driven repository for Magisk modules. Not affiliated with Magisk or Topjohnwu, and may contain low-quality or malicious modules.
 
-- Android: 8.0+ / Android 9.0+
-- Magisk: 21.0+ / Magisk 24.0+
-- KernelSU **(experimental)**: 0.5.0+ / latest
-- An internet connection / A stable wifi connection
+## Community Engagement and Support
 
-Note: This app may require the use of a VPN in countries with a state wide firewall.
+Join our [Telegram Group](https://telegram.dog/androidacy_discussions?utm_source=fox-readme&utm_medium=web&utm_campaign=github-readme).
 
-## Installation
+## System Requirements
 
-To install the app go to [our website](https://www.androidacy.com/downloads/?view=FoxMMM),
-and download and install the latest `.apk` for your architecture on your device.
+### Minimum and Recommended Specifications
 
-## Repositories Available
+- **Android OS:** 8.0 / 9.0+
+- **Magisk:** 21.0 / 24.0+
+- **KernelSU (Experimental Support):** 0.5.0+ / Latest
+- **Internet Connectivity:** Required / Stable Wi-Fi Recommended
 
-#### Please note that we reserve the right to add, remove, and change default repos at any time, and the inclusion of any repo does not equate endorsement or any agreement with or of said repo.
+> **Note:** A VPN may be required in certain regions.
 
-The app currently use the below repos as module sources, each with their own benefits and
-drawbacks. Note that the app developers do not actively monitor any repos, and downloading or
-installing from them is at the user's own risk. Default repos can be enabled or disabled in-app.
+## Installation Guidelines
 
-#### [Androidacy](https://www.androidacy.com/magisk-modules-repository/?utm_source=fox-readme&utm_medium=web&utm_campagin=github)
+Visit [our website](https://www.androidacy.com/downloads/?view=FoxMMM&utm_source=fox-readme&utm_medium=web&utm_campaign=github-readme) to download the latest `.apk`.
 
-- Accepting new
-  modules [here](https://www.androidacy.com/module-repository-applications/?utm_source=fox-readme&utm_medium=web&utm_campagin=github)
-- Modules downloadable easily outside the app
-- Rigorously reviewed and tested modules
-- Officially supported by AMM
-- May show ads to help cover infrastructure costs. Can be removed with subscription.
-    - [Read more](https://www.androidacycom/doing-it-alone-the-what-the-how-and-the-why/?utm_source=fox-readme&utm_medium=web&utm_campagin=github)
-      | [Privacy policy](https://www.androidacy.com/privacy/?utm_source=fox-readme&utm_medium=web&utm_campagin=github)
-- Added features like module reviews, automatic VirusTotal scans, and more.
-    - Pays module developers for their work as part of the Revenue Sharing Program 
+## Developer Guidelines
 
-**Support:**
+Consult our [Developer Documentation](docs/DEVELOPERS.md?utm_source=fox-readme&utm_medium=web&utm_campaign=github-readme).
 
-&emsp; [![Telegram Group](https://img.shields.io/endpoint?color=neon&style=for-the-badge&url=https%3A%2F%2Ftg.sumanjay.workers.dev%2Fandroidacy_discussions)](https://telegram.dog/androidacy_discussions)
+## Translation Contributions
 
-#### [Magisk Alt Repo](https://github.com/Magisk-Modules-Alt-Repo)
+Visit our [Weblate page](https://translate.nift4.org/engage/foxmmm/?utm_source=fox-readme&utm_medium=web&utm_campaign=github-readme). Advanced users may also send us a pull request on GitHub.
 
-- Accepting new modules [here](https://github.com/Magisk-Modules-Alt-Repo/submission)
-- Less restrictive than the original repo
-    - May have lower quality, untested, or otherwise broken modules due to their policies or lack
-      thereof.
-- Officially supported by AMM
-- Disabled by default and no longer recommended. Kept as an alternative for those who want it
+## Legal and Compliance
 
-**Support:**
 
-&emsp; [![GitHub issues](https://img.shields.io/github/issues/Magisk-Modules-Alt-Repo/submission?style=for-the-badge&color=neon)](https://github.com/Magisk-Modules-Alt-Repo/submission/issues)
+By using this application, you agree to abide by our [Terms of Service](https://www.androidacy.com/terms/?utm_source=fox-readme&utm_medium=web&utm_campaign=github-readme), our [LICENSE](LICENCE?utm_source=fox-readme&utm_medium=web&utm_campaign=github-readme) and the  [EULA](https://www.androidacy.com/foxmmm-eula/?utm_source=fox-readme&utm_medium=web&utm_campaign=github-readme). **If you do not agree to any of those terms, you are to discontinue usage of the app immediately.**
 
-**Please do not use GitHub issues for help or questions. GitHub issues are specifically for bug
-reporting and general app feedback.**
+## Disclaimer
 
-If a module is in multiple repos, the manager will just pick the most up to date version of the
-module, if a module is in multiple repos it will just use first registered repo.
 
-## For developers
+THIS SOFTWARE IS PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESSED OR IMPLIED, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE ENTIRE RISK AS TO THE QUALITY AND PERFORMANCE OF THE SOFTWARE IS WITH YOU.
 
-The manager can read a few new meta keys to allow modules to customize their own entry
 
-It also use `minApi`, `maxApi` and `minMagisk` in the `module.prop` to detect compatibility  
-And support the `support` and `donate` properties to allow them to add their own support links  
-And if you want to be event fancier you can setup `config` to your own config app.  
-(Note: the manager use fallback values for some modules, see developer documentation for more info)
-
-It also add new ways to control the installer ui via a new `#!` command system  
-It allows module developers to craft a more customizable install experience.
-
-If you created and uploaded a module and it doesn't appear in your module list you can disable
-the low quality filter in the app settings after enabling developer mode. **Ideally, we recommend you to fix your module metadata rather than disabling that filter.**
-
-For more information please check the [developer documentation](docs/DEVELOPERS.md)
-
-## Help us make our app more accessible!
-
-**We need your help!** The app has started lagging behind in translations, and we need your help to
-catch up! As a reminder, translations are required to be at 60% or more to be included in the app.
-
-### Weblate (recommended)
-
-We use Weblate for
-translations: [https://translate.nift4.org/engage/foxmmm/](https://translate.nift4.org/engage/foxmmm/)
-
-- You can create an account and start translating
-- You may need to check your spam folder for the confirmation email
-
-### GitHub method (advanced users)
-
-See [`app/src/main/res/values/strings.xml`](https://github.com/Androidacy/MagiskModuleManager/blob/master/app/src/main/res/values/strings.xml)
-
-If your language is right to left don't forget to set `lang_support_rtl` to `true`.
-
-Translators do not need to have any previous coding experience.
-
-## Add your own repos
-
-See [the documentation](docs/add-repo.md).
-
-## Issues with a repo
-
-If you have a problem with a repo, please contact the repo owner **first**. If you are unable to
-reach them or they are not willing to help, you can contact us as a last resort.
-
-_The developers of this app are unable to help with any issues arising from use or installation of
-modules, and may be of limited help with issues arising from a specific repo._
-
-Default repo owners:
-
-- Androidacy: [Telegram](https://telegram.dog/androidacy_discussions)
-- Magisk-Modules-Alt-Repo: [GitHub](https://github.com/Magisk-Modules-Alt-Repo/submission/issues)
-
-Custom repos may have their own support channels, and we are unable to provide any support
-whatsoever for them, outside of direct implementation bugs.
-
-## License
-
-Androidacy Module Manager, the icon, and names are copyright
-2021-present [Fox2Code](https://github.com/Fox2Code). The Androidacy name(s), logo, integration, and
-later portions of the code are copyright
-2022-present [Androidacy](https://www.androidacy.com/?utm_source=fox-repo&utm_medium=web). See
-[LICENSE](LICENCE) for details. Library licenses can be found in the licenses section of the app.
-
-Modules and their files, names, and other assets are not covered by this license or other
-agreements, and are not warranted, checked, or otherwise guaranteed by the authors of this app, and may have their own licenses, agreements, and terms, of which the author(s) of this app do not check or have any responsibility for.
-
-Some third party backend services may have additional terms, please check their
-terms of service before
-using them.
-
-## EULA
-
-The EULA can be found [here](https://www.androidacy.com/foxmmm-eula/). By downloading, installing,
-or using this app you agree to the supplemental terms of the EULA.
-
-**IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR AN CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
-CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.**
+> **Copyright © 2023 Androidacy. All rights reserved.**

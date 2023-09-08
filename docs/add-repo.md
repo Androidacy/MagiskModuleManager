@@ -1,47 +1,63 @@
-## Adding custom repositories
+# How to Add Custom Repositories to Androidacy Module Manager
 
-You have two options:
+## Table of Contents
 
-### Option 1: Add your repo to the app for yourself:
+- [Introduction](#introduction)
+- [Adding a Repo for Personal Use](#adding-a-repo-for-personal-use)
+- [Adding a Repo for Public Use](#adding-a-repo-for-public-use)
+- [How to Apply for Inclusion](#how-to-apply)
 
-1. You need the modules.json link of your repo, if you don't have one please contact the repo owner.
-2. Open the app and go to the settings.
-3. Go to repos at the top.
-4. Scroll to the bottom and click on the "Add repo" button.
-5. Paste the modules.json link and click on the "Add" button.
-6. You can now download modules from your repo.
+## Introduction
 
-### Option 2: Add your repo to the app for everyone:
+This guide shows you how to add custom repositories to the Androidacy Module Manager (AMM). There are two ways to do this:
 
-To add you own repo to AMM it need to follow theses conditions:
+1. **Adding a Repo for Personal Use**: This is for individual users who want to add a specific repo just for themselves.
+2. **Adding a Repo for Public Use**: This is for repo owners who want their repo to be available to all AMM users.
 
-- The module repo or at least one of it's owners must be known.
-- Modules in the repo must be monitored, and malicious modules must be removed.
-- Module repo must have a valid, working, automatically or frequently updated `modules.json`
-  ([Example](https://github.com/Magisk-Modules-Alt-Repo/json/blob/main/modules.json))
+## Adding a Repo for Personal Use
 
-These guidelines are not mandatory, but not following them may result in your repo being removed or
-not being added in the first place.
+### Steps
+
+1. **Get the URL**: You need the `modules.json` link of the repo you want to add. If you don't have it, ask the repo owner.
+2. **Open the App**: Go to the settings in the AMM app.
+3. **Find Repos**: Click on the 'Repos' option at the top of the settings.
+4. **Add New Repo**: Scroll down and click the 'Add repo' button.
+5. **Enter the URL**: Paste the `modules.json` link and click 'Add'.
+
+> **Note**: Some features might not work fully with custom repos.
+
+## Adding a Repo for Public Use
+
+### Requirements
+
+**In short:**
+
+- **Known Owner**: The repo or one of its owners should be well-known.
+- **Safe Modules**: The repo should actively remove any harmful modules.
+- **Updated Data**: The repo must have an up-to-date `modules.json` file.
+
+**In detail:**
 <details>
-<summary>Click to see the guidelines</summary>
+<summary>Click to expand full guidelines</summary>
 
-- Repos must process and take-down off their repo module where it's removal was provably
-  requested by
-  their
-  original author
-- Repos may not collect and/or distribute any personally identifiable data (including IP
-  addresses) without
-  informing
-  users
-  that they do so and offering a way to opt out
-- Modules owners must be aware that their modules are being hosted on the repository and/or have a
-  way to remove their modules from the repository
-- Modules owners must be aware of any change made of the distributed version of their modules.
-- Repos should make an effort to keep users safe, via a review process, or by using a
-  whitelist/blacklist
+- **Author Approval**: Repos should only host modules if the original author agrees or the license permits. If repository uses automated tools to add modules, they should have an opt out process or a way to request removal.
+- **Privacy**: Don't collect personal data without telling users. Data used for advertising and analytics should be anonymized where possible, or otherwise declared in accordance with applicable laws.
+- **Transparency**: Let module owners know if their module is on your repo and if you make any changes to it. This can be done by including a searchable list of modules on your website.
+- **Safety**: Try to keep users safe by reviewing modules or using a whitelist/blacklist. Reasonable measures should be taken to prevent malware and other harmful modules from being hosted, and to protect other's intellectual property.
 
 </details>
 
-In all scenarios, insofar that their policies are not in conflict with the above, the repo owner's
-poloicies take precedence over the above guidelines. We encourage users to check the guidelines of
-the repo they are using.
+_**Note**: Repo owners can have their own rules, but they should not conflict with these guidelines. Always check the repo's own guidelines. In addition, these are just guidelines, and Androidacy reserves the right to remove any repo or refuse to add any repo for any reason whatsoever._
+
+### How to Apply
+
+If your repo meets these requirements, open an issue with:
+
+- **Repo Name**: The name of your repo.
+- **Website**: The official website of the repo.
+- **Contact**: A way to contact you, like email or Telegram.
+- **How to Add**: Steps or documentation on how to add the repo to AMM.
+
+**Note**: Each repo will be reviewed on a case-by-case basis. Meeting these guidelines does not guarantee inclusion in AMM.
+
+> Copyright © 2023 Androidacy. All Rights Reserved.

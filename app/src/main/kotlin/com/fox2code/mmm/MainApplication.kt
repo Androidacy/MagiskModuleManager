@@ -43,6 +43,8 @@ import io.noties.markwon.Markwon
 import io.noties.markwon.html.HtmlPlugin
 import io.noties.markwon.image.ImagesPlugin
 import io.noties.markwon.image.network.OkHttpNetworkSchemeHandler
+import io.sentry.Sentry
+import io.sentry.SentryLevel
 import org.matomo.sdk.Matomo
 import org.matomo.sdk.Tracker
 import org.matomo.sdk.TrackerBuilder
@@ -57,6 +59,8 @@ import kotlin.math.abs
 
 @Suppress("unused", "MemberVisibilityCanBePrivate")
 class MainApplication : FoxApplication(), Configuration.Provider {
+
+    var isTainted = false
 
     @JvmField
     var modulesHaveUpdates = false
@@ -318,6 +322,10 @@ class MainApplication : FoxApplication(), Configuration.Provider {
         // Force initialize language early.
         LanguageSwitcher(this)
         updateTheme()
+        if (!BuildConfig.DEBUG && isDeveloper) {
+            Timber.e("Developer mode is enabled! Support will not be provided if you are not a developer!")
+            isTainted = true
+        }
         // Update emoji config
         val fontRequestEmojiCompatConfig = DefaultEmojiCompatConfig.create(this)
         if (fontRequestEmojiCompatConfig != null) {
@@ -450,12 +458,22 @@ class MainApplication : FoxApplication(), Configuration.Provider {
     class ReleaseTree : Timber.Tree() {
         override fun log(priority: Int, tag: String?, message: String, t: Throwable?) {
             // basically silently drop all logs below error, and write the rest to logcat
-            if (priority >= Log.ERROR) {
+            @Suppress("NAME_SHADOWING") var message = message
+            if (INSTANCE!!.isTainted) {
+                // prepend [TAINTED] to the message
+                message = "[TAINTED] $message"
+            }
+            if (priority >= Log.WARN) {
                 if (t != null) {
                     Log.println(priority, tag, message)
                     t.printStackTrace()
+                    Sentry.captureException(t)
                 } else {
                     Log.println(priority, tag, message)
+                    when (priority) {
+                        Log.ERROR -> Sentry.captureMessage(message, SentryLevel.ERROR)
+                        Log.WARN -> Sentry.captureMessage(message, SentryLevel.WARNING)
+                    }
                 }
             }
         }
