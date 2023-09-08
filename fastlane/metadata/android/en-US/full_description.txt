@@ -1,4 +1,3 @@
-This app is not officially supported by Magisk or its developers.
+Androidacy Module Manager allows you to manage modules for Magisk and KernelSU. Browse, search, and download modules from the Androidacy Module Repository, or install modules from any other source, including compatible online sources. You can also manage your installed modules, including enabling, disabling, and uninstalling them.
 
-The modules shown in this app are not affiliated with this app. Please contact
-repo owners instead.
+Note that this app has no affiliation with Magisk, Google, or any of their developers. Repositories are independently managed and we cannot provide support for them.
