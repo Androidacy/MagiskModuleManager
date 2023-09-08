@@ -75,6 +75,10 @@ Consult our [Developer Documentation](docs/DEVELOPERS.md?utm_source=fox-readme&u
 
 Visit our [Weblate page](https://translate.nift4.org/engage/foxmmm/?utm_source=fox-readme&utm_medium=web&utm_campaign=github-readme). Advanced users may also send us a pull request on GitHub.
 
+<a href="http://translate.nift4.org/engage/foxmmm/">
+<img src="http://translate.nift4.org/widgets/foxmmm/-/287x66-grey.png" alt="Translation status" />
+</a>
+
 ## Legal and Compliance
 
 
