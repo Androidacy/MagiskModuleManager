@@ -1,8 +1,7 @@
-<?xml version="1.0" encoding="utf-8"?><!--
+<?xml version="1.0" encoding="utf-8"?>
+<!--
   ~ Copyright (c) 2023 to present Androidacy and contributors. Names, logos, icons, and the Androidacy name are all trademarks of Androidacy and may not be used without license. See LICENSE for more information.
-  -->
-
-<resources>
+  --><resources>
     <string name="app_name">Fox\'s Magisk Module Manager</string>
     <string name="fail_root_magisk">Não foi possível obter acesso root e/ou ao Magisk</string>
     <string name="loading">Carregando…</string>
@@ -330,7 +329,7 @@
     <string name="donate_androidacy_sum">Comprar uma assinatura premium do Androidacy para dar suporte ao aplicativo e ao repositório.</string>
     <string name="promo_code_copied">Utilize o código copiado para obter um desconto de 50% no seu primeiro mês!</string>
     <string name="warning_pls_restart">Por favor, lembre-se que algumas configurações não terão efeito até que reinicie o aplicativo.</string>
-    <string name="reinstall_warning">A maioria dos módulos deve ser desinstalado, e então, reinstalado corretamente. Por este motivo, FoxMMM não oferece suporte á reinstalação dos módulos enquanto estiverem instalados no dispositivo.</string>
+    <string name="reinstall_warning">A maioria dos módulos deve ser desinstalado, e então, reinstalado corretamente. Por este motivo, o gerenciador de módulos Androidacy não oferece suporte á reinstalação dos módulos enquanto estiverem instalados no dispositivo.</string>
     <string name="eula_agree_v2">Você concorda em estar vinculado à licença LGPL-3.0 (https://www.gnu.org/licenses/lgpl-3.0.en.html) e ao EULA (https://www.androidacy.com/foxmmm-eula/ ), além de quaisquer termos de terceiros, e que os autores deste aplicativo não assumem nenhuma responsabilidade pelo seu uso, e que nem tampouco oferecemos quaisquer garantias expressas ou implícitas.</string>
     <string name="background_update_check_excludes_version_summary">Especifique uma versão de atualização de módulo que você deseja ignorar. Por favor, utilize apenas o código da versão. Você pode encontrá-lo ao pressionar e segurar o número da versão na lista de módulos. Utilize ^ no início para corresponder á essa versão e posteriores. Utilize $ no final para corresponder até essa versão.</string>
     <string name="androidacy_thanks_up">Obrigado por atualizar! Downloads de módulos e READMEs não irão conter anúncios, e downloads não serão limitados futuramente. você poderá baixar módulos com apenas um clique.</string>
@@ -346,4 +345,47 @@
     <string name="upgrade_snackbar">Androidacy Premium oferece downloads mais rápidos, uma experiência sem anúncios e muito mais!</string>
     <string name="upgrade_now">Atualizar</string>
     <string name="crash_details_suggestion">O registro de falhas pode ser encontrado abaixo. No entanto, nós recomendados <b>fortemente</b> que utilize o formulário de feedback abaixo ao invés disso. Desta forma, ao invesde manualmente copiar o registro de falhas, nos enviará automaticamente. Desta forma também, tudo estará desofuscado e detalhes adicionais serão relatados automaticamente.</string>
+    <string name="title_activity_expired">Atividade Expirada</string>
+    <string name="title_home">Tela Inicial</string>
+    <string name="title_dashboard">Painel</string>
+    <string name="title_notifications">Notificações</string>
+    <string name="expired">Essa versão expirou!</string>
+    <string name="expired_message">A versão que você está usando expirou e não pode mais ser usada. Por favor atualize para a última versão estável.</string>
+    <string name="download_latest">Baixar a última versão</string>
+    <string name="logs_saved">Registros salvos com sucesso</string>
+    <string name="error_opening_notes">Erro ao abrir as notas do module. A causa pode estar nos registros.</string>
+    <string name="submit_feedback">Enviar opinião</string>
+    <string name="ssl_error">Possível interceptação de SSL detectada.</string>
+    <string name="debug_build_toast">Versão de teste do GMA %1$s montado em %2$s com %3$d dias restando</string>
+    <string name="remote_message_no_update">%s está disponível em um repositório online. Favor remove-lo para o ver na aba online.</string>
+    <string name="remote_module">Disponível em um repositório online</string>
+    <string name="error_creating_modulelistcache_database">Falha ao criar o banco de dados do cachê de módulos</string>
+    <string name="blur_performance_warning_summary">Dispositivo não é compatível com desfoque</string>
+    <string name="credits">Créditos</string>
+    <string name="notification_update_frequency_pref">Frequência de verificações em segundo plano</string>
+    <string name="update_frequency_15">15 minutos</string>
+    <string name="update_frequency_30">30 minutos</string>
+    <string name="update_frequency_60">Por hora</string>
+    <string name="update_frequency_360">6 horas</string>
+    <string name="update_frequency_1440">Diariamente</string>
+    <string name="build_expired">Essa versão expirou. Por favor atualize para a última versão.</string>
+    <string name="eula_agree_v2_headline">EULA e termos</string>
+    <string name="reboot">Reiniciar</string>
+    <string name="reboot_system">Reiniciar normalmente</string>
+    <string name="reboot_recovery">Reiniciar ao recovery</string>
+    <string name="reboot_bootloader">Reiniciar ao bootloader</string>
+    <string name="reboot_edl">Reiniciar ao modo EDL</string>
+    <string name="install_terminal_reboot_prevented">Reiniciar está desativado nas configurações</string>
+    <string name="androidacy_api_error">Erro ao se comunicar com a API: %d</string>
+    <string name="error_creating_repos_database">Incapaz de criar banco de dados dos repositórios</string>
+    <string name="search">Buscar</string>
+    <string name="reboot_extra_warning">Você está preste a reiniciar ao modo EDL, um modo especial feito pra fabricantes instalar software e concertar problemas.
+\nA menos que você tenha certeza que quer fazer isso e possui as ferramentas para sair desse modo ou usá-lo, nós fortemente encorajamos você a usar as outras opções de reinicialização.</string>
+    <string name="no_sentry_id">Erro ao enviar sua opinião - nenhum ID de eventos do Sentry. O último registro pode não ter sido enviado.</string>
+    <string name="remote_message">%s está disponível em um repositório online. <b>Fortemente recomendamos voce remove-lo e instala-lo novamente porque a maioria dos módulos não lidam bem se forem simplesmente reinstalados,</b> porém você pode simplesmente reinstalar eles por sua conta e risco.</string>
+    <string name="notification_update_frequency_desc">Quão frequentemente verificar por atualizações em segundo plano. Valores muito baixos podem ocasionar em uso excessivo de bateria.</string>
+    <string name="update_frequency_720">12 horas</string>
+    <string name="ksu_experimental">Suporte ao KernelSU é <b>experimental</b> no momento e pode haver problemas. Compatibilidade com módulos não é garantida.</string>
+    <string name="app_name_v2">Gerenciador de módulos Androidacy</string>
+    <string name="app_name_short_v2">GMA</string>
 </resources>
