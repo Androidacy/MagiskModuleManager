@@ -8,9 +8,9 @@
 
 ## About
 
-The official Magisk Manager app has dropped it's support for downloading online modules, leaving users without a way to easily search for and download them. This app was created to help users download and install modules, and manage their own modules.
+The official Magisk Manager app has dropped it's support for downloading online modules, leaving users without a way to easily search for and download them. This app was created to help users download and install modules, and manage their own modules. We pride ourselves on our code quality, ease of use, and our commitment to the community.
 
-**This app is not officially supported by Magisk or its developers, nor by Google**
+**This app is not officially supported by Magisk, KernelSU, Google, or in any way affiliated with the above**
 
 **The modules shown in this app are not affiliated with this app or Magisk**.
 
@@ -22,15 +22,20 @@ The official Magisk Manager app has dropped it's support for downloading online 
 - Separate lists of local and remote modules
 - Check for module updates automatically
 - Monet theming
-- Fully MD3 themed 
+- Fully MD3 themed
+- Easy to use
+- (Androidacy Repo only) Automatic VirusTotal scans
+- (Androidacy Repo only) Module reviews
+- (Androidacy Repo only) Revenue sharing program
 - (Coming soon) Repo creation wizard
 - (Coming soon) Module creator
 
 ## Community
 
 [![Telegram Group](https://img.shields.io/endpoint?color=neon&style=for-the-badge&url=https%3A%2F%2Ftg.sumanjay.workers.dev%2Fandroidacy_discussions)](https://telegram.dog/androidacy_discussions)
-<a href="https://translate.nift4.org/engage/foxmmm/">
-<img src="https://translate.nift4.org/widgets/foxmmm/-/foxmmm/svg-badge.svg?style=for-the-badge&color=neon" alt="Translation status" />
+
+<a href="http://translate.nift4.org/engage/foxmmm/">
+<img src="http://translate.nift4.org/widgets/foxmmm/-/287x66-white.png" alt="Translation status" />
 </a>
 
 ## Screenshots
@@ -45,8 +50,9 @@ Main activity:
 
 ### Minimum / Recommended:
 
-- Android 7.0+ / Android 8.0+
-- Magisk 19.0+ / Magisk 21.2+
+- Android: 8.0+ / Android 9.0+
+- Magisk: 21.0+ / Magisk 24.0+
+- KernelSU **(experimental)**: 0.5.0+ / latest
 - An internet connection / A stable wifi connection
 
 Note: This app may require the use of a VPN in countries with a state wide firewall.
@@ -71,7 +77,7 @@ installing from them is at the user's own risk. Default repos can be enabled or 
 - Modules downloadable easily outside the app
 - Rigorously reviewed and tested modules
 - Officially supported by AMM
-- May show ads to help cover infrastructure costs.
+- May show ads to help cover infrastructure costs. Can be removed with subscription.
     - [Read more](https://www.androidacycom/doing-it-alone-the-what-the-how-and-the-why/?utm_source=fox-readme&utm_medium=web&utm_campagin=github)
       | [Privacy policy](https://www.androidacy.com/privacy/?utm_source=fox-readme&utm_medium=web&utm_campagin=github)
 - Added features like module reviews, automatic VirusTotal scans, and more.
