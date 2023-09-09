@@ -6,8 +6,6 @@
 
 Explore our diverse range of offerings on our [official website](https://www.androidacy.com/?utm_source=fox-readme&utm_medium=web&utm_campaign=github-readme).
 
-<sub>Originally known as Fox's Magisk Module Manager (FoxMMM), we thank Fox2Code for the foundational work.</sub>
-
 [![Latest Release](https://img.shields.io/github/v/release/Androidacy/AndroidacyModuleManager?color=neon&label=Latest%20release&style=for-the-badge)](https://www.androidacy.com/downloads/?view=FoxMMM&utm_source=fox-readme&utm_medium=web&utm_campaign=github-readme)
 
 ## Overview and Purpose
@@ -87,7 +85,11 @@ By using this application, you agree to abide by our [Terms of Service](https://
 ## Disclaimer
 
 
-THIS SOFTWARE IS PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESSED OR IMPLIED, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE ENTIRE RISK AS TO THE QUALITY AND PERFORMANCE OF THE SOFTWARE IS WITH YOU.
+THIS SOFTWARE IS PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESSED OR IMPLIED, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. ANDROIDACY CANNOT BE HELD LIABLE FOR ANY DAMAGES ARISING OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 
-> **Copyright © 2023 Androidacy. All rights reserved.**
+> **Copyright © 2023 Androidacy. All rights reserved.** Logos, names, and brands are property of Androidacy or our affiliates unless otherwise stated and are protected under US copyright law. See LICENSE for information on source code licensing.
+
+
+
+<sup><sub>This app was originally known as Fox's Magisk Module Manager (FoxMMM). We thank Fox2Code for the foundational work on this app.</sub></sup>

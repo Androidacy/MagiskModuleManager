@@ -21,7 +21,7 @@ This document serves as a comprehensive guide for developers interested in integ
 
 ### MitM and Certificate Pinning
 
-Certificate pinning is supported only from Android 7.0 onwards. Issues related to MitM on unsupported Android versions will not be entertained.
+AMM enforces certificate pinning for certain origins and will not allow connections to be established if the certificate is not valid. This is done to prevent MitM attacks and ensure that the application is communicating with the intended server. This behavior cannot be disabled. 
 
 ### App Hiding
 
@@ -33,7 +33,7 @@ The low-quality module filter is implemented at `com.fox2code.mmm.utils.io.PropU
 
 ## Custom Repository Format
 
-This section outlines the JSON format for custom repositories. The feature is slated for release in version `0.6.0`.
+This section outlines the JSON format for custom repositories.
 
 ```json
 {

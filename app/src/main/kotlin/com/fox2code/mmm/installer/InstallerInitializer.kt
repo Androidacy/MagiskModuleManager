@@ -123,7 +123,13 @@ class InstallerInitializer {
             if (mgskPth != null && !forceCheck) return mgskPth
             val output = ArrayList<String>()
             if (Shell.isAppGrantedRoot() == null || !Shell.isAppGrantedRoot()!!) {
-                return null
+                // if Shell.isAppGrantedRoot() == null loop until it's not null
+                return if (Shell.isAppGrantedRoot() == null) {
+                    Thread.sleep(100)
+                    tryGetMagiskPath(forceCheck)
+                } else {
+                    null
+                }
             }
             try {
                 if (!Shell.cmd(
@@ -149,7 +155,9 @@ class InstallerInitializer {
                 // reset output
                 output.clear()
                 // try to use magisk --path. if that fails, check for /data/adb/ksu for kernelsu support
-                if (Shell.cmd("magisk --path", "su -V").to(output).exec().isSuccess) {
+                if (Shell.cmd("magisk --path", "su -V").to(output).exec().isSuccess && output[0].isNotEmpty() && !output[0].contains(
+                        "not found"
+                    )) {
                     mgskPth = output[0]
                     if (BuildConfig.DEBUG) {
                         Timber.i("Magisk path 1: %s", mgskPth)
@@ -180,7 +188,7 @@ class InstallerInitializer {
                         mgskPth = null
                     }
                 } else {
-                    Timber.e("Failed to get Magisk path (Got null)")
+                    Timber.e("Failed to get Magisk path (Got null or other)")
                 }
                 Companion.mgskVerCode = mgskVerCode
                 return mgskPth
