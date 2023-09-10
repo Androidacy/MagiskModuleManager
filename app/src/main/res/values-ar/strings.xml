@@ -373,4 +373,18 @@
     <string name="notification_update_frequency_desc">كم مرة للتحقق من وجود تحديثات في الخلفية. قد يؤدي تعيين قيمة منخفضة جدا إلى استنزاف البطارية.</string>
     <string name="update_frequency_360">6 ساعات‌</string>
     <string name="update_frequency_720">12 ساعة</string>
+    <string name="ksu_experimental">دعم KernelSU حالياً في <b>الوضع التجريبي</b> و قد يحتوي مشاكل. التوافق مع الإضافات غير مضمون.&gt;</string>
+    <string name="require_safe_modules_desc">تتطلب أن تكون الإضافات آمنة. تعتمد هذه الحالة على الريبو وستعطل التثبيت المحلي.</string>
+    <string name="require_safe_modules_pref">السماح فقط بالإضافات الآمنة</string>
+    <string name="install_blocked">التثبيت محظور</string>
+    <string name="install_blocked_message">لا يمكنك حاليا تثبيت هذه الإضافة لأن لديك أمن الإضافة مفعل في الإعدادات. يرجى تعطيله إذا كنت ترغب في المتابعة ، لكنك تقوم <b>بتعطيله على مسؤوليتك الخاصة</b>.</string>
+    <string name="setup_require_security">تتطلب أن تكون الإضافات آمنة</string>
+    <string name="setup_agree_eula_toast">يرجى الموافقة على الشروط أولاً</string>
+    <string name="setup_androidacy_repo_recommendation">نوصيك بتمكين الريبو Androidacy فقط. هذا يضمن حصولك على تجربة محسنة وأكثر أمانا.</string>
+    <string name="setup_uninstall_title">إلغاء تثبيت الإصدار الاخر؟</string>
+    <string name="setup_uninstall_message">هناك نسخة أخرى من هذا التطبيق موجودة على جهازك. نوصي بإزالته لمنع اية سلوكيات غير متوقعة.
+\n
+\nالتطبيق: %s</string>
+    <string name="install_from_storage_safe_modules">لأمانك ، يتم تعطيل تثبيت الإضافة المحلية بواسطة أمن الإضافة. يمكنك تبديل هذا في الإعدادات <b>على مسؤوليتك الخاصة</b>.</string>
+    <string name="setup_require_security_summary">يتطلب وضع علامة على الإضافات على أنها آمنة قبل التثبيت. سيؤدي هذا إلى تعطيل تثبيت الإضافة المحلية ويتم تحديد سلامة الإضافة بواسطة مالك الريبو.</string>
 </resources>
