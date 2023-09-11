@@ -162,7 +162,7 @@ class InstallerInitializer {
                     if (BuildConfig.DEBUG) {
                         Timber.i("Magisk path 1: %s", mgskPth)
                     }
-                } else if (Shell.cmd("if [ -f /data/adb/ksu ]; then echo true; else echo false; fi").to(
+                } else if (Shell.cmd("if [ -d /data/adb/ksu ] && [ -f /data/adb/ksud ]; then echo true; else echo false; fi", "su -V").to(
                         output
                     ).exec().isSuccess && "true" == output[0]
                 ) {

@@ -14,6 +14,7 @@ import com.fox2code.mmm.CrashHandler
 import com.fox2code.mmm.MainApplication
 import com.fox2code.mmm.androidacy.AndroidacyUtil.Companion.hideToken
 import com.fox2code.mmm.androidacy.AndroidacyUtil.Companion.isAndroidacyLink
+import com.fox2code.mmm.utils.io.net.HttpException
 import io.sentry.Breadcrumb
 import io.sentry.Hint
 import io.sentry.Sentry
@@ -129,16 +130,26 @@ object SentryMain {
                         return@BeforeSendCallback null
                     }
                     crashExceptionId = event?.eventId
-                    // if debug build, log everything, but for release only log warnings and errors
+                    // if debug build, log everything, but for release only log errors
                     if (!BuildConfig.DEBUG) {
-                        if (event?.level == SentryLevel.DEBUG || event?.level == SentryLevel.INFO) {
+                        if (event?.level == SentryLevel.DEBUG || event?.level == SentryLevel.INFO || event?.level == SentryLevel.WARNING) {
                             return@BeforeSendCallback null
                         }
                     }
                     // remove all failed to fetch data messages
-                    if (event?.message?.message?.contains("Failed to fetch") == true) {
+                    if (event?.message?.message?.contains("Failed to fetch") == true || event?.message?.message?.contains("Failed to load") == true) {
                         return@BeforeSendCallback null
                     }
+                    // for httpexception, do not send if error is 401, 403, 404, 429
+                    // get exception from event
+                    val exception = event?.throwable ?: return@BeforeSendCallback event
+                    // check status code
+                    if (exception is HttpException) {
+                        if (exception.errorCode in intArrayOf(401, 403, 404, 429)) {
+                            return@BeforeSendCallback null
+                        }
+                    }
+                    // if exception is null, return event
                     event
                 }
                 // Filter breadcrumb content from crash report.
