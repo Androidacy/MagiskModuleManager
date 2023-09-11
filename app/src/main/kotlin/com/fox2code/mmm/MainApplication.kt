@@ -21,6 +21,7 @@ import android.os.SystemClock
 import android.util.Log
 import androidx.annotation.StyleRes
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.view.ContextThemeWrapper
 import androidx.core.app.NotificationManagerCompat
 import androidx.emoji2.text.DefaultEmojiCompatConfig
 import androidx.emoji2.text.EmojiCompat
@@ -28,7 +29,6 @@ import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKey
 import androidx.work.Configuration
 import com.fox2code.foxcompat.app.internal.FoxProcessExt
-import com.fox2code.foxcompat.view.FoxThemeWrapper
 import com.fox2code.mmm.installer.InstallerInitializer
 import com.fox2code.mmm.installer.InstallerInitializer.Companion.peekMagiskVersion
 import com.fox2code.mmm.manager.LocalModuleInfo
@@ -75,9 +75,26 @@ class MainApplication : Application(), Configuration.Provider, ActivityLifecycle
 
     @StyleRes
     private var managerThemeResId = R.style.Theme_MagiskModuleManager
-    private var markwonThemeContext: FoxThemeWrapper? = null
+    private var markwonThemeContext: ContextThemeWrapper? = null
 
     var markwon: Markwon? = null
+        get() {
+            if (isCrashHandler) return null
+            if (field != null) return field
+            var contextThemeWrapper = markwonThemeContext
+            if (contextThemeWrapper == null) {
+                markwonThemeContext = ContextThemeWrapper(this, managerThemeResId)
+                contextThemeWrapper = markwonThemeContext
+            }
+            field = Markwon.builder(contextThemeWrapper!!).usePlugin(HtmlPlugin.create()).usePlugin(
+                ImagesPlugin.create().addSchemeHandler(
+                    OkHttpNetworkSchemeHandler.create(
+                        getHttpClientWithCache()!!
+                    )
+                )
+            ).build()
+            return field
+        }
     private var existingKey: CharArray? = null
 
     var tracker: Tracker? = null
@@ -134,25 +151,6 @@ class MainApplication : Application(), Configuration.Provider, ActivityLifecycle
         return existingKey!!
     }
 
-    fun reallyGetMarkwon(): Markwon? {
-        if (isCrashHandler) return null
-        if (markwon != null) return markwon
-        var contextThemeWrapper = markwonThemeContext
-        if (contextThemeWrapper == null) {
-            markwonThemeContext = FoxThemeWrapper(this, managerThemeResId)
-            contextThemeWrapper = markwonThemeContext
-        }
-        this.markwon =
-            Markwon.builder(contextThemeWrapper!!).usePlugin(HtmlPlugin.create()).usePlugin(
-                ImagesPlugin.create().addSchemeHandler(
-                    OkHttpNetworkSchemeHandler.create(
-                        getHttpClientWithCache()!!
-                    )
-                )
-            ).build()
-        return reallyGetMarkwon().also { this.markwon = it }
-    }
-
     override fun getWorkManagerConfiguration(): Configuration {
         return Configuration.Builder().build()
     }
@@ -206,12 +204,7 @@ class MainApplication : Application(), Configuration.Provider, ActivityLifecycle
 
     val isLightTheme: Boolean
         get() = when (managerThemeResId) {
-            R.style.Theme_MagiskModuleManager,
-            R.style.Theme_MagiskModuleManager_Monet,
-            R.style.Theme_MagiskModuleManager_Dark,
-            R.style.Theme_MagiskModuleManager_Monet_Dark,
-            R.style.Theme_MagiskModuleManager_Black,
-            R.style.Theme_MagiskModuleManager_Monet_Black -> false
+            R.style.Theme_MagiskModuleManager, R.style.Theme_MagiskModuleManager_Monet, R.style.Theme_MagiskModuleManager_Dark, R.style.Theme_MagiskModuleManager_Monet_Dark, R.style.Theme_MagiskModuleManager_Black, R.style.Theme_MagiskModuleManager_Monet_Black -> false
 
             else -> true
         }
@@ -346,7 +339,6 @@ class MainApplication : Application(), Configuration.Provider, ActivityLifecycle
             Timber.w("ANDROIDACY_CLIENT_ID is empty, disabling AndroidacyRepoData 1")
             editor.apply()
         }
-        reallyGetMarkwon()
     }
 
     private val intent: Intent?
@@ -509,8 +501,10 @@ class MainApplication : Application(), Configuration.Provider, ActivityLifecycle
         var updateCheckBg: String? = null
 
         init {
-            Shell.setDefaultBuilder(Shell.Builder.create()
-                .setFlags(Shell.FLAG_REDIRECT_STDERR or Shell.FLAG_MOUNT_MASTER).setTimeout(15))
+            Shell.setDefaultBuilder(
+                Shell.Builder.create()
+                    .setFlags(Shell.FLAG_REDIRECT_STDERR or Shell.FLAG_MOUNT_MASTER).setTimeout(15)
+            )
             // set verbose logging for debug builds
             if (BuildConfig.DEBUG) {
                 Shell.enableVerboseLogging = true
@@ -609,8 +603,7 @@ class MainApplication : Application(), Configuration.Provider, ActivityLifecycle
             get() = getSharedPreferences("mmm")!!.getBoolean("pref_dns_over_https", true)
         val isMonetEnabled: Boolean
             get() = Build.VERSION.SDK_INT >= Build.VERSION_CODES.S && getSharedPreferences("mmm")!!.getBoolean(
-                "pref_enable_monet",
-                true
+                "pref_enable_monet", true
             )
         val isBlurEnabled: Boolean
             get() = getSharedPreferences("mmm")!!.getBoolean("pref_enable_blur", false)
@@ -618,19 +611,20 @@ class MainApplication : Application(), Configuration.Provider, ActivityLifecycle
         val isDeveloper: Boolean
             get() {
                 return if (BuildConfig.DEBUG) true else getSharedPreferences("mmm")!!.getBoolean(
-                    "developer",
-                    false
+                    "developer", false
                 )
             }
         val isDisableLowQualityModuleFilter: Boolean
             get() = getSharedPreferences("mmm")!!.getBoolean(
-                "pref_disable_low_quality_module_filter",
-                false
+                "pref_disable_low_quality_module_filter", false
             ) && isDeveloper
         val isUsingMagiskCommand: Boolean
             get() = (peekMagiskVersion() >= Constants.MAGISK_VER_CODE_INSTALL_COMMAND) && getSharedPreferences(
                 "mmm"
-            )!!.getBoolean("pref_use_magisk_install_command", false) && isDeveloper && !InstallerInitializer.isKsu
+            )!!.getBoolean(
+                "pref_use_magisk_install_command",
+                false
+            ) && isDeveloper && !InstallerInitializer.isKsu
 
         val isBackgroundUpdateCheckEnabled: Boolean
             get() {
@@ -639,16 +633,14 @@ class MainApplication : Application(), Configuration.Provider, ActivityLifecycle
                 }
                 val wrapped = isWrapped
                 val updateCheckBgTemp = !wrapped && getSharedPreferences("mmm")!!.getBoolean(
-                    "pref_background_update_check",
-                    true
+                    "pref_background_update_check", true
                 )
                 updateCheckBg = updateCheckBgTemp.toString()
                 return java.lang.Boolean.parseBoolean(updateCheckBg)
             }
         val isAndroidacyTestMode: Boolean
             get() = isDeveloper && getSharedPreferences("mmm")!!.getBoolean(
-                "pref_androidacy_test_mode",
-                false
+                "pref_androidacy_test_mode", false
             )
 
         fun setHasGottenRootAccess(bool: Boolean) {
@@ -657,8 +649,7 @@ class MainApplication : Application(), Configuration.Provider, ActivityLifecycle
 
         val isCrashReportingEnabled: Boolean
             get() = SentryMain.IS_SENTRY_INSTALLED && getSharedPreferences("mmm")!!.getBoolean(
-                "pref_crash_reporting",
-                BuildConfig.DEFAULT_ENABLE_CRASH_REPORTING
+                "pref_crash_reporting", BuildConfig.DEFAULT_ENABLE_CRASH_REPORTING
             )
         val bootSharedPreferences: SharedPreferences?
             get() = getSharedPreferences("mmm_boot")
@@ -673,8 +664,7 @@ class MainApplication : Application(), Configuration.Provider, ActivityLifecycle
 
         fun isMatomoAllowed(): Boolean {
             return getSharedPreferences("mmm")!!.getBoolean(
-                "pref_analytics_enabled",
-                BuildConfig.DEFAULT_ENABLE_ANALYTICS
+                "pref_analytics_enabled", BuildConfig.DEFAULT_ENABLE_ANALYTICS
             )
         }
     }
