@@ -7,12 +7,12 @@ import android.content.DialogInterface
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.TwoStatePreference
 import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKey
-import com.fox2code.foxcompat.app.FoxActivity
 import com.fox2code.mmm.BuildConfig
 import com.fox2code.mmm.MainActivity
 import com.fox2code.mmm.MainApplication
@@ -86,7 +86,7 @@ class SecurityFragment : PreferenceFragmentCompat() {
                                 PendingIntent.FLAG_CANCEL_CURRENT or PendingIntent.FLAG_IMMUTABLE
                             )
                             val mgr =
-                                requireContext().getSystemService(FoxActivity.ALARM_SERVICE) as AlarmManager
+                                requireContext().getSystemService(AppCompatActivity.ALARM_SERVICE) as AlarmManager
                             mgr[AlarmManager.RTC, System.currentTimeMillis() + 100] =
                                 mPendingIntent
                             if (BuildConfig.DEBUG) Timber.d("Restarting app to save showcase mode preference: %s", v)
@@ -109,7 +109,7 @@ class SecurityFragment : PreferenceFragmentCompat() {
                                 PendingIntent.FLAG_CANCEL_CURRENT or PendingIntent.FLAG_IMMUTABLE
                             )
                             val mgr =
-                                requireContext().getSystemService(FoxActivity.ALARM_SERVICE) as AlarmManager
+                                requireContext().getSystemService(AppCompatActivity.ALARM_SERVICE) as AlarmManager
                             mgr[AlarmManager.RTC, System.currentTimeMillis() + 100] =
                                 mPendingIntent
                             if (BuildConfig.DEBUG) Timber.d("Restarting app to save showcase mode preference: %s", v)

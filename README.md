@@ -39,6 +39,7 @@ The Androidacy Module Manager serves as a robust alternative to the official Mag
 
 #### Dark | Light
 
+<!--suppress CheckImageSize -->
 <img src="docs/dark_screenshot.png" alt="Dark Screenshot" width="320"/> <img src="docs/light_screenshot.png" alt="Light Screenshot" width="320"/>
 
 ### Default Repositories

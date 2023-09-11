@@ -9,7 +9,6 @@ import io.sentry.SentryLevel
 import java.util.Objects
 
 class SentryBreadcrumb {
-    @JvmField
     val breadcrumb: Breadcrumb = Breadcrumb()
 
     init {

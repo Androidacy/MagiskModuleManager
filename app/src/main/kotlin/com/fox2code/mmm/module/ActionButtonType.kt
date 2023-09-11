@@ -11,7 +11,6 @@ import android.text.Spanned
 import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.DrawableRes
-import com.fox2code.foxcompat.app.FoxActivity
 import com.fox2code.foxcompat.view.FoxDisplay
 import com.fox2code.mmm.BuildConfig
 import com.fox2code.mmm.MainApplication
@@ -51,7 +50,7 @@ enum class ActionButtonType {
             } else {
                 moduleHolder.repoModule?.moduleInfo?.name
             }
-            TrackHelper.track().event("view_notes", name).with(INSTANCE!!.getTracker())
+            TrackHelper.track().event("view_notes", name).with(INSTANCE!!.tracker)
             val notesUrl = moduleHolder.repoModule?.notesUrl
             if (isAndroidacyLink(notesUrl)) {
                 try {
@@ -146,7 +145,7 @@ enum class ActionButtonType {
             } else {
                 moduleHolder.repoModule?.moduleInfo?.name
             }
-            TrackHelper.track().event("view_update_install", name).with(INSTANCE!!.getTracker())
+            TrackHelper.track().event("view_update_install", name).with(INSTANCE!!.tracker)
             // if text is reinstall, we need to uninstall first - warn the user but don't proceed
             if (moduleHolder.moduleInfo != null) {
                 // get the text
@@ -183,7 +182,7 @@ enum class ActionButtonType {
             var markwon: Markwon? = null
             val localModuleInfo = moduleHolder.moduleInfo
             if (localModuleInfo != null && localModuleInfo.updateChangeLog.isNotEmpty()) {
-                markwon = INSTANCE!!.getMarkwon()
+                markwon = INSTANCE!!.reallyGetMarkwon()
                 // Re-render each time in cse of config changes
                 desc = markwon!!.toMarkdown(localModuleInfo.updateChangeLog)
             }
@@ -256,7 +255,7 @@ enum class ActionButtonType {
             } else {
                 moduleHolder.repoModule?.moduleInfo?.name
             }
-            TrackHelper.track().event("uninstall_module", name).with(INSTANCE!!.getTracker())
+            TrackHelper.track().event("uninstall_module", name).with(INSTANCE!!.tracker)
             Timber.i(Integer.toHexString(moduleHolder.moduleInfo?.flags ?: 0))
             if (!instance!!.setUninstallState(
                     moduleHolder.moduleInfo!!, !moduleHolder.hasFlag(
@@ -284,7 +283,7 @@ enum class ActionButtonType {
                         .show()
                 } else {
                     moduleHolder.moduleInfo = null
-                    FoxActivity.getFoxActivity(button).refreshUI()
+                    INSTANCE!!.lastActivity!!
                     Timber.e("Cleared: %s", moduleId)
                 }
             }
@@ -311,7 +310,7 @@ enum class ActionButtonType {
             } else {
                 moduleHolder.repoModule?.moduleInfo?.name
             }
-            TrackHelper.track().event("config_module", name).with(INSTANCE!!.getTracker())
+            TrackHelper.track().event("config_module", name).with(INSTANCE!!.tracker)
             if (isAndroidacyLink(config)) {
                 openUrlAndroidacy(button.context, config, true)
             } else {
@@ -334,7 +333,7 @@ enum class ActionButtonType {
             } else {
                 moduleHolder.repoModule?.moduleInfo?.name
             }
-            TrackHelper.track().event("support_module", name).with(INSTANCE!!.getTracker())
+            TrackHelper.track().event("support_module", name).with(INSTANCE!!.tracker)
             openUrl(button.context, Objects.requireNonNull(moduleHolder.mainModuleInfo.support))
         }
     },
@@ -353,7 +352,7 @@ enum class ActionButtonType {
             } else {
                 moduleHolder.repoModule?.moduleInfo?.name
             }
-            TrackHelper.track().event("donate_module", name).with(INSTANCE!!.getTracker())
+            TrackHelper.track().event("donate_module", name).with(INSTANCE!!.tracker)
             openUrl(button.context, moduleHolder.mainModuleInfo.donate)
         }
     },
@@ -369,7 +368,7 @@ enum class ActionButtonType {
             } else {
                 moduleHolder.repoModule?.moduleInfo?.name
             }
-            TrackHelper.track().event("warning_module", name).with(INSTANCE!!.getTracker())
+            TrackHelper.track().event("warning_module", name).with(INSTANCE!!.tracker)
             MaterialAlertDialogBuilder(button.context).setTitle(R.string.warning)
                 .setMessage(R.string.warning_message).setPositiveButton(
                 R.string.understand
@@ -391,7 +390,7 @@ enum class ActionButtonType {
             } else {
                 moduleHolder.repoModule?.moduleInfo?.name
             }
-            TrackHelper.track().event("safe_module", name).with(INSTANCE!!.getTracker())
+            TrackHelper.track().event("safe_module", name).with(INSTANCE!!.tracker)
             MaterialAlertDialogBuilder(button.context).setTitle(R.string.safe_module)
                 .setMessage(R.string.safe_message).setPositiveButton(
                 R.string.understand
@@ -410,7 +409,7 @@ enum class ActionButtonType {
                 moduleHolder.repoModule?.moduleInfo?.name
             }
             // positive button executes install logic and says reinstall. negative button does nothing
-            TrackHelper.track().event("remote_module", name).with(INSTANCE!!.getTracker())
+            TrackHelper.track().event("remote_module", name).with(INSTANCE!!.tracker)
             val madb = MaterialAlertDialogBuilder(button.context)
             madb.setTitle(R.string.remote_module)
             val moduleInfo: ModuleInfo = if (moduleHolder.mainModuleInfo != null) {
@@ -464,7 +463,7 @@ enum class ActionButtonType {
                     }
                     if (BuildConfig.DEBUG) Timber.d("doAction: remote module for %s", name)
                     TrackHelper.track().event("view_update_install", name)
-                        .with(INSTANCE!!.getTracker())
+                        .with(INSTANCE!!.tracker)
                     // Androidacy manage the selection between download and install
                     if (isAndroidacyLink(updateZipUrl)) {
                         if (BuildConfig.DEBUG) Timber.d("Androidacy link detected")
@@ -485,7 +484,7 @@ enum class ActionButtonType {
                     var markwon: Markwon? = null
                     val localModuleInfo = moduleHolder.moduleInfo
                     if (localModuleInfo != null && localModuleInfo.updateChangeLog.isNotEmpty()) {
-                        markwon = INSTANCE!!.getMarkwon()
+                        markwon = INSTANCE!!.reallyGetMarkwon()
                         // Re-render each time in cse of config changes
                         desc = markwon!!.toMarkdown(localModuleInfo.updateChangeLog)
                     }
@@ -555,7 +554,6 @@ enum class ActionButtonType {
         iconId = 0
     }
 
-    @Suppress("unused")
     constructor(iconId: Int) {
         this.iconId = iconId
     }
@@ -570,7 +568,6 @@ enum class ActionButtonType {
     }
 
     companion object {
-        @JvmStatic
         @DrawableRes
         fun supportIconForUrl(url: String?): Int {
             var icon = R.drawable.ic_baseline_support_24
@@ -590,7 +587,6 @@ enum class ActionButtonType {
             return icon
         }
 
-        @JvmStatic
         @DrawableRes
         fun donateIconForUrl(url: String?): Int {
             var icon = R.drawable.ic_baseline_monetization_on_24

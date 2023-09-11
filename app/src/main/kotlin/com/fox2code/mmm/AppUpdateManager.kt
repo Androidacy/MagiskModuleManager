@@ -16,7 +16,7 @@ import java.io.InputStream
 
 @Suppress("unused")
 class AppUpdateManager private constructor() {
-    var changes: String? = null
+    private var changes: String? = null
     private val compatDataId = HashMap<String, Int>()
     private val updateLock = Any()
     private val compatFile: File = File(MainApplication.INSTANCE!!.filesDir, "compat.txt")
@@ -132,7 +132,6 @@ class AppUpdateManager private constructor() {
             return appUpdateManager.getCompatibilityFlags(moduleId)
         }
 
-        @JvmStatic
         fun shouldForceHide(repoId: String): Boolean {
             return if (BuildConfig.DEBUG || repoId.startsWith("repo_") || repoId == "magisk_alt_repo") false else !repoId.startsWith(
                 "repo_"

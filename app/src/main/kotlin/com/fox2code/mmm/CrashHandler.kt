@@ -12,7 +12,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.EditText
 import android.widget.Toast
-import com.fox2code.foxcompat.app.FoxActivity
+import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textview.MaterialTextView
 import io.sentry.Sentry
@@ -22,7 +22,7 @@ import timber.log.Timber
 import java.io.PrintWriter
 import java.io.StringWriter
 
-class CrashHandler : FoxActivity() {
+class CrashHandler : AppCompatActivity() {
     @Suppress("DEPRECATION", "KotlinConstantConditions")
     @SuppressLint("RestrictedApi")
     override fun onCreate(savedInstanceState: Bundle?) {

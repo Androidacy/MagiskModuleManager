@@ -56,11 +56,9 @@
     <string name="enable_monet">Silnik motywu Monet</string>
     <string name="pref_category_info">Informacje</string>
     <string name="show_licenses">Pokaż licencje</string>
-    <string name="licenses">Licencje</string>
     <string name="show_incompatible_pref">Pokaż niekompatybilne moduły</string>
     <string name="show_incompatible_desc">Wyświetl moduły niezgodne z tym urządzeniem na podstawie ich metadanych</string>
     <string name="magisk_outdated">Pojawiła się nowa wersja Magiska do zainstalowania!</string>
-    <string name="pref_category_repos">Repozytoria</string>
     <string name="pref_category_security">Zabezpieczenia</string>
     <string name="pref_category_appearance">Wygląd</string>
     <string name="master_delete">Usunąć pliki modułu?</string>
@@ -109,8 +107,6 @@
     <!-- Set to true in translation file if your language is right to left -->
     <bool name="lang_support_rtl">false</bool>
     <!-- Always copy language_support_level when translating -->
-    <integer name="language_support_level">1</integer>
-    <string name="language_support_outdated">Niektóre tłumaczenia dla bieżącego języka nie są aktualne, prosimy o rozważenie wniesienia wkładu do tłumaczeń aplikacji na GitHubie</string>
     <!-- Replace with your own username when translating -->
     <string name="language_translated_by">Tłumaczenie: Daviteusz</string>
     <string name="crash_reporting">Raportowanie błędów</string>
@@ -130,7 +126,6 @@
     <string name="androidacy_test_mode_disable_warning">Aby wyłączyć punkt końcowy staging, aplikacja zostanie ponownie uruchomiona</string>
     <string name="crash_reporting_restart_message">Aby zastosować to ustawienie, aplikacja zostanie ponownie uruchomiona</string>
     <string name="restart">Uruchom ponownie</string>
-    <string name="androidacy_failed_to_parse_token">Nie można pobrać tokena z Androidacy. Proszę spróbować ponownie później.</string>
     <string name="androidacy_failed_to_validate_token">Nie można zweryfikować tokena dla Androidacy. Proszę spróbować ponownie później.</string>
     <string name="androidacy_need_captcha">Aktualizacja Androidacy została zablokowana przez Captcha</string>
     <string name="link_copied">Łącze zostało skopiowane</string>
@@ -223,7 +218,6 @@
     <string name="fox2code_thanks">Stworzone przez Fox2Code</string>
     <string name="save_logs">Zapisz logi do pamięci wewnętrznej i udostępnij</string>
     <string name="error_saving_logs">Nie można zapisać logów</string>
-    <string name="feedback_submit">Prześlij i restartuj</string>
     <string name="please_feedback">Pomóż nam, informując o wykonywanych czynnościach, gdy to się stało.</string>
     <string name="sentry_dialogue_disabled">Raportowanie błędów jest wyłączone. Włącz, aby przesłać informacje zwrotne.</string>
     <string name="feedback_name">Imię (opcjonalnie)</string>
@@ -246,7 +240,6 @@
     <string name="background_update_check_excludes">Ignorowane moduły ze sprawdzania aktualizacji</string>
     <string name="update_title">Zaktualizuj aplikację</string>
     <string name="update_message">Proszę poczekać, aż sprawdzimy i zainstalujemy aktualizacje dla AMM. Może to potrwać kilka minut</string>
-    <string name="update_button">Proszę czekać…</string>
     <string name="reset_app_confirmation">To całkowicie wyczyści dane aplikacji, lecz moduły pozostaną nietknięte.</string>
     <string name="error_no_extras">BŁĄD: Nieprawidłowe dane otrzymane przy uruchomieniu</string>
     <string name="update_debug_warning">Wygląda na to, że używasz wersji debugowanej. Kompilacje debugowe muszą być aktualizowane ręcznie i nie obsługują aktualizacji w aplikacji</string>
@@ -290,9 +283,7 @@
     <string name="notification_channel_category_app_update">Aktualizacje aplikacji</string>
     <string name="notification_channel_background_update_app">Dostępna nowa wersja aplikacji!</string>
     <string name="notification_channel_background_update_app_description">Dostępna jest nowa wersja AMM. Kliknij, aby zaktualizować.</string>
-    <string name="modules">Moduły</string>
     <string name="no_browser">Nie masz zainstalowanej przeglądarki. Zainstaluj ją, aby kontynuować.</string>
-    <string name="yer_a_wizard_harry">Jesteś czarodziejem, Harry!</string>
     <string name="keep_tapping_to_enter_hogwarts">Stukaj dalej, aby zostać przyjętym do Hogwartu!</string>
     <string name="setup_background_update_check_require_wifi">Wymagaj sieci WiFi</string>
     <string name="setup_app_analytics">Pozwól na analizę aplikacji</string>
@@ -351,19 +342,14 @@
     <string name="blur_performance_warning_summary">Urządzenie nie obsługuje blur</string>
     <string name="reboot">Restartuj</string>
     <string name="search">Szukaj</string>
-    <string name="reboot_system">Restartuj system</string>
     <string name="reboot_recovery">Restartuj do recovery</string>
     <string name="reboot_edl">Restartuj do trybu EDL</string>
     <string name="install_terminal_reboot_prevented">Restart jest wyłączony w ustawieniach aplikacji</string>
     <string name="androidacy_api_error">Błąd podczas komunikacji z API: %d</string>
-    <string name="title_home">Główna</string>
-    <string name="title_dashboard">Pulpit</string>
-    <string name="title_notifications">Powiadomienia</string>
     <string name="expired">Ta wersja wygasła!</string>
     <string name="download_latest">Pobierz najnowszą</string>
     <string name="logs_saved">Pomyślnie zapisano logi</string>
     <string name="reboot_extra_warning">Za chwilę nastąpi restart do trybu EDL, specjalnego trybu przeznaczonego dla producentów OEM do flashowania i naprawiania problemów niskiego poziomu. O ile nie jesteś pewien, że chcesz to zrobić i nie masz niezbędnych narzędzi, aby wyjść z tego trybu lub go użyć, zdecydowanie zachęcamy do korzystania z innych opcji restartu.</string>
-    <string name="title_activity_expired">ExpiredActivity</string>
     <string name="expired_message">Używana wersja wygasła i nie będzie już działać. Prosimy o aktualizację do najnowszej stabilnej wersji.</string>
     <string name="submit_feedback">Prześlij opinię</string>
     <string name="ssl_error">Wykryto potencjalne przechwycenie SSL.</string>

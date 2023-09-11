@@ -27,7 +27,6 @@ class HttpException : IOException {
     }
 
     companion object {
-        @JvmStatic
         fun shouldTimeout(exception: Exception?): Boolean {
             return exception is HttpException &&
                     exception.shouldTimeout()

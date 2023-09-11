@@ -22,7 +22,6 @@
     <string name="showcase_mode_pref">Sperrmodus</string>
     <string name="showcase_mode_desc">Sperrmodus verhindert, dass der Manager Aktionen an Modulen ausführt</string>
     <string name="show_licenses">Lizenzen anzeigen</string>
-    <string name="licenses">Lizenzen</string>
     <string name="show_incompatible_pref">Inkompatible Module anzeigen</string>
     <string name="show_incompatible_desc">Module anzeigen, die aufgrund ihrer Metadaten nicht mit Ihrem Gerät kompatibel sind</string>
     <string name="magisk_outdated">Magisk ist veraltet!</string>
@@ -93,7 +92,6 @@
     <string name="module_min_sdk_chip">Min. Android</string>
     <string name="module_max_sdk_chip">Max. Android</string>
     <string name="pref_category_info">Info</string>
-    <string name="pref_category_repos">Repos</string>
     <string name="theme_pref">Thema</string>
     <string name="module_id_prefix">Modul-ID:</string>
     <string name="low_quality_module">Modul mit niedriger Qualität</string>
@@ -106,7 +104,6 @@
     <string name="notification_update_pref">Automatische Suche nach Modulaktualisierungen</string>
     <string name="notification_update_desc">Könnte Batterie-Nutzung erhöhen</string>
     <string name="notification_update_debug_pref">Test-Benachrichtigung</string>
-    <string name="language_support_outdated">Einige Übersetzungen für die aktuelle Sprache sind nicht aktuell, bitte überlege, auf GitHub beizutragen</string>
     <string name="language_translated_by">Übersetzt von nift4</string>
     <string name="crash_reporting">Automatisch Entwickler über Bugs informieren</string>
     <string name="api_key_invalid">Konnte API-Schlüssel nicht überprüfen. Bitte auf Fehler überprüfen.</string>
@@ -126,7 +123,6 @@
     <string name="module_needs_ramdisk_desc">Dieses Modul braucht eine installierte Boot-Ramdisk</string>
     <string name="api_key_summary">Eigenen API-Schlüssel für Androidacy verwenden. Nützlich für Androidacy-Kunden, um Werbung zu entfernen.</string>
     <string name="androidacy_test_mode_warning">Androidacy Betamodus wird aktiviert. Dies könnte Fehler verursachen. Bitte keine Fehlerberichte einreichen, wenn aktiviert. Die App wird neu gestartet.</string>
-    <string name="androidacy_failed_to_parse_token">Konnte Token nicht von Androidacy laden. Bitte versuche es später noch einmal.</string>
     <string name="androidacy_failed_to_validate_token">Konnte Token für Androidacy nicht validieren. Bitte versuche es später noch einmal.</string>
     <string name="androidacy_need_captcha">Androidacy-Update von CAPTCHA blockiert</string>
     <string name="link_copied">Link kopiert</string>
@@ -218,7 +214,6 @@
     <string name="upgrade_androidacy_promo">Upgrade auf Premium</string>
     <string name="share_logs">Teile Logs</string>
     <string name="not_official_build">Diese App ist ein inoffizieller AMM-Build.</string>
-    <string name="feedback_submit">Absenden und neu starten</string>
     <string name="please_feedback">Bitte hilf uns aus, indem du uns erzählst, was du machen wolltest, bevor dies passiert ist.</string>
     <string name="sentry_dialogue_disabled">Fehler-Upload deaktiviert. Aktivieren, um Feedback hochzuladen.</string>
     <string name="feedback_name">Name (optional)</string>
@@ -260,5 +255,4 @@
     <string name="update_message">Bitte warten, während AMM-Updates installiert werden. Dies kann ein paar Minuten dauern</string>
     <string name="app_name_v2">Androidacy Modul-Manager</string>
     <string name="app_name_short_v2">AMM</string>
-    <string name="update_button">Bitte warten…</string>
 </resources>

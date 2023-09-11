@@ -35,7 +35,6 @@ class ExternalHelper private constructor() {
                     )
                 )
             } else {
-                @Suppress("DEPRECATION")
                 context.packageManager.queryIntentActivities(
                     intent,
                     PackageManager.MATCH_DEFAULT_ONLY

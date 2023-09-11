@@ -33,7 +33,7 @@ import timber.log.Timber
 import java.io.File
 import java.nio.charset.StandardCharsets
 
-@Suppress("NAME_SHADOWING", "unused")
+@Suppress("NAME_SHADOWING")
 class RepoManager private constructor(mainApplication: MainApplication) : SyncManager() {
     private val mainApplication: MainApplication
     private val repoData: LinkedHashMap<String?, RepoData>
@@ -242,7 +242,7 @@ class RepoManager private constructor(mainApplication: MainApplication) : SyncMa
                 if (!isLastUpdateSuccess || modules.isEmpty()) {
                     Timber.e("Failed to update %s", repoUpdaters[i]!!.repoData.name)
                     // Show snackbar on main looper and add some bottom padding
-                    val context: Activity? = MainApplication.INSTANCE!!.lastCompatActivity
+                    val context: Activity? = MainApplication.INSTANCE!!.lastActivity
                     Handler(Looper.getMainLooper()).post {
                         if (context != null) {
                             // Show material dialogue with the repo name. for androidacy repo, show an option to reset the api key. show a message then a list of errors
@@ -354,7 +354,6 @@ class RepoManager private constructor(mainApplication: MainApplication) : SyncMa
         @Volatile
         private var INSTANCE: RepoManager? = null
 
-        @JvmStatic
         fun getINSTANCE(): RepoManager? {
             if (INSTANCE == null || !INSTANCE!!.initialized) {
                 synchronized(lock) {
@@ -390,7 +389,6 @@ class RepoManager private constructor(mainApplication: MainApplication) : SyncMa
                 return INSTANCE
             }
 
-        @JvmStatic
         fun internalIdOfUrl(url: String): String {
             return when (url) {
                 MAGISK_ALT_REPO, MAGISK_ALT_REPO_JSDELIVR -> "magisk_alt_repo"

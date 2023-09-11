@@ -57,11 +57,9 @@
     <string name="enable_monet">Activează Monet</string>
     <string name="pref_category_info">Informații</string>
     <string name="show_licenses">Afișează licențe</string>
-    <string name="licenses">Licențe</string>
     <string name="show_incompatible_pref">Arată modulele incompatibile</string>
     <string name="show_incompatible_desc">Arată module incompatibile cu dispozitivul tău pe baza metadatelor lor</string>
     <string name="magisk_outdated">Există o nouă versiune Magisk de instalat!</string>
-    <string name="pref_category_repos">Depozite</string>
     <string name="pref_category_security">Securitate</string>
     <string name="pref_category_appearance">Aspect</string>
     <string name="master_delete">Ștergi fișierele modulului?</string>
@@ -114,8 +112,6 @@
     <string name="notification_update_debug_pref">Notificare test</string>
     <!-- Set to true in translation file if your language is right to left -->
     <!-- Always copy language_support_level when translating -->
-    <string name="language_support_outdated">Unele traduceri pentru limba curentă
-        nu sunt actualizate, vă rugăm să luați în considerare contribuția la traducerea aplicației pe GitHub</string>
     <!-- Replace with your own username when translating -->
     <string name="language_translated_by">Tradus de ygorigor</string>
     <string name="crash_reporting">Raportează automat dezvoltatorilor erorile și performanțele</string>
@@ -136,7 +132,6 @@
     <string name="restart">Repornire</string>
     <string name="androidacy_test_mode_disable_warning">Aplicația va fi repornită pentru a dezactiva finalizarea etapelor</string>
     <string name="link_copied">Link copiat</string>
-    <string name="androidacy_failed_to_parse_token">Nu s-a putut prelua token-ul de la Androidacy. Vă rugăm să încercați din nou mai târziu.</string>
     <string name="androidacy_failed_to_validate_token">Nu s-a putut valida token-ul pentru Androidacy. Vă rugăm să încercați din nou mai târziu.</string>
     <string name="androidacy_need_captcha">Actualizare Androidacy blocată de Captcha</string>
     <string name="androidacy_repo_disabled_message">În această versiune lipsesc cheile client pentru Androidacy Repo. Descărcați versiunea GitHub dacă doriți să beneficiați de funcții precum recenzii de module, verificări automate de securitate și multe altele.</string>

@@ -17,7 +17,6 @@ enum class MarkdownUrlLinker {
     }
 
     companion object {
-        @JvmStatic
         fun urlLinkify(url: String): String {
             var index = url.indexOf("https://")
             if (index == -1) return url

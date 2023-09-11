@@ -6,17 +6,15 @@ package com.fox2code.mmm.markdown
 
 import android.content.DialogInterface
 import android.content.pm.PackageManager
-import android.content.res.Configuration
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
-import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
 import android.widget.TextView
 import android.widget.Toast
-import com.fox2code.foxcompat.app.FoxActivity
+import androidx.appcompat.app.AppCompatActivity
 import com.fox2code.mmm.Constants
 import com.fox2code.mmm.MainApplication
 import com.fox2code.mmm.R
@@ -27,24 +25,21 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.topjohnwu.superuser.internal.UiThreadHandler
 import org.matomo.sdk.extra.TrackHelper
 import timber.log.Timber
 import java.io.IOException
 import java.nio.charset.StandardCharsets
 
-class MarkdownActivity : FoxActivity() {
+class MarkdownActivity : AppCompatActivity() {
     private var header: TextView? = null
     private var footer: TextView? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         TrackHelper.track().screen(this).with(MainApplication.INSTANCE!!.tracker)
-        setDisplayHomeAsUpEnabled(true)
         val intent = this.intent
         if (!MainApplication.checkSecret(intent)) {
             Timber.e("Impersonation detected!")
-            forceBackPressed()
-            return
+            finish()
         }
         val url = intent.extras?.getString(Constants.EXTRA_MARKDOWN_URL)
         var title = intent.extras!!.getString(Constants.EXTRA_MARKDOWN_TITLE)
@@ -60,17 +55,14 @@ class MarkdownActivity : FoxActivity() {
             @Suppress("UNUSED_VALUE")
             title = url
         }
-        setActionBarBackground(null)
-        @Suppress("DEPRECATION")
-        this.window.setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION, 0)
+        @Suppress("DEPRECATION") this.window.setFlags(
+            WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION,
+            0
+        )
         if (!config.isNullOrEmpty()) {
             val configPkg = IntentHelper.getPackageOfConfig(config)
             try {
                 XHooks.checkConfigTargetExists(this, configPkg, config)
-                this.setActionBarExtraMenuButton(R.drawable.ic_baseline_app_settings_alt_24) { _: MenuItem? ->
-                    IntentHelper.openConfig(this, config)
-                    true
-                }
             } catch (e: PackageManager.NameNotFoundException) {
                 Timber.w("Config package \"$configPkg\" missing for markdown view")
             }
@@ -78,7 +70,7 @@ class MarkdownActivity : FoxActivity() {
         // validate the url won't crash the app
         if (url.isNullOrEmpty() || url.contains("..")) {
             Timber.e("Invalid url %s", url.toString())
-            forceBackPressed()
+            finish()
             return
         }
         Timber.i("Url for markdown %s", url.toString())
@@ -88,9 +80,6 @@ class MarkdownActivity : FoxActivity() {
         header = findViewById(R.id.markdownHeader)
         footer = findViewById(R.id.markdownFooter)
         updateBlurState()
-        UiThreadHandler.handler.post { // Fix header/footer height
-            this.updateScreenInsets(this.resources.configuration)
-        }
 
         // Really bad created (MSG by Der_Googler)
         // set "message" to null to disable dialog
@@ -107,10 +96,8 @@ class MarkdownActivity : FoxActivity() {
                 val markdown = String(rawMarkdown, StandardCharsets.UTF_8)
                 Timber.i("Done!")
                 runOnUiThread {
-                    footer?.minimumHeight = this.navigationBarHeight
                     MainApplication.INSTANCE!!.markwon?.setMarkdown(
-                        textView,
-                        MarkdownUrlLinker.urlLinkify(markdown)
+                        textView, MarkdownUrlLinker.urlLinkify(markdown)
                     )
                     if (markdownBackground != null) {
                         markdownBackground.isClickable = true
@@ -138,31 +125,6 @@ class MarkdownActivity : FoxActivity() {
             // set dialogs to have transparent blur
             window.addFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND)
         }
-    }
-
-    private fun updateScreenInsets() {
-        runOnUiThread { this.updateScreenInsets(this.resources.configuration) }
-    }
-
-    private fun updateScreenInsets(configuration: Configuration) {
-        val landscape = configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
-        val bottomInset = if (landscape) 0 else this.navigationBarHeight
-        val statusBarHeight = statusBarHeight
-        val actionBarHeight = actionBarHeight
-        val combinedBarsHeight = statusBarHeight + actionBarHeight
-        header!!.minHeight = combinedBarsHeight
-        footer!!.minHeight = bottomInset
-        //this.actionBarBlur.invalidate();
-    }
-
-    override fun refreshUI() {
-        super.refreshUI()
-        this.updateScreenInsets()
-        updateBlurState()
-    }
-
-    override fun onWindowUpdated() {
-        this.updateScreenInsets()
     }
 
     private fun addChip(markdownChip: MarkdownChip) {
@@ -220,12 +182,6 @@ class MarkdownActivity : FoxActivity() {
             Build.VERSION_CODES.TIRAMISU -> "13 Tiramisu"
             else -> "Sdk: $version"
         }
-    }
-
-    override fun onResume() {
-        super.onResume()
-        val footer = findViewById<View>(R.id.markdownFooter)
-        if (footer != null) footer.minimumHeight = this.navigationBarHeight
     }
 
     companion object {

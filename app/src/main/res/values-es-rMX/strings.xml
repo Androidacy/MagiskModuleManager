@@ -60,11 +60,9 @@
     <string name="enable_monet">Habilitar Monet</string>
     <string name="pref_category_info">Info</string>
     <string name="show_licenses">Mostrar licencias</string>
-    <string name="licenses">Licencias</string>
     <string name="show_incompatible_pref">Mostrar módulos incompatibles</string>
     <string name="show_incompatible_desc">Muestra los módulos que son incompatibles con su dispositivo basándose en sus metadatos</string>
     <string name="magisk_outdated">¡Magisk está desactualizado!</string>
-    <string name="pref_category_repos">Repositorios</string>
     <string name="pref_category_security">Seguridad</string>
     <string name="pref_category_appearance">Apariencia</string>
     <string name="master_delete">¿Desea borrar los archivos del módulo\?</string>
@@ -115,8 +113,6 @@
     <!-- Set to true in translation file if your language is right to left -->
     <bool name="lang_support_rtl">false</bool>
     <!-- Always copy language_support_level when translating -->
-    <integer name="language_support_level">1</integer>
-    <string name="language_support_outdated">Algunas traducciones del lenguaje seleccionado no están actualizadas, por favor considera contribuir con las traducciones de la aplicación en GitHub</string>
     <!-- Replace with your own username when translating // Staging y non-production endpoint = canal de prueba, release endpoint = Canal estable (quizas se cambie la traducción en futuras actualizaciones) -->
     <string name="language_translated_by">Traducido por Leshu7w7, y por Sebastián</string>
     <string name="crash_reporting">Informa automáticamente de errores y rendimiento a los desarrolladores</string>
@@ -194,9 +190,7 @@
     <string name="announcements">Noticias y actualizaciones</string>
     <string name="back">Regresa</string>
     <string name="notification_update_ignore_pref">Excluir módulos</string>
-    <string name="update_button">Por favor espere…</string>
     <string name="safe">Seguro</string>
-    <string name="modules">Módulos</string>
     <string name="monet_disabled_summary">Monet no es compatible con temas transparentes.</string>
     <string name="setup_background_update_check">Comprobación automática de actualizaciones</string>
     <string name="androidacy_update_needed">Esta aplicación esta desactualizada.</string>
@@ -233,7 +227,6 @@
     <string name="repo_enabled_changed">Ha activado o desactivado un repositorio. Por favor actualice la lista de módulos o reinicie la aplicación.</string>
     <string name="check_for_updates">Buscar actualizaciones de aplicaciones</string>
     <string name="error_download_update">Ocurrió un error al descargar la información de actualización.</string>
-    <string name="feedback_submit">Enviar y reiniciar</string>
     <string name="sentry_dialogue_empty_message">No especificó comentarios adicionales.</string>
     <string name="crash_details_copied">¡Stacktrace copiado al portapapeles!</string>
     <string name="upgraded">Premium activo</string>
@@ -279,9 +272,7 @@
     <string name="pref_pkg_info_summary">%1$s v%2$s (%3$d) | %4$s Compilación</string>
     <string name="api_key_restart">La clave API ha sido cambiada. Reinicie la aplicación para aplicar los cambios.</string>
     <string name="permission_notification_message">Necesitamos el permiso de notificaciones para notificarle sobre actualizaciones de aplicaciones y módulos. Si no concede este permiso, no se ejecutarán las comprobaciones de las actualizaciones automáticas.</string>
-    <string name="androidacy_failed_to_parse_token">No se pudo recuperar el token de Androidacy. Por favor, inténtelo de nuevo más tarde.</string>
     <string name="androidacy_failed_to_validate_token">No se pudo validar el token para Androidacy. Por favor, inténtelo de nuevo más tarde.</string>
-    <string name="yer_a_wizard_harry">¡Eres un mago, Harry!</string>
     <string name="keep_tapping_to_enter_hogwarts">¡Sigue pulsando para ser admitido en Hogwarts!</string>
     <string name="setup_androidacy_repo_summary">Presenta reseñas de usuarios, escaneos automáticos de virus, actualizaciones rápidas, una amplia selección y está respaldado por Androidacy.</string>
     <string name="setup_magisk_alt_repo_summary">Mucho más laxa que la original. Tiene muchos módulos a costa de cierta seguridad.</string>
@@ -357,16 +348,11 @@
     <string name="blur_performance_warning_summary">El dispositivo no es compatible con el desenfoque</string>
     <string name="search">Buscar</string>
     <string name="reboot">Reiniciar</string>
-    <string name="reboot_system">Reiniciar normalmente</string>
     <string name="reboot_recovery">Reiniciar a la recuperación</string>
     <string name="reboot_bootloader">Reiniciar al gestor de arranque</string>
     <string name="reboot_edl">Reiniciar al modo EDL</string>
     <string name="install_terminal_reboot_prevented">El reinicio está desactivado en la configuración de la aplicación</string>
     <string name="androidacy_api_error">Error al comunicarse con la API: %d</string>
-    <string name="title_activity_expired">Actividad expirada</string>
-    <string name="title_home">Home</string>
-    <string name="title_dashboard">Panel de control</string>
-    <string name="title_notifications">Notificaciones</string>
     <string name="expired">¡Esta compilación ha expirado!</string>
     <string name="expired_message">La compilación que estás utilizando ha expirado y ya no se ejecutará. Actualiza a la última versión estable.</string>
     <string name="download_latest">Descargar lo último</string>

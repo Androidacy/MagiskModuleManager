@@ -7,13 +7,11 @@
 package com.fox2code.mmm.androidacy
 
 import android.annotation.SuppressLint
-import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.net.Uri
 import android.net.http.SslError
 import android.os.Bundle
-import android.view.MenuItem
 import android.view.View
 import android.webkit.ConsoleMessage
 import android.webkit.ConsoleMessage.MessageLevel
@@ -28,13 +26,13 @@ import android.webkit.WebSettings
 import android.webkit.WebView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.FileProvider
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import androidx.webkit.WebResourceErrorCompat
 import androidx.webkit.WebSettingsCompat
 import androidx.webkit.WebViewClientCompat
 import androidx.webkit.WebViewFeature
-import com.fox2code.foxcompat.app.FoxActivity
 import com.fox2code.mmm.BuildConfig
 import com.fox2code.mmm.Constants
 import com.fox2code.mmm.MainApplication
@@ -58,16 +56,14 @@ import java.io.IOException
 /**
  * Per Androidacy repo implementation agreement, no request of this WebView shall be modified.
  */
-class AndroidacyActivity : FoxActivity() {
+class AndroidacyActivity : AppCompatActivity() {
     private var moduleFile: File? = null
 
-    @JvmField
     var webView: WebView? = null
     var webViewNote: TextView? = null
     private var androidacyWebAPI: AndroidacyWebAPI? = null
     var progressIndicator: LinearProgressIndicator? = null
 
-    @JvmField
     var backOnResume = false
     var downloadMode = false
 
@@ -86,22 +82,21 @@ class AndroidacyActivity : FoxActivity() {
         @Suppress("KotlinConstantConditions")
         if (!MainApplication.checkSecret(intent) || intent.data.also { uri = it!! } == null) {
             Timber.w("Impersonation detected")
-            forceBackPressed()
+            finish()
             return
         }
         var url = uri.toString()
         if (!AndroidacyUtil.isAndroidacyLink(url, uri!!)) {
             Timber.w("Calling non androidacy link in secure WebView: %s", url)
-            forceBackPressed()
+            finish()
             return
         }
         if (!hasWebView()) {
             Timber.w("No WebView found to load url: %s", url)
-            forceBackPressed()
+            finish()
             return
         }
         // if action bar is shown, hide it
-        hideActionBar()
         markCaptchaAndroidacySolved()
         if (!url.contains(AndroidacyUtil.REFERRER)) {
             url = if (url.lastIndexOf('/') < url.lastIndexOf('?')) {
@@ -135,22 +130,14 @@ class AndroidacyActivity : FoxActivity() {
         val config = intent.getStringExtra(Constants.EXTRA_ANDROIDACY_ACTIONBAR_CONFIG)
         val compatLevel = intent.getIntExtra(Constants.EXTRA_ANDROIDACY_COMPAT_LEVEL, 0)
         this.setContentView(R.layout.webview)
-        setActionBarBackground(null)
-        setDisplayHomeAsUpEnabled(true)
         if (title.isNullOrEmpty()) {
             title = "Androidacy"
         }
-        if (allowInstall || title.isEmpty()) {
-            hideActionBar()
-        } else { // Only used for note section
+        if (!allowInstall && title.isNotEmpty()) {
             if (!config.isNullOrEmpty()) {
                 val configPkg = IntentHelper.getPackageOfConfig(config)
                 try {
                     checkConfigTargetExists(this, configPkg, config)
-                    this.setActionBarExtraMenuButton(R.drawable.ic_baseline_app_settings_alt_24) { _: MenuItem? ->
-                        IntentHelper.openConfig(this, config)
-                        true
-                    }
                 } catch (ignored: PackageManager.NameNotFoundException) {
                 }
             }
@@ -243,9 +230,9 @@ class AndroidacyActivity : FoxActivity() {
                 ) {
                     Toast.makeText(this@AndroidacyActivity, "Too many requests!", Toast.LENGTH_LONG)
                         .show()
-                    runOnUiThread { forceBackPressed() }
+                    runOnUiThread { finish() }
                 } else if (url == pageUrl) {
-                    postOnUiThread { webViewNote!!.visibility = View.VISIBLE }
+                    runOnUiThread { webViewNote!!.visibility = View.VISIBLE }
                 }
             }
 
@@ -291,10 +278,18 @@ class AndroidacyActivity : FoxActivity() {
                 filePathCallback: ValueCallback<Array<Uri>>,
                 fileChooserParams: FileChooserParams
             ): Boolean {
-                getFoxActivity(webView).startActivityForResult(fileChooserParams.createIntent()) { code: Int, data: Intent? ->
-                    filePathCallback.onReceiveValue(
-                        FileChooserParams.parseResult(code, data)
-                    )
+                // start file chooser activity
+                val intent1 = fileChooserParams.createIntent()
+                try {
+                    @Suppress("DEPRECATION")
+                    startActivityForResult(intent1, 1)
+                } catch (e: Exception) {
+                    Timber.e(e)
+                    Toast.makeText(
+                        this@AndroidacyActivity,
+                        R.string.file_picker_failure,
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
                 return true
             }
@@ -355,7 +350,7 @@ class AndroidacyActivity : FoxActivity() {
                         } else if (moduleId != null) {
                             // Download module
                             Timber.i("megaIntercept failure. Forcing onBackPress")
-                            forceBackPressed()
+                            finish()
                         }
                     }
                     androidacyWebAPI.consumedAction = true
@@ -388,7 +383,7 @@ class AndroidacyActivity : FoxActivity() {
         super.onResume()
         if (backOnResume) {
             backOnResume = false
-            forceBackPressed()
+            finish()
         } else if (androidacyWebAPI != null) {
             androidacyWebAPI!!.consumedAction = false
         }

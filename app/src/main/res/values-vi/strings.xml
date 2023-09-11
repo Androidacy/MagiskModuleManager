@@ -54,11 +54,9 @@
     <string name="enable_monet">Kích hoạt Monet</string>
     <string name="pref_category_info">Thông tin</string>
     <string name="show_licenses">Hiển thị giấy phép</string>
-    <string name="licenses">Giấy phép</string>
     <string name="show_incompatible_pref">Hiển thị các mô-đun không tương thích</string>
     <string name="show_incompatible_desc">Hiển thị các mô-đun dường như sẽ không tương thích với thiết bị của bạn dựa trên siêu dữ liệu của chúng</string>
     <string name="magisk_outdated">Có một phiên bản Magisk mới hơn để cài đặt!</string>
-    <string name="pref_category_repos">Kho</string>
     <string name="pref_category_security">Bảo mật</string>
     <string name="pref_category_appearance">Giao diện</string>
     <string name="master_delete">Xóa các tệp mô-đun?</string>
@@ -124,7 +122,6 @@
     <string name="download_full_app">Tải phiên bản đầy đủ</string>
     <string name="repo_update_failed">Một số repo không cập nhật được</string>
     <string name="setup_background_update_check">Kiểm tra cập nhật tự động</string>
-    <string name="androidacy_failed_to_parse_token">Không thể truy xuất token từ Androidacy. Vui lòng thử lại sau.</string>
     <string name="androidacy_failed_to_validate_token">Không thể xác thực token cho Androidacy. Vui lòng thử lại sau.</string>
     <string name="androidacy_need_captcha">Cập nhật Androidacy bị chặn bởi Captcha</string>
     <string name="link_copied">Đã sao chép đường dẫn liên kết</string>
@@ -168,7 +165,6 @@
     <string name="magisk_alt_repo_name">Kho lưu trữ Magisk Alt</string>
     <string name="repo_enabled_changed">Bạn đã bật hoặc tắt một kho lưu trữ. Vui lòng làm mới danh sách mô-đun hoặc khởi động lại ứng dụng.</string>
     <string name="androidacy_repo_info">Kho lưu trữ này có thể hiển thị một số quảng cáo không xâm nhập để trang trải chi phí phát triển và máy chủ. Đánh giá tính năng, quét vi-rút tự động, v.v.</string>
-    <string name="language_support_outdated">Một số bản dịch cho ngôn ngữ hiện tại không cập nhật, vui lòng xem xét đóng góp cho bản dịch ứng dụng trên GitHub</string>
     <string name="api_key_invalid">Không thể xác thực khóa API. Vui lòng kiểm tra và thử lại.</string>
     <string name="androidacy_test_mode_warning">Bạn đang đặt ứng dụng sử dụng điểm cuối non-production cho Androidacy. Điều này có thể dẫn đến sự mất ổn định của ứng dụng và không tải được kho lưu trữ trực tuyến. KHÔNG báo cáo lỗi nếu bạn bật công tắc này. Ứng dụng sẽ được khởi động lại để tải lại kho lưu trữ.</string>
     <string name="permission_notification_message">Chúng tôi cần quyền thông báo để thông báo cho bạn về các bản cập nhật mô-đun và ứng dụng. Nếu bạn không cấp quyền này, Kiểm tra cập nhật tự động sẽ không chạy.</string>
@@ -189,7 +185,6 @@
     <string name="safe_module">Mô-đun an toàn đã xác nhận</string>
     <string name="background_update_check_excludes">Các mô-đun để loại trừ khỏi kiểm tra cập nhật tự động</string>
     <string name="update_title">Cập nhật ứng dụng</string>
-    <string name="update_button">Vui lòng chờ…</string>
     <string name="finish">Kết thúc</string>
     <string name="pref_category_contributors">Người đóng góp</string>
     <string name="fox2code_thanks_desc">Fox2Code là tác giả ban đầu của ứng dụng. Nếu không có anh ấy, điều này sẽ không bao giờ có thể xảy ra.</string>
@@ -204,9 +199,7 @@
     <string name="theme_dark">Tối</string>
     <string name="theme_black">AMOLED đen</string>
     <string name="theme_transparent_light">Sáng (trong suốt)</string>
-    <string name="yer_a_wizard_harry">Bạn là một phù thủy, Harry!</string>
     <string name="keep_tapping_to_enter_hogwarts">Tiếp tục ấn để được nhận vào Hogwarts!</string>
-    <string name="modules">Mô-đun</string>
     <string name="no_browser">Bạn chưa cài đặt trình duyệt. Vui lòng cài đặt một cái để tiếp tục.</string>
     <string name="repo_update_failed_message">Các kho lưu trữ sau không cập nhật được:
 \n
@@ -216,7 +209,6 @@
     <string name="upgrade_androidacy_promo_desc">Nâng cấp lên premium sẽ xóa quảng cáo, hình ảnh xác thực và tải xuống cho Kho lưu trữ Androidacy, đồng thời hỗ trợ Androidacy và các tác giả mô-đun.</string>
     <string name="crash_text">Uh-oh, chúng tôi gặp khó khăn!</string>
     <string name="feedback_message">Hãy cho chúng tôi biết thêm chi tiết về những gì bạn đã làm khi điều này xảy ra. Càng nhiều càng tốt!</string>
-    <string name="feedback_submit">Gửi và khởi động lại</string>
     <string name="please_feedback">Vui lòng giúp chúng tôi bằng cách cho chúng tôi biết bạn đang cố gắng làm gì khi điều này xảy ra.</string>
     <string name="sentry_dialogue_disabled">Báo cáo sự cố bị vô hiệu hóa. Kích hoạt tính năng này để gửi phản hồi.</string>
     <string name="feedback_name">Tên (không bắt buộc)</string>

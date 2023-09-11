@@ -12,7 +12,6 @@ import androidx.room.Query
 
 // contains
 // codename (string, primary), version (string), versionCode (int), author (string), description (string), minApi (int), maxApi (int), minMagisk (int), needRamdisk (boolean), support (string), donate (string), config (string), changeBoot (bool), mmtReborn (bool), repoId (string), lastUpdate (bigint), safe (bool)
-@Suppress("unused")
 @Dao
 interface ModuleListCacheDao {
     // functions:

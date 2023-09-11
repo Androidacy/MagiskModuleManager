@@ -42,10 +42,8 @@
     <string name="enable_monet">Увімкнути Monet</string>
     <string name="pref_category_info">Інформація</string>
     <string name="show_licenses">Показати ліцензії</string>
-    <string name="licenses">Ліцензії</string>
     <string name="show_incompatible_pref">Показати несумісні модулі</string>
     <string name="magisk_outdated">Потрібно встановити нову версію Magisk!</string>
-    <string name="pref_category_repos">Репозиторії</string>
     <string name="pref_category_security">Безпека</string>
     <string name="pref_category_appearance">Зовнішній вигляд</string>
     <string name="master_delete">Видалити файли модуля\?</string>
@@ -93,7 +91,6 @@
     <string name="crash_reporting_restart_title">Перезапустити додаток, щоб застосувати зміни\?</string>
     <string name="crash_reporting_restart_message">Додаток необхідно перезавантажити, щоб застосувати цю опцію</string>
     <string name="restart">Перезавантажити</string>
-    <string name="androidacy_failed_to_parse_token">Не вдалося отримати маркер із Androidacy. Будь-ласка спробуйте пізніше.</string>
     <string name="androidacy_need_captcha">Оновлення Androidacy заблоковано Captcha</string>
     <string name="app_name">Fox\'s Magisk Менеджер Модулів</string>
     <string name="fail_root_denied">Відмовлено у root-доступі через додаток Magisk</string>
@@ -117,7 +114,6 @@
     <string name="wrap_text_desc">Показувати текст у кількох рядках замість розміщення всього тексту в одному рядку під час встановлення модуля.</string>
     <string name="androidacy_repo_info">Це сховище може відображати деяку ненав’язливу рекламу для покриття витрат на сервер і розробку. Включає огляди, автоматичне сканування на віруси тощо.</string>
     <string name="androidacy_test_mode_desc">Використовуйте проміжну кінцеву точку Androidacy замість кінцевої точки випуску. (Буде перезапущено додаток)</string>
-    <string name="language_support_outdated">Деякі переклади для поточної мови не є актуальними, будь ласка, спробуйте зробити внесок у переклади програми на GitHub</string>
     <string name="language_translated_by">Переклад: Uatel</string>
     <string name="crash_reporting">Автоматично повідомляти про помилки та продуктивність розробникам</string>
     <string name="crash_reporting_desc">Якщо вимкнути це, розробник не отримуватиме автоматичні звіти про помилки, і це може ускладнити усунення несправностей</string>
@@ -216,7 +212,6 @@
     <string name="not_official_build">Цей додаток є неофіційною збіркою AMM.</string>
     <string name="crash_text">Ой, ми потрапили в халепу!</string>=
     <string name="feedback_message">Розкажіть нам більше про те, що ви робили, коли це сталося. Чим більше, тим веселіше!</string>
-    <string name="feedback_submit">Надішліть і перезапустіть</string>
     <string name="sentry_dialogue_disabled">Звіти про збої відключено. Увімкніть їх, щоб надіслати відгук.</string>
     <string name="feedback_name">Ім\'я (необов\'язково)</string>
     <string name="feedback_email">Електронна скринька (необов\'язково)</string>
@@ -239,7 +234,6 @@
     <string name="api_key_mismatch">Ключ API має невірний формат</string>
     <string name="notification_update_ignore_desc">Список модулів, які потрібно виключити з перевірки оновлень</string>
     <string name="update_title">Оновити додаток</string>
-    <string name="update_button">Будь ласка, зачекайте…</string>
     <string name="background_update_check_excludes">Модулі, які потрібно виключити з автоматичних перевірок оновлень</string>
     <string name="update_message">Будь ласка, зачекайте поки ми перевіримо та встановимо оновлення для AMM. Це може зайняти декілька хвилин</string>
     <string name="notification_update_ignore_pref">Виключити модулі</string>
@@ -282,8 +276,6 @@
     <string name="notification_channel_category_app_update_description">Повідомляє, коли доступне оновлення додатку</string>
     <string name="notification_channel_background_update_app">Доступне оновлення додатку!</string>
     <string name="keep_tapping_to_enter_hogwarts">Продовжуйте натискати, щоб вас зарахували до Гоґвортсу!</string>
-    <string name="modules">Модулі</string>
-    <string name="yer_a_wizard_harry">Ти чарівник, Гаррі!</string>
     <string name="no_browser">У вас не відсутній браузер. Щоб продовжити, встановіть його.</string>
     <string name="setup_update_check_headline">Перевірка оновлень</string>
     <string name="setup_background_update_check_require_wifi">Вимагати Wi-Fi для перевірки оновлень</string>
@@ -343,7 +335,6 @@
     <string name="install_terminal_reboot_prevented">Перезавантаження вимкнено в налаштуваннях додатку</string>
     <string name="reboot">Перезавантаження</string>
     <string name="search">Пошук</string>
-    <string name="reboot_system">Звичайне перезавантаження</string>
     <string name="reboot_bootloader">Перезавантаження в завантажувач</string>
     <string name="reboot_edl">Перезавантаження в режим EDL</string>
     <string name="androidacy_api_error">Помилка під час обміну даними з API: %d</string>

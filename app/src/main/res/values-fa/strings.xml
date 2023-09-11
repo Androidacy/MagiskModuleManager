@@ -34,9 +34,7 @@
     <string name="prevent_reboot_pref">مانع از راه اندازی مجدد</string>
     <string name="enable_monet">فعال کردن سیاهی</string>
     <string name="pref_category_info">درباره</string>
-    <string name="licenses">مجوزها</string>
     <string name="show_incompatible_desc">نمایش ماژول‌هایی که بعید است بر اساس فراداده‌هایشان در دستگاه شما کار کنند</string>
-    <string name="pref_category_repos">مخزن ها</string>
     <string name="pref_category_security">امنیت</string>
     <string name="pref_category_appearance">ظاهر</string>
     <string name="master_delete">فایل های ماژول حذف شود؟</string>

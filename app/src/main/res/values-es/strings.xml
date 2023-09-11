@@ -52,11 +52,9 @@
     <string name="enable_monet">Activar Monet</string>
     <string name="pref_category_info">Información</string>
     <string name="show_licenses">Mostrar licencias</string>
-    <string name="licenses">Licencias</string>
     <string name="show_incompatible_pref">Mostrar módulos incompatibles</string>
     <string name="show_incompatible_desc">Mostrar los módulos que probablemente no funcionen en su dispositivo por función de sus meta datos</string>
     <string name="magisk_outdated">¡Hay una nueva versión de Magisk para instalar!</string>
-    <string name="pref_category_repos">Repositorios</string>
     <string name="pref_category_security">Seguridad</string>
     <string name="pref_category_appearance">Apariencia</string>
     <string name="master_delete_no">Dejar</string>
@@ -106,7 +104,6 @@
     <string name="crash_reporting_restart_message">La aplicación debe reiniciarse para aplicar esta configuración</string>
     <string name="restart">Reiniciar</string>
     <string name="androidacy_test_mode_disable_warning">La aplicación se reiniciará para desactivar el punto final de prueba</string>
-    <string name="androidacy_failed_to_parse_token">No se ha podido recuperar el token de Androidacy. Por favor, inténtelo de nuevo más tarde.</string>
     <string name="androidacy_need_captcha">Actualización de Androidacy bloqueada por Captcha</string>
     <string name="require_android_12">Requiere Android 12+</string>
     <string name="master_delete">¿Borrar los archivos del módulo\?</string>
@@ -118,7 +115,6 @@
     <string name="use_magisk_install_command_desc">Durante las pruebas causó problemas a la herramienta de diagnóstico de errores de instalación del módulo, por lo que esta opción se oculta tras el modo de desarrollador.
 \n¡Active esta opción bajo su propio riesgo!</string>
     <string name="androidacy_test_mode_pref">Modo de prueba de Androidacy</string>
-    <string name="language_support_outdated">Algunas traducciones para el idioma actual no están actualizadas, por favor considere contribuir a las traducciones de la aplicación en GitHub. Español 100%</string>
     <string name="crash_reporting_desc">Si desactiva esto, el desarrollador no recibirá informes automáticos de errores, lo que podría dificultar la resolución de problemas</string>
     <string name="api_key_removed">La clave API se ha restablecido correctamente</string>
     <string name="androidacy_test_mode_warning">Está configurando la aplicación para que utilice un punto final que no es de producción para Androidacy. Esto puede dar lugar a la inestabilidad de la aplicación y a la imposibilidad de cargar el repositorio en línea. NO informe de errores si tiene este interruptor activado. La aplicación se reiniciará para recargar los repos.</string>
@@ -215,7 +211,6 @@
     <string name="action_settings">Ajustes</string>
     <string name="setup_crash_reporting">Habilitar informe de errores</string>
     <string name="feedback_message">Danos más detalles acerca de lo que estabas haciendo cuando esto ocurrió. ¡Cuánto más, mejor!</string>
-    <string name="feedback_submit">Enviar y reiniciar</string>
     <string name="please_feedback">Por favor, ayúdanos diciéndonos lo que estabas intentando hacer cuando esto ocurrió.</string>
     <string name="sentry_dialogue_disabled">El envío de errores está desactivado. Actívalo para enviar datos.</string>
     <string name="feedback_name">Nombre (Opcional)</string>
@@ -241,10 +236,8 @@
     <string name="update_debug_warning">Parece que estás ejecutando una versión de depuración. Las versiones de depuración deben de ser actualizadas manualmente, y no se pueden actualizar en la app</string>
     <string name="background_update_check_excludes">Módulos que excluir de comprobaciones de actualizaciones automáticas</string>
     <string name="update_title">Actualizar aplicación</string>
-    <string name="update_button">Por favor espere…</string>
     <string name="update_message">Por favor espere mientras comprobamos e instalamos actualizaciones a AMM. Esto puede tardar algunos minutos</string>
     <string name="source_code_summary"><b>Compromiso</b> %1$s @ %2$s</string>
-    <string name="modules">Módulos</string>
     <string name="error_no_action">ERROR: Acción inválida especificada. Imposible continuar.</string>
     <string name="checking_for_update">Comprobando actualizaciones…</string>
     <string name="no_update_available">Todo actualizado!</string>
@@ -327,7 +320,6 @@
     <string name="error_encrypted_shared_preferences">Ha ocurrido un error leyendo las preferencias compartidas. Por favor reincia la aplicación.</string>
     <string name="notification_update_wifi_pref">Se necesita wi-fi o una red sin medición para comprobar actualizaciones. Se recomienda dejar activado si tienes datos móviles ilimitados.</string>
     <string name="notification_channel_category_app_update_description">Notifica cuando hay una actualización disponible</string>
-    <string name="yer_a_wizard_harry">Eres un mago, Harry!</string>
     <string name="keep_tapping_to_enter_hogwarts">Sigue tocando para ser admitido en Hogwarts!</string>
     <string name="no_browser">No tienes un navegador instalado. Por favor instalar uno para continuar.</string>
     <string name="crash_details_suggestion">El seguimiento de pila se puede encontrar a continuación. Sin embargo, <b>recomendamos mucho</b> que utilices el formulario de comentarios que se encuentra a continuación para enviar tus comentarios. De esta manera, en lugar de copiar manualmente el seguimiento de pila, se enviará automáticamente. Además, de esta manera se desofuscará y se informarán automáticamente detalles adicionales.</string>

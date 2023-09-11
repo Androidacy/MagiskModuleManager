@@ -72,7 +72,6 @@
     <string name="prevent_reboot_pref">منع إعادة التشغيل</string>
     <string name="enable_monet">تفعيل Monet</string>
     <string name="show_licenses">إظهار التراخيص</string>
-    <string name="licenses">التراخيص</string>
     <string name="show_incompatible_pref">‌عرض الإضافات الغير مدعومة</string>
     <string name="magisk_outdated">هناك إصدار جديد من Magisk للتثبيت!</string>
     <string name="pref_category_security">الأمان</string>
@@ -90,7 +89,6 @@
     <string name="module_min_sdk_chip">الإصدار الأدنى المطلوب من Android</string>
     <string name="module_max_sdk_chip">الإصدار الأقصى من Android</string>
     <string name="prevent_reboot_desc">منع عمليات إعادة التشغيل الغير متوقعة</string>
-    <string name="pref_category_repos">ريبوز</string>
     <string name="theme_pref">خلفية</string>
     <string name="source_code">المصدر (سورس كود)</string>
     <string name="file_picker_failure">تعذر على منتقي الملفات الحالي الوصول إلى الملف.</string>
@@ -126,7 +124,6 @@
     <string name="crash_reporting_restart_title">إعادة تشغيل التطبيق لتطبيق التغييرات؟</string>
     <string name="crash_reporting_restart_message">يحتاج التطبيق إلى إعادة التشغيل لتطبيق هذا الإعداد</string>
     <string name="restart">إعادة التشغيل</string>
-    <string name="androidacy_failed_to_parse_token">تعذر استرداد التوكن من Androidacy. يرجى إعادة المحاولة لاحقا.</string>
     <string name="androidacy_need_captcha">تم حظر تحديث Androidacy بواسطة Captcha</string>
     <string name="api_key_restart">تم تغيير مفتاح API. أعد تشغيل التطبيق لتطبيق التغييرات.</string>
     <string name="permission_notification_title">السماح بالإشعارات؟</string>
@@ -148,7 +145,6 @@
     <string name="clear_data_dialogue_title">مسح بيانات التطبيق؟</string>
     <string name="clear_data_dialogue_message">أنت على وشك مسح بيانات التطبيق. يرجى تأكيد هذا الإجراء.</string>
     <string name="notification_update_desc">قد يزيد من استخدام البطارية</string>
-    <string name="language_support_outdated">بعض الترجمات للغة الحالية ليست محدثة ، يرجى التفكير في المساهمة في ترجمات التطبيق على GitHub</string>
     <string name="crash_reporting_desc">إذا قمت بتعطيل هذا ، فلن يحصل المطور على تقارير الأخطاء تلقائياً، وقد يؤدي ذلك إلى صعوبة استكشاف الأخطاء وإصلاحها</string>
     <string name="api_key_summary">استخدم مفتاح API مخصص ل Androidacy. مفيد للمشتركين المميزين ، لإزالة الإعلانات والمزيد.</string>
     <string name="androidacy_test_mode_warning">أنت تقوم بإعداد التطبيق لاستخدام نقطة نهاية غير إنتاجية ل Androidacy. قد يؤدي هذا إلى عدم استقرار التطبيق والفشل في تحميل الريبو عبر الإنترنت. لا تبلغ عن الأخطاء إذا كان هذا المفتاح مفعل. سيتم إعادة تشغيل التطبيق لإعادة تحميل الريبو.</string>
@@ -208,7 +204,6 @@
     <string name="update_debug_download_pref">آلية تنزيل التحديثات الاختبارية</string>
     <string name="reset_api_key">إعادة تعيين مفاتيح API</string>
     <string name="upgrade_androidacy_promo">الترقية إلى الإصدار المميز</string>
-    <string name="feedback_submit">إرسال وإعادة تشغيل</string>
     <string name="please_feedback">الرجاء مساعدتنا من خلال إخبارنا بما كنت تحاول القيام به عندما حدث هذا.</string>
     <string name="feedback_name">الأسم (اختياري)</string>
     <string name="feedback_email">البريد الإلكتروني (اختياري)</string>
@@ -229,7 +224,6 @@
     <string name="pref_category_updates">التحديثات</string>
     <string name="update_title">تحديث التطبيق</string>
     <string name="update_message">يرجى الانتظار بينما نتحقق من وجود تحديثات ل AMM وتثبيتها. قد يستغرق هذا بضع دقائق</string>
-    <string name="update_button">الرجاء الانتظار…</string>
     <string name="notification_update_summary">يمكن تحديث الإضافات التالية:</string>
     <string name="notification_update_module_template">من الإصدار %1$s إلى الإصدار %2$s</string>
     <string name="notification_channel_background_update">جاري التحقق من وجود تحديثات…</string>
@@ -270,9 +264,7 @@
     <string name="add_repo_message">يجب تقديم الريبوز عبر HTTPS ، ويجب أن تتبع المواصفات الموضحة في الوثائق.</string>
     <string name="notification_channel_background_update_description">يقوم AMM بالتحقق من وجود تحديثات في الخلفية.</string>
     <string name="notification_channel_category_background_update_description">عرض إشعار أثناء التحقق من وجود تحديثات حتى لا يتم قتلها بواسطة النظام</string>
-    <string name="yer_a_wizard_harry">يا ساحر ، هاري!</string>
     <string name="keep_tapping_to_enter_hogwarts">استمر في النقر للقبول في هوجورتس!</string>
-    <string name="modules">الإضافات</string>
     <string name="no_browser">ليس لديك متصفح مثبت. الرجاء تثبيت واحد للمتابعة.</string>
     <string name="online">عبر الإنترنت</string>
     <string name="safe">آمن</string>
@@ -336,7 +328,6 @@
     <string name="error_creating_modulelistcache_database">فشل إنشاء ذاكرة تخزين مؤقتة (كيتش) لقاعدة الإضافة</string>
     <string name="blur_performance_warning_summary">الجهاز غير متوافق مع التمويه (Blur)</string>
     <string name="reboot">إعادة التشغيل</string>
-    <string name="reboot_system">إعادة التشغيل بشكل طبيعي</string>
     <string name="reboot_recovery">إعادة التشغيل إلى الركفري</string>
     <string name="reboot_bootloader">إعادة التشغيل إلى البووتلاودر</string>
     <string name="reboot_edl">إعادة التشغيل إلى وضع EDL</string>
@@ -347,10 +338,6 @@
     <string name="app_name_v2">اندرويداسي مدير الإضافات</string>
     <string name="app_name_short_v2">AMM</string>
     <string name="search">بحث</string>
-    <string name="title_activity_expired">نشاط منتهي</string>
-    <string name="title_home">القائمة الرئيسية</string>
-    <string name="title_dashboard">لوحة المعلومات</string>
-    <string name="title_notifications">الإشعارات</string>
     <string name="expired">هذا الإصدار منتهي!</string>
     <string name="expired_message">الإصدار الذي تستخدمه منتهي وليس قابل للتشغيل بعد الآن. الرجاء التحديث إلى آخر اصدار مستقر.</string>
     <string name="download_latest">تنزيل الأحدث</string>

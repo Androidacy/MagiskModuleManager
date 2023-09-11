@@ -5,11 +5,11 @@ import android.content.ClipboardManager
 import android.content.Context
 import android.os.Bundle
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKey
-import com.fox2code.foxcompat.app.FoxActivity
 import com.fox2code.mmm.BuildConfig
 import com.fox2code.mmm.MainApplication
 import com.fox2code.mmm.R
@@ -47,7 +47,7 @@ class InfoFragment : PreferenceFragmentCompat() {
         setPreferencesFromResource(R.xml.app_info_preferences, rootKey)
 
         val clipboard =
-            requireContext().getSystemService(FoxActivity.CLIPBOARD_SERVICE) as ClipboardManager
+            requireContext().getSystemService(AppCompatActivity.CLIPBOARD_SERVICE) as ClipboardManager
         var linkClickable: LongClickablePreference?
         if (BuildConfig.DEBUG || BuildConfig.ENABLE_AUTO_UPDATER) {
             linkClickable = findPreference("pref_report_bug")
@@ -119,7 +119,7 @@ class InfoFragment : PreferenceFragmentCompat() {
                 Preference.OnPreferenceClickListener { _: Preference? ->
                     // open fox
                     IntentHelper.openUrl(
-                        FoxActivity.getFoxActivity(this), "https://paypal.me/fox2code"
+                        MainApplication.INSTANCE!!.lastActivity!!, "https://paypal.me/fox2code"
                     )
                     true
                 }
@@ -151,7 +151,7 @@ class InfoFragment : PreferenceFragmentCompat() {
                         Toast.makeText(requireContext(), toastText, Toast.LENGTH_SHORT).show()
                         // open androidacy
                         IntentHelper.openUrl(
-                            FoxActivity.getFoxActivity(this),
+                            MainApplication.INSTANCE!!.lastActivity!!,
                             "https://www.androidacy.com/membership-join/?utm_source=foxmmm&utm_medium=app&utm_campaign=donate"
                         )
                         true

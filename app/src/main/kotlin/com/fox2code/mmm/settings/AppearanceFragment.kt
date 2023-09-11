@@ -10,13 +10,13 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.preference.ListPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.TwoStatePreference
 import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKey
-import com.fox2code.foxcompat.app.FoxActivity
 import com.fox2code.mmm.BuildConfig
 import com.fox2code.mmm.MainApplication
 import com.fox2code.mmm.R
@@ -101,8 +101,6 @@ class AppearanceFragment : PreferenceFragmentCompat() {
                             // Refresh activity
                             UiThreadHandler.handler.postDelayed({
                                 MainApplication.INSTANCE!!.updateTheme()
-                                FoxActivity.getFoxActivity(this)
-                                    .setThemeRecreate(MainApplication.INSTANCE!!.getManagerThemeResId())
                             }, 1)
                             val intent = Intent(requireContext(), SettingsActivity::class.java)
                             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
@@ -121,7 +119,7 @@ class AppearanceFragment : PreferenceFragmentCompat() {
                 }
                 UiThreadHandler.handler.postDelayed({
                     MainApplication.INSTANCE!!.updateTheme()
-                    FoxActivity.getFoxActivity(this).setThemeRecreate(MainApplication.INSTANCE!!.getManagerThemeResId())
+                    MainApplication.INSTANCE!!.lastActivity!!
                 }, 1)
                 true
             }
@@ -134,7 +132,6 @@ class AppearanceFragment : PreferenceFragmentCompat() {
         disableMonet!!.onPreferenceClickListener = Preference.OnPreferenceClickListener {
             UiThreadHandler.handler.postDelayed({
                 MainApplication.INSTANCE!!.updateTheme()
-                (requireActivity() as FoxActivity).setThemeRecreate(MainApplication.INSTANCE!!.getManagerThemeResId())
             }, 1)
             true
         }
@@ -201,7 +198,7 @@ class AppearanceFragment : PreferenceFragmentCompat() {
         languageSelectorCta.onPreferenceLongClickListener =
             LongClickablePreference.OnPreferenceLongClickListener { _: Preference? ->
                 val clipboard =
-                    requireContext().getSystemService(FoxActivity.CLIPBOARD_SERVICE) as ClipboardManager
+                    requireContext().getSystemService(AppCompatActivity.CLIPBOARD_SERVICE) as ClipboardManager
                 val clip =
                     ClipData.newPlainText("URL", "https://translate.nift4.org/engage/foxmmm/")
                 clipboard.setPrimaryClip(clip)

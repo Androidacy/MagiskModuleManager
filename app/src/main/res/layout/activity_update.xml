@@ -22,7 +22,6 @@
         <!-- Activity used to download and install app updates -->
         <!-- first, upgrade icon -->
         <ImageView
-            android:id="@+id/update_icon"
             android:layout_width="101dp"
             android:layout_height="101dp"
             android:layout_gravity="center"
@@ -31,7 +30,6 @@
             android:src="@drawable/baseline_system_update_24" />
 
         <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/update_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -41,7 +39,6 @@
             android:textAppearance="?attr/textAppearanceHeadline6" />
 
         <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/update_subtitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -68,7 +65,6 @@
 
         <!-- Invisible warning for debug builds -->
         <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/update_debug_warning"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="16dp"

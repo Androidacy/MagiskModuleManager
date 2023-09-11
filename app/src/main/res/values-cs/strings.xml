@@ -35,11 +35,9 @@
     <string name="showcase_mode_desc">Omezený režim brání správci provádět akce s moduly</string>
     <string name="pref_category_info">Info</string>
     <string name="show_licenses">Zobrazit licence</string>
-    <string name="licenses">Licence</string>
     <string name="show_incompatible_pref">Zobrazit nekompatibilní moduly</string>
     <string name="show_incompatible_desc">Zobrazit moduly, které nejsou podle jejich metadat kompatibilní s vaším zařízením</string>
     <string name="magisk_outdated">Magisk je zastaralý!</string>
-    <string name="pref_category_repos">Úložiště</string>
     <string name="master_delete">Smazat soubory modulu?</string>
     <string name="master_delete_no">Ponechat soubory</string>
     <string name="master_delete_yes">Smazat soubory</string>
@@ -105,7 +103,6 @@
     <string name="crash_reporting_desc">Zakážete-li tohle, vývojář nebude dostávat automatické zprávy o chybách, což může ztížit odstraňování problémů</string>
     <string name="prevent_reboot_desc">Zabránit neočekávaným rebootům</string>
     <string name="androidacy_test_mode_desc">Použít testovací endpoint místo endpointu vydání (Restartuje aplikaci)</string>
-    <string name="language_support_outdated">Některé překlady pro aktuální jazyk můžou být starší, zvažte prosím přispění k překladům aplikací na GitHubu</string>
     <string name="link_copied">Odkaz zkopírován</string>
     <string name="androidacy_test_mode_pref">Testovací režim Androidacy</string>
     <string name="notification_update_title">Nalezeno %1$d aktualizací modulů</string>
@@ -128,7 +125,6 @@
     <string name="dont_ask_again">Neptejte se znovu</string>
     <string name="androidacy_repo_disabled">Tenhle repozitář je momentálně zakázán</string>
     <string name="androidacy_failed_to_validate_token">Nelze oveřit Androidacy token. Prosím zkuste to znovu později.</string>
-    <string name="androidacy_failed_to_parse_token">Nelze načíst Androidacy token. Prosím zkuste to znovu později.</string>
     <string name="androidacy_need_captcha">Aktualizaci Androidacy blokuje Captcha</string>
     <string name="api_key_invalid">Klíč Androidacy nelze ověřit. Skontrolujte jej a zkuste opět.</string>
     <string name="api_key_valid">Klíč API je platný.</string>
@@ -204,7 +200,6 @@
     <string name="error_saving_logs">Protokoly se nedají uložit</string>
     <string name="share_logs">Sdílet protokoly AMM</string>
     <string name="keep_tapping_to_enter_hogwarts">Pokračujte v klikání, aby vás přijali do Bradavic!</string>
-    <string name="modules">Moduly</string>
     <string name="error_no_extras">ERROR: Chybná data při spuštění</string>
     <string name="update_debug_warning">Zdá se, že spouštíte debug sestavení. Debug sestavení musíte aktualizovat ručně a aktualizace v aplikaci nejsou podporováný</string>
     <string name="error_no_action">CHYBA: Byla zadána neplatná akce. Nebude se pokračovat.</string>
@@ -226,7 +221,6 @@
     <string name="upgrade_androidacy_promo_desc">Přechodem na prémiovou verzi odstraníte reklamy, CAPTCHA a stahování pro úložiště Androidacy a podpoříte Androidacy a autory modulů.</string>
     <string name="crash_text">Uh-oh, narazili jsme na zádrhel!</string>
     <string name="feedback_message">Řekněte nám více podrobností o tom, co jste dělali, když se to stalo. Čím více tím lépe!</string>
-    <string name="feedback_submit">Odeslat a restartovat</string>
     <string name="please_feedback">Pomozte nám prosím tím, že nám řekněte, co jste se snažili udělat, když se to stalo.</string>
     <string name="sentry_dialogue_disabled">Hlášení o pádu je zakázáno. Chcete-li odeslat zpětnou vazbu, povolte ji.</string>
     <string name="feedback_name">Název (volitelné)</string>
@@ -285,7 +279,6 @@
     <string name="notification_channel_background_update_app">Je dostupná aktualizace aplikace!</string>
     <string name="notification_channel_background_update_app_description">Je dostupná aktualizace AMM. Klikněte zde pro aktualizaci.</string>
     <string name="setup_update_check_headline">Kontroly aktualizací</string>
-    <string name="update_button">Čekejte prosím…</string>
     <string name="notification_channel_background_update">Kontrola aktualizací…</string>
     <string name="zip_intent_module_install">Vážně chceš nainstalovat modul \"%1$s\" ze ZIP souboru \"%2$s\"\?
 \n
@@ -294,7 +287,6 @@
     <string name="update_message">Počkejte prosím, než zkontrolujeme a nainstalujeme aktualizace AMM. Může to trvat pár minut</string>
     <string name="error_download_update">Při stahování informací o aktualizaci došlo k chybě.</string>
     <string name="low_quality_module_desc">Tento modul obsahuje metadata, která jsou buď neplatná, nebo jsou považována za označení modulu nízké kvality. Doporučuje se odinstalace.</string>
-    <string name="yer_a_wizard_harry">Jsi čaroděj, Harry!</string>
     <string name="no_browser">Nemáte nainstalován prohlížeč. Pro pokračování nejaký nainstalujte.</string>
     <string name="setup_background_update_check_require_wifi">Pro kontrolu aktualizací vyžadovat WiFi</string>
     <string name="setup_background_update_check_require_wifi_summary">K provádění kontrol aktualizací využívat WiFi nebo jiné neměřené připojení</string>

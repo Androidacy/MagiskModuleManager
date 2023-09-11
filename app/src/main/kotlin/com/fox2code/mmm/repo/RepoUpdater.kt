@@ -20,7 +20,6 @@ import java.util.concurrent.atomic.AtomicBoolean
 class RepoUpdater(repoData2: RepoData) {
     private var indexRaw: ByteArray? = null
 
-    @JvmField
     var repoData: RepoData = repoData2
     private var toUpdate: List<RepoModule>? = null
     private var toApply: Collection<RepoModule>? = null
@@ -120,7 +119,7 @@ class RepoUpdater(repoData2: RepoData) {
                 toApply = repoData.moduleHashMap.values
                 return 0
             }
-            indexRaw = repoData.getUrl()?.let { doHttpGet(it, false) }
+            indexRaw = doHttpGet(repoData.url, false)
             toUpdate = repoData.populate(JSONObject(String(indexRaw!!, StandardCharsets.UTF_8)))
             // Since we reuse instances this should work
             toApply = HashSet(repoData.moduleHashMap.values)

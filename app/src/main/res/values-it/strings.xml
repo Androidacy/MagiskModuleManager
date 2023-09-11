@@ -59,11 +59,9 @@
     <string name="enable_monet">Abilita Monet</string>
     <string name="pref_category_info">Informazioni</string>
     <string name="show_licenses">Mostra licenze</string>
-    <string name="licenses">Licenze</string>
     <string name="show_incompatible_pref">Mostra moduli incompatibili</string>
     <string name="show_incompatible_desc">Mostra i moduli che in base ai metadati sono incompatibili con il tuo dispositivo</string>
     <string name="magisk_outdated">Nuova versione di Magisk da installare!</string>
-    <string name="pref_category_repos">Repository</string>
     <string name="pref_category_security">Sicurezza</string>
     <string name="pref_category_appearance">Aspetto</string>
     <string name="master_delete">Rimuovere i dati del modulo?</string>
@@ -112,8 +110,6 @@
     <!-- Imposta su true nel file di traduzione se la tua lingua è da destra a sinistra -->
     <bool name="lang_support_rtl">false</bool>
     <!-- Copia sempre language_support_level durante la traduzione -->
-    <integer name="language_support_level">1</integer>
-    <string name="language_support_outdated">Alcune traduzioni per la lingua corrente non sono aggiornate, ti preghiamo di considerare di contribuire alle traduzioni dell\'app su GitHub</string>
     <!-- Sostituisci con il tuo nome utente durante la traduzione -->
     <string name="language_translated_by">Traduzione di CRANKV2</string>
     <string name="crash_reporting">Segnala automaticamente problemi e prestazioni agli sviluppatori</string>
@@ -129,7 +125,6 @@
     <string name="androidacy_test_mode_warning">Stai impostando l\'app in modo che utilizzi un endpoint non di produzione per Androidacy. Ciò potrebbe comportare l\'instabilità dell\'app e il mancato caricamento del repository online. NON segnalare bug se hai attivato questo interruttore. L\'app verrà riavviata per ricaricare i repository.</string>
     <string name="api_key_restart">La chiave API è stata modificata. Riavvia l\'app per applicare le modifiche.</string>
     <string name="permission_notification_message">Abbiamo bisogno dell\'autorizzazione per le notifiche per informarti sugli aggiornamenti di app e moduli. Se non concedi questa autorizzazione, i controlli automatici degli aggiornamenti non verranno eseguiti.</string>
-    <string name="androidacy_failed_to_parse_token">Impossibile recuperare il token da Androidacy. Per favore riprova più tardi.</string>
     <string name="androidacy_failed_to_validate_token">Impossibile convalidare il token per Androidacy. Per favore riprova più tardi.</string>
     <string name="androidacy_need_captcha">Aggiornamento Androidacy bloccato da Captcha</string>
     <string name="link_copied">Collegamento copiato</string>
@@ -210,7 +205,6 @@
     <string name="zip_load_failed">Impossibile caricare il file zip</string>
     <string name="source_code_summary"><b>Commit</b> %1$s @ %2$s</string>
     <string name="no_file_provided">Nessun file fornito mentre si prova ad aprire il file zip.</string>
-    <string name="update_button">Perfavore aspetta…</string>
     <string name="pref_category_contributors">Collaboratori</string>
     <string name="fox2code_thanks_desc">Fox2Code è il creatore originale dell\'app. Senza di lui, questo non sarebbe mai stato possibile.</string>
     <string name="fox2code_thanks">Creato da Fox2Code</string>
@@ -223,7 +217,6 @@
     <string name="reset_api_key">Reimposta le chiavi API</string>
     <string name="upgrade_androidacy_promo">Passa a premium</string>
     <string name="crash_text">Abbiamo avuto un problema!</string>
-    <string name="feedback_submit">Invia e riavvia</string>
     <string name="please_feedback">Perfavore aiutaci dicendoci cosa stavi facendo quando è accaduto.</string>
     <string name="sentry_dialogue_disabled">La segnalazione degli arresti anomali è disattivata. Abilitala per inviarci dei feedback.</string>
     <string name="feedback_name">Nome (opzionale)</string>
@@ -273,9 +266,7 @@
     <string name="background_update_check_excludes">Moduli da escludere dal controllo automatica degli aggiornamenti</string>
     <string name="update_message">Si prega di attendere mentre controlliamo e installiamo gli aggiornamenti di AMM. L\'operazione potrebbe richiedere alcuni minuti</string>
     <string name="checking_for_update">Cercando aggiornamenti…</string>
-    <string name="yer_a_wizard_harry">Sei un mago, Harry!</string>
     <string name="keep_tapping_to_enter_hogwarts">Continua a premere per essere ammesso ad Hogwarts!</string>
-    <string name="modules">Moduli</string>
     <string name="no_browser">Non hai un browser installato. Installane uno per continuare.</string>
     <string name="invalid_repo_url">L\'URL della repo non è corretto</string>
     <string name="add_repo_message">Le repository devono essere su protocollo HTTPS, e devono seguire le specifiche della documentazione.</string>

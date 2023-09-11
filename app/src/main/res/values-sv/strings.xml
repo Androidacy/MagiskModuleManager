@@ -66,7 +66,6 @@
     <string name="wrap_text_desc">Bryt text till fler rader istället för att visa allt på samma rad när moduler installeras.</string>
     <string name="androidacy_repo_info">Detta förråd kan komma att visa icke-påträngande annonser för att täcka server- och utvecklingskostnader. Erbjuder betyg, viruskontroller, mm.</string>
     <string name="androidacy_test_mode_desc">Använd Androidacys provmiljö istället för produktion. (Orsakar omstart av appen)</string>
-    <string name="language_support_outdated">Vissa översättningar för nuvarande språk är inte uppdaterade, överväg gärna att bidra till översättningar på GitHub</string>
     <string name="app_update_available">En ny version av appen finns att tillgå</string>
     <string name="no_desc_found">Ingen beskrivning hittades.</string>
     <string name="download_module">Hämta modul</string>
@@ -85,11 +84,9 @@
     <string name="require_android_12">Kräver Android 12+</string>
     <string name="install_terminal_reboot_now">Starta om</string>
     <string name="language">Språk</string>
-    <string name="licenses">Licenser</string>
     <string name="show_incompatible_pref">Visa inkompatibla moduler</string>
     <string name="show_incompatible_desc">Visa moduler som troligen inte fungerar på din enhet baserat på deras metadata</string>
     <string name="magisk_outdated">Den ny version av Magisk går att installera!</string>
-    <string name="pref_category_repos">Förråd</string>
     <string name="pref_category_security">Säkerhet</string>
     <string name="pref_category_appearance">Utseende</string>
     <string name="master_delete">Radera modulens filer\?</string>
@@ -127,7 +124,6 @@
     <string name="crash_reporting_restart_message">Appen måste startas om för att verkställa den här inställningen</string>
     <string name="restart">Omstart</string>
     <string name="androidacy_test_mode_disable_warning">Appen startas om för att inaktivera icensättningsslutpunkten</string>
-    <string name="androidacy_failed_to_parse_token">Kunde inte erhålla token från Androidycy. Försök igen senare.</string>
     <string name="androidacy_failed_to_validate_token">Kunde inte validera token för Androidycy. Försök igen senare.</string>
     <string name="androidacy_need_captcha">Androidacyuppdatering blockerades av Captcha</string>
     <string name="api_key_restart">Api-nyckeln har ändrats. Starta om appen för att verkställa ändringarna.</string>

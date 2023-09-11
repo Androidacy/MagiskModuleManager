@@ -35,11 +35,9 @@
     <string name="showcase_mode_desc">Lukustusrežiim väldib halduris moodulite haldamist</string>
     <string name="pref_category_info">Info</string>
     <string name="show_licenses">Kuva litsentsid</string>
-    <string name="licenses">Litsentsid</string>
     <string name="show_incompatible_pref">Kuva ühildumatud moodulid</string>
     <string name="show_incompatible_desc">Kuva moodulid, mis ei ühildu metaandmete alusel sinu seadmega</string>
     <string name="magisk_outdated">Magisk on aegunud!</string>
-    <string name="pref_category_repos">Hoidlad</string>
     <string name="master_delete">Kustuta mooduli failid?</string>
     <string name="master_delete_no">Säilita failid</string>
     <string name="master_delete_yes">Kustuta failid</string>

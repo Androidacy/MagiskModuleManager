@@ -22,7 +22,6 @@ class CustomRepoManager internal constructor(
 ) {
     private val customRepos: Array<String?> = arrayOfNulls(MAX_CUSTOM_REPOS)
 
-    @JvmField
     var dirty = false
     var repoCount: Int
         private set

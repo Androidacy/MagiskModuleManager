@@ -6,7 +6,6 @@
     <string name="prevent_reboot_pref">재시작 방지</string>
     <string name="enable_monet">Monet 활성화</string>
     <string name="show_licenses">라이센스 보기</string>
-    <string name="licenses">라이센스</string>
     <string name="magisk_outdated">설치할 수 있는 새로운 버전의 Magisk가 있습니다!</string>
     <string name="pref_category_security">보안</string>
     <string name="master_delete_yes">삭제</string>
@@ -58,7 +57,6 @@
     <string name="manage_repos_pref">저장소 관리</string>
     <string name="notification_update_desc">배터리 사용량을 늘릴 수 있습니다</string>
     <string name="showcase_mode_pref">잠금 모드</string>
-    <string name="language_support_outdated">현재 언어의 몇몇 변역이 최신이 아닙니다. GitHub에서 변역에 기여해주세요</string>
     <string name="showcase_mode_desc">잠금 모드는 관리자가 모듈 작업을 수행하지 못하도록 막습니다</string>
     <string name="prevent_reboot_desc">예지치 않은 재시작 방지</string>
     <string name="pref_category_info">정보</string>
@@ -66,7 +64,6 @@
     <string name="show_incompatible_pref">호환되지 않는 모듈 표시하기</string>
     <string name="warning">경고!</string>
     <string name="show_incompatible_desc">메타데이터 상 기기에서 작동하지 않을 수 있는 모듈 표시</string>
-    <string name="pref_category_repos">레포</string>
     <string name="pref_category_appearance">외양</string>
     <string name="androidacy_test_mode_warning">Androidacy 비 상용 엔드포인트를 사용하도록 앱을 설정하고 있습니다. 이로 인해 앱이 불안정해지고 온라인 저장소를 로드하지 못할 수 있습니다. 이 스위치가 켜져 있으면 버그를 보고하지 마십시오. 저장소를 다시 로드하기 위해 앱이 다시 시작됩니다.</string>
     <string name="crash_reporting_restart_title">변경사항을 적용하기 위해 앱을 다시 시작하겠습니까\?</string>
@@ -121,7 +118,6 @@
     <string name="support">지원</string>
     <string name="donate">기부</string>
     <string name="require_android_12">안드로이드 12 이상 필요</string>
-    <string name="androidacy_failed_to_parse_token">Androidacy에서 토큰을 가져올 수 없습니다. 나중에 다시 시도해 주세요.</string>
     <string name="androidacy_failed_to_validate_token">Androidacy 토큰을 검증할 수 없습니다. 나중에 다시 시도해 주세요.</string>
     <string name="api_key_unchanged">입력한 API 키가 지금 사용중인 것과 동일합니다.</string>
     <string name="permission_notification_title">알림을 허용하시겠습니까\?</string>
@@ -225,7 +221,6 @@
     <string name="upgrade_androidacy_promo_desc">프리미엄으로 업그레이드하면 Androidacy 저장소에 대한 광고, 보안 문자 및 다운로드가 제거되고 Androidacy 및 모듈 제작자가 지원됩니다.</string>
     <string name="crash_text">어-오, 뭔가 이상해 졌어요!</string>
     <string name="feedback_message">이 일이 발생했을 때에 대해 자세히 알려주십시오. 자세할수록 더 편리해질 것입니다!</string>
-    <string name="feedback_submit">제출 및 다시 시작</string>
     <string name="crash_details_copied">스택트레이스를 클립보드에 복사했습니다!</string>
     <string name="crash_full_stacktrace">스택트레이스:
 \n%1$s</string>
@@ -238,7 +233,6 @@
     <string name="notification_update_ignore_desc">업데이트에서 제외될 모듈 목록</string>
     <string name="update_title">앱 업데이트</string>
     <string name="update_message">AMM에 대한 업데이트를 확인하고 설치하는 동안 잠시 기다려 주십시오. 이 작업은 몇 분 정도 걸릴 수 있습니다</string>
-    <string name="update_button">잠시 가다려주세요…</string>
     <string name="error_no_extras">에러: 실행중 옳지 않은 정보를 받았습니다</string>
     <string name="update_debug_warning">디버그 빌드를 실행 중인 것 같습니다. 디버그 빌드는 수동으로 업데이트해야 하며 인앱 업데이트를 지원하지 않습니다</string>
     <string name="update_available">업데이트 발견</string>

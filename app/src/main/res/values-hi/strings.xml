@@ -41,9 +41,7 @@
     <string name="enable_monet">मोनेट सक्षम करें</string>
     <string name="pref_category_info">जानकारी</string>
     <string name="show_licenses">लाइसेंस दिखाएँ</string>
-    <string name="licenses">लाइसेंसेज</string>
     <string name="magisk_outdated">मैजिस्क का एक नया संस्करण इंस्टॉल करने के लिए उपलब्ध है!</string>
-    <string name="pref_category_repos">रिपोज़</string>
     <string name="pref_category_security">सुरक्षा</string>
     <string name="app_name">फॉक्स का मैजिस्क मॉड्यूल प्रबंधक</string>
     <string name="fail_root_magisk">न तो रूट तक पहुंच सका, न मैजिस्क तक पहुंच सका</string>

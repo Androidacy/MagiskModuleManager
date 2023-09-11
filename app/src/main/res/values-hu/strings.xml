@@ -19,7 +19,6 @@
     <string name="app_name">Fox\'s Magisk Module Manager</string>
     <string name="fail_root_magisk">Nem található root vagy Magisk hozzáférés</string>
     <string name="failed_download">Nem sikerült letölteni a fájlt</string>
-    <string name="licenses">Licencek</string>
     <string name="magisk_outdated">Elérhető egy újabb Magisk verzió!</string>
     <string name="master_delete_fail">Nem sikerült törölni a modulfájlokat</string>
     <string name="magisk_builtin_module">Magisk beépített modul</string>
@@ -27,7 +26,6 @@
     <string name="disable_low_quality_module_filter_pref">Alacsony minőségű modulok mutatása</string>
     <string name="disable_low_quality_module_filter_desc">Vannak modulok, amelyek metaadata nem megfelelő, amely vizuális hibákhoz vezet és/vagy a modul gyenge minőségét okozza.
 \nCsak saját felelősségedre kapcsold be!</string>
-    <string name="language_support_outdated">Néhány fordítás a jelenlegi nyelvnél nem naprakész. Fontold meg a fordításban való közreműködést GitHub-on</string>
     <string name="crash_reporting_desc">Ha letiltod, akkor a fejlesztő nem kapja meg a hibajelzéseket, ami megnehezíti a hibák javítását</string>
     <string name="permission_notification_title">Engedélyezed az értesítéseket\?</string>
     <string name="permission_notification_message">Hozzáférés szükséges az értesítésekhez a frissítési értesítések megjelenítéséhez. Ha nem adsz engedélyt, akkor a frissítések keresése nem fog működni a háttérben.</string>
@@ -70,7 +68,6 @@
     <string name="showcase_mode_desc">Zárolt üzemmódban az alkalmazás nem tud műveletet végrehajtani a modulokkal</string>
     <string name="showcase_mode">Az alkalmazás zárolt üzemmódban van</string>
     <string name="show_incompatible_pref">Inkompatibilis modulok megjelenítése</string>
-    <string name="pref_category_repos">Repok</string>
     <string name="pref_category_security">Biztonság</string>
     <string name="pref_category_appearance">Kinézet</string>
     <string name="master_delete">Törlöd a modulfájlokat\?</string>
@@ -178,7 +175,6 @@
     <string name="api_key_summary">Egyedi Androidacy API kulcs használata. Hasznos a prémium előfizetőknek például a reklámos elrejtéséhez.</string>
     <string name="androidacy_test_mode_warning">Az alkalmazást úgy állítja be, hogy egy nem-produktív végpontot használjon az Androidacy számára. Ez az alkalmazás instabilitásához és az online repo betöltésének sikertelenségéhez vezethet. Ne jelentsd a hibákat, ha bekapcsolod ez a funkciót. Az alkalmazás újra fog indulni a repók újratöltéséhez.</string>
     <string name="androidacy_test_mode_disable_warning">Az alkalmazás újra fog indulni a staging végpont letiltásához</string>
-    <string name="androidacy_failed_to_parse_token">Nem sikerült a token beszerzése az Androidacy-tól. Kérlek próbáld később.</string>
     <string name="androidacy_failed_to_validate_token">Nem sikerült a token validálása az Androidacy-hoz. Kérlek, próbáld újra.</string>
     <string name="androidacy_need_captcha">Az Androidacy frissítést a Captcha blokkolta</string>
     <string name="api_key_invalid">Nem sikerült érvényesíteni az API-kulcsot. Kérjük, ellenőrizd és próbálja újra.</string>

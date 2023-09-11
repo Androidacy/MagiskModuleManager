@@ -3,8 +3,7 @@
   -->
 
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/bottom_nav_menu">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
     <!-- two options: "Installed" and "Online" -->
     <item
         android:id="@+id/installed_menu_item"

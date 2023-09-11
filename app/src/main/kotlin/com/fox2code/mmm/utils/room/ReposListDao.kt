@@ -9,7 +9,6 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 
-@Suppress("unused")
 @Dao
 interface ReposListDao {
     // contains

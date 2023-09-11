@@ -33,8 +33,6 @@ class ModuleViewListBuilder(private val activity: Activity) {
     private val queryLock = Any()
     private var query = ""
     private var updating = false
-    private var headerPx = 0
-    private var footerPx = 0
     private var tries = 0
     private var moduleSorter: ModuleSorter = ModuleSorter.UPDATE
     private var updateInsets = RUNNABLE
@@ -147,13 +145,6 @@ class ModuleViewListBuilder(private val activity: Activity) {
                 )
             }
         }
-    }
-
-    fun refreshNotificationsUI(moduleViewAdapter: ModuleViewAdapter) {
-        val notificationCount = notifications.size
-        notifySizeChanged(
-            moduleViewAdapter, 0, notificationCount, notificationCount
-        )
     }
 
     private fun matchFilter(moduleHolder: ModuleHolder): Boolean {
@@ -327,14 +318,6 @@ class ModuleViewListBuilder(private val activity: Activity) {
         }
     }
 
-    @Suppress("ktConcatNullable")
-    fun setQuery(query: String?) {
-        synchronized(queryLock) {
-            Timber.i("Query " + this.query + " -> " + query)
-            this.query = query?.trim { it <= ' ' }?.lowercase() ?: ""
-        }
-    }
-
     fun setQueryChange(query: String?): Boolean {
         synchronized(queryLock) {
             val newQuery = query?.trim { it <= ' ' }?.lowercase() ?: ""
@@ -343,22 +326,6 @@ class ModuleViewListBuilder(private val activity: Activity) {
             this.query = newQuery
         }
         return true
-    }
-
-    fun setHeaderPx(headerPx: Int) {
-        if (this.headerPx != headerPx) {
-            synchronized(updateLock) { this.headerPx = headerPx }
-        }
-    }
-
-    fun setFooterPx(footerPx: Int) {
-        if (this.footerPx != footerPx) {
-            synchronized(updateLock) { this.footerPx = footerPx }
-        }
-    }
-
-    fun updateInsets() {
-        updateInsets.run()
     }
 
     companion object {

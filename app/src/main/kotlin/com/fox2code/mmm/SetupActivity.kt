@@ -18,9 +18,9 @@ import android.view.View
 import android.webkit.CookieManager
 import android.widget.CompoundButton
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentActivity
 import androidx.room.Room
-import com.fox2code.foxcompat.app.FoxActivity
 import com.fox2code.mmm.databinding.ActivitySetupBinding
 import com.fox2code.mmm.repo.RepoManager
 import com.fox2code.mmm.utils.IntentHelper
@@ -43,7 +43,7 @@ import java.io.IOException
 import java.sql.Timestamp
 import java.util.Objects
 
-class SetupActivity : FoxActivity(), LanguageActivity {
+class SetupActivity : AppCompatActivity(), LanguageActivity {
     private var cachedTheme = 0
 
     @SuppressLint("ApplySharedPref", "RestrictedApi")

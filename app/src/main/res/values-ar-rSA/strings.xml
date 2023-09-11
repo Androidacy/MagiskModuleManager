@@ -19,7 +19,6 @@
     <string name="file_picker_failure">المنتقي عيا يلقط ملفك.</string>
     <string name="use_magisk_install_command_desc">شف الأمر ذا منتهي و ممكن يسبب مشاكل عشان كذا حنا مزبنينه عنك. فا انت بكيفك اذا تبا تشغله شغله!</string>
     <string name="wrap_text_desc">عرض الخط على شكل أسطر واجد بدال ماتحط كل الخطوط على نفس السطر يوم تثبت إضافة.</string>
-    <string name="language_support_outdated">اللغة ذي ماهي مكتملة اذا ودك رح للموقع و ترجمها.</string>
     <string name="loading">دقايق…</string>
     <string name="online_repo">الريبو عن طريق النت</string>
     <string name="showcase_mode">التطبيق مقفل</string>
@@ -60,10 +59,8 @@
     <string name="prevent_reboot_desc">منع تطفية الجهاز بطريقة غلط</string>
     <string name="enable_monet">تشغيل Monet</string>
     <string name="pref_category_info">معلومة</string>
-    <string name="licenses">التصاريح</string>
     <string name="show_incompatible_pref">إظهار الإضافات الي ماهي مدعومة</string>
     <string name="magisk_outdated">فيه تحديث ل ابو شنب اذا تبا تحدثه!</string>
-    <string name="pref_category_repos">ريبو</string>
     <string name="pref_category_security">الأمان</string>
     <string name="pref_category_appearance">الشكل</string>
     <string name="master_delete">حذف ملفات الإضافة ؟</string>
@@ -127,7 +124,6 @@
     <string name="crash_reporting_restart_message">التطبيق لازم يطفي عشان تفعل الخيار ذا</string>
     <string name="restart">إعادة تشغيل</string>
     <string name="androidacy_test_mode_disable_warning">التطبيق بيعاد تشغيله لأجل نوقف النسخة التجريبية</string>
-    <string name="androidacy_failed_to_parse_token">ماقدرنا ناخذ معلومات الكود من Androidacy. حاول بعدين.</string>
     <string name="androidacy_failed_to_validate_token">ماقدرنا ناخذ معلومات الكود من Androidacy. حاول بعدين.</string>
     <string name="androidacy_need_captcha">حظرو تحديث Androidacy بسبب Captcha</string>
     <string name="api_key_restart">تغير كود API. طف التطبيق لحفظ التغييرات.</string>

@@ -4,16 +4,14 @@
 package com.fox2code.mmm.utils
 
 import android.content.DialogInterface
-import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
-import com.fox2code.foxcompat.app.FoxActivity
+import androidx.appcompat.app.AppCompatActivity
 import com.fox2code.mmm.BuildConfig
 import com.fox2code.mmm.R
 import com.fox2code.mmm.installer.InstallerInitializer.Companion.peekMagiskPath
-import com.fox2code.mmm.utils.BudgetProgressDialog.Companion.build
 import com.fox2code.mmm.utils.IntentHelper.Companion.openInstaller
 import com.fox2code.mmm.utils.io.Files.Companion.getFileName
 import com.fox2code.mmm.utils.io.Files.Companion.getFileSize
@@ -26,14 +24,21 @@ import java.io.IOException
 import java.util.zip.ZipEntry
 import java.util.zip.ZipFile
 
-class ZipFileOpener : FoxActivity() {
+class ZipFileOpener : AppCompatActivity() {
     var loading: AlertDialog? = null
 
     // Adds us as a handler for zip files, so we can pass them to the installer
     // We should have a content uri provided to us.
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        loading = build(this, R.string.loading, R.string.zip_unpacking)
+        loading = MaterialAlertDialogBuilder(this)
+            .setTitle(R.string.loading)
+            .setMessage(R.string.zip_unpacking)
+            .setCancelable(false)
+            .setNegativeButton(R.string.cancel) { _: DialogInterface, _: Int ->
+                finishAndRemoveTask()
+            }
+            .show()
         Thread(Runnable {
             if (BuildConfig.DEBUG) Timber.d("onCreate: %s", intent)
             val zipFile: File
@@ -115,15 +120,11 @@ class ZipFileOpener : FoxActivity() {
                 if (zip.getEntry("module.prop").also { entry = it } == null) {
                     Timber.e("onCreate: Zip file is not a valid magisk module")
                     if (BuildConfig.DEBUG) {
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                            if (BuildConfig.DEBUG) Timber.d(
-                                "onCreate: Zip file contents: %s",
-                                zip.stream().map { obj: ZipEntry -> obj.name }
-                                    .reduce { a: String, b: String -> "$a, $b" }.orElse("empty")
-                            )
-                        } else {
-                            if (BuildConfig.DEBUG) Timber.d("onCreate: Zip file contents cannot be listed on this version of android")
-                        }
+                        if (BuildConfig.DEBUG) Timber.d(
+                            "onCreate: Zip file contents: %s",
+                            zip.stream().map { obj: ZipEntry -> obj.name }
+                                .reduce { a: String, b: String -> "$a, $b" }.orElse("empty")
+                        )
                     }
                     runOnUiThread {
                         Toast.makeText(this, R.string.invalid_format, Toast.LENGTH_LONG).show()
@@ -193,7 +194,7 @@ class ZipFileOpener : FoxActivity() {
                     .setPositiveButton(R.string.yes) { d: DialogInterface, _: Int ->
                         d.dismiss()
                         // Pass the file to the installer
-                        val compatActivity = getFoxActivity(this)
+                        val compatActivity = this
                         openInstaller(
                             compatActivity, zipFile.absolutePath,
                             compatActivity.getString(

@@ -22,12 +22,10 @@
     <string name="enable_monet">Ativar tema Monet</string>
     <string name="pref_category_info">Informações</string>
     <string name="show_licenses">Exibir licenças</string>
-    <string name="licenses">Licenças</string>
     <string name="show_incompatible_pref">Exibir módulos incompatíveis</string>
     <string name="show_incompatible_desc">Exibe os módulos incompatíveis com seu dispositivo com base em seus metadados</string>
     <string name="prevent_reboot_pref">Previnir reinicialização</string>
     <string name="theme">Tema</string>
-    <string name="pref_category_repos">Repositórios</string>
     <string name="pref_category_security">Segurança</string>
     <string name="pref_category_appearance">Aparência</string>
     <string name="theme_system">Sistema</string>
@@ -104,7 +102,6 @@
     <string name="crash_reporting_restart_message">O aplicativo precisar reiniciar para aplicar essa configuração</string>
     <string name="restart">Reiniciar</string>
     <string name="androidacy_test_mode_disable_warning">O aplicativo será reinicializado para desativar o servidor de testes</string>
-    <string name="androidacy_failed_to_parse_token">Não foi possível obter o token do Androidacy. Por favor, tente novamente mais tarde.</string>
     <string name="androidacy_need_captcha">Atualização do Androidacy bloqueado por Captcha</string>
     <string name="api_key_restart">A Chave de API foi alterada. Reinicie o aplicativo para aplicar as mudanças.</string>
     <string name="permission_notification_title">Permitir notificações\?</string>
@@ -171,7 +168,6 @@
     <string name="share_logs">Compartilhar registros do AMM</string>
     <string name="not_official_build">Este aplicativo é uma compilação não oficial do AMM.</string>
     <string name="crash_text">Ah não, algo deu errado!</string>
-    <string name="feedback_submit">Enviar e reinicializar</string>
     <string name="please_feedback">Por favor, ajude-nos dizendo o quê você estava tentando fazer quando isto aconteceu.</string>
     <string name="sentry_dialogue_disabled">O Relatório de falhas está desabilitado. Habilite-o para enviar o feedback.</string>
     <string name="feedback_name">Nome (opcional)</string>
@@ -196,7 +192,6 @@
     <string name="pref_category_updates">Atualizações</string>
     <string name="background_update_check_excludes">Modulos a serem excluídos das buscas automáticas por atualizações</string>
     <string name="update_title">Atualizar aplicativo</string>
-    <string name="update_button">Por favor aguarde…</string>
     <string name="error_no_action">ERRO: Ação inválida especificada. Recusando a continuar.</string>
     <string name="update_available">Atualização disponível</string>
     <string name="checking_for_update">Buscando por atualizações…</string>
@@ -226,8 +221,6 @@
     <string name="notification_channel_category_app_update">Atualizações do aplicativo</string>
     <string name="notification_channel_category_app_update_description">Notifica quando uma atualização do aplicativo está disponível</string>
     <string name="notification_channel_background_update_app">Atualização do aplicativo disponível!</string>
-    <string name="yer_a_wizard_harry">Tu é um mago, Harry!</string>
-    <string name="modules">Módulos</string>
     <string name="no_browser">Você não possui um navegador instalado. Por favor instale um para continuar.</string>
     <string name="setup_update_check_headline">Busca por atualizações</string>
     <string name="setup_background_update_check_require_wifi_summary">Exigir wifi ou uma conexão ilimitada para buscar por atualizações</string>
@@ -304,7 +297,6 @@
     <string name="language_not_available">O idioma %s não foi traduzido. Gostaria de ajudar a traduzi-lo\?</string>
     <string name="error_encrypted_shared_preferences">Um erro ocorreu ao carregar as preferências compartilhadas. Por favor, limpe os dados do aplicativo.</string>
     <string name="blur_desc">Adiciona um efeito de desfoque atrás de alguns diálogos e elementos. Perceba que o desfoque pode funcionar incorretamente em alguns dispositivos e pode não funcionar para todos.</string>
-    <string name="language_support_outdated">Algumas traduções para seu idioma atual não estão atualizadas. Por favor, considere contribuir para as traduções do aplicativo no GitHub</string>
     <string name="androidacy_test_mode_warning">Você está configurando o aplicativo para usar um servidor de testes do Androidacy. Isso pode resultar em instabilidade no aplicativo e falha ao carregar o repositório online. NÃO reporte falhas se você tiver esta opção habilitada. O aplicativo será reinicializado para recarregar os repositórios.</string>
     <string name="fox2code_thanks_desc">Fox2Code é o desenvolvedor original do aplicativo. Sem ele, isso nunca seria possível.</string>
     <string name="showcase_mode_dialogue_message">Uma reinicialização é necessária para ativar o modo showcase.</string>

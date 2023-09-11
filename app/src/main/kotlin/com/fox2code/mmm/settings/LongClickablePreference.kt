@@ -10,7 +10,6 @@ import android.view.View
 import androidx.preference.Preference
 import androidx.preference.PreferenceViewHolder
 
-@Suppress("unused")
 class LongClickablePreference : Preference {
     var onPreferenceLongClickListener: OnPreferenceLongClickListener? = null
 

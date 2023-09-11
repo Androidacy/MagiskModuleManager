@@ -192,7 +192,6 @@ enum class Http {;
         private var httpClientWithCacheDoH: OkHttpClient? = null
         private var fallbackDNS: FallBackDNS? = null
 
-        @JvmStatic
         var androidacyUA: String? = null
         private var hasWebView = false
         private var needCaptchaAndroidacyHost: String? = null
@@ -222,7 +221,7 @@ enum class Http {;
                 Timber.e(t, "No WebView support!")
                 // show a toast
                 val context: Context = mainApplication.applicationContext
-                MainActivity.getFoxActivity(context).runOnUiThread {
+                MainActivity.getAppCompatActivity(context).runOnUiThread {
                     Toast.makeText(
                         mainApplication, R.string.error_creating_cookie_database, Toast.LENGTH_LONG
                     ).show()
@@ -441,7 +440,6 @@ enum class Http {;
             return if (doh) httpClientDoH else httpClient
         }
 
-        @JvmStatic
         fun getHttpClientWithCache(): OkHttpClient? {
             return if (doh) httpClientWithCacheDoH else httpClientWithCache
         }
@@ -452,7 +450,6 @@ enum class Http {;
             }
         }
 
-        @JvmStatic
         fun needCaptchaAndroidacy(): Boolean {
             return needCaptchaAndroidacyHost != null
         }
@@ -461,16 +458,16 @@ enum class Http {;
             return needCaptchaAndroidacyHost
         }
 
-        @JvmStatic
         fun markCaptchaAndroidacySolved() {
             needCaptchaAndroidacyHost = null
         }
 
-        @Suppress("unused")
-        @JvmStatic
         @SuppressLint("RestrictedApi")
         @Throws(IOException::class)
         fun doHttpGet(url: String, allowCache: Boolean): ByteArray {
+            if (url.isEmpty()) {
+                throw IOException("Empty URL")
+            }
             var response: Response?
             response = try {
                 (if (allowCache) getHttpClientWithCache() else getHttpClient())!!.newCall(
@@ -482,7 +479,7 @@ enum class Http {;
                 Timber.e(e, "Failed to post %s", url)
                 // detect ssl errors, i.e., cert authority invalid by looking at the message
                 if (e.message != null && e.message!!.contains("_CERT_")) {
-                    MainActivity.getFoxActivity(MainApplication.INSTANCE!!).runOnUiThread {
+                    MainApplication.INSTANCE!!.lastActivity!!.runOnUiThread {
                         // show toast
                         Toast.makeText(
                             MainApplication.INSTANCE, R.string.ssl_error, Toast.LENGTH_LONG
@@ -558,7 +555,6 @@ enum class Http {;
         }
 
         @Suppress("unused")
-        @JvmStatic
         @Throws(IOException::class)
         fun doHttpPost(url: String, data: String, allowCache: Boolean): ByteArray {
             return doHttpPostRaw(url, data, allowCache) as ByteArray
@@ -579,7 +575,7 @@ enum class Http {;
                 Timber.e(e, "Failed to post %s", url)
                 // detect ssl errors, i.e., cert authority invalid by looking at the message
                 if (e.message != null && e.message!!.contains("_CERT_")) {
-                    MainActivity.getFoxActivity(MainApplication.INSTANCE!!).runOnUiThread {
+                    MainApplication.INSTANCE!!.lastActivity!!.runOnUiThread {
                         // show toast
                         Toast.makeText(
                             MainApplication.INSTANCE, R.string.ssl_error, Toast.LENGTH_LONG
@@ -643,7 +639,6 @@ enum class Http {;
             return responseBody.bytes()
         }
 
-        @JvmStatic
         @Throws(IOException::class)
         fun doHttpGet(url: String, progressListener: ProgressListener): ByteArray {
             val response: Response
@@ -654,7 +649,7 @@ enum class Http {;
                 Timber.e(e, "Failed to post %s", url)
                 // detect ssl errors, i.e., cert authority invalid by looking at the message
                 if (e.message != null && e.message!!.contains("_CERT_")) {
-                    MainActivity.getFoxActivity(MainApplication.INSTANCE!!).runOnUiThread {
+                    MainApplication.INSTANCE!!.lastActivity!!.runOnUiThread {
                         // show toast
                         Toast.makeText(
                             MainApplication.INSTANCE, R.string.ssl_error, Toast.LENGTH_LONG
@@ -733,7 +728,6 @@ enum class Http {;
         }
 
         // dohttpget with progress listener but as lambda
-        @JvmStatic
         @Throws(IOException::class)
         fun doHttpGet(url: String, progressListener: (Int, Int, Boolean) -> Unit): ByteArray {
             return doHttpGet(url, object : ProgressListener {
@@ -743,23 +737,19 @@ enum class Http {;
             })
         }
 
-        @JvmStatic
         fun cleanDnsCache() {
             fallbackDNS?.cleanDnsCache()
         }
 
-        @JvmStatic
         fun setDoh(doh: Boolean) {
             Timber.i("DoH: " + Companion.doh + " -> " + doh)
             Companion.doh = doh
         }
 
-        @JvmStatic
         fun hasWebView(): Boolean {
             return hasWebView
         }
 
-        @JvmStatic
         fun hasConnectivity(context: Context): Boolean {
             // cache result for 10 seconds so we don't spam the system
             if (System.currentTimeMillis() - lastConnectivityCheck < 10000) {

@@ -58,11 +58,9 @@
     <string name="enable_monet">Ενεργοποίηση Monet</string>
     <string name="pref_category_info">Πληροφορίες</string>
     <string name="show_licenses">Εμφάνιση αδειών</string>
-    <string name="licenses">Άδειες</string>
     <string name="show_incompatible_pref">Εμφάνιση ασυμβίβαστων module</string>
     <string name="show_incompatible_desc">Εμφάνιση module που είναι απίθανο να εγκατασταθούν στη συσκευή σας με βάση τα μεταδεδομένα τους</string>
     <string name="magisk_outdated">Υπάρχει μια νέα έκδοση του Magisk για εγκατάσταση!</string>
-    <string name="pref_category_repos">Αποθετήρια</string>
     <string name="pref_category_security">Ασφάλεια</string>
     <string name="pref_category_appearance">Εμφάνιση</string>
     <string name="master_delete">Διαγραφή των αρχείων module;</string>
@@ -114,8 +112,6 @@
     <string name="notification_update_debug_pref">Ειδοποίηση δοκιμής</string>
     <!-- Set to true in translation file if your language is right to left -->
     <bool name="lang_support_rtl">false</bool>
-    <integer name="language_support_level">1</integer>
-    <string name="language_support_outdated">Ορισμένες μεταφράσεις για την τρέχουσα γλώσσα δεν είναι ενημερωμένες, παρακαλούμε να συνεισφέρετε στις μεταφράσεις εφαρμογών στο GitHub</string>
     <!-- Replace with your own username when translating -->
     <string name="language_translated_by">Μεταφράστηκε από INvxrteD, Tha_14</string>
     <string name="report_bugs">Αναφορά σφαλμάτων</string>
@@ -168,7 +164,6 @@
     <string name="error_saving_logs">Δεν ήταν δυνατή η αποθήκευση των logs</string>
     <string name="share_logs">Κοινοποίηση των logs του AMM</string>
     <string name="not_official_build">Αυτή η εφαρμογή είναι ανεπίσημη κατασκευή του AMM.</string>
-    <string name="androidacy_failed_to_parse_token">Το token δεν ανακτήθηκε από το Androidacy. Παρακαλούμε προσπαθήστε ξανά αργότερα.</string>
     <string name="androidacy_failed_to_validate_token">Το token δεν επικυρώθηκε από το Androidacy. Παρακαλούμε προσπαθήστε ξανά αργότερα.</string>
     <string name="androidacy_need_captcha">Ο εκσυγχρονισμός του Androidacy, μπλοκαρίστηκε από το Captcha</string>
     <string name="crash_reporting">Αυτοματοποίηση αναφοράς σφαλμάτων και ποιότητας εκτέλεσης στους προγραμματιστές</string>
@@ -178,7 +173,6 @@
     <string name="please_wait">Παρακαλώ περιμένετε</string>
     <string name="api_key_removed">Επιτυχής επαναφορά του κλειδιού API</string>
     <string name="androidacy_test_mode_disable_warning">Η εφαρμογή θα επανεκκινηθεί για να απενεργοποιηθεί το endpoint σταδιοποίησης</string>
-    <string name="modules">Modules</string>
     <string name="no_browser">Δεν έχεις κανέναν φυλλομετρητή εγκατεστημένο. Παρακαλούμε εγκατέστησε έναν για να συνεχίσεις.</string>
     <string name="clear_app_data">Καθαρισμός δεδομένων της εφαρμογής</string>
     <string name="clear_data_dialogue_title">Θα θέλατε να καθαρίσετε όλα τα δεδομένα που συνοδεύουν την εφαρμογή;</string>
@@ -216,7 +210,6 @@
     <string name="upgrade_androidacy_promo_desc">Αναβαθμίζοντας σε premium θα αφαιρεθούν, οι διαφημίσεις, οι επαληθεύσεις ταυτότητας, και οι λήψεις για το αποθετήριο Androidacy, ενώ θα υποστηρίξετε τους δημιουργούς του Androidacy και των modules.</string>
     <string name="crash_text">Ωχ όχι, βρεθήκαμε σε εμπόδιο!</string>
     <string name="feedback_message">Δώστε μας περισσότερες λεπτομέρειες για το τι ακριβώς κάνατε όταν συνέβη αυτό. Όσο πιο πολλές τόσο το καλύτερο!</string>
-    <string name="feedback_submit">Υποβολή και επανεκκίνηση</string>
     <string name="please_feedback">Παρακαλείσθε να μας βοηθήσετε αναφέροντας τι προσπαθούσατε να κάνετε όταν συνέβη αυτό.</string>
     <string name="feedback_name">Όνομα (προαιρετικό)</string>
     <string name="feedback_email">Email (προαιρετικό)</string>
@@ -247,7 +240,6 @@
     <string name="permission_notification_message">Χρειαζόμαστε την άδεια για ειδοποιήσεις, ώστε να σε ειδοποιούμε για κάθε δυνατό εκσυγχρονισμό της εφαρμογής και των modules, δεν θα λειτουργήσει ο αυτόματος έλεγχος για αναβαθμίσεις.</string>
     <string name="setup_background_update_check">Αυτοματοποιημένος έλεγχος εκσυγχρονισμού</string>
     <string name="background_update_check_excludes">Modules αποκλεισμένα από αυτόματο έλεγχο αναβάθμισης</string>
-    <string name="update_button">Παρακαλώ περιμένετε…</string>
     <string name="invalid_repo_url">Το URL που εισήγαγες για το αποθετήριο δεν είναι έγκυρο</string>
     <string name="add_repo_message">Τα αποθετήρια πρέπει να εξυπηρετούν μέσω HTTPS, και πρέπει να ακολουθούν τις προδιαγραφές που περιγράφονται στην τεκμηρίωση.</string>
     <string name="notification_update_summary">Τα ακόλουθα modules μπορούν να ενημερωθούν:</string>
@@ -325,7 +317,6 @@
     <string name="error_download_update">Προέκυψε σφάλμα λαμβάνοντας τις πληροφορίες ενημέρωσης.</string>
     <string name="update_debug_download_pref">Δοκιμή μηχανισμού λήψης ενημερώσεων</string>
     <string name="notification_update_wifi_pref">Απαίτηση wi-fi ή δικτύου χωρίς μετρήσεις για έλεγχο ενημερώσεων. Προτείνεται να είναι σε λειτουργία αν έχετε περιορισμένα δεδομένα κινητής τηλεφωνίας.</string>
-    <string name="yer_a_wizard_harry">Είσαι μάγος, Χάρι!</string>
     <string name="keep_tapping_to_enter_hogwarts">Συνέχισε να πατάς, ώστε να γίνεις δεκτός στο Hogwarts!</string>
     <string name="language_not_available">Η γλώσσα %s δεν έχει μεταφραστεί. Μπορείτε να μας βοηθήσετε στην μετάφρασή της;</string>
     <string name="analytics_desc">Επιτρέψτε μας να παρακολουθούμε τη χρήση και τις εγκαταστάσεις εφαρμογών. Πλήρως συμβατό με το GDPR και χρησιμοποιεί το Matomo, που φιλοξενείται από το Androidacy.</string>

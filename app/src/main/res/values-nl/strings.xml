@@ -47,10 +47,8 @@
     <string name="enable_monet">Activeer Monet</string>
     <string name="pref_category_info">Info</string>
     <string name="show_licenses">Toon licenties</string>
-    <string name="licenses">Licenties</string>
     <string name="show_incompatible_desc">Toon modules die volgens de metadata mogelijk niet werken op je toestel</string>
     <string name="magisk_outdated">Er is een nieuwe versie van Magisk beschikbaar!</string>
-    <string name="pref_category_repos">Pakketbeheerders</string>
     <string name="pref_category_security">Beveiliging</string>
     <string name="pref_category_appearance">Uiterlijk</string>
     <string name="master_delete">Modulebestanden verwijderen\?</string>
@@ -149,11 +147,9 @@
 \nSchakel dit uit op eigen risico!</string>
     <string name="androidacy_repo_info">Deze pakketbeheerder kan een aantal niet-intrusieve reclameboodschappen weergeven om de server- en ontwikkelingskosten te dekken. Beschikt over beoordelingen, automatische virusscans en meer.</string>
     <string name="notification_update_pref">Automatische updatecontrole van modules</string>
-    <string name="language_support_outdated">Sommige vertalingen voor de huidige taal zijn niet up-to-date, overweeg om bij te dragen aan de app-vertalingen op GitHub</string>
     <string name="crash_reporting_desc">Als je dit uitschakelt, krijgt de ontwikkelaar geen automatische bugrapporten en dit kan het oplossen van problemen bemoeilijken</string>
     <string name="save_api_key">Valideren</string>
     <string name="androidacy_test_mode_warning">Je stelt de app in om een niet-productie-eindpunt voor Androidacy te gebruiken. Dit kan leiden tot instabiliteit van de app en het niet laden van de online pakketbeheerder. Meld GEEN bugs als u deze schakelaar hebt ingeschakeld. De app wordt opnieuw gestart om pakketbeheerders opnieuw te laden.</string>
-    <string name="androidacy_failed_to_parse_token">Kan token niet ophalen van Androidacy. Probeer het later opnieuw.</string>
     <string name="api_key_restart">API-sleutel is gewijzigd. Start de app opnieuw om wijzigingen toe te passen.</string>
     <string name="permission_notification_message">We hebben de toestemming voor meldingen nodig om je op de hoogte te stellen van app- en module-updates. Als je deze machtiging niet verleent, worden er geen automatische controles van updates uitgevoerd.</string>
     <string name="transparent_theme_dialogue_message">Transparante thema\'s kunnen enkele inconsistenties hebben en werken mogelijk niet op alle ROM\'s. Bovendien worden Monet en vervaging uitgeschakeld. Je kan dit op elk gewenst moment wijzigen.</string>
@@ -171,7 +167,6 @@
     <string name="background_update_check_excludes">Modules uitgesloten van automatische updatecontroles</string>
     <string name="update_title">App bijwerken</string>
     <string name="update_message">Even geduld terwijl we controleren op updates voor AMM en deze installeren. Dit kan enkele minuten duren</string>
-    <string name="update_button">Even geduld…</string>
     <string name="clear_app_data">Verwijder app data</string>
     <string name="clear_data_dialogue_title">App data verwijderen\?</string>
     <string name="clear_data_dialogue_message">Je staat op het punt de app-gegevens te wissen. Bevestig deze actie.</string>
@@ -189,9 +184,7 @@
     <string name="error_saving_logs">Kan logboeken niet opslaan</string>
     <string name="share_logs">AMM logs delen</string>
     <string name="not_official_build">Deze app is geen officiële AMM build.</string>
-    <string name="yer_a_wizard_harry">Je bent een tovenaar, Harry!</string>
     <string name="keep_tapping_to_enter_hogwarts">Blijf tikken om toegelaten te worden tot Zweinstein!</string>
-    <string name="modules">Modules</string>
     <string name="no_browser">Je hebt geen browser geïnstalleerd. Installeer er een om door te gaan.</string>
     <string name="theme">Thema</string>
     <string name="theme_system">Systeem</string>
@@ -207,7 +200,6 @@
     <string name="upgrade_androidacy_promo_desc">Upgraden naar premium verwijdert advertenties, captcha\'s en downloads voor de Androidacy Repository en ondersteunt Androidacy en de auteurs van de module.</string>
     <string name="crash_text">Oh-oh, er zit een addertje onder het gras!</string>
     <string name="feedback_message">Geef ons meer details over wat je deed toen dit gebeurde. Hoe meer, hoe beter!</string>
-    <string name="feedback_submit">Verzenden en opnieuw opstarten</string>
     <string name="please_feedback">Help ons alsjeblieft door ons te vertellen wat je probeerde te doen toen dit gebeurde.</string>
     <string name="sentry_dialogue_disabled">Crashrapportage is uitgeschakeld. Schakel deze in om feedback te verzenden.</string>
     <string name="feedback_name">Naam (optioneel)</string>

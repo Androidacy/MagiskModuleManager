@@ -14,62 +14,44 @@ import com.fox2code.mmm.utils.io.PropUtils
  */
 open class ModuleInfo {
     // Magisk standard
-    @JvmField
     var id: String
 
-    @JvmField
     var name: String?
 
-    @JvmField
     var version: String? = null
 
-    @JvmField
     var versionCode: Long = 0
 
-    @JvmField
     var author: String? = null
 
-    @JvmField
     var description: String? = null
 
-    @JvmField
     var updateJson: String? = null
 
     // Community meta
-    @JvmField
     var changeBoot = false
 
-    @JvmField
     var mmtReborn = false
 
-    @JvmField
     var support: String? = null
 
-    @JvmField
     var donate: String? = null
 
-    @JvmField
     var config: String? = null
 
     // Community restrictions
-    @JvmField
     var needRamdisk = false
 
-    @JvmField
     var minMagisk = 0
 
-    @JvmField
     var minApi = 0
 
-    @JvmField
     var maxApi = 0
 
     // Module status (0 if not from Module Manager)
-    @JvmField
     var flags = 0
 
     // Module safety (null if not provided)
-    @JvmField
     var safe = false
 
     constructor(id: String) {

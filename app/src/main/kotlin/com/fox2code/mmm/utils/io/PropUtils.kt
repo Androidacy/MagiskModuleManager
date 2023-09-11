@@ -2,8 +2,6 @@
  * Copyright (c) 2023 to present Androidacy and contributors. Names, logos, icons, and the Androidacy name are all trademarks of Androidacy and may not be used without license. See LICENSE for more information.
  */
 
-@file:Suppress("unused")
-
 package com.fox2code.mmm.utils.io
 
 import android.os.Build
@@ -373,7 +371,6 @@ enum class PropUtils {
             }
         }
 
-        @JvmStatic
         fun readModulePropSimple(inputStream: InputStream?, what: String): String? {
             if (inputStream == null) return null
             var moduleId: String? = null
@@ -404,7 +401,6 @@ enum class PropUtils {
             return readModulePropSimple(inputStream, "id")
         }
 
-        @JvmStatic
         fun applyFallbacks(moduleInfo: ModuleInfo) {
             if (moduleInfo.support == null || moduleInfo.support!!.isEmpty()) {
                 moduleInfo.support = moduleSupportsFallbacks[moduleInfo.id]
@@ -422,7 +418,6 @@ enum class PropUtils {
         }
 
         // Some module are really so low quality that it has become very annoying.
-        @JvmStatic
         fun isLowQualityModule(moduleInfo: ModuleInfo?): Boolean {
             var description: String = moduleInfo?.description ?: return true
             return (moduleInfo.hasFlag(ModuleInfo.FLAG_METADATA_INVALID) || moduleInfo.name!!.length < 3 || moduleInfo.versionCode < 0 || moduleInfo.author == null || !TextUtils.isGraphic(
@@ -438,7 +433,6 @@ enum class PropUtils {
             return !TextUtils.isGraphic(name) || name!!.indexOf('\u0000') != -1
         }
 
-        @JvmStatic
         fun isInvalidURL(url: String): Boolean {
             val i = url.indexOf('/', 8)
             val e = url.indexOf('.', 8)
@@ -452,7 +446,6 @@ enum class PropUtils {
                     moduleId.substring(1).replace('_', ' ')
         }
 
-        @JvmStatic
         fun isNullString(string: String?): Boolean {
             return string.isNullOrEmpty() || "null" == string
         }

@@ -66,11 +66,9 @@
     <string name="enable_monet">Enable Monet</string>
     <string name="pref_category_info">Info</string>
     <string name="show_licenses">Show licenses</string>
-    <string name="licenses">Licences</string>
     <string name="show_incompatible_pref">Show incompatible modules</string>
     <string name="show_incompatible_desc">Show modules unlikely to work on your device based on their metadata</string>
     <string name="magisk_outdated">There is a new version of Magisk to install!</string>
-    <string name="pref_category_repos">Repos</string>
     <string name="pref_category_security">Security</string>
     <string name="pref_category_appearance">Appearance</string>
     <string name="master_delete">Delete the module files?</string>
@@ -132,9 +130,6 @@
     <!-- Set to true in translation file if your language is right to left -->
     <bool name="lang_support_rtl">false</bool>
     <!-- Always copy language_support_level when translating -->
-    <integer name="language_support_level">1</integer>
-    <string name="language_support_outdated">Some translations for the current language are
-        not up-to-date, please consider contributing to the app translations on GitHub</string>
     <!-- Replace with your own username when translating -->
     <string name="language_translated_by">Translated by Fox2Code (Put your name here)</string>
     <string name="crash_reporting">Automatically report bugs and performance to the developers</string>
@@ -154,7 +149,6 @@
     <string name="crash_reporting_restart_message">The app needs to restart to apply this setting</string>
     <string name="restart">Restart</string>
     <string name="androidacy_test_mode_disable_warning">App will be restarted to disable staging endpoint</string>
-    <string name="androidacy_failed_to_parse_token">Could not retrieve token from Androidacy. Please try again later.</string>
     <string name="androidacy_failed_to_validate_token">Could not validate token for Androidacy. Please try again later.</string>
     <string name="androidacy_need_captcha">Androidacy update blocked by Captcha</string>
     <string name="api_key_restart">API key has been changed. Restart the app to apply changes.</string>
@@ -246,7 +240,6 @@
     <string name="not_official_build">This app is an unofficial AMM build.</string>
     <string name="crash_text">Uh-oh, we hit a snag!</string>
     <string name="feedback_message">Give us more details about what you were doing when this happened. The more, the merrier!</string>
-    <string name="feedback_submit">Submit and restart</string>
     <string name="please_feedback">Please help us out by telling us what you were trying to do when this happened.</string>
     <string name="sentry_dialogue_disabled">Crash reporting is disabled. Enable it to submit feedback.</string>
     <string name="feedback_name">Name (optional)</string>
@@ -272,7 +265,6 @@
     <string name="background_update_check_excludes">Modules to exclude from automatic update checks</string>
     <string name="update_title">Update app</string>
     <string name="update_message">Please wait while we check for and install updates to AMM. This may take a few minutes</string>
-    <string name="update_button">Please wait…</string>
     <string name="error_no_extras">ERROR: Invalid data received on launch</string>
     <string name="update_debug_warning">You appear to be running a debug build. Debug builds must be updated manually, and do not support in-app updates</string>
     <string name="error_no_action">ERROR: Invalid action specified. Refusing to continue.</string>
@@ -310,9 +302,7 @@
     <string name="notification_channel_category_app_update_description">Notifies when an app update is available</string>
     <string name="notification_channel_background_update_app">App update available!</string>
     <string name="notification_channel_background_update_app_description">An update is available for AMM. Tap here to update.</string>
-    <string name="yer_a_wizard_harry">Yer a wizard, Harry!</string>
     <string name="keep_tapping_to_enter_hogwarts">Keep tapping to be admitted into Hogwarts!</string>
-    <string name="modules">Modules</string>
     <string name="no_browser">You do not have a browser installed. Please install one to continue.</string>
     <string name="setup_update_check_headline">Update checks</string>
     <string name="setup_background_update_check_require_wifi">Require wifi for update checks</string>
@@ -368,17 +358,12 @@
     <string name="blur_performance_warning_summary">Device is not compatible with blur</string>
     <string name="reboot">Reboot</string>
     <string name="search">Search</string>
-    <string name="reboot_system">Reboot normally</string>
     <string name="reboot_recovery">Reboot to recovery</string>
     <string name="reboot_bootloader">Reboot to bootloader</string>
     <string name="reboot_edl">Reboot to EDL mode</string>
     <string name="install_terminal_reboot_prevented">Reboot is disabled in app settings</string>
     <string name="androidacy_api_error">Error while communicating with API: %d</string>
     <string name="reboot_extra_warning">You are about to reboot to EDL mode, a special mode intended for OEMs to flash and fix low level problems. Unless you are sure you want to do this and have the necessary tools to get out of this mode or use it, we strongly encourage you to use the other reboot options.</string>
-    <string name="title_activity_expired">ExpiredActivity</string>
-    <string name="title_home">Home</string>
-    <string name="title_dashboard">Dashboard</string>
-    <string name="title_notifications">Notifications</string>
     <string name="expired">This build has expired!</string>
     <string name="expired_message">The build you are using is expired and will no longer run. Please update to the latest stable build.</string>
     <string name="download_latest">Download latest</string>
@@ -412,4 +397,5 @@
     <string name="setup_require_security_summary">Requires modules to be marked as safe before installing. This will disable local module install and module safety is determined by the repository owner.</string>
     <string name="setup_agree_eula_toast">Please agree to the terms first</string>
     <string name="setup_androidacy_repo_recommendation">We recommend you to enable just the Androidacy repo. This ensures you will receive an optimized and more secure experience.</string>
+    <string name="install_terminal_support_link">Support: %s</string>
 </resources>

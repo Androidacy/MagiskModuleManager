@@ -315,7 +315,6 @@ class BackgroundUpdateChecker(context: Context, workerParams: WorkerParameters) 
             ).apply()
         }
 
-        @JvmStatic
         fun postNotification(
             context: Context,
             updateable: HashMap<String, String>,
@@ -376,7 +375,6 @@ class BackgroundUpdateChecker(context: Context, workerParams: WorkerParameters) 
             NotificationManagerCompat.from(context).notify(NOTIFICATION_ID, builder.build())
         }
 
-        @JvmStatic
         fun onMainActivityCreate(context: Context) {
             // Refuse to run if first_launch pref is not false
             if (MainApplication.getSharedPreferences("mmm")!!
@@ -433,7 +431,6 @@ class BackgroundUpdateChecker(context: Context, workerParams: WorkerParameters) 
             )
         }
 
-        @JvmStatic
         fun onMainActivityResume(context: Context?) {
             NotificationManagerCompat.from(context!!).cancel(NOTIFICATION_ID)
         }

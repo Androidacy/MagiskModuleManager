@@ -35,11 +35,9 @@
     <string name="showcase_mode_desc">Obmedzený režim bráni správcovi vykonávať akcie s modulmi</string>
     <string name="pref_category_info">Info</string>
     <string name="show_licenses">Zobraziť licencie</string>
-    <string name="licenses">Licencie</string>
     <string name="show_incompatible_pref">Zobraziť nekompatibilné moduly</string>
     <string name="show_incompatible_desc">Zobraziť moduly, ktoré nie sú podľa ich metadát kompatibilné s vaším zariadením</string>
     <string name="magisk_outdated">Magisk je zastaralý!</string>
-    <string name="pref_category_repos">Úložisko</string>
     <string name="master_delete">Zmazať súbory modulu?</string>
     <string name="master_delete_no">Ponechať súbory</string>
     <string name="master_delete_yes">Zmazat soubory</string>
@@ -128,7 +126,6 @@
     <string name="repo_update_failed">Niektoré repozitáre sa nepodarilo aktualizovať</string>
     <string name="pref_category_security">Zabezpečenie</string>
     <string name="dev_mode_disabled">Vývojárský režim vypnutý</string>
-    <string name="androidacy_failed_to_parse_token">Androidacy token sa nedá načítať. Prosím skúste to neskôr.</string>
     <string name="androidacy_failed_to_validate_token">Androidacy token sa nedá overiť. Prosím skúste to neskôr.</string>
     <string name="crash_reporting_desc">Ak toto zakážete, vývojár nedostane automatické správy o chybách, čo môže sťažiť odstraňovanie problémov</string>
     <string name="androidacy_need_captcha">Aktualizáciu Androidacy blokuje Captcha</string>
@@ -139,7 +136,6 @@
     <string name="notification_update_pref">Kontrola aktualizácií modulov v pozadí</string>
     <string name="notification_update_desc">Môže zvýšiť spotrebu batérie</string>
     <string name="notification_update_debug_pref">Skúška upozornení</string>
-    <string name="language_support_outdated">Niektoré preklady pre aktuálny jazyk môžu býť staršie, zvážte prosím príspevok na preklady aplikácií na GitHube</string>
     <string name="language_translated_by">Translated by PhSnake</string>
     <string name="crash_reporting">Automaticky hlásiť chyby a výkon vývojárom</string>
     <string name="api_key">API kľúč Androidacy</string>

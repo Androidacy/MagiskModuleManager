@@ -24,7 +24,7 @@ import com.fox2code.mmm.utils.io.net.Http.Companion.hasWebView
 import timber.log.Timber
 import java.util.Objects
 
-@Suppress("unused", "KotlinConstantConditions", "RedundantSetter")
+@Suppress("unused", "KotlinConstantConditions")
 class ModuleHolder : Comparable<ModuleHolder?> {
     val moduleId: String
     val notificationType: NotificationType?
@@ -69,9 +69,10 @@ class ModuleHolder : Comparable<ModuleHolder?> {
         get() = notificationType == null && separator == null && footerPx == -1
     val mainModuleInfo: ModuleInfo
         get() = if (repoModule != null && (moduleInfo == null || moduleInfo!!.versionCode < repoModule!!.moduleInfo.versionCode)) repoModule!!.moduleInfo else moduleInfo!!
+
     var updateZipUrl: String? = null
-        get() = if (moduleInfo == null || repoModule != null && moduleInfo!!.updateVersionCode < repoModule!!.moduleInfo.versionCode) repoModule!!.zipUrl else moduleInfo!!.updateZipUrl
-        set
+        get() = if (moduleInfo == null || repoModule != null && moduleInfo!!.updateVersionCode < repoModule!!.moduleInfo.versionCode) repoModule!!.zipUrl else moduleInfo!!.updateZipUrl ?: field
+
     val updateZipRepo: String?
         get() = if (moduleInfo == null || repoModule != null && moduleInfo!!.updateVersionCode < repoModule!!.moduleInfo.versionCode) repoModule!!.repoData.preferenceId else "update_json"
     val updateZipChecksum: String?

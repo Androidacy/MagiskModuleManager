@@ -53,11 +53,9 @@
     <string name="enable_monet">Цвета из Monet</string>
     <string name="pref_category_info">Информация</string>
     <string name="show_licenses">Показать лицензии</string>
-    <string name="licenses">Лицензии</string>
     <string name="show_incompatible_pref">Несовместимые модули</string>
     <string name="show_incompatible_desc">Показывать модули, несовместимые с вашим устройством (исходя из метаданных)</string>
     <string name="magisk_outdated">Установите новую версию Magisk!</string>
-    <string name="pref_category_repos">Репозитории</string>
     <string name="pref_category_security">Безопасность</string>
     <string name="pref_category_appearance">Внешний вид</string>
     <string name="master_delete">Удалить загрузочные файлы?</string>
@@ -96,7 +94,6 @@
     <string name="custom_url">Свой URL</string>
     <string name="link_copied">Ссылка скопирована</string>
     <string name="notification_update_desc">Может увеличить расход батареи</string>
-    <string name="language_support_outdated">Некоторые переводы для текущего языка не обновлены. Пожалуйста, внесите свой вклад, улучшив их на GitHub</string>
     <string name="crash_reporting_desc">Если вы отключите эту функцию, разработчик не будет получать автоматические сообщения об ошибках, что может затруднить поиск и устранение неисправностей</string>
     <string name="api_key_valid">Ключ API действителен.</string>
     <string name="androidacy_test_mode_warning">Вы настраиваете приложение на использование непроизводственной конечной точки для Androidacy. Это может привести к нестабильности приложения и невозможности загрузить онлайн-репо. НЕ сообщайте об ошибках, если у вас включён этот переключатель. Приложение будет перезапущено для перезагрузки репозиториев.</string>
@@ -111,7 +108,6 @@
     <string name="notification_update_title">Найдены обновления модулей: %1$d</string>
     <string name="androidacy_test_mode_desc">Использовать подмену конечной точки Androidacy вместо релизной конечной точки. (Требуется перезапуск приложения)</string>
     <string name="api_key">Ключ API Androidacy</string>
-    <string name="androidacy_failed_to_parse_token">Не удалось получить токен из Androidacy. Пожалуйста, повторите попытку позже.</string>
     <string name="androidacy_failed_to_validate_token">Не удалось проверить токен для Androidacy. Пожалуйста, повторите попытку позже.</string>
     <string name="androidacy_need_captcha">Обновление Androidacy заблокировано капчей</string>
     <string name="notification_update_pref">Автоматическая проверка обновлений модулей</string>
@@ -222,7 +218,6 @@
     <string name="sentry_enable_nag">Похоже, отчёты о сбоях отключены. Пожалуйста, включите их, чтобы отправить отзыв.</string>
     <string name="crash_text">О-о, мы попали в ловушку!</string>=
     <string name="feedback_message">Расскажите нам подробнее о том, что вы делали, прежде чем это произошло. Чем больше – тем лучше!</string>
-    <string name="feedback_submit">Отправить и перезапустить</string>
     <string name="sentry_dialogue_disabled">Отчёты о сбоях отключены. Включите их, чтобы отправить отзыв.</string>
     <string name="feedback_name">Имя (необязательно)</string>
     <string name="feedback_email">Электронная почта (необязательно)</string>
@@ -242,7 +237,6 @@
     <string name="api_key_mismatch">Ключ API имеет неверный формат</string>
     <string name="background_update_check_excludes">Модули, которые следует исключить из автоматической проверки обновлений</string>
     <string name="update_title">Обновиться</string>
-    <string name="update_button">Подождите…</string>
     <string name="update_message">Подождите, пока мы проверим и установим обновления для AMM. Это может занять несколько минут</string>
     <string name="notification_update_ignore_desc">Список модулей для исключения из проверки обновлений</string>
     <string name="notification_update_ignore_pref">Исключить модули</string>
@@ -284,8 +278,6 @@
     <string name="notification_channel_category_app_update_description">Уведомляет, когда доступно обновление приложения</string>
     <string name="notification_channel_background_update_app">Доступно обновление приложения!</string>
     <string name="notification_channel_background_update_app_description">Доступно обновление для AMM. Нажмите здесь, чтобы обновить.</string>
-    <string name="modules">Модули</string>
-    <string name="yer_a_wizard_harry">Ты волшебник, Гарри!</string>
     <string name="keep_tapping_to_enter_hogwarts">Продолжайте нажимать, чтобы поступить в Хогвартс!</string>
     <string name="no_browser">У вас не установлен браузер. Пожалуйста, установите его, чтобы продолжить.</string>
     <string name="setup_update_check_headline">Проверка обновлений</string>
@@ -346,14 +338,9 @@
     <string name="reboot_recovery">Перезагрузка в рекавери</string>
     <string name="install_terminal_reboot_prevented">Перезагрузка отключена в настройках приложения</string>
     <string name="search">Поиск</string>
-    <string name="reboot_system">Обычная перезагрузка</string>
     <string name="androidacy_api_error">Ошибка при обмене данными с API: %d</string>
     <string name="reboot_bootloader">Перезагрузка в загрузчик</string>
     <string name="reboot_edl">Перезагрузка в режим EDL</string>
-    <string name="title_activity_expired">Просроченная активность</string>
-    <string name="title_home">Главная</string>
-    <string name="title_dashboard">Доска</string>
-    <string name="title_notifications">Уведомления</string>
     <string name="expired">Эта сборка устарела!</string>
     <string name="download_latest">Скачать последнюю</string>
     <string name="logs_saved">Журнал успешно сохранён</string>

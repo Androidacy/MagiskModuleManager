@@ -14,12 +14,12 @@ import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.ScrollView
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.SwitchPreferenceCompat
 import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKey
-import com.fox2code.foxcompat.app.FoxActivity
 import com.fox2code.mmm.AppUpdateManager
 import com.fox2code.mmm.BuildConfig
 import com.fox2code.mmm.MainApplication
@@ -301,7 +301,7 @@ class UpdateFragment : PreferenceFragmentCompat() {
             }
 
         val clipboard =
-            requireContext().getSystemService(FoxActivity.CLIPBOARD_SERVICE) as ClipboardManager
+            requireContext().getSystemService(AppCompatActivity.CLIPBOARD_SERVICE) as ClipboardManager
         val linkClickable = findPreference<LongClickablePreference>("pref_update")
         linkClickable!!.isVisible =
             BuildConfig.ENABLE_AUTO_UPDATER && (BuildConfig.DEBUG || AppUpdateManager.appUpdateManager.peekHasUpdate())

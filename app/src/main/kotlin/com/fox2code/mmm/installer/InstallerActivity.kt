@@ -7,6 +7,7 @@
 package com.fox2code.mmm.installer
 
 import android.annotation.SuppressLint
+import android.content.ComponentName
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -17,25 +18,21 @@ import android.os.Bundle
 import android.os.PowerManager
 import android.os.PowerManager.WakeLock
 import android.view.KeyEvent
-import android.view.MenuItem
 import android.view.View
 import android.view.WindowManager
 import android.widget.Toast
 import androidx.annotation.Keep
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.fox2code.androidansi.AnsiConstants
 import com.fox2code.androidansi.AnsiParser
-import com.fox2code.foxcompat.app.FoxActivity
-import com.fox2code.foxcompat.app.FoxActivity.OnBackPressedCallback
 import com.fox2code.mmm.AppUpdateManager
 import com.fox2code.mmm.BuildConfig
 import com.fox2code.mmm.Constants
-import com.fox2code.mmm.MainActivity
 import com.fox2code.mmm.MainApplication
 import com.fox2code.mmm.R
 import com.fox2code.mmm.XHooks
 import com.fox2code.mmm.androidacy.AndroidacyUtil
-import com.fox2code.mmm.module.ActionButtonType
 import com.fox2code.mmm.utils.FastException
 import com.fox2code.mmm.utils.IntentHelper
 import com.fox2code.mmm.utils.RuntimeUtils
@@ -52,6 +49,7 @@ import com.fox2code.mmm.utils.io.net.Http
 import com.fox2code.mmm.utils.sentry.SentryBreadcrumb
 import com.fox2code.mmm.utils.sentry.SentryMain
 import com.google.android.material.bottomnavigation.BottomNavigationItemView
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.progressindicator.LinearProgressIndicator
 import com.topjohnwu.superuser.CallbackList
@@ -70,7 +68,10 @@ import java.util.Enumeration
 import java.util.concurrent.Executor
 import java.util.zip.ZipEntry
 
-class InstallerActivity : FoxActivity() {
+class InstallerActivity : AppCompatActivity() {
+    private var canGoBack: Boolean = false
+    private val isLightTheme: Boolean
+        get() = MainApplication.INSTANCE!!.isLightTheme
     private var progressIndicator: LinearProgressIndicator? = null
     private var rebootFloatingButton: BottomNavigationItemView? = null
     private var cancelFloatingButton: BottomNavigationItemView? = null
@@ -89,12 +90,6 @@ class InstallerActivity : FoxActivity() {
         if (!moduleCache!!.exists() && !moduleCache!!.mkdirs()) Timber.e("Failed to mkdir module cache dir!")
         super.onCreate(savedInstanceState)
         TrackHelper.track().screen(this).with(MainApplication.INSTANCE!!.tracker)
-        setDisplayHomeAsUpEnabled(true)
-        setActionBarBackground(null)
-        setOnBackPressedCallback { _: FoxActivity? ->
-            canceled = true
-            false
-        }
         val intent = this.intent
         val target: String
         val name: String?
@@ -106,7 +101,7 @@ class InstallerActivity : FoxActivity() {
         if (Constants.INTENT_INSTALL_INTERNAL == intent.action) {
             if (!MainApplication.checkSecret(intent)) {
                 Timber.e("Security check failed!")
-                forceBackPressed()
+                finish()
                 return
             }
             // ensure the intent is from our app, and is either a url or within our directory. replace all instances of .. and url encoded .. and remove whitespace
@@ -117,7 +112,7 @@ class InstallerActivity : FoxActivity() {
                     "https://"
                 )
             ) {
-                forceBackPressed()
+                finish()
                 return
             }
             name = intent.getStringExtra(Constants.EXTRA_INSTALL_NAME)
@@ -133,7 +128,7 @@ class InstallerActivity : FoxActivity() {
             )
         } else {
             Toast.makeText(this, "Unknown intent!", Toast.LENGTH_SHORT).show()
-            forceBackPressed()
+            finish()
             return
         }
         // Note: Sentry only send this info on crash.
@@ -188,8 +183,7 @@ class InstallerActivity : FoxActivity() {
         wakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "Fox:Installer")
         prgInd?.visibility = View.VISIBLE
         if (urlMode) installerTerminal!!.addLine("- Downloading $name")
-        TrackHelper.track().event("installer_start", name)
-            .with(MainApplication.INSTANCE!!.tracker)
+        TrackHelper.track().event("installer_start", name).with(MainApplication.INSTANCE!!.tracker)
         Thread(Runnable {
 
             // ensure module cache is is in our cache dir
@@ -290,9 +284,7 @@ class InstallerActivity : FoxActivity() {
                 }
                 if (!isModule && !isAnyKernel3 && !isInstallZipModule) {
                     setInstallStateFinished(
-                        false,
-                        "! File is not a valid Magisk module or AnyKernel3 zip",
-                        ""
+                        false, "! File is not a valid Magisk module or AnyKernel3 zip", ""
                     )
                     return@Runnable
                 }
@@ -325,29 +317,23 @@ class InstallerActivity : FoxActivity() {
                 if ("Failed to install module zip" == errMessage) throw e // Ignore if in installation state.
                 Timber.e(e)
                 setInstallStateFinished(
-                    false,
-                    "! Module is too large to be loaded on this device",
-                    ""
+                    false, "! Module is too large to be loaded on this device", ""
                 )
             }
         }, "Module install Thread").start()
     }
 
+    @SuppressLint("RestrictedApi")
     @Suppress("KotlinConstantConditions")
     @Keep
     private fun doInstall(file: File?, noExtensions: Boolean, rootless: Boolean) {
         @Suppress("NAME_SHADOWING") var noExtensions = noExtensions
         if (canceled) return
-        UiThreadHandler.runAndWait {
-            this.onBackPressedCallback = DISABLE_BACK_BUTTON
-            setDisplayHomeAsUpEnabled(false)
-        }
+        // disable back
+        runOnUiThread { cancelFloatingButton!!.isEnabled = false }
         Timber.i("Installing: %s", moduleCache!!.name)
         val installerController = InstallerController(
-            progressIndicator,
-            installerTerminal,
-            file!!.absoluteFile,
-            noExtensions
+            progressIndicator, installerTerminal, file!!.absoluteFile, noExtensions
         )
         val installerMonitor: InstallerMonitor
         val installJob: Shell.Job
@@ -364,13 +350,11 @@ class InstallerActivity : FoxActivity() {
                     if (zipEntry != null) {
                         FileOutputStream(
                             File(
-                                file.parentFile,
-                                "customize.sh"
+                                file.parentFile, "customize.sh"
                             )
                         ).use { fileOutputStream ->
                             copy(
-                                zipFile.getInputStream(zipEntry),
-                                fileOutputStream
+                                zipFile.getInputStream(zipEntry), fileOutputStream
                             )
                         }
                     }
@@ -482,9 +466,7 @@ class InstallerActivity : FoxActivity() {
                 installExecutable = extractInstallScript("anykernel3_installer.sh")
                 if (installExecutable == null) {
                     setInstallStateFinished(
-                        false,
-                        "! Failed to extract AnyKernel3 install script",
-                        ""
+                        false, "! Failed to extract AnyKernel3 install script", ""
                     )
                     return
                 }
@@ -496,9 +478,7 @@ class InstallerActivity : FoxActivity() {
                 installExecutable = extractInstallScript("module_installer_wrapper.sh")
                 if (installExecutable == null) {
                     setInstallStateFinished(
-                        false,
-                        "! Failed to extract Magisk module wrapper script",
-                        ""
+                        false, "! Failed to extract Magisk module wrapper script", ""
                     )
                     return
                 }
@@ -513,9 +493,7 @@ class InstallerActivity : FoxActivity() {
                 installExecutable = extractInstallScript("module_installer_compat.sh")
                 if (installExecutable == null) {
                     setInstallStateFinished(
-                        false,
-                        "! Failed to extract Magisk module install script",
-                        ""
+                        false, "! Failed to extract Magisk module install script", ""
                     )
                     return
                 }
@@ -523,9 +501,7 @@ class InstallerActivity : FoxActivity() {
                     ashExec + " \"" + installExecutable.absolutePath + "\"" + " 3 1 \"" + file.absolutePath + "\""
             } else {
                 setInstallStateFinished(
-                    false,
-                    "! Zip file is not a valid Magisk module or AnyKernel3 zip!",
-                    ""
+                    false, "! Zip file is not a valid Magisk module or AnyKernel3 zip!", ""
                 )
                 return
             }
@@ -565,8 +541,7 @@ class InstallerActivity : FoxActivity() {
                 breadcrumb.setData("noExtensions", if (noExtensions) "true" else "false")
                 breadcrumb.setData("magiskCmdLine", if (magiskCmdLine) "true" else "false")
                 breadcrumb.setData(
-                    "ansi",
-                    if (installerTerminal!!.isAnsiEnabled) "enabled" else "disabled"
+                    "ansi", if (installerTerminal!!.isAnsiEnabled) "enabled" else "disabled"
                 )
                 breadcrumb.setCategory("app.action.install")
                 SentryMain.addSentryBreadcrumb(breadcrumb)
@@ -632,20 +607,14 @@ class InstallerActivity : FoxActivity() {
                 wakeLock = null
             }
             // Set the back press to finish the activity and return to the main activity
-            this.onBackPressedCallback = OnBackPressedCallback { _: FoxActivity? ->
-                finishAndRemoveTask()
-                startActivity(Intent(this, MainActivity::class.java))
-                true
-            }
-            setDisplayHomeAsUpEnabled(true)
+            cancelFloatingButton!!.isEnabled = true
+            canGoBack = true
             progressIndicator!!.visibility = View.GONE
             rebootFloatingButton!!.setOnClickListener { _: View? ->
                 if (MainApplication.shouldPreventReboot()) {
                     // toast and do nothing
                     Toast.makeText(
-                        this,
-                        R.string.install_terminal_reboot_prevented,
-                        Toast.LENGTH_SHORT
+                        this, R.string.install_terminal_reboot_prevented, Toast.LENGTH_SHORT
                     ).show()
                 } else {
                     val builder = MaterialAlertDialogBuilder(this)
@@ -663,13 +632,14 @@ class InstallerActivity : FoxActivity() {
             rebootFloatingButton!!.isEnabled = true
             cancelFloatingButton!!.isEnabled = true
             // handle back button
-            cancelFloatingButton!!.setOnClickListener { _: View? -> forceBackPressed() }
+            cancelFloatingButton!!.setOnClickListener { _: View? -> finish() }
             if (!message.isNullOrEmpty()) installerTerminal!!.addLine(message)
             if (!optionalLink.isNullOrEmpty()) {
-                this.setActionBarExtraMenuButton(ActionButtonType.supportIconForUrl(optionalLink)) { _: MenuItem? ->
-                    IntentHelper.openUrl(this, optionalLink)
-                    true
-                }
+                installerTerminal!!.addLine(
+                    String.format(
+                        this.getString(R.string.install_terminal_support_link), optionalLink
+                    )
+                )
             } else if (success) {
                 val intent = this.intent
                 val config =
@@ -678,16 +648,34 @@ class InstallerActivity : FoxActivity() {
                     val configPkg = IntentHelper.getPackageOfConfig(config)
                     try {
                         XHooks.checkConfigTargetExists(this, configPkg, config)
-                        this.setActionBarExtraMenuButton(R.drawable.ic_baseline_app_settings_alt_24) { _: MenuItem? ->
-                            IntentHelper.openConfig(this, config)
+                        val configIntent = Intent()
+                        configIntent.component = ComponentName(configPkg, config)
+                        configIntent.putExtra(Constants.EXTRA_INSTALL_NAME, this.packageName)
+                        configIntent.putExtra(Constants.EXTRA_INSTALL_PATH, this.packageCodePath)
+                        // set menuitem install_terminal_config on bottomnavigationview to launch
+                        // config activity
+                        val bottomNavigationView =
+                            findViewById<BottomNavigationView>(R.id.bottom_navigation)
+                        bottomNavigationView.menu.findItem(R.id.install_terminal_config).isVisible =
                             true
+                        bottomNavigationView.setOnItemSelectedListener { item ->
+                            when (item.itemId) {
+                                // config is at position 3
+                                R.id.install_terminal_config -> {
+                                    startActivity(configIntent)
+                                    true
+                                }
+
+                                else -> {
+                                    false
+                                }
+                            }
                         }
                     } catch (e: PackageManager.NameNotFoundException) {
                         Timber.w("Config package \"$configPkg\" missing for installer view")
                         installerTerminal!!.addLine(
                             String.format(
-                                this.getString(R.string.install_terminal_config_missing),
-                                configPkg
+                                this.getString(R.string.install_terminal_config_missing), configPkg
                             )
                         )
                     }
@@ -805,8 +793,7 @@ class InstallerActivity : FoxActivity() {
                 "setSupportLink" -> {
                     // Only set link if valid
                     if (arg.isEmpty() || arg.startsWith("https://") && arg.indexOf(
-                            '/',
-                            8
+                            '/', 8
                         ) > 8
                     ) supportLink = arg
                 }
@@ -827,8 +814,8 @@ class InstallerActivity : FoxActivity() {
         }
     }
 
-    class InstallerMonitor(installScript: File) : CallbackList<String?>(
-        Executor { obj: Runnable -> obj.run() }) {
+    class InstallerMonitor(installScript: File) :
+        CallbackList<String?>(Executor { obj: Runnable -> obj.run() }) {
         private val installScriptErr: String
         private var lastCommand = ""
         private var forCleanUp: String? = null

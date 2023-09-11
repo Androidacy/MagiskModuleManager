@@ -45,6 +45,7 @@ import java.io.IOException
 import java.nio.charset.StandardCharsets
 import java.util.Objects
 
+@Suppress("SameReturnValue")
 @Keep
 class AndroidacyWebAPI(
     private val activity: AndroidacyActivity,
@@ -62,7 +63,7 @@ class AndroidacyWebAPI(
     var notifiedCompatMode = 0
     fun forceQuitRaw(error: String?) {
         Toast.makeText(activity, error, Toast.LENGTH_LONG).show()
-        activity.runOnUiThread { activity.forceBackPressed() }
+        activity.runOnUiThread { activity.finish() }
         activity.backOnResume = true // Set backOnResume just in case
         downloadMode = false
     }
@@ -197,7 +198,7 @@ class AndroidacyWebAPI(
         // Allow forceQuit and cancel in downloadMode
         if (consumedAction && !downloadMode) return
         consumedAction = true
-        activity.runOnUiThread { activity.forceBackPressed() }
+        activity.runOnUiThread { activity.finish() }
     }
 
     /**
@@ -374,7 +375,6 @@ class AndroidacyWebAPI(
         if (consumedAction) return
         consumedAction = true
         activity.runOnUiThread {
-            activity.hideActionBar()
             consumedAction = false
         }
     }
@@ -388,7 +388,6 @@ class AndroidacyWebAPI(
         if (consumedAction) return
         consumedAction = true
         activity.runOnUiThread {
-            activity.showActionBar()
             if (!title.isNullOrEmpty()) {
                 activity.title = title
             }
@@ -479,7 +478,7 @@ class AndroidacyWebAPI(
      */
     @get:JavascriptInterface
     val navigationBarHeight: Int
-        get() = activity.navigationBarHeight
+        get() = 48
 
     /**
      * Return current theme accent color
@@ -496,13 +495,6 @@ class AndroidacyWebAPI(
             theme.resolveAttribute(android.R.attr.colorAccent, typedValue, true)
             return typedValue.data
         }
-
-    /**
-     * Return current theme foreground color
-     */
-    @get:JavascriptInterface
-    val foregroundColor: Int
-        get() = if (activity.isLightTheme) Color.BLACK else Color.WHITE
 
     /**
      * Return current theme background color

@@ -11,16 +11,14 @@ import java.security.MessageDigest
 import java.security.NoSuchAlgorithmException
 import java.util.regex.Pattern
 
-@Suppress("UNUSED_EXPRESSION")
-enum class Hashes {
-    ;
+@Suppress("UNUSED_EXPRESSION", "MemberVisibilityCanBePrivate")
+enum class Hashes {;
 
     companion object {
         private val HEX_ARRAY = "0123456789abcdef".toCharArray()
         private val nonAlphaNum = Pattern.compile("[^a-zA-Z0-9]")
 
-        @JvmStatic
-        fun bytesToHex(bytes: ByteArray): String {
+        private fun bytesToHex(bytes: ByteArray): String {
             val hexChars = CharArray(bytes.size * 2)
             for (j in bytes.indices) {
                 val v = bytes[j].toInt() and 0xFF
@@ -30,17 +28,6 @@ enum class Hashes {
             return String(hexChars)
         }
 
-        @JvmStatic
-        fun hashMd5(ignoredInput: ByteArray?): String {
-            throw SecurityException("MD5 is not secure")
-        }
-
-        @JvmStatic
-        fun hashSha1(ignoredInput: ByteArray?): String {
-            throw SecurityException("SHA-1 is not secure")
-        }
-
-        @JvmStatic
         fun hashSha256(input: ByteArray?): String {
             input ?: return ""
             return try {
@@ -51,7 +38,6 @@ enum class Hashes {
             }
         }
 
-        @JvmStatic
         fun hashSha512(input: ByteArray?): String {
             input ?: return ""
             return try {
@@ -66,7 +52,6 @@ enum class Hashes {
          * Check if the checksum match a file by picking the correct
          * hashing algorithm depending on the length of the checksum
          */
-        @JvmStatic
         fun checkSumMatch(data: ByteArray?, checksum: String?): Boolean {
             if (checksum == null) return false
             val hash: String = when (checksum.length) {
@@ -74,8 +59,6 @@ enum class Hashes {
                     return true // No checksum
                 }
 
-                32 -> hashMd5(data)
-                40 -> hashSha1(data)
                 64 -> hashSha256(data)
                 128 -> hashSha512(data)
                 else -> {
@@ -87,7 +70,6 @@ enum class Hashes {
             return hash == checksum.lowercase()
         }
 
-        @JvmStatic
         fun checkSumValid(checksum: String?): Boolean {
             return if (checksum == null) false else when (checksum.length) {
                 32, 40, 64, 128 -> {
@@ -108,7 +90,6 @@ enum class Hashes {
             }
         }
 
-        @JvmStatic
         fun checkSumName(checksum: String?): String? {
             return if (checksum == null) null else when (checksum.length) {
                 32 -> "MD5"
@@ -125,7 +106,6 @@ enum class Hashes {
             }
         }
 
-        @JvmStatic
         fun checkSumFormat(checksum: String?): String? {
             return if (checksum == null) null else nonAlphaNum.matcher(checksum.trim { it <= ' ' })
                 .replaceAll("")

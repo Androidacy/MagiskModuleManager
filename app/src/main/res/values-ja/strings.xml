@@ -21,10 +21,8 @@
     <string name="showcase_mode_desc">ロックダウンモードはモジュール処理の実行を禁止します</string>
     <string name="pref_category_info">情報</string>
     <string name="show_licenses">ライセンスを表示</string>
-    <string name="licenses">ライセンス</string>
     <string name="show_incompatible_pref">互換性のないモジュールを表示</string>
     <string name="show_incompatible_desc">メタデータを基に、このデバイスと互換性がないモジュールを表示します</string>
-    <string name="pref_category_repos">リポジトリ</string>
     <string name="master_delete">モジュールファイルを削除しますか\?</string>
     <string name="master_delete_no">保持</string>
     <string name="master_delete_yes">削除</string>
@@ -145,7 +143,6 @@
     <string name="download_full_app">フルバージョンをダウンロード</string>
     <string name="repo_update_failed">一部のリポジトリのアップデートに失敗しました</string>
     <string name="crash_reporting_desc">これを無効にすると、開発者にバグ報告がされず、問題の解決が難しくなるかもしれません</string>
-    <string name="androidacy_failed_to_parse_token">Androidacy からトークンを受け取れませんでした。後ほど再度お試しください。</string>
     <string name="androidacy_failed_to_validate_token">Androidacy に使用するトークンを検証できませんでした。後ほど再度お試しください。</string>
     <string name="androidacy_need_captcha">Captcha によって Androidacy のアップデートがブロックされています</string>
     <string name="link_copied">リンクをコピーしました</string>
@@ -155,7 +152,6 @@
     <string name="notification_update_pref">自動でモジュールのアップデートを確認</string>
     <string name="notification_update_desc">バッテリーの減りが早くなる可能性があります</string>
     <string name="notification_update_debug_pref">通知をテスト</string>
-    <string name="language_support_outdated">現在の言語の翻訳の一部は最新ではありません。GitHub からアプリの翻訳にご協力ください</string>
     <string name="language_translated_by">翻訳: Fox2Code (Suu, Re*Index.)</string>
     <string name="crash_reporting">自動でバグとパフォーマンスを開発者に送信する</string>
     <string name="api_key">Androidacy API キー</string>
@@ -206,7 +202,6 @@
     <string name="reset_api_key">API キーをリセット</string>
     <string name="upgrade_androidacy_promo">プレミアムにアップグレード</string>
     <string name="upgrade_androidacy_promo_desc">プレミアムにアップグレードすると、Androidacy リポジトリでの広告とCaptchaの削除、モジュール作者のサポートなどができます。</string>
-    <string name="feedback_submit">送信して再起動</string>
     <string name="feedback_name">名前(オプション)</string>
     <string name="feedback_email">メールアドレス(オプション)</string>
     <string name="sentry_dialogue_empty_message">追加のフィードバック情報が入力されていません。</string>
@@ -246,7 +241,6 @@
     <string name="background_update_check_excludes">自動アップデートチェックから除外するモジュール</string>
     <string name="update_title">アプリをアップデート</string>
     <string name="update_message">AMM のアップデートをインストールしています。数分かかることがあります</string>
-    <string name="update_button">お待ちください…</string>
     <string name="error_no_extras">エラー: 起動中に無効なデータを受け取りました</string>
     <string name="update_debug_warning">デバッグ用のビルドで実行しています。アプリが自動で更新されないため、手動で更新してください</string>
     <string name="error_no_action">エラー: 無効なアクションが指定されました。このアクションを無視して続行します。</string>
@@ -284,9 +278,7 @@
     <string name="notification_channel_category_app_update_description">アプリのアップデートが利用可能な場合に通知します</string>
     <string name="notification_channel_background_update_app">アプリのアップデートが利用可能です!</string>
     <string name="notification_channel_background_update_app_description">AMM のアップデートが利用可能です。ここをタップしてアップデートします。</string>
-    <string name="modules">モジュール</string>
     <string name="no_browser">ブラウザーがインストールされていません。続行するにはインストールしてください。</string>
-    <string name="yer_a_wizard_harry">あなたはハリーみたいな魔法使いだよ！</string>
     <string name="keep_tapping_to_enter_hogwarts">ホグワーツに入学したいならタップを続けてね！</string>
     <string name="setup_update_check_headline">アップデートチェック</string>
     <string name="setup_background_update_check_require_wifi_summary">アップデートを確認するには Wi-Fi または容量無制限のネットワークに接続してください</string>
@@ -323,10 +315,6 @@
     <string name="eula_agree_v2">LGPL-3.0 (https://www.gnu.org/licenses/lgpl-3.0.en.html) と EULA (https://www.androidacy.com/foxmmm-eula/) ライセンスに同意することになります。第三者からの条件も含め、このアプリの開発者はアプリ使用時に発生した問題に関する一切の責任を負いません。また、それに関わる保証も提供しません。</string>
     <string name="setup_scroll_down_v2">完了ボタンを有効化するには、下にスクロールして EULA とライセンスに同意する必要があります。</string>
     <string name="reboot_extra_warning">EDL モードは OEM が低レベルの問題を修正するための特別な機能です。EDL モードを解除したり、必要なツールをお持ちでない限りは他の再起動オプションを使用する事を強く推奨します。</string>
-    <string name="title_activity_expired">ExpiredActivity</string>
-    <string name="title_home">ホーム</string>
-    <string name="title_dashboard">ダッシュボード</string>
-    <string name="title_notifications">通知</string>
     <string name="expired">このビルドは期限切れです!</string>
     <string name="expired_message">使用中のビルドは有効期限が切れており、実行はできません。最新の安定版ビルドに更新してください。</string>
     <string name="download_latest">最新のダウンロード</string>
@@ -358,7 +346,6 @@
     <string name="notification_update_frequency_pref">バックグラウンドでの確認の頻度</string>
     <string name="notification_update_frequency_desc">バックグラウンドでアップデートを確認する頻度です。値を低く設定し過ぎるとバッテリーの消耗が激しくなる可能性があります。</string>
     <string name="reboot">再起動</string>
-    <string name="reboot_system">通常の再起動</string>
     <string name="reboot_recovery">リカバリーで再起動</string>
     <string name="reboot_bootloader">ブートローダーで再起動</string>
     <string name="reboot_edl">EDL モードで再起動</string>

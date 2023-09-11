@@ -4,10 +4,10 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import com.fox2code.foxcompat.app.FoxActivity
+import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.button.MaterialButton
 
-class ExpiredActivity : FoxActivity() {
+class ExpiredActivity : AppCompatActivity() {
     @SuppressLint("RestrictedApi")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

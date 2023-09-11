@@ -47,9 +47,7 @@
     <string name="enable_monet">Aktiver Monet</string>
     <string name="pref_category_info">Info</string>
     <string name="show_licenses">Vis licenser</string>
-    <string name="licenses">Licenser</string>
     <string name="show_incompatible_desc">Vis moduler, der sandsynligvis ikke fungerer på din enhed baseret på deres metadata</string>
-    <string name="pref_category_repos">Depoter</string>
     <string name="pref_category_security">Sikkerhed</string>
     <string name="pref_category_appearance">Udseende</string>
     <string name="master_delete">Slet modul filerne\?</string>
@@ -104,7 +102,6 @@
     <string name="crash_reporting_restart_message">Appen skal genstarte for at anvende denne indstilling</string>
     <string name="restart">Genstart</string>
     <string name="androidacy_test_mode_disable_warning">Appen genstartes for at deaktivere iscenesættelsesslutpunktet</string>
-    <string name="androidacy_failed_to_parse_token">Kunne ikke hente token fra Androidacy. Prøv igen senere.</string>
     <string name="androidacy_failed_to_validate_token">Kunne ikke validere token til Androidacy. Prøv igen senere.</string>
     <string name="androidacy_need_captcha">Androidacy-opdatering blokeret af Captcha</string>
     <string name="api_key_restart">API-nøgle er blevet ændret. Genstart appen for at anvende ændringer.</string>
@@ -134,7 +131,6 @@
 \nSlå dette til på eget ansvar!</string>
     <string name="remove_repo">Fjern Depot</string>
     <string name="androidacy_repo_info">Dette lager kan vise nogle ikke-påtrængende reklamer for at dække server- og udviklingsomkostninger.</string>
-    <string name="language_support_outdated">Nogle oversættelser til det aktuelle sprog er ikke opdaterede. Overvej venligst at bidrage til app-oversættelserne på GitHub</string>
     <string name="api_key_summary">Brug en tilpasset API-nøgle til Androidacy. Nyttigt for premium-abonnenter, til fjernelse annoncer og mere.</string>
     <string name="androidacy_test_mode_warning">Du indstiller appen til at bruge et ikke-produktionsslutpunkt til Androidacy. Dette kan resultere i app-ustabilitet og manglende indlæsning af online-depoten. Rapporter IKKE fejl, hvis du har denne funktion slået til. Appen genstartes for at genindlæse repos.</string>
 </resources>

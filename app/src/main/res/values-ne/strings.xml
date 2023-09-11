@@ -26,7 +26,6 @@
     <string name="master_delete_no">राख्ने</string>
     <string name="master_delete_yes">मेटाउने</string>
     <string name="pref_category_appearance">हुलिया</string>
-    <string name="licenses">अनुमतिपत्रहरु</string>
     <string name="module_min_magisk_chip">न्युनतम म्याजिस्क %s</string>
     <string name="module_min_sdk_chip">न्युनतम एन्ड्रोइड</string>
     <string name="module_max_sdk_chip">अधिकतम एन्ड्रोइड</string>
@@ -51,7 +50,6 @@
     <string name="androidacy_update_needed">यो एप पुरानो भएको छ ।</string>
     <string name="androidacy_update_needed_message">कृपया यो एपलाई नयां संस्करणमा अध्यावधिक गर्नुहोस ।</string>
     <string name="zip_security_warning">%s स्थापित गर्ने\?</string>
-    <string name="update_button">कृपया पर्खनुहोस् …</string>
     <string name="sentry_dialogue_success">प्रतिकृया सफलतापूर्वक बुझाईयो । हामी छिटै पुनरावृति गर्नेछौं</string>
     <string name="please_wait">कृपया पर्खनुहोस्</string>
     <string name="warning">चेतावनि!</string>

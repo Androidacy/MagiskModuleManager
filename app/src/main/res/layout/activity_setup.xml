@@ -23,7 +23,6 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <LinearLayout
-            android:id="@+id/setup_box_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
@@ -32,7 +31,6 @@
 
             <!-- Title -->
             <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/setup_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingTop="16dp"
@@ -40,7 +38,6 @@
                 android:textAppearance="@style/TextAppearance.Material3.HeadlineLarge" />
 
             <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/setup_summary"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="2dp"
@@ -49,7 +46,6 @@
 
             <!-- inform user that to finish setup, they need to scroll down -->
             <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/setup_scroll_down"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="2dp"
@@ -61,7 +57,6 @@
 
             <!-- Button to trigger theme selection, half width, and in container with language -->
             <LinearLayout
-                android:id="@+id/LinearLayout02"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 

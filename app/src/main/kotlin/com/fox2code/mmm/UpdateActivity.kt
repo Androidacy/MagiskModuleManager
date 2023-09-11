@@ -13,11 +13,11 @@ import android.webkit.CookieManager
 import android.webkit.WebSettings
 import android.webkit.WebView
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.FileProvider
 import androidx.webkit.WebSettingsCompat
 import androidx.webkit.WebViewFeature
-import com.fox2code.foxcompat.app.FoxActivity
 import com.fox2code.mmm.androidacy.AndroidacyRepoData
 import com.fox2code.mmm.utils.io.net.Http
 import com.google.android.material.bottomnavigation.BottomNavigationItemView
@@ -34,7 +34,7 @@ import java.io.IOException
 import java.sql.Timestamp
 import java.util.Objects
 
-class UpdateActivity : FoxActivity() {
+class UpdateActivity : AppCompatActivity() {
     private var chgWv: WebView? = null
     private var url: String = String()
 
@@ -234,7 +234,7 @@ class UpdateActivity : FoxActivity() {
         updateCancel.setOnClickListener { _: View? ->
             // end any download
             updateThread.interrupt()
-            forceBackPressed()
+            finish()
             finish()
         }
         updateThread.start()

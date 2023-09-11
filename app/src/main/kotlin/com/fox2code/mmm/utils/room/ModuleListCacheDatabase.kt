@@ -7,7 +7,6 @@ package com.fox2code.mmm.utils.room
 import androidx.room.Database
 import androidx.room.RoomDatabase
 
-@Suppress("unused")
 @Database(entities = [ModuleListCache::class], version = 1)
 abstract class ModuleListCacheDatabase : RoomDatabase() {
     abstract fun moduleListCacheDao(): ModuleListCacheDao

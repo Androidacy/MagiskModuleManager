@@ -50,11 +50,13 @@ class AndroidacyRepoData(cacheRoot: File?, testMode: Boolean) : RepoData(
     private val clientID = BuildConfig.ANDROIDACY_CLIENT_ID
     private val testMode: Boolean
     private val host: String
+    override var url: String = "https://production-api.androidacy.com/magisk/repo"
+        get() {
+            return if (token == null) field else field + "?token=" + token + "&v=" + BuildConfig.VERSION_CODE + "&c=" + BuildConfig.VERSION_NAME + "&device_id=" + generateDeviceId() + "&client_id=" + BuildConfig.ANDROIDACY_CLIENT_ID
+        }
 
-    @JvmField
     var userInfo = arrayOf(arrayOf("role", null), arrayOf("permissions", null))
 
-    @JvmField
     var memberLevel: String? = null
 
     // Avoid spamming requests to Androidacy
@@ -102,7 +104,7 @@ class AndroidacyRepoData(cacheRoot: File?, testMode: Boolean) : RepoData(
                 val handler = Handler(Looper.getMainLooper())
                 handler.post {
                     Toast.makeText(
-                        INSTANCE,
+                        INSTANCE!!.lastActivity,
                         INSTANCE!!.getString(R.string.androidacy_api_error, e.errorCode),
                         Toast.LENGTH_LONG
                     ).show()
@@ -118,7 +120,12 @@ class AndroidacyRepoData(cacheRoot: File?, testMode: Boolean) : RepoData(
             val editor = getSharedPreferences("androidacy")!!.edit()
             editor.remove("pref_androidacy_api_token")
             editor.apply()
-            false
+            requestNewToken()
+            isValidToken(
+                getSharedPreferences("androidacy")!!.getString(
+                    "pref_androidacy_api_token",
+                    null
+                ))
         }
     }
 
@@ -234,7 +241,7 @@ class AndroidacyRepoData(cacheRoot: File?, testMode: Boolean) : RepoData(
                     val handler = Handler(mainLooper)
                     handler.post {
                         Toast.makeText(
-                            INSTANCE,
+                            INSTANCE!!.lastActivity,
                             R.string.androidacy_failed_to_validate_token,
                             Toast.LENGTH_LONG
                         ).show()
@@ -408,10 +415,6 @@ class AndroidacyRepoData(cacheRoot: File?, testMode: Boolean) : RepoData(
         return false
     }
 
-    override fun getUrl(): String {
-        return if (token == null) url else url + "?token=" + token + "&v=" + BuildConfig.VERSION_CODE + "&c=" + BuildConfig.VERSION_NAME + "&device_id=" + generateDeviceId() + "&client_id=" + BuildConfig.ANDROIDACY_CLIENT_ID
-    }
-
     @Suppress("NAME_SHADOWING")
     private fun injectToken(url: String?): String? {
         // Do not inject token for non Androidacy urls
@@ -471,7 +474,6 @@ class AndroidacyRepoData(cacheRoot: File?, testMode: Boolean) : RepoData(
             OK_HTTP_URL_BUILDER.build()
         }
 
-        @JvmStatic
         val instance: AndroidacyRepoData
             get() = RepoManager.getINSTANCE()!!.androidacyRepoData!!
 

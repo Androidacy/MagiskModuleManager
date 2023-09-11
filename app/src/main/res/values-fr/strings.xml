@@ -63,11 +63,9 @@
     <string name="enable_monet">Activer Monet</string>
     <string name="pref_category_info">Infos</string>
     <string name="show_licenses">Afficher les licenses</string>
-    <string name="licenses">Licences</string>
     <string name="show_incompatible_pref">Afficher les modules incompatibles</string>
     <string name="show_incompatible_desc">Afficher les modules qui sont incompatibles avec votre périphérique basé sur leurs métadonnées</string>
     <string name="magisk_outdated">Il y a une nouvelle version de Magisk à installer !</string>
-    <string name="pref_category_repos">Dépôts</string>
     <string name="pref_category_security">Sécurité</string>
     <string name="pref_category_appearance">Apparance</string>
     <string name="master_delete">Supprimer les fichiers du modules \?</string>
@@ -129,9 +127,6 @@
     <!-- Set to true in translation file if your language is right to left -->
     <bool name="lang_support_rtl">false</bool>
     <!-- Always copy language_support_level when translating -->
-    <integer name="language_support_level">1</integer>
-    <string name="language_support_outdated">Certaines traductions pour la langue actuelle ne sont
-        pas à jour, merci de considérer une contribution aux traductions sur Github</string>
     <!-- Replace with your own username when translating -->
     <string name="language_translated_by">Traduit par xerta555</string>
     <string name="crash_reporting">Soumettre automatiquement les bugs et performances aux développeurs</string>
@@ -151,7 +146,6 @@
     <string name="crash_reporting_restart_message">L\’application nécessite un redémarrage pour appliquer les réglages</string>
     <string name="restart">Redémarrer</string>
     <string name="androidacy_test_mode_disable_warning">L\’application sera redémarrée pour dépasser le point de passage de mise à disposition.</string>
-    <string name="androidacy_failed_to_parse_token">La clé n\’a pas pu être retrouvée sur Androidacy. Merci de retenter ultérieurement.</string>
     <string name="androidacy_failed_to_validate_token">La clé n\’a pas pu être validée chez Androidacy. Merci de retenter ultérieurement.</string>
     <string name="androidacy_need_captcha">Mise à jour d\’Androidacy bloquée par Captcha</string>
     <string name="api_key_restart">La clé d\’API à été changée. Redémarrer l\’application pour appliquer les changements.</string>
@@ -244,7 +238,6 @@
     <string name="not_official_build">Cette application n\’est pas une fabrication officielle AMM.</string>
     <string name="crash_text">Uh-oh, on a un problème!</string>
     <string name="feedback_message">Donnez nous plus de détails à propos de ce qui s\’est passé quand c\’est arrivé. Plus on est foue, plus on rit!</string>
-    <string name="feedback_submit">Envoyer et redémarrer</string>
     <string name="please_feedback">Merci de nous aider en nous disant qu\’est ce que vous avez essayé de faire quand c\’est arrivé.</string>
     <string name="sentry_dialogue_disabled">Le rapport de plantage est désactivé. Activez le pour envoyer le rapport.</string>
     <string name="feedback_name">Nom (optionel)</string>
@@ -270,7 +263,6 @@
     <string name="background_update_check_excludes">Modules à exclure des vérifications de MàJ automatiques</string>
     <string name="update_title">MàJ l\’application</string>
     <string name="update_message">Merci de patienter pendant que nous vérifions et installons les MàJ pour AMM. Celà peut prendre quelques minutes</string>
-    <string name="update_button">Merci de patienter…</string>
     <string name="error_no_extras">ERREURE: Donnée invalides reçues au lancement</string>
     <string name="update_debug_warning">Il semblerait que vous soyez en train d\’utiliser une fabrication de débuggage. Les fabrications de débuggage doivent être MàJ manuellement, et les MàJ incorporées ne sont pas supportées</string>
     <string name="error_no_action">ERREURE: Action spécifiée invalide. Refus de continuer.</string>
@@ -308,9 +300,7 @@
     <string name="notification_channel_category_app_update_description">ÊTre notifié lorsce qu\’une MàJ de l\’application est trouvée</string>
     <string name="notification_channel_background_update_app">MàJ de l\’application disponible!</string>
     <string name="notification_channel_background_update_app_description">Une MàJ est disponible pour AMM. Appuyer ici pour MàJ.</string>
-    <string name="yer_a_wizard_harry">Vous êtes un magicien, Harry!</string>
     <string name="keep_tapping_to_enter_hogwarts">Continuez à toquer pour être admis à Poudlard !</string>
-    <string name="modules">Modules</string>
     <string name="no_browser">Vous n\’avez pas de navigateur installé. Merci d\’en installer un pour continuer.</string>
     <string name="setup_update_check_headline">Vérification de MàJ</string>
     <string name="setup_background_update_check_require_wifi">Requière le wifi pour les vérifications de MàJ</string>

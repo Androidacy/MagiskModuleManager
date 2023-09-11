@@ -5,9 +5,7 @@
 @file:Suppress(
     "KotlinConstantConditions",
     "UNINITIALIZED_ENUM_COMPANION_WARNING",
-    "ktConcatNullable",
-    "BlockingMethodInNonBlockingContext",
-    "UnusedEquals"
+    "ktConcatNullable"
 )
 
 package com.fox2code.mmm
@@ -19,7 +17,6 @@ import android.widget.Toast
 import androidx.annotation.AttrRes
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
-import com.fox2code.foxcompat.app.FoxActivity
 import com.fox2code.mmm.installer.InstallerInitializer
 import com.fox2code.mmm.module.ModuleViewListBuilder
 import com.fox2code.mmm.repo.RepoManager
@@ -38,13 +35,14 @@ import java.util.Date
 import java.util.zip.ZipFile
 
 
+@Suppress("SameParameterValue")
 enum class NotificationType(
     @field:StringRes @param:StringRes @JvmField val textId: Int,
     @field:DrawableRes @JvmField val iconId: Int,
     @field:AttrRes @JvmField val backgroundAttr: Int = androidx.appcompat.R.attr.colorError,
     @field:AttrRes @JvmField val foregroundAttr: Int = com.google.android.material.R.attr.colorOnPrimary,
-    @JvmField val onClickListener: View.OnClickListener? = null,
-    @JvmField var special: Boolean = false
+    val onClickListener: View.OnClickListener? = null,
+    var special: Boolean = false
 ) : NotificationTypeCst {
 
     @JvmStatic
@@ -171,8 +169,7 @@ enum class NotificationType(
                 v.context,
                 0,
                 Intent(
-                    v.context,
-                    UpdateActivity::class.java
+                    v.context, UpdateActivity::class.java
                 ).setAction(UpdateActivity.ACTIONS.DOWNLOAD.toString()),
                 android.app.PendingIntent.FLAG_UPDATE_CURRENT
             )
@@ -196,16 +193,16 @@ enum class NotificationType(
         androidx.appcompat.R.attr.colorBackgroundFloating,
         com.google.android.material.R.attr.colorOnBackground,
         View.OnClickListener { v: View? ->
-            if (MainApplication.getSharedPreferences("mmm")?.getBoolean("pref_require_security", false) == true) {
+            if (MainApplication.getSharedPreferences("mmm")
+                    ?.getBoolean("pref_require_security", false) == true
+            ) {
                 // block local install for safety
-                MaterialAlertDialogBuilder(v!!.context)
-                    .setTitle(R.string.install_from_storage)
+                MaterialAlertDialogBuilder(v!!.context).setTitle(R.string.install_from_storage)
                     .setMessage(R.string.install_from_storage_safe_modules)
-                    .setPositiveButton(android.R.string.ok, null)
-                    .show()
+                    .setPositiveButton(android.R.string.ok, null).show()
                 return@OnClickListener
             }
-            val compatActivity = FoxActivity.getFoxActivity(v)
+            val compatActivity = MainApplication.INSTANCE!!.lastActivity!!
             val module = File(
                 compatActivity.cacheDir, "installer" + File.separator + "module.zip"
             )

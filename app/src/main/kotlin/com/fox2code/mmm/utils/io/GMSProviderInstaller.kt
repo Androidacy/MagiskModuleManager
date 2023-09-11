@@ -19,7 +19,6 @@ enum class GMSProviderInstaller {
     companion object {
         private var called = false
 
-        @JvmStatic
         fun installIfNeeded(context: Context?) {
             if (context == null) {
                 throw NullPointerException("Context must not be null")

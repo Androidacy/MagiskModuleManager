@@ -61,11 +61,9 @@
     <string name="enable_monet">Monet\'i etkinleştir</string>
     <string name="pref_category_info">Bilgi</string>
     <string name="show_licenses">Lisansları göster</string>
-    <string name="licenses">Lisanslar</string>
     <string name="show_incompatible_pref">Desteklenmeyen modülleri göster</string>
     <string name="show_incompatible_desc">Metaveri\'ye bağlı olarak cihazınızla uyumlu olmayan modülleri gösterir</string>
     <string name="magisk_outdated">Magisk\'in yüklenecek yeni bir sürümü var!</string>
-    <string name="pref_category_repos">Depolar</string>
     <string name="pref_category_security">Güvenlik</string>
     <string name="pref_category_appearance">Görünüm</string>
     <string name="master_delete">Modül dosyalarını sil?</string>
@@ -119,8 +117,6 @@
     <!-- Set to true in translation file if your language is right to left -->
     <bool name="lang_support_rtl">false</bool>
     <!-- Always copy language_support_level when translating -->
-    <integer name="language_support_level">1</integer>
-    <string name="language_support_outdated">Mevcut dil için bazı çeviriler güncel değil, lütfen GitHub\'daki uygulama çevirilerine katkıda bulunmayı düşünün</string>
     <!-- Replace with your own username when translating -->
     <string name="language_translated_by">tarafından çevrildi</string>
     <string name="crash_reporting">Geliştiricilere performans ve hataları otomatik olarak bildir</string>
@@ -140,7 +136,6 @@
     <string name="crash_reporting_restart_message">Bu ayarı uygulamak için uygulamanın yeniden başlatılması gerekli</string>
     <string name="restart">Yeniden başlat</string>
     <string name="androidacy_test_mode_disable_warning">Uygulama, endpoint\'i devre dışı bırakmak için yeniden başlatılacaktır</string>
-    <string name="androidacy_failed_to_parse_token">Androidacy\'den jeton alınamadı. Lütfen sonra tekrar deneyin.</string>
     <string name="androidacy_failed_to_validate_token">Androidacy için jeton doğrulanamadı. Lütfen sonra tekrar deneyin.</string>
     <string name="link_copied">Link kopyalandı</string>
     <string name="api_key_restart">API anahtarı değiştirildi. Değişiklikleri uygulamak için uygulamayı yeniden başlatın.</string>
@@ -233,13 +228,11 @@
     <string name="error_saving_logs">Günlükler kaydedilemedi</string>
     <string name="share_logs">AMM günlüklerini paylaş</string>
     <string name="not_official_build">Bu uygulama resmi olmayan AMM yapımıdır.</string>
-    <string name="update_button">Lütfen bekleyin…</string>
     <string name="notification_update_ignore_desc">Güncelleme kontrollerinden hariç tutulacak modüllerin listesi</string>
     <string name="background_update_check_excludes">Otomatik güncelleme kontrollerinden hariç tutulacak modüller</string>
     <string name="update_title">Uygulamayı güncelle</string>
     <string name="update_message">AMM güncellemelerini kontrol edip yüklerken lütfen bekleyin. Bu işlem birkaç dakika sürebilir</string>
     <string name="crash_text">Uh-oh, bir engele takıldık!</string>
-    <string name="feedback_submit">Gönder ve yeniden başlat</string>
     <string name="please_feedback">Lütfen bu olay olduğunda ne yapmaya çalıştığınızı anlatarak bize yardımcı olun.</string>
     <string name="feedback_name">İsim (isteğe bağlı)</string>
     <string name="feedback_email">E-posta (isteğe bağlı)</string>

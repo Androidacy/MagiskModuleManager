@@ -27,47 +27,33 @@ open class RepoData(url: String, cacheRoot: File) : XRepo() {
     private val supportedProperties = JSONObject()
     private val populateLock = Any()
 
-    @JvmField
-    var url: String
+    open var url: String = ""
 
-    @JvmField
     var preferenceId: String? = null
 
-    @JvmField
     var cacheRoot: File
 
-    @JvmField
     var moduleHashMap: HashMap<String, RepoModule>
     private var metaDataCache: JSONObject?
 
-    @JvmField
     var lastUpdate: Long = 0
 
-    @JvmField
     var website: String? = null
 
-    @JvmField
     var support: String? = null
 
-    @JvmField
     var donate: String? = null
 
-    @JvmField
     var submitModule: String? = null
 
-    @JvmField
     var defaultName: String
 
-    @JvmField
     var defaultWebsite: String
 
-    @JvmField
     protected var defaultSupport: String? = null
 
-    @JvmField
     protected var defaultDonate: String? = null
 
-    @JvmField
     var defaultSubmitModule: String? = null
 
     override var name: String? = null
@@ -389,27 +375,6 @@ open class RepoData(url: String, cacheRoot: File) : XRepo() {
         }
     }
 
-    open fun getUrl(): String? {
-        return url
-    }
-
-    fun getWebsite(): String {
-        if (isNonNull(website)) return website!!
-        return if (defaultWebsite != null) defaultWebsite else url
-    }
-
-    fun getSupport(): String? {
-        return if (isNonNull(support)) support else defaultSupport
-    }
-
-    fun getDonate(): String? {
-        return if (isNonNull(donate)) donate else defaultDonate
-    }
-
-    fun getSubmitModule(): String? {
-        return if (isNonNull(submitModule)) submitModule else defaultSubmitModule
-    }
-
     // should update (lastUpdate > 15 minutes)
     fun shouldUpdate(): Boolean {
         if (BuildConfig.DEBUG) Timber.d("Repo $preferenceId should update check called")
@@ -449,9 +414,5 @@ open class RepoData(url: String, cacheRoot: File) : XRepo() {
         return true
     }
 
-    companion object {
-        private fun isNonNull(str: String?): Boolean {
-            return !str.isNullOrEmpty() && "null" != str
-        }
-    }
+    companion object
 }

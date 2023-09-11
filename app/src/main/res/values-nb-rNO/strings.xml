@@ -36,11 +36,9 @@
     <string name="showcase_mode_desc">Nedlåst modus forhendrer behandleren fra å utføre handlinger på moduler</string>
     <string name="pref_category_info">Info</string>
     <string name="show_licenses">Vis lisenser</string>
-    <string name="licenses">Lisenser</string>
     <string name="show_incompatible_pref">Vis inkompatible moduler</string>
     <string name="show_incompatible_desc">Vis moduler som antagelig ikke virker basert på deres metadata</string>
     <string name="magisk_outdated">Magisk er utdatert!</string>
-    <string name="pref_category_repos">Pakkebrønner</string>
     <string name="master_delete">Slett modulfilene?</string>
     <string name="master_delete_no">Behold</string>
     <string name="master_delete_yes">Slett</string>
@@ -57,7 +55,7 @@
     <string name="file_picker_failure">Din nåværende filvelger kunne ikke innvilge tilgang til filen.</string>
     <string name="remote_install_title">Fjerninstallering</string>
     <string name="file_picker_wierd">Filvelgeren din returnerte et uventet svar.</string>
-    <string name="use_magisk_install_command_pref">Bruk «magisk --install-module»-kommandoen</string>
+    <string name="use_magisk_install_command_pref">Bruk «magisk —install-module»-kommandoen</string>
     <string name="use_magisk_install_command_desc">
         Under testing forårsaket diagnoseverktøyet for modulinstallasjoner problemer,
         så dette alternativet er skjult bak utviklingsmoduset. Bruk det på egen risiko!
@@ -122,7 +120,6 @@
     <string name="crash">Krasj programmet i testøyemed</string>
     <string name="crash_reporting_restart_title">Start programmet på ny for å ta i bruk endringer\?</string>
     <string name="notification_update_desc">Kan bruke mer batteri</string>
-    <string name="language_support_outdated">Noen oversettelser er ikke oppdatert. Bidra på Weblate fra https://translate.nift4.org</string>
     <string name="crash_reporting">Rapporter feil og ytelse til utviklerne</string>
     <string name="api_key_removed">API-nøkkel tilbakestilt</string>
     <string name="crash_reporting_restart_message">Programmet må startes på ny for å bruke denne innstillingen</string>
@@ -136,7 +133,6 @@
     <string name="module_needs_ramdisk_desc">Denne modulen krever at ramdisk er isntallert</string>
     <string name="androidacy_repo_info">Denne pakkebrønnen kan vise reklame for å dekke tjener- og utviklingskostnader.</string>
     <string name="androidacy_failed_to_validate_token">Kunne ikke bekrefte symbol for Androidacy. Prøv igjen senere.</string>
-    <string name="androidacy_failed_to_parse_token">Kunne ikke hente symbol fra Androidacy. Prøv igjen senere.</string>
     <string name="androidacy_need_captcha">Oppgradering til ny versjon av Androidacy blokkert av CAPTCHA</string>
     <string name="link_copied">Lenke kopiert</string>
 </resources>

@@ -24,7 +24,6 @@ import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.SwitchPreferenceCompat
 import androidx.preference.TwoStatePreference
 import androidx.room.Room
-import com.fox2code.foxcompat.app.FoxActivity
 import com.fox2code.foxcompat.view.FoxDisplay
 import com.fox2code.foxcompat.view.FoxViewCompat
 import com.fox2code.mmm.BuildConfig
@@ -668,12 +667,12 @@ class RepoFragment : PreferenceFragmentCompat() {
                     preference.title = repoData.name
                     preference.isVisible = true
                     // set website, support, and submitmodule as well as donate
-                    if (repoData.getWebsite() != null) {
+                    if (repoData.website != null) {
                         findPreference<Preference>(preferenceName + "_website")!!.onPreferenceClickListener =
                             Preference.OnPreferenceClickListener {
                                 IntentHelper.openUrl(
-                                    FoxActivity.getFoxActivity(this),
-                                    repoData.getWebsite()
+                                    MainApplication.INSTANCE!!.lastActivity!!,
+                                    repoData.website
                                 )
                                 true
                             }
@@ -681,12 +680,12 @@ class RepoFragment : PreferenceFragmentCompat() {
                         findPreference<Preference>(preferenceName + "_website")!!.isVisible =
                             false
                     }
-                    if (repoData.getSupport() != null) {
+                    if (repoData.support != null) {
                         findPreference<Preference>(preferenceName + "_support")!!.onPreferenceClickListener =
                             Preference.OnPreferenceClickListener {
                                 IntentHelper.openUrl(
-                                    FoxActivity.getFoxActivity(this),
-                                    repoData.getSupport()
+                                    MainApplication.INSTANCE!!.lastActivity!!,
+                                    repoData.support
                                 )
                                 true
                             }
@@ -694,12 +693,12 @@ class RepoFragment : PreferenceFragmentCompat() {
                         findPreference<Preference>("${preferenceName}_support")!!.isVisible =
                             false
                     }
-                    if (repoData.getSubmitModule() != null) {
+                    if (repoData.submitModule != null) {
                         findPreference<Preference>(preferenceName + "_submit")!!.onPreferenceClickListener =
                             Preference.OnPreferenceClickListener {
                                 IntentHelper.openUrl(
-                                    FoxActivity.getFoxActivity(this),
-                                    repoData.getSubmitModule()
+                                    MainApplication.INSTANCE!!.lastActivity!!,
+                                    repoData.submitModule
                                 )
                                 true
                             }
@@ -707,12 +706,12 @@ class RepoFragment : PreferenceFragmentCompat() {
                         findPreference<Preference>(preferenceName + "_submit")!!.isVisible =
                             false
                     }
-                    if (repoData.getDonate() != null) {
+                    if (repoData.donate != null) {
                         findPreference<Preference>(preferenceName + "_donate")!!.onPreferenceClickListener =
                             Preference.OnPreferenceClickListener {
                                 IntentHelper.openUrl(
-                                    FoxActivity.getFoxActivity(this),
-                                    repoData.getDonate()
+                                    MainApplication.INSTANCE!!.lastActivity!!,
+                                    repoData.donate
                                 )
                                 true
                             }
@@ -752,13 +751,13 @@ class RepoFragment : PreferenceFragmentCompat() {
             }
         }
         preference = findPreference(preferenceName + "_website") ?: return
-        val homepage = repoData.getWebsite()
+        val homepage = repoData.website
         if (preference != null) {
-            if (homepage.isNotEmpty()) {
+            if (homepage?.isNotEmpty() == true) {
                 preference.isVisible = true
                 preference.onPreferenceClickListener =
                     Preference.OnPreferenceClickListener {
-                        IntentHelper.openUrl(FoxActivity.getFoxActivity(this), homepage)
+                        IntentHelper.openUrl(MainApplication.INSTANCE!!.lastActivity!!, homepage)
                         true
                     }
                 (preference as LongClickablePreference).onPreferenceLongClickListener =
@@ -773,14 +772,14 @@ class RepoFragment : PreferenceFragmentCompat() {
             }
         }
         preference = findPreference(preferenceName + "_support") ?: return
-        val supportUrl = repoData.getSupport()
+        val supportUrl = repoData.support
         if (preference != null) {
             if (!supportUrl.isNullOrEmpty()) {
                 preference.isVisible = true
                 preference.setIcon(ActionButtonType.supportIconForUrl(supportUrl))
                 preference.onPreferenceClickListener =
                     Preference.OnPreferenceClickListener {
-                        IntentHelper.openUrl(FoxActivity.getFoxActivity(this), supportUrl)
+                        IntentHelper.openUrl(MainApplication.INSTANCE!!.lastActivity!!, supportUrl)
                         true
                     }
                 (preference as LongClickablePreference).onPreferenceLongClickListener =
@@ -795,14 +794,14 @@ class RepoFragment : PreferenceFragmentCompat() {
             }
         }
         preference = findPreference(preferenceName + "_donate") ?: return
-        val donateUrl = repoData.getDonate()
+        val donateUrl = repoData.donate
         if (preference != null) {
             if (donateUrl != null) {
                 preference.isVisible = true
                 preference.setIcon(ActionButtonType.donateIconForUrl(donateUrl))
                 preference.onPreferenceClickListener =
                     Preference.OnPreferenceClickListener {
-                        IntentHelper.openUrl(FoxActivity.getFoxActivity(this), donateUrl)
+                        IntentHelper.openUrl(MainApplication.INSTANCE!!.lastActivity!!, donateUrl)
                         true
                     }
                 (preference as LongClickablePreference).onPreferenceLongClickListener =
@@ -817,13 +816,13 @@ class RepoFragment : PreferenceFragmentCompat() {
             }
         }
         preference = findPreference(preferenceName + "_submit") ?: return
-        val submissionUrl = repoData.getSubmitModule()
+        val submissionUrl = repoData.submitModule
         if (preference != null) {
             if (!submissionUrl.isNullOrEmpty()) {
                 preference.isVisible = true
                 preference.onPreferenceClickListener =
                     Preference.OnPreferenceClickListener {
-                        IntentHelper.openUrl(FoxActivity.getFoxActivity(this), submissionUrl)
+                        IntentHelper.openUrl(MainApplication.INSTANCE!!.lastActivity!!, submissionUrl)
                         true
                     }
                 (preference as LongClickablePreference).onPreferenceLongClickListener =

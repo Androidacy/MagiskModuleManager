@@ -17,30 +17,26 @@ import com.fox2code.mmm.repo.RepoManager
  * It will not be obfuscated on release builds
  */
 @Suppress("UNUSED_PARAMETER")
+@Deprecated("This class is deprecated and will be removed in the future")
 @Keep
 enum class XHooks {
     ;
 
     companion object {
-        @JvmStatic
         @Keep
         fun onRepoManagerInitialize() {
             // Call addXRepo here if you are an XPosed module
         }
 
-        @JvmStatic
         @Keep
         fun onRepoManagerInitialized() {
         }
 
-        @JvmStatic
         @Keep
         fun isModuleActive(moduleId: String?): Boolean {
             return ModuleManager.isModuleActive(moduleId!!)
         }
 
-        @Suppress("DEPRECATION")
-        @JvmStatic
         @Keep
         @Throws(PackageManager.NameNotFoundException::class)
         fun checkConfigTargetExists(context: Context, packageName: String, config: String) {
@@ -51,13 +47,11 @@ enum class XHooks {
         }
 
         @Suppress("UNUSED_PARAMETER")
-        @JvmStatic
         @Keep
         fun getConfigIntent(context: Context, packageName: String?, config: String?): Intent? {
             return context.packageManager.getLaunchIntentForPackage(packageName!!)
         }
 
-        @JvmStatic
         @Keep
         fun onWebViewInitialize(webView: WebView?, allowInstall: Boolean) {
             if (webView == null) throw NullPointerException("WebView is null!")

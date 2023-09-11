@@ -38,7 +38,6 @@
     <string name="prevent_reboot_desc">Sprječava neočekivana ponovno pokretanje</string>
     <string name="enable_monet">Omogući Monet</string>
     <string name="show_licenses">Prikaži licence</string>
-    <string name="licenses">Licence</string>
     <string name="show_incompatible_pref">Prikazati nekompatibilne module</string>
     <string name="magisk_outdated">Postoji nova verzija Magiska za instaliranje!!!</string>
     <string name="pref_category_security">Sigurnost</string>
@@ -63,7 +62,6 @@
     <string name="disable_low_quality_module_filter_desc">Neki moduli ne deklarišu svoje metapodatke ispravno, što uzrokuje vizualne probleme i/ili ukazuje na loš kvalitet modula.
 \nUključite ovo na vlastitu odgovornost!</string>
     <string name="manage_repos_pref">Upravljajte repozitorijem</string>
-    <string name="pref_category_repos">Repozitoriji</string>
     <string name="dns_over_https_pref">DNS preko HTTPS</string>
     <string name="wrap_text_pref">Prelamanje teksta</string>
     <string name="enable_blur_pref">Zamagljeno</string>
@@ -90,7 +88,6 @@
 \nUključite ovo na vlastitu odgovornost!</string>
     <string name="dns_over_https_desc">Može riješiti probleme sa povezivanjem u nekim slučajevima. (Ne odnosi se na WebView.)</string>
     <string name="notification_update_title">Pronađeno %1$d ažuriranja modula</string>
-    <string name="language_support_outdated">Neki prijevodi za trenutni jezik nisu ažurirani, razmislite o doprinosu prijevoda aplikacije na GitHubu</string>
     <string name="clear_data_dialogue_message">Upravo ćete obrisati podatke aplikacije. Molimo potvrdite ovu radnju.</string>
     <string name="repo_enabled_changed">Omogućili ste ili onemogućili repozitorij. Osvježite listu modula ili ponovo pokrenite aplikaciju.</string>
     <string name="language_translated_by">Preveo Jigsaw | Muhamed M</string>
@@ -182,7 +179,6 @@
     <string name="upgrade_androidacy_promo">Nadogradi na premium</string>
     <string name="upgrade_androidacy_promo_desc">Nadogradnja na premium će ukloniti oglase, captcha i preuzimanja za Androidacy Repository i podržati Androidacy i autore modula.</string>
     <string name="crash_reporting_restart_message">Aplikacija se mora ponovo pokrenuti da primijeni ovu postavku</string>
-    <string name="androidacy_failed_to_parse_token">Nije moguće preuzeti token iz Androidacy-a. Molimo pokušajte ponovo kasnije.</string>
     <string name="api_key_restart">API ključ je promijenjen. Ponovo pokrenite aplikaciju da primijenite izmjene.</string>
     <string name="permission_notification_message">Potrebna nam je dozvola za obavještenja da vas obavijestimo o ažuriranjima aplikacije i modula. Ako ne date ovu dozvolu, automatska provjera ažuriranja će se izgasiti.</string>
     <string name="androidacy_repo_disabled_message">Ovoj verziji nedostaju klijentski ključevi za Androidacy Repo. Molimo preuzmite GitHub izdanje ako želite imati koristi od funkcija kao što su recenzije modula, automatske sigurnosne provjere i još mnogo toga.</string>
@@ -214,7 +210,6 @@
 \n%1$s</string>
     <string name="crash_text">Ups, naišli smo na prepreku!</string>
     <string name="feedback_message">Recite nam više detalja o tome što ste radili kada se ovo dogodilo. Što više to bolje!</string>
-    <string name="feedback_submit">Predaj i ponovno pokreni</string>
     <string name="please_feedback">Molimo vas da pomognete tako što kažete što ste pokušavali učiniti kada se ovo dogodilo.</string>
     <string name="sentry_dialogue_disabled">Izvješćivanje o greškama je onemogućeno. Omogućite ga za slanje povratnih informacija.</string>
     <string name="feedback_name">Ime (neobavezno)</string>
@@ -250,7 +245,6 @@
     <string name="notification_update_ignore_desc">Lista modula koji se neće provjeravati za ažuriranja</string>
     <string name="background_update_check_excludes">Moduli koji se neće automatski provjeravati za ažuriranja</string>
     <string name="update_title">Ažuriraj aplikaciju</string>
-    <string name="update_button">Molimo pričekajte…</string>
     <string name="invalid_repo_url">URL koji ste unijeli za repositorij nije važeći</string>
     <string name="add_repo_message">Repositoriji moraju biti posluženi preko HTTPS, i moraju pratiti specifikaciju označenu u dokumentaciji.</string>
     <string name="update_message">Molimo pričekajte dok provjerimo i instaliramo ažuriranja za Fox-ov MMU. Ovo možda potraje par minuta</string>

@@ -55,11 +55,9 @@
     <string name="enable_monet">啟用莫奈取色</string>
     <string name="pref_category_info">訊息</string>
     <string name="show_licenses">顯示開放原始碼許可</string>
-    <string name="licenses">開放原始碼許可</string>
     <string name="show_incompatible_pref">顯示不相容的模組</string>
     <string name="show_incompatible_desc">開啟後將顯示與您的裝置不相容的模組</string>
     <string name="magisk_outdated">您的 Magisk 需要更新!</string>
-    <string name="pref_category_repos">倉庫</string>
     <string name="pref_category_security">安全</string>
     <string name="pref_category_appearance">外觀</string>
     <string name="master_delete">刪除已下載的模組安裝檔?</string>
@@ -109,8 +107,6 @@
     <!-- Set to true in translation file if your language is right to left -->
     <bool name="lang_support_rtl">false</bool>
     <!-- Always copy language_support_level when translating -->
-    <integer name="language_support_level">1</integer>
-    <string name="language_support_outdated">如果您使用的當前語言沒有及時更新，請考慮在 GitHub 上的為翻譯做出貢獻</string>
     <!-- Replace with your own username when translating -->
     <string name="language_translated_by">由 OrStudio.tw(@crcky5322), ProtoAES256 提供美妙的翻譯</string>
     <!-- Form ender-zhao replenish, may not be standard. some translate need local Taiwan resident change -->
@@ -121,7 +117,6 @@
     <string name="crash_reporting_restart_message">該應用需要重新啟動才能應用此設置</string>
     <string name="restart">重新啓動</string>
     <string name="androidacy_test_mode_disable_warning">應用程式將重新啟動以禁用暫存端點</string>
-    <string name="androidacy_failed_to_parse_token">無法從 Androidacy 檢索令牌。 請稍後再試。</string>
     <string name="androidacy_failed_to_validate_token">無法驗證 Androidacy 的令牌。 請稍後再試。</string>
     <string name="androidacy_need_captcha">Androidacy 更新被驗證碼阻止</string>
     <string name="api_key_restart">API 密鑰已更改。 重新啟動應用程式讓更動生效。</string>
@@ -212,7 +207,6 @@
     <string name="safe_message">這個模組已被倉庫認證為安全的，表示它通過某種程度的質量以及安全檢查，也通過了病毒檢測。</string>
     <string name="background_update_check_excludes">要從自動更新檢查除開的模組</string>
     <string name="update_title">更新應用程式</string>
-    <string name="update_button">請稍等…</string>
     <string name="setup_magisk_alt_repo_summary">比原版的規範寬鬆。有大量的模組，不過安全性較低。</string>
     <string name="setup_crash_reporting_summary">錯誤回報以及效能分析回傳。所有提交的報告將會嚴格保證匿名且私密。</string>
     <string name="pref_category_contributors">貢獻者</string>
@@ -221,9 +215,7 @@
     <string name="error_saving_logs">無法儲存日誌</string>
     <string name="share_logs">分享 AMM 日誌</string>
     <string name="not_official_build">此應用為非官方的 AMM 發行。</string>
-    <string name="yer_a_wizard_harry">哈利，你是個巫師！</string>
     <string name="keep_tapping_to_enter_hogwarts">繼續點擊來加入霍格華茲！</string>
-    <string name="modules">模組</string>
     <string name="no_browser">沒有發現瀏覽器的存在。請安裝一個來繼續操作。</string>
     <string name="repo_update_failed_message">以下倉庫無法完成更新：
 \n
@@ -239,7 +231,6 @@
     <string name="setup_theme_title">選擇主題</string>
     <string name="crash_text">喔不，我們碰到問題了！</string>
     <string name="feedback_message">告訴我們發生了什麼事，以及當下你在做什麼。越詳細越好！</string>
-    <string name="feedback_submit">發送後重啟</string>
     <string name="please_feedback">請告訴我們當時問題發生時你想要做什麼。</string>
     <string name="sentry_dialogue_disabled">錯誤回報已被禁止。請允許後再發送回報。</string>
     <string name="feedback_name">名字（非必要）</string>

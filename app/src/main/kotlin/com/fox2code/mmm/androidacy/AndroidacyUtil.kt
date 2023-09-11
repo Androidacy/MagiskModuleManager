@@ -11,6 +11,7 @@ import com.fox2code.mmm.BuildConfig
 import com.fox2code.mmm.utils.io.net.Http.Companion.doHttpGet
 import java.io.IOException
 
+@Suppress("MemberVisibilityCanBePrivate", "MemberVisibilityCanBePrivate")
 enum class AndroidacyUtil {
     ;
 
@@ -31,7 +32,6 @@ enum class AndroidacyUtil {
                 .endsWith("api.androidacy.com") && uri.host?.endsWith("api.androidacy.com") ?: false
         }
 
-        @JvmStatic
         fun isAndroidacyFileUrl(url: String?): Boolean {
             if (url == null) return false
             for (prefix in arrayOf(
@@ -46,7 +46,6 @@ enum class AndroidacyUtil {
 
         // Avoid logging token
         @Suppress("NAME_SHADOWING")
-        @JvmStatic
         fun hideToken(url: String): String {
             // for token, device_id, and client_id, replace with <hidden> by using replaceAll to match until the next non-alphanumeric character or end
             // Also, URL decode
@@ -61,7 +60,6 @@ enum class AndroidacyUtil {
             return url
         }
 
-        @JvmStatic
         fun getModuleId(moduleUrl: String): String? {
             // Get the &module= part
             val i = moduleUrl.indexOf("&module=")
@@ -84,7 +82,6 @@ enum class AndroidacyUtil {
             return null
         }
 
-        @JvmStatic
         fun getModuleTitle(moduleUrl: String): String? {
             // Get the &title= part
             val i = moduleUrl.indexOf("&moduleTitle=")
@@ -138,6 +135,14 @@ enum class AndroidacyUtil {
                 return null
             }
             return String(md)
+        }
+
+        fun getMarkdownForModule(moduleId: String): String? {
+            try {
+                return getMarkdownFromAPI("https://production-api.androidacy.com/magisk/$moduleId/markdown")
+            } catch (ignored: IOException) {
+            }
+            return null
         }
     }
 }

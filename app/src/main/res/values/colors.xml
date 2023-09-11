@@ -3,15 +3,12 @@
   -->
 
 <resources>
-    <color name="orange_700">#EF6C00</color>
-    <color name="orange_200">#FFA726</color>
-    <color name="orange_500">#FF9800</color>
     <color name="black_transparent">#70000000</color>
     <color name="white_transparent">#70FFFFFF</color>
     <color name="transparent">#00000000</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="status_bar_color">@color/black_transparent</color>
+    <color name="status_bar_color">@color/transparent</color>
     <color name="status_bar_color_light">@color/white_transparent</color>
     <!-- Icon -->
     <color name="launcher_icon_background">#FF9B08</color>

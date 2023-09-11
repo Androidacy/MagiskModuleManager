@@ -195,7 +195,6 @@
                         app:chipIcon="@drawable/ic_baseline_error_24" />
 
                     <com.google.android.material.chip.Chip
-                        android:id="@+id/button_action7"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/loading"
@@ -203,7 +202,6 @@
                         app:chipIcon="@drawable/ic_baseline_error_24" />
 
                     <com.google.android.material.chip.Chip
-                        android:id="@+id/button_action8"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/loading"

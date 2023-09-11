@@ -16,7 +16,6 @@ enum class ProcessHelper {
 
     companion object {
         private val sPendingIntentId = ThreadLocalRandom.current().nextInt(100, 1000000 + 1)
-        @JvmStatic
         fun restartApplicationProcess(context: Context) {
             val mStartActivity = Intent(context, MainActivity::class.java)
             mStartActivity.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK

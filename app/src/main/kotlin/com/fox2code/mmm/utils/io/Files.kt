@@ -42,7 +42,6 @@ enum class Files {
         private val is64bit = Build.SUPPORTED_64_BIT_ABIS.isNotEmpty()
 
         // stolen from https://stackoverflow.com/a/25005243
-        @JvmStatic
         fun getFileName(context: Context, uri: Uri): String {
             var result: String? = null
             if (uri.scheme == "content") {
@@ -66,7 +65,6 @@ enum class Files {
         }
 
         // based on https://stackoverflow.com/a/63018108
-        @JvmStatic
         fun getFileSize(context: Context, uri: Uri): Long? {
             var result: Long? = null
             try {
@@ -90,7 +88,6 @@ enum class Files {
             return result
         }
 
-        @JvmStatic
         @Throws(IOException::class)
         fun write(file: File, bytes: ByteArray?) {
             // make the dir if necessary
@@ -101,13 +98,11 @@ enum class Files {
             }
         }
 
-        @JvmStatic
         @Throws(IOException::class)
         fun read(file: File?): ByteArray {
             FileInputStream(file).use { inputStream -> return readAllBytes(inputStream) }
         }
 
-        @JvmStatic
         @Throws(IOException::class)
         fun writeSU(file: File, bytes: ByteArray?) {
             // make the dir if necessary
@@ -118,7 +113,6 @@ enum class Files {
             }
         }
 
-        @JvmStatic
         @Throws(IOException::class)
         fun readSU(file: File): ByteArray {
             if (file.isFile && file.canRead()) {
@@ -130,12 +124,10 @@ enum class Files {
             SuFileInputStream.open(file).use { inputStream -> return readAllBytes(inputStream) }
         }
 
-        @JvmStatic
         fun existsSU(file: File): Boolean {
             return file.exists() || SuFile(file.absolutePath).exists()
         }
 
-        @JvmStatic
         @Throws(IOException::class)
         fun copy(inputStream: InputStream, outputStream: OutputStream) {
             var nRead: Int
@@ -146,7 +138,6 @@ enum class Files {
             outputStream.flush()
         }
 
-        @JvmStatic
         fun closeSilently(closeable: Closeable?) {
             try {
                 closeable?.close()
@@ -154,7 +145,6 @@ enum class Files {
             }
         }
 
-        @JvmStatic
         fun makeBuffer(capacity: Long): ByteArrayOutputStream {
             // Cap buffer to 1 Gib (or 512 Mib for 32bit) to avoid memory errors
             return makeBuffer(
@@ -170,7 +160,6 @@ enum class Files {
             }
         }
 
-        @JvmStatic
         @Throws(IOException::class)
         fun readAllBytes(inputStream: InputStream): ByteArray {
             val buffer = makeBuffer(inputStream.available())
@@ -178,13 +167,11 @@ enum class Files {
             return buffer.toByteArray()
         }
 
-        @JvmStatic
         fun fixJavaZipHax(bytes: ByteArray) {
             if (bytes.size > 8 && bytes[0x6].toInt() == 0x0 && bytes[0x7].toInt() == 0x0 && bytes[0x8].toInt() == 0x8) bytes[0x7] =
                 0x8 // Known hax to prevent java zip file read
         }
 
-        @JvmStatic
         @Throws(IOException::class)
         fun patchModuleSimple(bytes: ByteArray, outputStream: OutputStream?) {
             fixJavaZipHax(bytes)
@@ -218,7 +205,6 @@ enum class Files {
             zipInputStream.close()
         }
 
-        @JvmStatic
         fun fixSourceArchiveShit(rawModule: ByteArray?) {
             // unzip the module, check if it has just one folder within. if so, switch to the folder and zip up contents, and replace the original file with that
             try {

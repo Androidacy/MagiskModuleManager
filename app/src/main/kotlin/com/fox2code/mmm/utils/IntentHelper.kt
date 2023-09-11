@@ -18,8 +18,9 @@ import android.os.Bundle
 import android.os.Environment
 import android.util.TypedValue
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityOptionsCompat
-import com.fox2code.foxcompat.app.FoxActivity
 import com.fox2code.mmm.BuildConfig
 import com.fox2code.mmm.Constants
 import com.fox2code.mmm.MainActivity
@@ -43,6 +44,7 @@ import java.io.InputStream
 import java.io.OutputStream
 import java.net.URISyntaxException
 
+@Suppress("unused")
 enum class IntentHelper {;
 
     companion object {
@@ -60,7 +62,6 @@ enum class IntentHelper {;
             "android.support.customtabs.extra.EXIT_ANIMATION_BUNDLE"
         const val FLAG_GRANT_URI_PERMISSION = Intent.FLAG_GRANT_READ_URI_PERMISSION
 
-        @JvmStatic
         fun openUri(context: Context, uri: String) {
             if (uri.startsWith("intent://")) {
                 try {
@@ -86,14 +87,13 @@ enum class IntentHelper {;
             } catch (e: ActivityNotFoundException) {
                 if (BuildConfig.DEBUG) Timber.d(e, "Could not find suitable activity to handle url")
                 Toast.makeText(
-                    context, FoxActivity.getFoxActivity(context).getString(
+                    context, MainApplication.INSTANCE!!.lastActivity!!.getString(
                         R.string.no_browser
                     ), Toast.LENGTH_LONG
                 ).show()
             }
         }
 
-        @JvmStatic
         fun openCustomTab(context: Context, url: String?) {
             if (BuildConfig.DEBUG) Timber.d("Opening url: %s in custom tab", url)
             try {
@@ -106,14 +106,13 @@ enum class IntentHelper {;
             } catch (e: ActivityNotFoundException) {
                 if (BuildConfig.DEBUG) Timber.d(e, "Could not find suitable activity to handle url")
                 Toast.makeText(
-                    context, FoxActivity.getFoxActivity(context).getString(
+                    context, MainApplication.INSTANCE!!.lastActivity!!.getString(
                         R.string.no_browser
                     ), Toast.LENGTH_LONG
                 ).show()
             }
         }
 
-        @JvmStatic
         @JvmOverloads
         fun openUrlAndroidacy(
             context: Context,
@@ -154,7 +153,6 @@ enum class IntentHelper {;
         }
 
         @Suppress("NAME_SHADOWING")
-        @JvmStatic
         fun getPackageOfConfig(config: String): String {
             var config = config
             var i = config.indexOf(' ')
@@ -164,7 +162,6 @@ enum class IntentHelper {;
             return config
         }
 
-        @JvmStatic
         fun openConfig(context: Context, config: String) {
             val pkg = getPackageOfConfig(config)
             try {
@@ -195,7 +192,6 @@ enum class IntentHelper {;
             }
         }
 
-        @JvmStatic
         fun openMarkdown(
             context: Context,
             url: String?,
@@ -228,7 +224,6 @@ enum class IntentHelper {;
             }
         }
 
-        @JvmStatic
         @JvmOverloads
         fun openInstaller(
             context: Context,
@@ -309,7 +304,7 @@ enum class IntentHelper {;
                             intent1.putExtras(bundle)
                         }
                         intent1.putExtra(EXTRA_TAB_EXIT_ANIMATION_BUNDLE, param)
-                        if (activity is FoxActivity) {
+                        if (activity is AppCompatActivity) {
                             val typedValue = TypedValue()
                             activity.getTheme().resolveAttribute(
                                 android.R.attr.background, typedValue, true
@@ -318,7 +313,7 @@ enum class IntentHelper {;
                                 intent1.putExtra(EXTRA_TAB_TOOLBAR_COLOR, typedValue.data)
                                 intent1.putExtra(
                                     EXTRA_TAB_COLOR_SCHEME,
-                                    if (activity.isLightTheme) EXTRA_TAB_COLOR_SCHEME_LIGHT else EXTRA_TAB_COLOR_SCHEME_DARK
+                                    if (MainApplication.INSTANCE!!.isLightTheme) EXTRA_TAB_COLOR_SCHEME_LIGHT else EXTRA_TAB_COLOR_SCHEME_DARK
                                 )
                             }
                         }
@@ -367,7 +362,7 @@ enum class IntentHelper {;
 
         @SuppressLint("SdCardPath")
         fun openFileTo(
-            compatActivity: FoxActivity, destination: File?, callback: OnFileReceivedCallback
+            compatActivity: AppCompatActivity, destination: File?, callback: OnFileReceivedCallback
         ) {
             var destinationFolder: File? = null
             if ((destination == null) || (destination.parentFile.also {
@@ -382,22 +377,21 @@ enum class IntentHelper {;
             intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, false)
             intent.putExtra(Intent.EXTRA_LOCAL_ONLY, false)
             intent.addCategory(Intent.CATEGORY_OPENABLE)
-            val param = ActivityOptionsCompat.makeCustomAnimation(
-                compatActivity, android.R.anim.fade_in, android.R.anim.fade_out
-            ).toBundle()
-            compatActivity.startActivityForResult(intent, param) { result: Int, data: Intent? ->
+            compatActivity.registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+                val resultCode = result.resultCode
+                val data: Intent? = result.data
                 val uri = data?.data
-                if (uri == null || result == Activity.RESULT_CANCELED) {
+                if (uri == null || resultCode == Activity.RESULT_CANCELED) {
                     if (BuildConfig.DEBUG) Timber.d("invalid uri received")
                     callback.onReceived(destination, null, RESPONSE_ERROR)
-                    return@startActivityForResult
+                    return@registerForActivityResult
                 }
                 Timber.i("FilePicker returned %s", uri)
                 if ("http" == uri.scheme || "https" == uri.scheme) {
                     callback.onReceived(destination, uri, RESPONSE_URL)
-                    return@startActivityForResult
+                    return@registerForActivityResult
                 }
-                if (ContentResolver.SCHEME_FILE == uri.scheme || result != Activity.RESULT_OK && result != Activity.RESULT_FIRST_USER) {
+                if (ContentResolver.SCHEME_FILE == uri.scheme || resultCode != Activity.RESULT_OK && resultCode != Activity.RESULT_FIRST_USER) {
                     Toast.makeText(
                         compatActivity, R.string.file_picker_wierd, Toast.LENGTH_SHORT
                     ).show()
@@ -421,7 +415,9 @@ enum class IntentHelper {;
                         inputStream = compatActivity.contentResolver.openInputStream(uri)
                     }
                     outputStream = FileOutputStream(destination)
-                    copy(inputStream!!, outputStream)
+                    if (inputStream != null) {
+                        copy(inputStream, outputStream)
+                    }
                     Timber.i("File saved at %s", destination)
                     success = true
                 } catch (e: Exception) {
@@ -437,28 +433,25 @@ enum class IntentHelper {;
                 callback.onReceived(
                     destination, uri, if (success) RESPONSE_FILE else RESPONSE_ERROR
                 )
-            }
+            }.launch(intent)
+
         }
 
-        fun openFileTo(
-            compatActivity: FoxActivity?,
-            destination: File,
-            callback: (File, Uri, Int) -> Unit
-        ) {
-            openFileTo(compatActivity!!, destination, object : OnFileReceivedCallback {
+        fun openFileTo(compatActivity: AppCompatActivity, module: File, function: (File, Uri, Int) -> Unit) {
+            openFileTo(compatActivity, module, object : OnFileReceivedCallback {
                 override fun onReceived(target: File?, uri: Uri?, response: Int) {
                     if (response == RESPONSE_ERROR) {
-                        MainActivity.getFoxActivity(compatActivity).runOnUiThread {
+                        MainActivity.getAppCompatActivity(compatActivity).runOnUiThread {
                             Toast.makeText(
                                 compatActivity, R.string.no_file_provided, Toast.LENGTH_SHORT
                             ).show()
                         }
                     } else {
                         try {
-                            callback(target!!, uri!!, response)
+                            function(target!!, uri!!, response)
                         } catch (e: Exception) {
                             Timber.e(e)
-                            compatActivity.forceBackPressed()
+                            compatActivity.finish()
                         }
                     }
                 }

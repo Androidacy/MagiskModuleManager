@@ -14,12 +14,12 @@ import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentTransaction
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKey
-import com.fox2code.foxcompat.app.FoxActivity
 import com.fox2code.mmm.BuildConfig
 import com.fox2code.mmm.ExpiredActivity
 import com.fox2code.mmm.MainActivity
@@ -38,7 +38,7 @@ import timber.log.Timber
 import java.sql.Timestamp
 
 @Suppress("SENSELESS_COMPARISON")
-class SettingsActivity : FoxActivity(), LanguageActivity,
+class SettingsActivity : AppCompatActivity(), LanguageActivity,
     PreferenceFragmentCompat.OnPreferenceStartFragmentCallback {
     private lateinit var bottomNavigationView: BottomNavigationView
     lateinit var sharedPreferences: SharedPreferences
@@ -89,7 +89,7 @@ class SettingsActivity : FoxActivity(), LanguageActivity,
                 .commit()
             true
         }
-        TrackHelper.track().screen(this).with(INSTANCE!!.getTracker())
+        TrackHelper.track().screen(this).with(INSTANCE!!.tracker)
         setContentView(R.layout.settings_activity)
         setTitle(R.string.app_name_v2)
         val ts = Timestamp(System.currentTimeMillis() - 30L * 24 * 60 * 60 * 1000)
@@ -205,24 +205,18 @@ class SettingsActivity : FoxActivity(), LanguageActivity,
                     if (dataStore.sharedPreferences.getBoolean("developer", false)) {
                         editor.putBoolean("developer", false)
                         Toast.makeText(
-                            p.context,
-                            R.string.dev_mode_disabled,
-                            Toast.LENGTH_SHORT
+                            p.context, R.string.dev_mode_disabled, Toast.LENGTH_SHORT
                         ).show()
                     } else {
                         Toast.makeText(
-                            p.context,
-                            R.string.dev_mode_enabled,
-                            Toast.LENGTH_SHORT
+                            p.context, R.string.dev_mode_enabled, Toast.LENGTH_SHORT
                         ).show()
                     }
                     editor.apply()
                     // toast yer a wizard harry
                     if (versionClicks == 3) {
                         Toast.makeText(
-                            p.context,
-                            R.string.keep_tapping_to_enter_hogwarts,
-                            Toast.LENGTH_LONG
+                            p.context, R.string.keep_tapping_to_enter_hogwarts, Toast.LENGTH_LONG
                         ).show()
                     }
                     true
@@ -282,8 +276,7 @@ class SettingsActivity : FoxActivity(), LanguageActivity,
     }
 
     override fun onPreferenceStartFragment(
-        caller: PreferenceFragmentCompat,
-        pref: Preference
+        caller: PreferenceFragmentCompat, pref: Preference
     ): Boolean {
         val fragment = supportFragmentManager.fragmentFactory.instantiate(
             classLoader, pref.fragment.toString()
@@ -291,18 +284,7 @@ class SettingsActivity : FoxActivity(), LanguageActivity,
         fragment.arguments = pref.extras
         @Suppress("DEPRECATION") fragment.setTargetFragment(caller, 0)
         supportFragmentManager.beginTransaction().replace(R.id.settings, fragment)
-            .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN).addToBackStack(null)
-            .commit()
+            .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN).addToBackStack(null).commit()
         return true
-    }
-
-    override fun setOnBackPressedCallback(onBackPressedCallback: OnBackPressedCallback?) {
-        super.setOnBackPressedCallback(onBackPressedCallback)
-        // set the active tab to the one from the intent
-        bottomNavigationView.selectedItemId = when (activeTabFromIntent) {
-            "installed" -> R.id.installed_menu_item
-            "online" -> R.id.online_menu_item
-            else -> R.id.installed_menu_item
-        }
     }
 }

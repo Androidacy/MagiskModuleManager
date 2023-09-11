@@ -17,10 +17,10 @@ import android.provider.Settings
 import android.view.View
 import android.widget.CheckBox
 import android.widget.CompoundButton
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
 import androidx.preference.PreferenceManager
-import com.fox2code.foxcompat.app.FoxActivity
 import com.fox2code.mmm.BuildConfig
 import com.fox2code.mmm.MainActivity
 import com.fox2code.mmm.MainApplication
@@ -49,7 +49,7 @@ class RuntimeUtils {
                 ) != PackageManager.PERMISSION_GRANTED
             ) {
                 if (BuildConfig.DEBUG) Timber.i("Request Notification Permission")
-                if (FoxActivity.getFoxActivity(context)
+                if (MainApplication.INSTANCE!!.lastActivity!!
                         .shouldShowRequestPermissionRationale(Manifest.permission.POST_NOTIFICATIONS)
                 ) {
                     // Show a dialog explaining why we need context permission, which is to show
@@ -191,7 +191,6 @@ class RuntimeUtils {
      */
     fun waitInitialSetupFinished(context: Context, activity: MainActivity): Boolean {
         if (BuildConfig.DEBUG) Timber.i("waitInitialSetupFinished")
-        if (MainActivity.doSetupNowRunning) activity.updateScreenInsets() // Fix an edge case
         try {
             // Wait for doSetupNow to finish
             while (MainActivity.doSetupNowRunning) {
@@ -276,7 +275,7 @@ class RuntimeUtils {
     }
 
     companion object {
-        fun reboot(mainActivity: FoxActivity, reboot: RebootMode) {
+        fun reboot(mainActivity: AppCompatActivity, reboot: RebootMode) {
             // reboot based on the reboot cmd from the enum we were passed
             when (reboot) {
                 RebootMode.REBOOT -> {
@@ -308,7 +307,7 @@ class RuntimeUtils {
         }
 
         private fun showRebootDialog(
-            mainActivity: FoxActivity,
+            mainActivity: AppCompatActivity,
             showExtraWarning: Boolean,
             function: () -> Unit
         ) {

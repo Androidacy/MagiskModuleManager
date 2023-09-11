@@ -10,7 +10,6 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
-import android.content.res.Configuration
 import android.graphics.Color
 import android.graphics.Rect
 import android.os.Bundle
@@ -27,6 +26,7 @@ import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsAnimationCompat
 import androidx.core.view.WindowInsetsCompat
@@ -35,7 +35,6 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.room.Room
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout.OnRefreshListener
-import com.fox2code.foxcompat.app.FoxActivity
 import com.fox2code.foxcompat.view.FoxDisplay
 import com.fox2code.mmm.AppUpdateManager.Companion.appUpdateManager
 import com.fox2code.mmm.OverScrollManager.OverScrollHelper
@@ -71,7 +70,7 @@ import timber.log.Timber
 import java.sql.Timestamp
 
 
-class MainActivity : FoxActivity(), OnRefreshListener, OverScrollHelper {
+class MainActivity : AppCompatActivity(), OnRefreshListener, OverScrollHelper {
     private lateinit var bottomNavigationView: BottomNavigationView
     val moduleViewListBuilder: ModuleViewListBuilder = ModuleViewListBuilder(this)
     val moduleViewListBuilderOnline: ModuleViewListBuilder = ModuleViewListBuilder(this)
@@ -105,6 +104,8 @@ class MainActivity : FoxActivity(), OnRefreshListener, OverScrollHelper {
         } else {
             bottomNavigationView.selectedItemId = R.id.online_menu_item
         }
+        // rescan modules
+        instance!!.scanAsync()
         super.onResume()
     }
 
@@ -183,8 +184,7 @@ class MainActivity : FoxActivity(), OnRefreshListener, OverScrollHelper {
         val view = findViewById<View>(R.id.root_container)
         var startBottom = 0f
         var endBottom = 0f
-        ViewCompat.setWindowInsetsAnimationCallback(
-            view,
+        ViewCompat.setWindowInsetsAnimationCallback(view,
             object : WindowInsetsAnimationCompat.Callback(DISPATCH_MODE_STOP) {
                 // Override methods…
                 override fun onProgress(
@@ -217,8 +217,7 @@ class MainActivity : FoxActivity(), OnRefreshListener, OverScrollHelper {
                     startBottom = view.bottom.toFloat()
                     Timber.d("IME animation prepare: %f", startBottom)
                 }
-            }
-        )
+            })
         // set search view listeners for text edit. filter the appropriate list based on visibility. do the filtering as the user types not just on submit as a background task
         textInputEditText.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(
@@ -316,33 +315,32 @@ class MainActivity : FoxActivity(), OnRefreshListener, OverScrollHelper {
         // set on click listener for reboot fab
         rebootFab.setOnClickListener {
             // show reboot dialog with options to reboot, reboot to recovery, bootloader, or edl, and use RuntimeUtils to reboot
-            val rebootDialog = MaterialAlertDialogBuilder(this@MainActivity)
-                .setTitle(R.string.reboot)
-                .setItems(
-                    arrayOf(
-                        getString(R.string.reboot),
-                        getString(R.string.reboot_recovery),
-                        getString(R.string.reboot_bootloader),
-                        getString(R.string.reboot_edl)
-                    )
-                ) { _: DialogInterface?, which: Int ->
-                    when (which) {
-                        0 -> RuntimeUtils.reboot(this@MainActivity, RuntimeUtils.RebootMode.REBOOT)
-                        1 -> RuntimeUtils.reboot(
-                            this@MainActivity,
-                            RuntimeUtils.RebootMode.RECOVERY
+            val rebootDialog =
+                MaterialAlertDialogBuilder(this@MainActivity).setTitle(R.string.reboot).setItems(
+                        arrayOf(
+                            getString(R.string.reboot),
+                            getString(R.string.reboot_recovery),
+                            getString(R.string.reboot_bootloader),
+                            getString(R.string.reboot_edl)
                         )
+                    ) { _: DialogInterface?, which: Int ->
+                        when (which) {
+                            0 -> RuntimeUtils.reboot(
+                                this@MainActivity,
+                                RuntimeUtils.RebootMode.REBOOT
+                            )
 
-                        2 -> RuntimeUtils.reboot(
-                            this@MainActivity,
-                            RuntimeUtils.RebootMode.BOOTLOADER
-                        )
+                            1 -> RuntimeUtils.reboot(
+                                this@MainActivity, RuntimeUtils.RebootMode.RECOVERY
+                            )
 
-                        3 -> RuntimeUtils.reboot(this@MainActivity, RuntimeUtils.RebootMode.EDL)
-                    }
-                }
-                .setNegativeButton(R.string.cancel, null)
-                .create()
+                            2 -> RuntimeUtils.reboot(
+                                this@MainActivity, RuntimeUtils.RebootMode.BOOTLOADER
+                            )
+
+                            3 -> RuntimeUtils.reboot(this@MainActivity, RuntimeUtils.RebootMode.EDL)
+                        }
+                    }.setNegativeButton(R.string.cancel, null).create()
             rebootDialog.show()
         }
         // get background color and elevation of reboot fab
@@ -400,8 +398,6 @@ class MainActivity : FoxActivity(), OnRefreshListener, OverScrollHelper {
         textInputEditText.minimumHeight = FoxDisplay.dpToPixel(16f)
         textInputEditText.imeOptions =
             EditorInfo.IME_ACTION_SEARCH or EditorInfo.IME_FLAG_NO_FULLSCREEN
-        textInputEditText.isEnabled = false // Enabled later
-        this.updateScreenInsets(this.resources.configuration)
 
         // on the bottom nav, there's a settings item. open the settings activity when it's clicked.
         bottomNavigationView = findViewById(R.id.bottom_navigation)
@@ -521,7 +517,6 @@ class MainActivity : FoxActivity(), OnRefreshListener, OverScrollHelper {
                         progressIndicator.max = PRECISION
                     }
                 }
-                updateScreenInsets() // Fix an edge case
                 val context: Context = this@MainActivity
                 if (runtimeUtils!!.waitInitialSetupFinished(context, this@MainActivity)) {
                     if (BuildConfig.DEBUG) Timber.d("waiting...")
@@ -583,8 +578,6 @@ class MainActivity : FoxActivity(), OnRefreshListener, OverScrollHelper {
                         runOnUiThread {
                             progressIndicator.setProgressCompat(PRECISION, true)
                             progressIndicator.visibility = View.GONE
-                            textInputEditText.isEnabled = false
-                            updateScreenInsets(resources.configuration)
                         }
                         return
                     }
@@ -613,8 +606,7 @@ class MainActivity : FoxActivity(), OnRefreshListener, OverScrollHelper {
                                 val currentTmp = current
                                 runOnUiThread {
                                     progressIndicator.setProgressCompat(
-                                        currentTmp / max,
-                                        true
+                                        currentTmp / max, true
                                     )
                                 }
                             }
@@ -641,8 +633,6 @@ class MainActivity : FoxActivity(), OnRefreshListener, OverScrollHelper {
                 runOnUiThread {
                     progressIndicator.setProgressCompat(PRECISION, true)
                     progressIndicator.visibility = View.GONE
-                    textInputEditText.isEnabled = true
-                    updateScreenInsets(resources.configuration)
                 }
                 maybeShowUpgrade()
                 Timber.i("Finished app opening state!")
@@ -662,27 +652,6 @@ class MainActivity : FoxActivity(), OnRefreshListener, OverScrollHelper {
         initMode = false
     }
 
-    fun updateScreenInsets() {
-        runOnUiThread { this.updateScreenInsets(this.resources.configuration) }
-    }
-
-    private fun updateScreenInsets(configuration: Configuration) {
-        val landscape = configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
-        val bottomInset = if (landscape) 0 else this.navigationBarHeight
-        val statusBarHeight = statusBarHeight + FoxDisplay.dpToPixel(2f)
-        swipeRefreshLayout!!.setProgressViewOffset(
-            false,
-            swipeRefreshLayoutOrigStartOffset + statusBarHeight,
-            swipeRefreshLayoutOrigEndOffset + statusBarHeight
-        )
-        moduleViewListBuilder.setHeaderPx(statusBarHeight)
-        moduleViewListBuilderOnline.setHeaderPx(statusBarHeight)
-        moduleViewListBuilder.updateInsets()
-        //this.actionBarBlur.invalidate();
-        overScrollInsetTop = statusBarHeight
-        overScrollInsetBottom = bottomInset
-    }
-
     private fun updateBlurState() {
         if (MainApplication.isBlurEnabled) {
             // set bottom navigation bar color to transparent blur
@@ -696,98 +665,6 @@ class MainActivity : FoxActivity(), OnRefreshListener, OverScrollHelper {
             // set dialogs to have transparent blur
             window.addFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND)
         }
-    }
-
-    override fun refreshUI() {
-        super.refreshUI()
-        if (initMode) return
-        initMode = true
-        Timber.i("Item Before")
-        searchTextInputEditText!!.clearFocus()
-        searchTextInputEditText!!.text?.clear()
-        this.updateScreenInsets()
-        updateBlurState()
-        moduleViewListBuilder.setQuery(null)
-        Timber.i("Item After")
-        moduleViewListBuilder.refreshNotificationsUI(moduleViewAdapter!!)
-        tryGetMagiskPathAsync(object : InstallerInitializer.Callback {
-            override fun onPathReceived(path: String?) {
-                val context: Context = this@MainActivity
-                val mainActivity = this@MainActivity
-                runtimeUtils!!.checkShowInitialSetup(context, mainActivity)
-                // Wait for doSetupNow to finish
-                while (doSetupNowRunning) {
-                    try {
-                        Thread.sleep(100)
-                    } catch (ignored: InterruptedException) {
-                        Thread.currentThread().interrupt()
-                    }
-                }
-                if (peekMagiskVersion() < Constants.MAGISK_VER_CODE_INSTALL_COMMAND) moduleViewListBuilder.addNotification(
-                    NotificationType.MAGISK_OUTDATED
-                )
-                if (!MainApplication.isShowcaseMode) moduleViewListBuilder.addNotification(
-                    NotificationType.INSTALL_FROM_STORAGE
-                )
-                instance!!.scan()
-                instance!!.runAfterScan { moduleViewListBuilder.appendInstalledModules() }
-                commonNext()
-            }
-
-            override fun onFailure(error: Int) {
-                Timber.e("Error: %s", error)
-                moduleViewListBuilder.addNotification(errorNotification)
-                moduleViewListBuilderOnline.addNotification(errorNotification)
-                commonNext()
-            }
-
-            fun commonNext() {
-                Timber.i("Common Before")
-                if (MainApplication.isShowcaseMode) moduleViewListBuilder.addNotification(
-                    NotificationType.SHOWCASE_MODE
-                )
-                NotificationType.NEED_CAPTCHA_ANDROIDACY.autoAdd(moduleViewListBuilderOnline)
-                NotificationType.NO_INTERNET.autoAdd(moduleViewListBuilderOnline)
-                if (appUpdateManager.checkUpdate(false)) moduleViewListBuilder.addNotification(
-                    NotificationType.UPDATE_AVAILABLE
-                )
-                RepoManager.getINSTANCE()!!.updateEnabledStates()
-                if (RepoManager.getINSTANCE()!!.customRepoManager!!.needUpdate()) {
-                    runOnUiThread {
-                        progressIndicator!!.isIndeterminate = false
-                        progressIndicator!!.max = PRECISION
-                    }
-                    if (BuildConfig.DEBUG) Timber.i("Check Update")
-                    val updateListener: SyncManager.UpdateListener =
-                        object : SyncManager.UpdateListener {
-                            override fun update(value: Int) {
-                                runOnUiThread {
-                                    progressIndicator!!.setProgressCompat(
-                                        value, true
-                                    )
-                                }
-                            }
-                        }
-                    RepoManager.getINSTANCE()!!.update(updateListener)
-                    runOnUiThread {
-                        progressIndicator!!.setProgressCompat(PRECISION, true)
-                        progressIndicator!!.visibility = View.GONE
-                    }
-                }
-                if (BuildConfig.DEBUG) Timber.i("Apply")
-                RepoManager.getINSTANCE()
-                    ?.runAfterUpdate { moduleViewListBuilderOnline.appendRemoteModules() }
-                Timber.i("Common Before applyTo")
-                moduleViewListBuilder.applyTo(moduleList!!, moduleViewAdapter!!)
-                moduleViewListBuilderOnline.applyTo(moduleListOnline!!, moduleViewAdapterOnline!!)
-                Timber.i("Common After")
-            }
-        })
-        initMode = false
-    }
-
-    override fun onWindowUpdated() {
-        this.updateScreenInsets()
     }
 
     override fun onRefresh() {
@@ -819,6 +696,8 @@ class MainActivity : FoxActivity(), OnRefreshListener, OverScrollHelper {
                 }
             }
             RepoManager.getINSTANCE()!!.update(updateListener)
+            // rescan modules
+            instance!!.scan()
             NotificationType.NEED_CAPTCHA_ANDROIDACY.autoAdd(moduleViewListBuilder)
             if (!NotificationType.NO_INTERNET.shouldRemove()) {
                 moduleViewListBuilderOnline.addNotification(NotificationType.NO_INTERNET)
@@ -846,8 +725,7 @@ class MainActivity : FoxActivity(), OnRefreshListener, OverScrollHelper {
                             val currentTmp = current
                             runOnUiThread {
                                 progressIndicator!!.setProgressCompat(
-                                    currentTmp / max,
-                                    true
+                                    currentTmp / max, true
                                 )
                             }
                         }
@@ -868,16 +746,6 @@ class MainActivity : FoxActivity(), OnRefreshListener, OverScrollHelper {
             moduleViewListBuilder.applyTo(moduleList!!, moduleViewAdapter!!)
             moduleViewListBuilderOnline.applyTo(moduleListOnline!!, moduleViewAdapterOnline!!)
         }, "Repo update thread").start()
-    }
-
-    override fun onConfigurationChanged(newConfig: Configuration) {
-        super.onConfigurationChanged(newConfig)
-        this.updateScreenInsets()
-    }
-
-    override fun onWindowFocusChanged(hasFocus: Boolean) {
-        super.onWindowFocusChanged(hasFocus)
-        this.updateScreenInsets()
     }
 
     fun maybeShowUpgrade() {
@@ -946,22 +814,13 @@ class MainActivity : FoxActivity(), OnRefreshListener, OverScrollHelper {
         return super.dispatchTouchEvent(event)
     }
 
-    override fun setOnBackPressedCallback(onBackPressedCallback: OnBackPressedCallback?) {
-        // if is on online list, go back to installed list
-        if (moduleListOnline!!.visibility == View.VISIBLE) {
-            bottomNavigationView.selectedItemId = R.id.installed_menu_item
-        } else {
-            super.setOnBackPressedCallback(onBackPressedCallback)
-        }
-    }
-
     companion object {
-        fun getFoxActivity(activity: FoxActivity): FoxActivity {
+        fun getAppCompatActivity(activity: AppCompatActivity): AppCompatActivity {
             return activity
         }
 
-        fun getFoxActivity(context: Context): FoxActivity {
-            return context as FoxActivity
+        fun getAppCompatActivity(context: Context): AppCompatActivity {
+            return context as AppCompatActivity
         }
 
         private const val PRECISION = 100

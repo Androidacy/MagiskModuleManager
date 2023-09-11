@@ -13,10 +13,8 @@ import java.nio.charset.StandardCharsets
 class CustomRepoData internal constructor(url: String?, cacheRoot: File?) : RepoData(
     url!!, cacheRoot!!
 ) {
-    @JvmField
     var loadedExternal = false
 
-    @JvmField
     var override: String? = null
     override val isEnabledByDefault: Boolean
         get() = override != null || loadedExternal
@@ -26,13 +24,13 @@ class CustomRepoData internal constructor(url: String?, cacheRoot: File?) : Repo
         val jsonObject = JSONObject(
             String(
                 doHttpGet(
-                    getUrl()!!,
+                    url,
                     false
                 ), StandardCharsets.UTF_8
             )
         )
         // make sure there's at least a name and a modules or data object
-        require(!(!jsonObject.has("name") || !jsonObject.has("modules") && !jsonObject.has("data"))) { "Invalid repo: " + getUrl() }
+        require(!(!jsonObject.has("name") || !jsonObject.has("modules") && !jsonObject.has("data"))) { "Invalid repo: $url" }
         name = jsonObject.getString("name").trim { it <= ' ' }
         website = jsonObject.optString("website")
         support = jsonObject.optString("support")

@@ -59,11 +59,9 @@
     <string name="enable_monet">启用 Monet</string>
     <string name="pref_category_info">信息</string>
     <string name="show_licenses">显示开放源代码许可</string>
-    <string name="licenses">开放源代码许可</string>
     <string name="show_incompatible_pref">显示不兼容的模块</string>
     <string name="show_incompatible_desc">根据元数据显示与您的设备不兼容的模块</string>
     <string name="magisk_outdated">Magisk 有新版本！</string>
-    <string name="pref_category_repos">仓库</string>
     <string name="pref_category_security">安全</string>
     <string name="pref_category_appearance">外观</string>
     <string name="master_delete">删除这个模块？</string>
@@ -113,8 +111,6 @@
     <!-- Set to true in translation file if your language is right to left -->
     <bool name="lang_support_rtl">false</bool>
     <!-- Always copy language_support_level when translating -->
-    <integer name="language_support_level">1</integer>
-    <string name="language_support_outdated">当前语言的一些翻译不是最新的， 请考虑在 GitHub 上为应用程序的翻译做出贡献</string>
     <!-- Replace with your own username when translating -->
     <string name="language_translated_by">简体中文由 Z-Siqi &amp; ycx 翻译</string>
     <string name="crash_reporting">自动向开发人员报告错误和性能</string>
@@ -134,7 +130,6 @@
     <string name="crash_reporting_restart_message">应用需要重启以启用这个设置</string>
     <string name="restart">重新启动</string>
     <string name="androidacy_test_mode_disable_warning">应用程序将重新启动以禁用临时分支</string>
-    <string name="androidacy_failed_to_parse_token">无法从 Androidacy 中检索令牌，请稍后再试。</string>
     <string name="androidacy_failed_to_validate_token">无法验证 Androidacy 令牌，请稍后再试。</string>
     <string name="androidacy_need_captcha">验证码阻止了 Androidacy 更新</string>
     <string name="api_key_restart">API 密钥已更改，请重启应用以让更改生效。</string>
@@ -233,15 +228,11 @@
     <string name="download_update">下载更新</string>
     <string name="background_update_check_excludes">从自动更新检查中排除的模块</string>
     <string name="update_title">更新应用</string>
-    <string name="update_button">请稍等…</string>
-    <string name="yer_a_wizard_harry">你是个巫师, Harry!</string>
     <string name="keep_tapping_to_enter_hogwarts">继续点击以进入霍格沃茨!</string>
-    <string name="modules">模块</string>
     <string name="feedback_name">名字 (可选)</string>
     <string name="feedback_email">邮件 (可选)</string>
     <string name="crash_text">Uh-oh, 我们遇到障碍了！</string>
     <string name="feedback_message">向我们提供有关发生这种情况时您正在做什么的更多详细信息。 多多益善！</string>
-    <string name="feedback_submit">提交并重启</string>
     <string name="please_feedback">请告诉我们发生这种情况时您正在尝试做什么，以帮助我们解决问题。</string>
     <string name="crash_icon">崩溃图标</string>
     <string name="copy_button">复制文本</string>
@@ -347,7 +338,6 @@
     <string name="build_expired">该版本已过期。请更新至最新的版本。</string>
     <string name="eula_agree_v2_headline">EULA和条款</string>
     <string name="reboot">重启</string>
-    <string name="reboot_system">重启正常</string>
     <string name="reboot_recovery">重启至 recovery</string>
     <string name="reboot_bootloader">重启至 bootloader</string>
     <string name="reboot_edl">重启至 EDL 模式</string>
@@ -363,7 +353,6 @@
     <string name="upgrade_now">升级</string>
     <string name="crash_details_suggestion">堆栈跟踪可以在下面找到。 但是，我们<b>strongly</b>建议您使用下面的反馈表来提交反馈。 这样，它就不会手动复制堆栈跟踪，而是自动将其发送给我们。 它还可以通过这种方式进行反混淆，并自动报告其他详细信息。</string>
     <string name="reboot_extra_warning">您即将重启进入EDL模式，这是一个专为OEM制造商设定，用于刷机和修复底层问题的高级模式。除非您确定想要这样做，并具备能够退出此模式或使用该模式所需的工具，否则我们强烈建议您使用其他重启选项。</string>
-    <string name="title_notifications">通知</string>
     <string name="expired">此版本已过期！</string>
     <string name="expired_message">您正在使用的版本已过期，将无法继续运行。请更新至最新的稳定版本。</string>
     <string name="download_latest">下载最新版本</string>

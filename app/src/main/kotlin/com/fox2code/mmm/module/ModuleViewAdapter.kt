@@ -39,7 +39,6 @@ import com.topjohnwu.superuser.internal.UiThreadHandler
 import timber.log.Timber
 
 class ModuleViewAdapter : RecyclerView.Adapter<ModuleViewAdapter.ViewHolder>() {
-    @JvmField
     val moduleHolders = ArrayList<ModuleHolder>()
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.module_entry, parent, false)

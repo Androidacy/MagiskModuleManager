@@ -2,8 +2,6 @@
  * Copyright (c) 2023 to present Androidacy and contributors. Names, logos, icons, and the Androidacy name are all trademarks of Androidacy and may not be used without license. See LICENSE for more information.
  */
 
-@file:Suppress("unused")
-
 package com.fox2code.mmm.manager
 
 import android.content.SharedPreferences
@@ -217,13 +215,11 @@ class ModuleManager private constructor() : SyncManager() {
             MainApplication.INSTANCE!!.localModules = value
         }
     
-    @Suppress("unused")
     fun getUpdatableModuleCount(): Int {
         afterScan()
         return updatableModuleCount
     }
 
-    @Suppress("unused")
     fun setEnabledState(moduleInfo: ModuleInfo, checked: Boolean): Boolean {
         if (BuildConfig.DEBUG) Timber.d("setEnabledState(%s, %s)", moduleInfo.id, checked)
         if (moduleInfo.hasFlag(ModuleInfo.FLAG_MODULE_UPDATING) && !checked) return false
@@ -243,7 +239,6 @@ class ModuleManager private constructor() : SyncManager() {
         return true
     }
 
-    @Suppress("unused")
     fun setUninstallState(moduleInfo: ModuleInfo, checked: Boolean): Boolean {
         if (checked && moduleInfo.hasFlag(ModuleInfo.FLAG_MODULE_UPDATING)) return false
         val disable = SuFile("/data/adb/modules/" + moduleInfo.id + "/remove")
@@ -305,7 +300,6 @@ class ModuleManager private constructor() : SyncManager() {
         private const val FLAGS_RESET_UPDATE = FLAG_MM_INVALID or FLAG_MM_UNPROCESSED
         private var instAnce: ModuleManager? = null
 
-        @JvmStatic
         val instance: ModuleManager?
             get() {
                 if (instAnce == null) {

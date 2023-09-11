@@ -60,11 +60,9 @@
     <string name="enable_monet">Nyalakan Monet</string>
     <string name="pref_category_info">Info</string>
     <string name="show_licenses">Tampilkan lisensi</string>
-    <string name="licenses">Lisensi</string>
     <string name="show_incompatible_pref">Tampilkan modul tidak kompatibel</string>
     <string name="show_incompatible_desc">Tampilkan modul yang mungkin tidak cocok dengan perangkat Anda berdasarkan metadata developer</string>
     <string name="magisk_outdated">Versi baru Magisk dapat dipasang!</string>
-    <string name="pref_category_repos">Repo</string>
     <string name="pref_category_security">Keamanan</string>
     <string name="pref_category_appearance">Penampilan</string>
     <string name="master_delete">Hapus berkas modul ini\?</string>
@@ -117,9 +115,6 @@
     <!-- Set to true in translation file if your language is right to left -->
     <bool name="lang_support_rtl">false</bool>
     <!-- Always copy language_support_level when translating -->
-    <integer name="language_support_level">1</integer>
-    <string name="language_support_outdated">Beberapa translasi untuk bahasa ini sekarang
-        kurang diperbarui, mohon pertimbangkan untuk melakukan kontribusi ke translasi aplikasi di GitHub</string>
     <!-- Replace with your own username when translating -->
     <string name="language_translated_by">Diterjemahkan dengan WebLate</string>
     <string name="crash_reporting">Secara otomatis melaporkan bug dan kinerja kepada pengembang</string>
@@ -139,7 +134,6 @@
     <string name="crash_reporting_restart_message">Aplikasi butuh diluncurkan ulang untuk menerapkan setelan</string>
     <string name="restart">Luncurkan ulang</string>
     <string name="androidacy_test_mode_disable_warning">Aplikasi akan diluncurkan ulang untuk mematikan endpoint staging</string>
-    <string name="androidacy_failed_to_parse_token">Tidak dapat mendapatkan token dari Androidacy. Mohon dicoba lagi nanti.</string>
     <string name="androidacy_failed_to_validate_token">Tidak dapat melakukan validasi terhadap token dari Androidacy. Mohon dicoba lagi nanti.</string>
     <string name="androidacy_need_captcha">Pembaruan Androidacy terblokir oleh Captcha</string>
     <string name="api_key_restart">Kunci API telah diganti. Luncurkan ulang aplikasi untuk menerapkan perubahan.</string>
@@ -233,7 +227,6 @@
     <string name="not_official_build">Aplikasi ini adalah build AMM yang tidak resmi.</string>
     <string name="crash_text">Uh-oh, kita terkena sebuah halangan!</string>
     <string name="feedback_message">Beritahu kita detail lebih lanjut dalam apa yang sedang Anda lakukan. Semakin banyak, semakin bagus!</string>
-    <string name="feedback_submit">Kirim dan luncurkan ulang</string>
     <string name="please_feedback">Tolong bantu kami dengan memberitahu apa yang sedang Anda lakukan saat ini terjadi.</string>
     <string name="sentry_dialogue_disabled">Laporan kesalahan dimatikan. Aktifkan untuk mengirim masukan.</string>
     <string name="feedback_name">Nama (opsional)</string>
@@ -259,7 +252,6 @@
     <string name="background_update_check_excludes">Modul-modul dikecualikan dari cek pembaruan otomatis</string>
     <string name="update_title">Perbarui aplikasi</string>
     <string name="update_message">Harap menunggu sementara kami mengcek pembaruan dan memasang pembaruan AMM. Ini mungkin akan membutuhkan beberapa menit</string>
-    <string name="update_button">Mohon menunggu…</string>
     <string name="error_no_extras">KESALAHAN: Data tidak valid diterima saat meluncur</string>
     <string name="update_debug_warning">Anda sepertinya menjalankan sebuah build debug. Build debug harus diperbarui secara manual, dan tidak mendukung pembaruan dalam aplikasi</string>
     <string name="error_no_action">KESALAHAN: Tindakan yang ditentukan tidak valid. Menolak dan tidak akan melanjutkan.</string>
@@ -297,9 +289,7 @@
     <string name="notification_channel_category_app_update_description">Beritahu jika ada pembaruan aplikasi</string>
     <string name="notification_channel_background_update_app">Ada pembaruan aplikasi!</string>
     <string name="notification_channel_background_update_app_description">Ada sebuah pembaruan untuk AMM. Ketuk disini untuk memperbarui.</string>
-    <string name="yer_a_wizard_harry">Kamu adalah penyihir, Harry!</string>
     <string name="keep_tapping_to_enter_hogwarts">Ketuk terus untuk masuk ke dalam Hogwarts!</string>
-    <string name="modules">Modul</string>
     <string name="no_browser">Anda tidak punya browser yang terpasang di perangkat Anda. Mohon memasang satu sebelum melanjutkan.</string>
     <string name="setup_update_check_headline">Periksa pembaruan</string>
     <string name="setup_background_update_check_require_wifi">Membutuhkan Wi-Fi untuk memeriksa pembaruan</string>
@@ -349,13 +339,9 @@
     <string name="upgrade_now">Tingkatkan</string>
     <string name="app_name_v2">Manajer Modul Androidacy</string>
     <string name="app_name_short_v2">AMM</string>
-    <string name="title_notifications">Notifikasi</string>
     <string name="download_latest">Unduh versi terbaru</string>
     <string name="expired">Versi Manager telah kedaluwarsa!</string>
     <string name="expired_message">Versi yang Anda gunakan telah kedaluwarsa dan tidak dapat digunakan lagi. Mohon untuk segera perbarui ke versi stabil terbaru.</string>
-    <string name="title_home">Beranda</string>
-    <string name="title_dashboard">Pedoman</string>
-    <string name="title_activity_expired">Aktivitas telah Kedaluwarsa</string>
     <string name="reinstall_warning">Sebagian besar modul harus dicopot pemasangannya, kemudian dipasang kembali dengan bersih. Karena alasan ini, AMM tidak mendukung pemasangan ulang modul saat modul tersebut terpasang pada perangkat.</string>
     <string name="logs_saved">Log tersimpan</string>
     <string name="error_opening_notes">Gagal membuka catatan modul. Mungkin log tahu alasannya.</string>
@@ -369,7 +355,6 @@
     <string name="debug_build_toast">AMM versi debug %1$s dibuat dari %2$s dengan sisa waktu %3$d hari</string>
     <string name="remote_message">%s tersedia di repo online. <b>Kami sangat merekomendasikan Anda untuk memasang ulang modul secara bersih karena sebagian besar modul tidak menangani pemasangan ulang dengan baik,</b> tetapi Anda masih dapat memasang secara langsung dengan risiko ditanggung Anda.</string>
     <string name="reboot_extra_warning">Anda akan memulai ulang ke mode EDL, mode khusus yang ditujukan untuk OEM untuk mem-flash dan memperbaiki masalah tingkat rendah. Kecuali jika Anda yakin ingin melakukan hal ini dan memiliki alat yang diperlukan untuk keluar dari mode ini atau menggunakannya, kami sangat menyarankan Anda untuk menggunakan opsi mulai ulang lainnya.</string>
-    <string name="reboot_system">Mulai ulang sistem</string>
     <string name="no_sentry_id">Tidak dapat mengirim masukan - tidak ada ID event dari Sentry. Event terakhir mungkin tidak terkirim.</string>
     <string name="build_expired">Versi ini telah kedaluwarsa. Mohon perbarui ke versi terbaru.</string>
     <string name="eula_agree_v2_headline">EULA dan ketentuan</string>

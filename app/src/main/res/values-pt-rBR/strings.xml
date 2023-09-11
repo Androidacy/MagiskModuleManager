@@ -58,11 +58,9 @@
     <string name="enable_monet">Ativar tema Monet</string>
     <string name="pref_category_info">Informações</string>
     <string name="show_licenses">Exibir licenças</string>
-    <string name="licenses">Licenças</string>
     <string name="show_incompatible_pref">Exibir módulos incompatíveis</string>
     <string name="show_incompatible_desc">Exibe os módulos incompatíveis com seu dispositivo com base em seus metadados</string>
     <string name="magisk_outdated">Há uma nova versão do Magisk disponível!</string>
-    <string name="pref_category_repos">Repositórios</string>
     <string name="pref_category_security">Segurança</string>
     <string name="pref_category_appearance">Aparência</string>
     <string name="master_delete">Apagar os arquivos de módulos\?</string>
@@ -108,8 +106,6 @@
     <!-- Set to true in translation file if your language is right to left -->
     <bool name="lang_support_rtl">false</bool>
     <!-- Always copy language_support_level when translating -->
-    <integer name="language_support_level">1</integer>
-    <string name="language_support_outdated">Algumas traduções para seu idioma atual não estão atualizadas. Por favor, considere contribuir para as traduções do aplicativo no GitHub</string>
     <!-- Replace with your own username when translating -->
     <string name="language_translated_by">Traduzido por HardcodedCat, mi007d e DanGLES3</string>
     <string name="fail_root_denied">O acesso root foi recusado pelo aplicativo do Magisk</string>
@@ -158,7 +154,6 @@
     <string name="download_full_app">Baixar versão completa</string>
     <string name="repo_update_failed">Alguns repositórios falharam ao atualizar</string>
     <string name="crash_reporting_desc">Se desativar isso, o desenvolvedor não irá receber relatórios de falhas automaticamente, e isso pode tornar a resolução mais difícil</string>
-    <string name="androidacy_failed_to_parse_token">Não foi possível obter o token do Androidacy. Por favor, tente novamente mais tarde.</string>
     <string name="androidacy_failed_to_validate_token">Não foi possível validar token do Androidacy. Por favor, tente novamente mais tarde.</string>
     <string name="api_key">Chave de API do Androidacy</string>
     <string name="api_key_summary">Utilizar uma chave de API customizada para o Androidacy. Útil para usuários premium, remover anúncios e mais.</string>
@@ -206,14 +201,11 @@
     <string name="androidacy_thanks_desc">Um grande salve a Androidacy por sua integração e contribuições para o aplicativo.</string>
     <string name="background_update_check_excludes">Modulos a serem excluídos das buscas automáticas por atualizações</string>
     <string name="update_title">Atualizar aplicativo</string>
-    <string name="update_button">Por favor aguarde…</string>
     <string name="fox2code_thanks">Criado por Fox2Code</string>
     <string name="save_logs">Salvar registros no armazenamento e compartilhar</string>
     <string name="error_saving_logs">Não foi possível salvar os registros</string>
     <string name="share_logs">Compartilhar registros do AMM</string>
-    <string name="yer_a_wizard_harry">Tu é um mago, Harry!</string>
     <string name="keep_tapping_to_enter_hogwarts">Continue pressionando para ser admitido em Hogwarts!</string>
-    <string name="modules">Módulos</string>
     <string name="contributors">E claro, obrigado a todos os nossos contribuidores, seja em traduções, código, ou apenas sendo divertidos! Nós amamos todos vocês.</string>
     <string name="repo_update_failed_message">Os seguintes repositórios falharam ao atualizar:
 \n
@@ -224,7 +216,6 @@
     <string name="pref_category_contributors">Contribuidores</string>
     <string name="fox2code_thanks_desc">Fox2Code é o desenvolvedor original do aplicativo. Sem ele, isso nunca seria possível.</string>
     <string name="not_official_build">Este aplicativo é uma compilação não oficial do AMM.</string>
-    <string name="feedback_submit">Enviar e reinicializar</string>
     <string name="please_feedback">Por favor, ajude-nos dizendo o quê você estava tentando fazer quando isto aconteceu.</string>
     <string name="sentry_dialogue_disabled">O Relatório de falhas está desabilitado. Habilite-o para enviar o feedback.</string>
     <string name="feedback_name">Nome (opcional)</string>
@@ -345,10 +336,6 @@
     <string name="upgrade_snackbar">Androidacy Premium oferece downloads mais rápidos, uma experiência sem anúncios e muito mais!</string>
     <string name="upgrade_now">Atualizar</string>
     <string name="crash_details_suggestion">O registro de falhas pode ser encontrado abaixo. No entanto, nós recomendados <b>fortemente</b> que utilize o formulário de feedback abaixo ao invés disso. Desta forma, ao invesde manualmente copiar o registro de falhas, nos enviará automaticamente. Desta forma também, tudo estará desofuscado e detalhes adicionais serão relatados automaticamente.</string>
-    <string name="title_activity_expired">Atividade Expirada</string>
-    <string name="title_home">Tela Inicial</string>
-    <string name="title_dashboard">Painel</string>
-    <string name="title_notifications">Notificações</string>
     <string name="expired">Essa versão expirou!</string>
     <string name="expired_message">A versão que você está usando expirou e não pode mais ser usada. Por favor atualize para a última versão estável.</string>
     <string name="download_latest">Baixar a última versão</string>
@@ -371,7 +358,6 @@
     <string name="build_expired">Essa versão expirou. Por favor atualize para a última versão.</string>
     <string name="eula_agree_v2_headline">EULA e termos</string>
     <string name="reboot">Reiniciar</string>
-    <string name="reboot_system">Reiniciar normalmente</string>
     <string name="reboot_recovery">Reiniciar ao recovery</string>
     <string name="reboot_bootloader">Reiniciar ao bootloader</string>
     <string name="reboot_edl">Reiniciar ao modo EDL</string>

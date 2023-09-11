@@ -2,8 +2,9 @@
   ~ Copyright (c) 2023 to present Androidacy and contributors. Names, logos, icons, and the Androidacy name are all trademarks of Androidacy and may not be used without license. See LICENSE for more information.
   -->
 
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/crash_scroll"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/scroll_view"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -15,7 +16,6 @@
 
         <!-- first, crash icon -->
         <ImageView
-            android:id="@+id/crash_icon"
             android:layout_width="101dp"
             android:layout_height="93dp"
             android:layout_gravity="center"
@@ -25,7 +25,6 @@
 
         <!-- crash_text header -->
         <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/crash_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
@@ -36,7 +35,6 @@
 
         <!-- textview suggesting user use the submit feedback button instead of manually copying the crash details -->
         <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/crash_details_suggestion"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
@@ -71,7 +69,6 @@
             </HorizontalScrollView>
 
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/copy_button"
                 android:layout_width="36dp"
                 android:layout_height="36dp"
                 android:layout_gravity="top|end"
@@ -99,7 +96,6 @@
                 android:textSize="18sp" />
 
             <LinearLayout
-                android:id="@+id/feedback"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
@@ -112,7 +108,8 @@
                     android:layout_height="48dp"
                     android:layout_margin="10dp"
                     android:hint="@string/feedback_name"
-                    android:inputType="text" />
+                    android:inputType="text"
+                    android:autofillHints="name" />
 
                 <!-- feedback form email -->
                 <EditText
@@ -122,7 +119,8 @@
                     android:enabled="false"
                     android:layout_margin="10dp"
                     android:hint="@string/feedback_email"
-                    android:inputType="textEmailAddress" />
+                    android:inputType="textEmailAddress"
+                    android:autofillHints="emailAddress" />
 
                 <!-- feedback form message -->
                 <EditText
@@ -132,7 +130,8 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
                     android:hint="@string/feedback_message"
-                    android:inputType="textMultiLine" />
+                    android:inputType="textMultiLine"
+                    android:importantForAutofill="no" />
 
             </LinearLayout>
 

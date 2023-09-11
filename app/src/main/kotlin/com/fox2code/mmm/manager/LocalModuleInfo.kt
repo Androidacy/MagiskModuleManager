@@ -15,13 +15,10 @@ import java.io.IOException
 import java.nio.charset.StandardCharsets
 
 class LocalModuleInfo(id: String?) : ModuleInfo(id!!) {
-    @JvmField
     var updateVersion: String? = null
 
-    @JvmField
     var updateVersionCode = Long.MIN_VALUE
 
-    @JvmField
     var updateZipUrl: String? = null
     private var updateChangeLogUrl: String? = null
 
@@ -37,10 +34,8 @@ class LocalModuleInfo(id: String?) : ModuleInfo(id!!) {
             return field
         }
 
-    @JvmField
     var updateChangeLog = ""
 
-    @JvmField
     var updateChecksum: String? = null
     fun checkModuleUpdate() {
         if (updateJson != null && flags and FLAG_MM_REMOTE_MODULE == 0) {

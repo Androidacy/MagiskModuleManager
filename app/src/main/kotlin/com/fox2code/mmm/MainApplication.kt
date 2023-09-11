@@ -5,25 +5,28 @@
 package com.fox2code.mmm
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.app.ActivityManager
 import android.app.ActivityManager.RunningAppProcessInfo
+import android.app.Application
+import android.app.Application.ActivityLifecycleCallbacks
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.content.res.Resources
 import android.os.Build
+import android.os.Bundle
 import android.os.SystemClock
 import android.util.Log
 import androidx.annotation.StyleRes
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.NotificationManagerCompat
 import androidx.emoji2.text.DefaultEmojiCompatConfig
 import androidx.emoji2.text.EmojiCompat
 import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKey
 import androidx.work.Configuration
-import com.fox2code.foxcompat.app.FoxActivity
-import com.fox2code.foxcompat.app.FoxApplication
 import com.fox2code.foxcompat.app.internal.FoxProcessExt
 import com.fox2code.foxcompat.view.FoxThemeWrapper
 import com.fox2code.mmm.installer.InstallerInitializer
@@ -58,29 +61,36 @@ import java.util.Random
 import kotlin.math.abs
 
 @Suppress("unused", "MemberVisibilityCanBePrivate")
-class MainApplication : FoxApplication(), Configuration.Provider {
+class MainApplication : Application(), Configuration.Provider, ActivityLifecycleCallbacks {
 
     var isTainted = false
 
-    @JvmField
+    var lastActivity: AppCompatActivity? = null
+
     var modulesHaveUpdates = false
 
-    @JvmField
     var updateModuleCount = 0
 
-    @JvmField
     var updateModules: List<String> = ArrayList()
 
     @StyleRes
     private var managerThemeResId = R.style.Theme_MagiskModuleManager
     private var markwonThemeContext: FoxThemeWrapper? = null
 
-    @JvmField
     var markwon: Markwon? = null
     private var existingKey: CharArray? = null
 
-    @JvmField
     var tracker: Tracker? = null
+        get() {
+            if (field == null) {
+                field = TrackerBuilder.createDefault(BuildConfig.ANALYTICS_ENDPOINT, 1)
+                    .build(Matomo.getInstance(this))
+                val tracker = field!!
+                tracker.startNewSession()
+                tracker.dispatchInterval = 1000
+            }
+            return field
+        }
     private var makingNewKey = false
     private var isCrashHandler = false
 
@@ -124,7 +134,7 @@ class MainApplication : FoxApplication(), Configuration.Provider {
         return existingKey!!
     }
 
-    fun getMarkwon(): Markwon? {
+    fun reallyGetMarkwon(): Markwon? {
         if (isCrashHandler) return null
         if (markwon != null) return markwon
         var contextThemeWrapper = markwonThemeContext
@@ -140,7 +150,7 @@ class MainApplication : FoxApplication(), Configuration.Provider {
                     )
                 )
             ).build()
-        return markwon.also { this.markwon = it }
+        return reallyGetMarkwon().also { this.markwon = it }
     }
 
     override fun getWorkManagerConfiguration(): Configuration {
@@ -194,31 +204,22 @@ class MainApplication : FoxApplication(), Configuration.Provider {
         markwon = null
     }
 
-    @SuppressLint("NonConstantResourceId")
-    override fun isLightTheme(): Boolean {
-        return when (getSharedPreferences("mmm")!!.getString("pref_theme", "system")) {
-            "system" -> isSystemLightTheme
-            "dark", "black" -> false
+    val isLightTheme: Boolean
+        get() = when (managerThemeResId) {
+            R.style.Theme_MagiskModuleManager,
+            R.style.Theme_MagiskModuleManager_Monet,
+            R.style.Theme_MagiskModuleManager_Dark,
+            R.style.Theme_MagiskModuleManager_Monet_Dark,
+            R.style.Theme_MagiskModuleManager_Black,
+            R.style.Theme_MagiskModuleManager_Monet_Black -> false
+
             else -> true
         }
-    }
 
     private val isSystemLightTheme: Boolean
         get() = (this.resources.configuration.uiMode and android.content.res.Configuration.UI_MODE_NIGHT_MASK) != android.content.res.Configuration.UI_MODE_NIGHT_YES
     val isDarkTheme: Boolean
         get() = !this.isLightTheme
-
-    @Synchronized
-    fun getTracker(): Tracker? {
-        if (tracker == null) {
-            tracker = TrackerBuilder.createDefault(BuildConfig.ANALYTICS_ENDPOINT, 1)
-                .build(Matomo.getInstance(this))
-            val tracker = tracker!!
-            tracker.startNewSession()
-            tracker.dispatchInterval = 1000
-        }
-        return tracker
-    }
 
     override fun onCreate() {
         supportedLocales.addAll(
@@ -251,6 +252,7 @@ class MainApplication : FoxApplication(), Configuration.Provider {
         if (INSTANCE == null) INSTANCE = this
         relPackageName = this.packageName
         super.onCreate()
+        registerActivityLifecycleCallbacks(this)
         initialize(this)
         // Initialize Timber
         configTimber()
@@ -274,7 +276,6 @@ class MainApplication : FoxApplication(), Configuration.Provider {
         if (BuildConfig.DEBUG) Timber.d("AMM is running in debug mode")
         // analytics
         if (BuildConfig.DEBUG) Timber.d("Initializing matomo")
-        getTracker()
         if (!isMatomoAllowed()) {
             if (BuildConfig.DEBUG) Timber.d("Matomo is not allowed")
             tracker!!.isOptOut = true
@@ -282,7 +283,7 @@ class MainApplication : FoxApplication(), Configuration.Provider {
             tracker!!.isOptOut = false
         }
         if (getSharedPreferences("matomo")!!.getBoolean("install_tracked", false)) {
-            TrackHelper.track().download().with(INSTANCE!!.getTracker())
+            TrackHelper.track().download().with(INSTANCE!!.tracker)
             if (BuildConfig.DEBUG) Timber.d("Sent install event to matomo")
             getSharedPreferences("matomo")!!.edit().putBoolean("install_tracked", true).apply()
         } else {
@@ -345,21 +346,11 @@ class MainApplication : FoxApplication(), Configuration.Provider {
             Timber.w("ANDROIDACY_CLIENT_ID is empty, disabling AndroidacyRepoData 1")
             editor.apply()
         }
-        getMarkwon()
+        reallyGetMarkwon()
     }
 
     private val intent: Intent?
         get() = this.packageManager.getLaunchIntentForPackage(this.packageName)
-
-    override fun onCreateFoxActivity(compatActivity: FoxActivity) {
-        super.onCreateFoxActivity(compatActivity)
-        compatActivity.setTheme(managerThemeResId)
-    }
-
-    override fun onRefreshUI(compatActivity: FoxActivity) {
-        super.onRefreshUI(compatActivity)
-        compatActivity.setThemeRecreate(managerThemeResId)
-    }
 
     override fun onConfigurationChanged(newConfig: android.content.res.Configuration) {
         val newTimeFormatLocale = newConfig.locales[0]
@@ -503,7 +494,6 @@ class MainApplication : FoxApplication(), Configuration.Provider {
         private var relPackageName = BuildConfig.APPLICATION_ID
 
         @SuppressLint("StaticFieldLeak")
-        @JvmStatic
         var INSTANCE: MainApplication? = null
             private set
             get() {
@@ -514,7 +504,6 @@ class MainApplication : FoxApplication(), Configuration.Provider {
                 return field
             }
 
-        @JvmStatic
         var isFirstBoot = false
         private var mSharedPrefs: HashMap<Any, Any>? = null
         var updateCheckBg: String? = null
@@ -555,7 +544,6 @@ class MainApplication : FoxApplication(), Configuration.Provider {
         }
 
         @Suppress("NAME_SHADOWING")
-        @JvmStatic
         fun getSharedPreferences(name: String): SharedPreferences? {
             // encryptedSharedPreferences is used
             var name = name
@@ -627,7 +615,6 @@ class MainApplication : FoxApplication(), Configuration.Provider {
         val isBlurEnabled: Boolean
             get() = getSharedPreferences("mmm")!!.getBoolean("pref_enable_blur", false)
 
-        @JvmStatic
         val isDeveloper: Boolean
             get() {
                 return if (BuildConfig.DEBUG) true else getSharedPreferences("mmm")!!.getBoolean(
@@ -645,7 +632,6 @@ class MainApplication : FoxApplication(), Configuration.Provider {
                 "mmm"
             )!!.getBoolean("pref_use_magisk_install_command", false) && isDeveloper && !InstallerInitializer.isKsu
 
-        @JvmStatic
         val isBackgroundUpdateCheckEnabled: Boolean
             get() {
                 if (updateCheckBg != null) {
@@ -677,22 +663,44 @@ class MainApplication : FoxApplication(), Configuration.Provider {
         val bootSharedPreferences: SharedPreferences?
             get() = getSharedPreferences("mmm_boot")
 
-        @JvmStatic
         fun formatTime(timeStamp: Long): String {
             // new Date(x) also get the local timestamp for format
             return timeFormat.format(Date(timeStamp))
         }
 
-        @JvmStatic
         val isNotificationPermissionGranted: Boolean
             get() = NotificationManagerCompat.from((INSTANCE)!!).areNotificationsEnabled()
 
-        @JvmStatic
         fun isMatomoAllowed(): Boolean {
             return getSharedPreferences("mmm")!!.getBoolean(
                 "pref_analytics_enabled",
                 BuildConfig.DEFAULT_ENABLE_ANALYTICS
             )
         }
+    }
+
+    override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle?) {
+        lastActivity = activity as AppCompatActivity
+        activity.setTheme(managerThemeResId)
+    }
+
+    override fun onActivityStarted(activity: Activity) {
+    }
+
+    override fun onActivityResumed(activity: Activity) {
+        lastActivity = activity as AppCompatActivity
+        activity.setTheme(managerThemeResId)
+    }
+
+    override fun onActivityPaused(activity: Activity) {
+    }
+
+    override fun onActivityStopped(activity: Activity) {
+    }
+
+    override fun onActivitySaveInstanceState(activity: Activity, outState: Bundle) {
+    }
+
+    override fun onActivityDestroyed(activity: Activity) {
     }
 }

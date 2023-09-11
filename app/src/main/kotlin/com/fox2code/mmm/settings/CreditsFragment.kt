@@ -5,11 +5,11 @@ import android.content.ClipboardManager
 import android.content.Context
 import android.os.Bundle
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKey
-import com.fox2code.foxcompat.app.FoxActivity
 import com.fox2code.mmm.BuildConfig
 import com.fox2code.mmm.MainApplication
 import com.fox2code.mmm.R
@@ -48,7 +48,7 @@ class CreditsFragment : PreferenceFragmentCompat() {
 
 
 
-        val clipboard = requireContext().getSystemService(FoxActivity.CLIPBOARD_SERVICE) as ClipboardManager
+        val clipboard = requireContext().getSystemService(AppCompatActivity.CLIPBOARD_SERVICE) as ClipboardManager
 
         // pref_contributors should lead to the contributors page
         var linkClickable: LongClickablePreference? = findPreference("pref_contributors")
