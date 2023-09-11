@@ -121,14 +121,12 @@ android {
             multiDexEnabled = true
             isDebuggable = false
             isJniDebuggable = false
-            isRenderscriptDebuggable = false
         }
         getByName("debug") {
             applicationIdSuffix = ".debug"
             isDebuggable = true
             versionNameSuffix = "-debug"
             isJniDebuggable = true
-            isRenderscriptDebuggable = true
             isMinifyEnabled = false
             isShrinkResources = false
             multiDexEnabled = true

@@ -19,7 +19,6 @@ import android.os.Environment
 import android.util.TypedValue
 import android.widget.Toast
 import androidx.core.app.ActivityOptionsCompat
-import androidx.core.app.BundleCompat
 import com.fox2code.foxcompat.app.FoxActivity
 import com.fox2code.mmm.BuildConfig
 import com.fox2code.mmm.Constants
@@ -303,7 +302,10 @@ enum class IntentHelper {;
                     if (intent1.hasCategory(Intent.CATEGORY_BROWSABLE)) {
                         if (!intent1.hasExtra(EXTRA_TAB_SESSION)) {
                             val bundle = Bundle()
-                            BundleCompat.putBinder(bundle, EXTRA_TAB_SESSION, null)
+                            bundle.putBinder(
+                                EXTRA_TAB_SESSION,
+                                null
+                            )
                             intent1.putExtras(bundle)
                         }
                         intent1.putExtra(EXTRA_TAB_EXIT_ANIMATION_BUNDLE, param)
@@ -323,9 +325,6 @@ enum class IntentHelper {;
                     }
                     try {
                         intent1.putExtra(Constants.EXTRA_FADE_OUT, true)
-                        activity.overridePendingTransition(
-                            android.R.anim.fade_in, android.R.anim.fade_out
-                        )
                         activity.startActivity(intent1, param)
                         return
                     } catch (e: ActivityNotFoundException) {
@@ -389,7 +388,7 @@ enum class IntentHelper {;
             compatActivity.startActivityForResult(intent, param) { result: Int, data: Intent? ->
                 val uri = data?.data
                 if (uri == null || result == Activity.RESULT_CANCELED) {
-                    if (BuildConfig.DEBUG) Timber.d("invalid uri recieved")
+                    if (BuildConfig.DEBUG) Timber.d("invalid uri received")
                     callback.onReceived(destination, null, RESPONSE_ERROR)
                     return@startActivityForResult
                 }
