@@ -13,6 +13,7 @@ import android.webkit.CookieManager
 import android.webkit.WebSettings
 import android.webkit.WebView
 import android.widget.Toast
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.FileProvider
 import androidx.webkit.WebSettingsCompat
 import androidx.webkit.WebViewFeature
@@ -21,6 +22,7 @@ import com.fox2code.mmm.androidacy.AndroidacyRepoData
 import com.fox2code.mmm.utils.io.net.Http
 import com.google.android.material.bottomnavigation.BottomNavigationItemView
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.button.MaterialButton
 import com.google.android.material.progressindicator.LinearProgressIndicator
 import com.google.android.material.textview.MaterialTextView
 import org.json.JSONException
@@ -31,7 +33,6 @@ import java.io.FileOutputStream
 import java.io.IOException
 import java.sql.Timestamp
 import java.util.Objects
-import com.google.android.material.button.MaterialButton
 
 class UpdateActivity : FoxActivity() {
     private var chgWv: WebView? = null
@@ -47,7 +48,7 @@ class UpdateActivity : FoxActivity() {
             if (ts.time > buildTime.time) {
                 val pm = packageManager
                 val intent = Intent(this, ExpiredActivity::class.java)
-                @Suppress("DEPRECATION") val resolveInfo = pm.queryIntentActivities(intent, 0)
+                val resolveInfo = pm.queryIntentActivities(intent, 0)
                 if (resolveInfo.size > 0) {
                     startActivity(intent)
                     finish()
@@ -122,7 +123,6 @@ class UpdateActivity : FoxActivity() {
                 // if extras is null, then we are in a bad state or user launched the activity manually
                 if (extras == null) {
                     runOnUiThread {
-
                         // set status text to error
                         statusTextView.setText(R.string.error_no_extras)
                         // set progress bar to error
@@ -137,7 +137,6 @@ class UpdateActivity : FoxActivity() {
                 // if action is null, then we are in a bad state or user launched the activity manually
                 if (Objects.isNull(action)) {
                     runOnUiThread {
-
                         // set status text to error
                         statusTextView.setText(R.string.error_no_action)
                         // set progress bar to error
@@ -278,12 +277,12 @@ class UpdateActivity : FoxActivity() {
                 // set button text to download
                 val button = findViewById<MaterialButton>(R.id.action_update)
                 button.text = getString(R.string.download_update)
-                button.icon = getDrawable(R.drawable.baseline_cloud_download_24)
+                button.icon = AppCompatResources.getDrawable(this, R.drawable.baseline_cloud_download_24)
                 button.isEnabled = true
                 button.visibility = View.VISIBLE
-                button.setOnClickListener({
+                button.setOnClickListener {
                     downloadUpdate()
-                })
+                }
             }
             // return
         }

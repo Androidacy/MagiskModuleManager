@@ -5,7 +5,6 @@
 @file:Suppress("UnstableApiUsage", "SpellCheckingInspection")
 
 import com.android.build.api.variant.FilterConfiguration.FilterType.ABI
-import io.sentry.android.gradle.extensions.InstrumentationFeature
 import io.sentry.android.gradle.instrumentation.logcat.LogcatLevel
 import java.util.Properties
 
@@ -53,7 +52,7 @@ android {
         applicationId = "com.fox2code.mmm"
         minSdk = 26
         targetSdk = 34
-        versionCode = 83
+        versionCode = 85
         versionName = "2.3.1"
         vectorDrawables {
             useSupportLibrary = true
@@ -106,7 +105,7 @@ android {
             // Specifies a list of ABIs for Gradle to create APKs for.
             include("x86", "x86_64", "arm64-v8a", "armeabi-v7a")
 
-            isUniversalApk = true
+            isUniversalApk = false
         }
     }
 
@@ -137,11 +136,6 @@ android {
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
             )
-
-            // ONLY FOR TESTING SENTRY
-            // minifyEnabled true
-            // shrinkResources true
-            // proguardFiles getDefaultProguardFile("proguard-android-optimize.txt"),"proguard-rules.pro"
         }
     }
 
@@ -378,15 +372,6 @@ sentry {
     tracingInstrumentation {
         enabled.set(true)
 
-        features.set(
-            setOf(
-                InstrumentationFeature.DATABASE,
-                InstrumentationFeature.FILE_IO,
-                InstrumentationFeature.OKHTTP,
-                InstrumentationFeature.COMPOSE
-            )
-        )
-
         logcat {
             enabled.set(true)
 
@@ -407,10 +392,10 @@ sentry {
 
     org.set("androidacy")
     projectName.set("foxmmm")
-    uploadNativeSymbols.set(true)
+    uploadNativeSymbols.set(hasSentryConfig)
 }
 
-val abiCodes = mapOf("armeabi-v7a" to 1, "x86" to 2, "x86_64" to 3)
+val abiCodes = mapOf("armeabi-v7a" to 1, "x86" to 2, "x86_64" to 3, "arm64-v8a" to 4)
 
 // For per-density APKs, create a similar map:
 // val densityCodes = mapOf("mdpi" to 1, "hdpi" to 2, "xhdpi" to 3)

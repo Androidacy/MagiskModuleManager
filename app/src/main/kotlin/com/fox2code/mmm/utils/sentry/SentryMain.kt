@@ -79,7 +79,7 @@ object SentryMain {
         isSentryEnabled = sharedPreferences.getBoolean("pref_crash_reporting_enabled", false)
         // set sentryEnabled on preference change of pref_crash_reporting_enabled
         sharedPreferences.registerOnSharedPreferenceChangeListener { sharedPreferences1: SharedPreferences, s: String? ->
-            if (s!== null && s == "pref_crash_reporting_enabled") {
+            if (s !== null && s == "pref_crash_reporting_enabled") {
                 isSentryEnabled = sharedPreferences1.getBoolean(s, false)
             }
         }
@@ -137,7 +137,10 @@ object SentryMain {
                         }
                     }
                     // remove all failed to fetch data messages
-                    if (event?.message?.message?.contains("Failed to fetch") == true || event?.message?.message?.contains("Failed to load") == true) {
+                    if (event?.message?.message?.contains("Failed to fetch") == true || event?.message?.message?.contains(
+                            "Failed to load"
+                        ) == true
+                    ) {
                         return@BeforeSendCallback null
                     }
                     // for httpexception, do not send if error is 401, 403, 404, 429
@@ -155,13 +158,15 @@ object SentryMain {
                 // Filter breadcrumb content from crash report.
                 options.beforeBreadcrumb =
                     BeforeBreadcrumbCallback { breadcrumb: Breadcrumb, _: Hint? ->
+                        if (!isSentryEnabled) {
+                            return@BeforeBreadcrumbCallback null
+                        }
                         val url = breadcrumb.getData("url") as String?
-                        if (url.isNullOrEmpty()) return@BeforeBreadcrumbCallback null
                         if ("cloudflare-dns.com" == Uri.parse(url).host) {
                             return@BeforeBreadcrumbCallback null
                         }
                         if (isAndroidacyLink(url)) {
-                            breadcrumb.setData("url", hideToken(url))
+                            url?.let { hideToken(it) }?.let { breadcrumb.setData("url", it) }
                         }
                         breadcrumb
                     }

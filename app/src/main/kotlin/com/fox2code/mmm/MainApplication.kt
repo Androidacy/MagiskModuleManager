@@ -365,7 +365,7 @@ class MainApplication : FoxApplication(), Configuration.Provider {
         val newTimeFormatLocale = newConfig.locales[0]
         if (timeFormatLocale !== newTimeFormatLocale) {
             timeFormatLocale = newTimeFormatLocale
-            timeFormat = SimpleDateFormat(timeFormatString, timeFormatLocale)
+            timeFormat = SimpleDateFormat(TFS, timeFormatLocale)
         }
         super.onConfigurationChanged(newConfig)
     }
@@ -485,7 +485,7 @@ class MainApplication : FoxApplication(), Configuration.Provider {
         // Anything that is commented out is supported but the translation is not complete to at least 60%
         @JvmField
         val supportedLocales = HashSet<String>()
-        private const val timeFormatString = "dd MMM yyyy" // Example: 13 july 2001
+        private const val TFS = "dd MMM yyyy" // Example: 13 july 2001
         private var shellBuilder: Shell.Builder? = null
 
         // Is application wrapped, and therefore must reduce it's feature set.
@@ -497,9 +497,9 @@ class MainApplication : FoxApplication(), Configuration.Provider {
         @JvmField
         var o = false
         private var SHOWCASE_MODE_TRUE: String? = null
-        private var secret: Long = 0
+        private var sc: Long = 0
         private var timeFormatLocale = Resources.getSystem().configuration.locales[0]
-        private var timeFormat = SimpleDateFormat(timeFormatString, timeFormatLocale)
+        private var timeFormat = SimpleDateFormat(TFS, timeFormatLocale)
         private var relPackageName = BuildConfig.APPLICATION_ID
 
         @SuppressLint("StaticFieldLeak")
@@ -532,8 +532,8 @@ class MainApplication : FoxApplication(), Configuration.Provider {
             }
             val random = Random()
             do {
-                secret = random.nextLong()
-            } while (secret == 0L)
+                sc = random.nextLong()
+            } while (sc == 0L)
         }
 
         fun build(vararg command: String?): Shell {
@@ -551,7 +551,7 @@ class MainApplication : FoxApplication(), Configuration.Provider {
                 // Code safeguard, we should never reach here.
                 "Can't add secret to outbound Intent"
             }
-            intent.putExtra("secret", secret)
+            intent.putExtra("secret", sc)
         }
 
         @Suppress("NAME_SHADOWING")
@@ -591,7 +591,7 @@ class MainApplication : FoxApplication(), Configuration.Provider {
         }
 
         fun checkSecret(intent: Intent?): Boolean {
-            return intent != null && intent.getLongExtra("secret", secret.inv()) == secret
+            return intent != null && intent.getLongExtra("secret", sc.inv()) == sc
         }
 
         // convert from String to boolean
