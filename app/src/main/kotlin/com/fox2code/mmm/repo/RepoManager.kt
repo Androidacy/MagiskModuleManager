@@ -266,6 +266,10 @@ class RepoManager private constructor(mainApplication: MainApplication) : SyncMa
                                         R.string.api_key_removed,
                                         Toast.LENGTH_SHORT
                                     ).show()
+                                    // refresh by faking user pull down
+                                    if (MainActivity.INSTANCE != null) {
+                                        MainActivity.INSTANCE!!.onRefresh()
+                                    }
                                 }
                             }
                             builder.show()

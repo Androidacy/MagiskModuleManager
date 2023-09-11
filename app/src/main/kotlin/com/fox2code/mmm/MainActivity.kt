@@ -117,6 +117,7 @@ class MainActivity : AppCompatActivity(), OnRefreshListener, OverScrollHelper {
         }
         onMainActivityCreate(this)
         super.onCreate(savedInstanceState)
+        INSTANCE = this
         TrackHelper.track().screen(this).with(MainApplication.INSTANCE!!.tracker)
         // hide this behind a buildconfig flag for now, but crash the app if it's not an official build and not debug
         if (BuildConfig.ENABLE_PROTECTION && !MainApplication.o && !BuildConfig.DEBUG) {
@@ -814,6 +815,11 @@ class MainActivity : AppCompatActivity(), OnRefreshListener, OverScrollHelper {
         return super.dispatchTouchEvent(event)
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        INSTANCE = null
+    }
+
     companion object {
         fun getAppCompatActivity(activity: AppCompatActivity): AppCompatActivity {
             return activity
@@ -831,5 +837,6 @@ class MainActivity : AppCompatActivity(), OnRefreshListener, OverScrollHelper {
         var localModuleInfoList: List<LocalModuleInfo> = ArrayList()
         var onlineModuleInfoList: List<RepoModule> = ArrayList()
         var isShowingWeblateSb = false // race condition
+        var INSTANCE: MainActivity? = null
     }
 }
