@@ -16,7 +16,7 @@ plugins {
     kotlin("android")
     kotlin("kapt")
     id("com.google.devtools.ksp") version "1.8.22-1.0.11"
-    id("io.sentry.android.gradle")
+    id("io.sentry.android.gradle") version "3.12.0"
 }
 
 val hasSentryConfig = File(rootProject.projectDir, "sentry.properties").exists()
@@ -53,8 +53,8 @@ android {
         applicationId = "com.fox2code.mmm"
         minSdk = 26
         targetSdk = 34
-        versionCode = 82
-        versionName = "2.3.0"
+        versionCode = 83
+        versionName = "2.3.1"
         vectorDrawables {
             useSupportLibrary = true
         }
@@ -467,7 +467,7 @@ dependencies {
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
     implementation("androidx.recyclerview:recyclerview:1.3.1")
     implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
-    implementation("androidx.webkit:webkit:1.7.0")
+    implementation("androidx.webkit:webkit:1.8.0")
     implementation("com.google.android.material:material:1.9.0")
     implementation("dev.rikka.rikkax.layoutinflater:layoutinflater:1.3.0")
     implementation("dev.rikka.rikkax.insets:insets:1.3.0")
@@ -481,7 +481,7 @@ dependencies {
     implementation("com.squareup.okhttp3:okhttp:5.0.0-alpha.11")
     implementation("com.squareup.okhttp3:okhttp-dnsoverhttps:5.0.0-alpha.11")
     // logging interceptor
-    implementation("com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.11")
+    debugImplementation("com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.11")
     // Chromium cronet from androidacy
     implementation("org.chromium.net:cronet-embedded:113.5672.61")
 
@@ -500,11 +500,6 @@ dependencies {
 
     // sentry
     implementation("io.sentry:sentry-android:6.29.0")
-    implementation("io.sentry:sentry-android-timber:6.29.0")
-    implementation("io.sentry:sentry-android-fragment:6.29.0")
-    implementation("io.sentry:sentry-android-okhttp:6.29.0")
-    implementation("io.sentry:sentry-kotlin-extensions:6.29.0")
-    implementation("io.sentry:sentry-android-ndk:6.29.0")
 
     // Markdown
     // TODO: switch to an updated implementation
@@ -519,7 +514,7 @@ dependencies {
     implementation("org.lsposed.hiddenapibypass:hiddenapibypass:4.3")
     implementation("com.github.tiann:FreeReflection:3.1.0")
 
-    implementation("androidx.core:core-ktx:1.10.1")
+    implementation("androidx.core:core-ktx:1.12.0")
 
     // timber
     implementation("com.jakewharton.timber:timber:5.0.1")
@@ -529,7 +524,7 @@ dependencies {
 
     // some utils
     implementation("commons-io:commons-io:2.13.0")
-    implementation("org.apache.commons:commons-compress:1.23.0")
+    implementation("org.apache.commons:commons-compress:1.24.0")
 
     // analytics
     implementation("com.github.matomo-org:matomo-sdk-android:HEAD")
