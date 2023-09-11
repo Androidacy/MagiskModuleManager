@@ -15,9 +15,10 @@ import com.fox2code.mmm.repo.RepoManager
 /**
  * Class made to expose some manager functions to xposed modules.
  * It will not be obfuscated on release builds
+ *
+ * TODO: Evaluate usage and deprecate if not needed
  */
 @Suppress("UNUSED_PARAMETER")
-@Deprecated("This class is deprecated and will be removed in the future")
 @Keep
 enum class XHooks {
     ;

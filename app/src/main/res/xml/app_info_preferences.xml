@@ -5,15 +5,15 @@
         <!-- donate buttons for fox2code and androidacy -->
         <com.fox2code.mmm.settings.LongClickablePreference
             app:icon="@drawable/ic_baseline_monetization_on_24"
-            app:key="pref_donate_fox"
-            app:singleLineTitle="false"
-            app:title="@string/donate_fox" />
-        <com.fox2code.mmm.settings.LongClickablePreference
-            app:icon="@drawable/ic_baseline_monetization_on_24"
             app:key="pref_donate_androidacy"
             app:singleLineTitle="false"
             app:summary="@string/donate_androidacy_sum"
             app:title="@string/donate_androidacy" />
+        <com.fox2code.mmm.settings.LongClickablePreference
+            app:icon="@drawable/ic_baseline_monetization_on_24"
+            app:key="pref_donate_fox"
+            app:singleLineTitle="false"
+            app:title="@string/donate_fox" />
         <com.fox2code.mmm.settings.LongClickablePreference
             app:icon="@drawable/ic_baseline_bug_report_24"
             app:key="pref_report_bug"

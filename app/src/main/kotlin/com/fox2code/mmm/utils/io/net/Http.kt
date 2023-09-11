@@ -48,8 +48,6 @@ import okhttp3.Response
 import okhttp3.Response.*
 import okhttp3.dnsoverhttps.DnsOverHttps
 import okhttp3.dnsoverhttps.DnsOverHttps.Builder.*
-import okhttp3.logging.HttpLoggingInterceptor
-import okhttp3.logging.HttpLoggingInterceptor.*
 import okio.BufferedSink
 import org.chromium.net.CronetEngine
 import timber.log.Timber
@@ -341,15 +339,6 @@ enum class Http {;
                 )
                 chain.proceed(request.build())
             })
-
-            // for debug builds, add a logging interceptor
-            // this spams the logcat, so it's disabled by default and hidden behind a build config flag
-            if (BuildConfig.DEBUG && BuildConfig.DEBUG_HTTP) {
-                Timber.w("HTTP logging is enabled. Performance may be impacted.")
-                val loggingInterceptor = HttpLoggingInterceptor()
-                loggingInterceptor.setLevel(Level.BODY)
-                httpclientBuilder.addInterceptor(loggingInterceptor)
-            }
 
             // add sentry interceptor
             httpclientBuilder.addInterceptor(SentryOkHttpInterceptor())

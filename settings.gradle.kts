@@ -21,10 +21,12 @@ gradleEnterprise {
 dependencyResolutionManagement {
     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
     repositories {
-        mavenCentral()
         google()
-        // enable jitpack
-        maven { setUrl("https://jitpack.io") }
+        mavenCentral()
+        maven {
+            setUrl("https://jitpack.io")
+        }
+        gradlePluginPortal()
     }
 }
 

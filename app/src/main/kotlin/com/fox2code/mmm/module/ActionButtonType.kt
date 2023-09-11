@@ -182,7 +182,7 @@ enum class ActionButtonType {
             var markwon: Markwon? = null
             val localModuleInfo = moduleHolder.moduleInfo
             if (localModuleInfo != null && localModuleInfo.updateChangeLog.isNotEmpty()) {
-                markwon = INSTANCE!!.reallyGetMarkwon()
+                markwon = INSTANCE!!.markwon
                 // Re-render each time in cse of config changes
                 desc = markwon!!.toMarkdown(localModuleInfo.updateChangeLog)
             }
@@ -484,7 +484,7 @@ enum class ActionButtonType {
                     var markwon: Markwon? = null
                     val localModuleInfo = moduleHolder.moduleInfo
                     if (localModuleInfo != null && localModuleInfo.updateChangeLog.isNotEmpty()) {
-                        markwon = INSTANCE!!.reallyGetMarkwon()
+                        markwon = INSTANCE!!.markwon
                         // Re-render each time in cse of config changes
                         desc = markwon!!.toMarkdown(localModuleInfo.updateChangeLog)
                     }
