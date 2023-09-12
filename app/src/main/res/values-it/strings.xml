@@ -1,8 +1,7 @@
-<?xml version="1.0" encoding="utf-8"?><!--
+<?xml version="1.0" encoding="utf-8"?>
+<!--
   ~ Copyright (c) 2023 to present Androidacy and contributors. Names, logos, icons, and the Androidacy name are all trademarks of Androidacy and may not be used without license. See LICENSE for more information.
-  -->
-
-<resources>
+  --><resources>
     <string name="app_name">Fox Magisk Module Manager</string>
     <string name="fail_root_magisk">Impossibile ottenere l\'accesso root</string>
     <string name="loading">Caricamento…</string>
@@ -339,4 +338,26 @@
     <string name="background_update_check_excludes_version_summary">Specifica una versione degli aggiornamenti del modulo che vuoi ignorare. Usa esclusivamente il codice della versione. Puoi trovarlo tenendo premuto sulla versione nella lista dei moduli. Usa ^ all\'inizio per far abbinare quella versione e più nuove. Usa $ alla fine per abbinare fino a quella versione.</string>
     <string name="androidacy_thanks_up">Grazie per aver fatto l\'upgrade! I download dei moduli e i README non mostreranno annunci e i download non saranno ristretti. In futuro potrai scaricare direttamente i moduli con un click.</string>
     <string name="crash_details_suggestion">Lo stacktrace può essere trovato di seguito, ti consigliamo <b> vivamente </b> di utilizzare il modulo di feedback qui sotto per inviare un feedback. In questo modo, invece di copiare manualmente lo stacktrace, lo invierai a noi automaticamente. Inoltre in questo modo viene deoffuscato e ulteriori dettagli vengono mandati automaticamente.</string>
+    <string name="reboot_extra_warning">Stai per riavviare il dispositivo in modalità EDL, una modalità intesa per i produttori per eseguire flash o sistemare problemi di livello profondo. Se non sei sicuro di quello che fai e non hai accesso ai strumenti necessari per l\'uso di questa modalità o per uscirne ti consigliamo di utilizzare le altre modalità di riavvio.</string>
+    <string name="expired">Questa build è scaduta!</string>
+    <string name="expired_message">La build che stai usando è scaduta e non funzionerà più. Si prega di aggiornare alla build stabile più recente.</string>
+    <string name="download_latest">Scarica versione più recente</string>
+    <string name="reinstall_warning">La maggior parte dei moduli va disinstallata e installata da zero. Per questo motivo AMM non supporta la reinstallazione dei moduli già installati sul dispositivo.</string>
+    <string name="logs_saved">Logs salvati con successo</string>
+    <string name="error_opening_notes">Si è verificato un errore nell\'apertura delle note del modulo. La ragione potrebbe essere scritta nei log.</string>
+    <string name="submit_feedback">Manda un feedback</string>
+    <string name="error_creating_modulelistcache_database">Non è stato possibile creare il database della cache dei moduli</string>
+    <string name="error_creating_repos_database">Impossibile creare il database delle repository</string>
+    <string name="blur_performance_warning_summary">Il dispositivo non è compatibile con blur</string>
+    <string name="build_expired">Questa build è scaduta. Si prega di aggiornare all\'ultima versione.</string>
+    <string name="eula_agree_v2_headline">Termini e condizioni d\'uso, EULA</string>
+    <string name="reboot">Riavvia</string>
+    <string name="reboot_recovery">Riavvia in recovery</string>
+    <string name="reboot_bootloader">Riavvia nel bootloader</string>
+    <string name="reboot_edl">Riavvia in modalità EDL</string>
+    <string name="install_terminal_reboot_prevented">Il riavvio è disabilitato nei settaggi dell\'app</string>
+    <string name="androidacy_api_error">Errore nella comunicazione con l\'API: %d</string>
+    <string name="app_name_short_v2">AMM</string>
+    <string name="search">Cerca</string>
+    <string name="app_name_v2">Androidacy Module Manager</string>
 </resources>

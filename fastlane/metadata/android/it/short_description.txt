@@ -1,1 +1,1 @@
-Un gestore di moduli Magisk, poiché l'app ufficiale non lo supporta più.
+Androidacy Module Manager è un'app facile da usare per gestire moduli Magisk/KernelSU.

@@ -99,7 +99,7 @@
     <string name="disable_low_quality_module_filter_pref">عرض إضافات منخفضة الجودة</string>
     <string name="dns_over_https_pref">DNS عبر HTTPS</string>
     <string name="dns_over_https_desc">قد يصلح مشكلات الإتصال في بعض الحالات. (لا ينطبق على عارض الويب.)</string>
-    <string name="wrap_text_pref">تغطية النص</string>
+    <string name="wrap_text_pref">تعدد النصوص</string>
     <string name="repo_enabled">الريبو مفعل</string>
     <string name="repo_disabled">الريبو مغلق</string>
     <string name="add_repo">إضافة ريبو</string>
@@ -374,4 +374,5 @@
 \nالتطبيق: %s</string>
     <string name="install_from_storage_safe_modules">لأمانك ، يتم تعطيل تثبيت الإضافة المحلية بواسطة أمن الإضافة. يمكنك تبديل هذا في الإعدادات <b>على مسؤوليتك الخاصة</b>.</string>
     <string name="setup_require_security_summary">يتطلب وضع علامة على الإضافات على أنها آمنة قبل التثبيت. سيؤدي هذا إلى تعطيل تثبيت الإضافة المحلية ويتم تحديد سلامة الإضافة بواسطة مالك الريبو.</string>
+    <string name="install_terminal_support_link">الدعم: %s</string>
 </resources>
