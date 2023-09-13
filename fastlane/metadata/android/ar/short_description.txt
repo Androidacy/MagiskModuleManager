@@ -1,0 +1,1 @@
+Androidacy مدير إضافات Magisk هو تطبيق سهل الاستخدام لإدارة إضافات Magisk / KernelSU.
