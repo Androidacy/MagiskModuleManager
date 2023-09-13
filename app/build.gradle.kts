@@ -365,7 +365,7 @@ sentry {
 
     uploadNativeSymbols.set(hasSentryConfig)
 
-    includeNativeSources.set(true)
+    includeNativeSources.set(hasSentryConfig)
 
     tracingInstrumentation {
         enabled.set(true)
@@ -382,7 +382,7 @@ sentry {
     }
 
     includeDependenciesReport.set(true)
-    includeSourceContext.set(true)
+    includeSourceContext.set(hasSentryConfig)
 
     // Includes additional source directories into the source bundle.
     // These directories are resolved relative to the project directory.
@@ -543,7 +543,7 @@ android {
         }
     }
 
-    ndkVersion = "26.0.10636728 rc2"
+    ndkVersion = "25.2.9519653"
     dependenciesInfo {
         includeInApk = false
         includeInBundle = false
