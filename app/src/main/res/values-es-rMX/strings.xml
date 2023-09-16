@@ -375,4 +375,19 @@
     <string name="update_frequency_360">6 horas</string>
     <string name="update_frequency_720">12 horas</string>
     <string name="update_frequency_1440">A diario</string>
+    <string name="ksu_experimental">El soporte de KernelSU está actualmente <b>experimental</b> y puede tener problemas. La compatibilidad con los módulos no está garantizada.&gt;</string>
+    <string name="setup_uninstall_title">¿Desinstalar otra versión\?</string>
+    <string name="setup_uninstall_message">Hay otra versión de esta aplicación presente en su dispositivo. Recomendamos eliminarla para evitar comportamientos inesperados.
+\n
+\nAplicación: %s</string>
+    <string name="require_safe_modules_desc">Requerir que los módulos sean seguros. Este estado depende del repositorio y deshabilitará la instalación local.</string>
+    <string name="install_blocked">Instalación bloqueada</string>
+    <string name="install_blocked_message">Actualmente no puede instalar este módulo porque tiene la seguridad del módulo habilitada en la configuración. Desactívelo si desea continuar, pero lo desactiva. <b>a su propio riesgo</b> .</string>
+    <string name="setup_require_security">Requiere que los módulos sean seguros</string>
+    <string name="setup_agree_eula_toast">Por favor, acepte los términos primero</string>
+    <string name="setup_androidacy_repo_recommendation">Le recomendamos activar solo el repositorio de Androidacy. Esto garantiza que recibirá una experiencia optimizada y más segura.</string>
+    <string name="install_terminal_support_link">Apoyo: %s</string>
+    <string name="require_safe_modules_pref">Permitir solo módulos seguros</string>
+    <string name="install_from_storage_safe_modules">Por su seguridad, la instalación del módulo local está deshabilitada por la seguridad del módulo. Puede alternar esto en la configuración <b>a su propio riesgo</b> .</string>
+    <string name="setup_require_security_summary">Requiere que los módulos se marquen como seguros antes de la instalación. Esto deshabilitará la instalación del módulo local y la seguridad del módulo la determinará el propietario del repositorio.</string>
 </resources>

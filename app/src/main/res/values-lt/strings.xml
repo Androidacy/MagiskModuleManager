@@ -1,2 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="app_name_short_v2">AMM</string>
+    <string name="fail_root_magisk">Nepavyko pasiekti root ar Magisk</string>
+    <string name="fail_root_denied">Root buvo neleista per Magisk programėle</string>
+    <string name="fail_magisk_missing">Magisk nėra suinstaliuota</string>
+    <string name="loading">Kraunama…</string>
+    <string name="updatable">Atnaujinama</string>
+    <string name="installed">Instaliuota</string>
+    <string name="online_repo">Internetinė repozitorija</string>
+    <string name="failed_download">Nepavyko atsiųsti failo</string>
+    <string name="fail_internet">Nepavyko prisijungti prie interneto</string>
+    <string name="no_web_view">Nepavyko atidaryti sisteminio WebView</string>
+    <string name="title_activity_settings">Nustatymai</string>
+    <string name="no_desc_found">Nėra aprašymo.</string>
+    <string name="download_module">Atsiųsti modulį</string>
+    <string name="install_module">Instaliuoti modulį</string>
+    <string name="update_module">Atnaujinti modulį</string>
+    <string name="website">Puslapis</string>
+    <string name="support">Pagalba</string>
+    <string name="donate">Aukoti</string>
+    <string name="update">Atnaujinti</string>
+    <string name="install">Instaliuoti</string>
+    <string name="description">Aprašymas</string>
+    <string name="uninstall">Ištrinti</string>
+    <string name="config">Konfigūruoti</string>
+    <string name="report_bugs">Pranešti klaidas</string>
+    <string name="submit_modules">Pasiūlyti modulį</string>
+    <string name="install_terminal_reboot_now">Perkrauti</string>
+    <string name="language">Kalba</string>
+    <string name="module_last_update">Paskutinis atnaujinimas:</string>
+    <string name="module_repo">Repozitorija:</string>
+    <string name="module_by">Sukurė</string>
+    <string name="module_downloads">Atsiuntimas:</string>
+    <string name="module_stars">Žvaigždutės:</string>
+    <string name="module_needs_ramdisk">Reikia ramdisk</string>
+    <string name="module_can_change_boot">Galima pakeisti paleidima</string>
+    <string name="module_can_change_boot_desc">Šiam moduliui galimai reikės pakeisti boot image</string>
+    <string name="module_min_magisk_chip">Minim. Magisk %s</string>
+    <string name="app_name">Fox Magisk Modulių tvarkyklė</string>
+    <string name="app_name_v2">Androidacy Modulių tvarkyklė</string>
+    <string name="showcase_mode">Programėlė kritinio užrakinimo režime</string>
+    <string name="app_update_available">Pasiekiama nauja programėlės versija</string>
+    <string name="require_android_12">Reikia Android 12+</string>
+    <string name="module_needs_ramdisk_desc">Šiam moduliui reikia paleidimo ramdisk</string>
+</resources>

@@ -368,4 +368,19 @@
     <string name="notification_update_frequency_pref">Sprawdzaj aktualizacje co…</string>
     <string name="notification_update_frequency_desc">Jak często sprawdzać dostępność aktualizacji w tle. Ustawienie zbyt niskiej wartości może powodować szybsze rozładowanie baterii.</string>
     <string name="update_frequency_1440">24 godziny</string>
+    <string name="ksu_experimental">Obsługa KernelSU jest obecnie <b>eksperymentalna</b> i mogą występować problemy. Kompatybilność z modułami nie jest gwarantowana.&gt;</string>
+    <string name="install_blocked">Instalacja zablokowana</string>
+    <string name="setup_uninstall_title">Odinstalować inną wersję\?</string>
+    <string name="setup_uninstall_message">Na urządzeniu znajduje się inna wersja tej aplikacji. Zalecamy jej usunięcie, aby zapobiec nieoczekiwanemu zachowaniu.
+\n
+\nAplikacja: %s</string>
+    <string name="require_safe_modules_desc">Zezwól tylko na bezpieczne moduły. Ich oznaczenie jest zależne od repozytorium. Po włączeniu tej opcji, instalacja lokalna zostanie wyłączona.</string>
+    <string name="require_safe_modules_pref">Zezwalaj tylko na bezpieczne moduły</string>
+    <string name="install_from_storage_safe_modules">Ze względów bezpieczeństwa lokalna instalacja modułów jest wyłączona przez zabezpieczenia modułów. Możesz to przełączyć w ustawieniach <b>na własne ryzyko</b>.</string>
+    <string name="setup_require_security">Używaj tylko bezpiecznych modułów</string>
+    <string name="setup_require_security_summary">Wymaga oznaczenia modułów jako bezpiecznych przed instalacją.Spowoduje to wyłączenie możliwości lokalnej instalacji modułów. Bezpieczeństwo modułów jest określane przez właściciela repozytorium.</string>
+    <string name="setup_agree_eula_toast">Najpierw zaakceptuj warunki</string>
+    <string name="install_terminal_support_link">Wsparcie: %s</string>
+    <string name="install_blocked_message">Obecnie nie możesz zainstalować tego modułu, ponieważ masz włączone zabezpieczenia modułów w ustawieniach. Wyłącz je, jeśli chcesz kontynuować.</string>
+    <string name="setup_androidacy_repo_recommendation">Zalecamy włączenie tylko repozytorium Androidacy. Zapewni to zoptymalizowaną i bezpieczniejszą obsługę.</string>
 </resources>
