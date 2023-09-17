@@ -63,6 +63,7 @@ import kotlin.math.abs
 @Suppress("unused", "MemberVisibilityCanBePrivate")
 class MainApplication : Application(), Configuration.Provider, ActivityLifecycleCallbacks {
 
+    private var callbacksRegistered = false
     var isTainted = false
 
     var lastActivity: AppCompatActivity? = null
@@ -245,7 +246,14 @@ class MainApplication : Application(), Configuration.Provider, ActivityLifecycle
         if (INSTANCE == null) INSTANCE = this
         relPackageName = this.packageName
         super.onCreate()
-        registerActivityLifecycleCallbacks(this)
+        if (!callbacksRegistered) {
+            try {
+                registerActivityLifecycleCallbacks(this)
+                callbacksRegistered = true
+            } catch (e: Exception) {
+                Timber.e(e, "Failed to register activity lifecycle callbacks")
+            }
+        }
         initialize(this)
         // Initialize Timber
         configTimber()
