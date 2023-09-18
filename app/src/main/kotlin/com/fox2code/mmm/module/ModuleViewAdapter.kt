@@ -56,7 +56,10 @@ class ModuleViewAdapter : RecyclerView.Adapter<ModuleViewAdapter.ViewHolder>() {
                 }
             }
         } catch (e: Exception) {
-            Timber.e(e, "Error while updating module holder. This may mean we're trying to update too early.")
+            Timber.e(
+                e,
+                "Error while updating module holder. This may mean we're trying to update too early."
+            )
         }
     }
 

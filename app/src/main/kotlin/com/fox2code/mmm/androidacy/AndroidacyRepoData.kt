@@ -305,13 +305,16 @@ class AndroidacyRepoData(cacheRoot: File?, testMode: Boolean) : RepoData(
             }
             val moduleId: String = try {
                 jsonObject.getString("codename")
+                // try to get id value
             } catch (e: JSONException) {
-                Timber.e(
-                    "Module %s has no codename or json %s is invalid",
-                    jsonObject.optString("codename", "Unknown"),
-                    jsonObject.toString()
-                )
-                continue
+                // try to get codename value
+                try {
+                    jsonObject.getString("id")
+                } catch (e2: JSONException) {
+                    // we should never get here, bail out
+                    Timber.e(e2, "Failed to parse module id")
+                    continue
+                }
             }
             // Normally, we'd validate the module id here, but we don't need to because the server does it for us
             val lastUpdate: Long = try {

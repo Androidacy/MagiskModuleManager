@@ -14,7 +14,6 @@ import com.fox2code.mmm.XRepo
 import com.fox2code.mmm.manager.ModuleInfo
 import com.fox2code.mmm.utils.io.Files.Companion.write
 import com.fox2code.mmm.utils.io.PropUtils.Companion.readProperties
-import com.fox2code.mmm.utils.room.ModuleListCacheDatabase
 import com.fox2code.mmm.utils.room.ReposListDatabase
 import org.json.JSONException
 import org.json.JSONObject
@@ -377,40 +376,7 @@ open class RepoData(url: String, cacheRoot: File) : XRepo() {
 
     // should update (lastUpdate > 15 minutes)
     fun shouldUpdate(): Boolean {
-        if (BuildConfig.DEBUG) Timber.d("Repo $preferenceId should update check called")
-        val db = Room.databaseBuilder(
-            INSTANCE!!.applicationContext,
-            ReposListDatabase::class.java,
-            "ReposList.db",
-        ).allowMainThreadQueries().build()
-        val repo = db.reposListDao().getById(preferenceId!!)
-        // get modulelistcache
-        val db2 = Room.databaseBuilder(
-            INSTANCE!!.applicationContext,
-            ModuleListCacheDatabase::class.java,
-            "ModuleListCache.db",
-        ).allowMainThreadQueries().build()
-        val moduleListCache = db2.moduleListCacheDao().getByRepoId(preferenceId!!)
-        if (repo != null) {
-            return if (repo.lastUpdate != 0 && moduleListCache.isNotEmpty() && moduleListCache.size > 1) {
-                val lastUpdate = repo.lastUpdate.toLong()
-                val currentTime = System.currentTimeMillis()
-                val diff = currentTime - lastUpdate
-                val diffMinutes = diff / (60 * 1000) % 60
-                if (BuildConfig.DEBUG) Timber.d("Repo $preferenceId updated: $diffMinutes minutes ago")
-                db.close()
-                db2.close()
-                diffMinutes > if (BuildConfig.DEBUG) 15 else 30
-            } else {
-                if (BuildConfig.DEBUG) Timber.d("Repo $preferenceId shouldUpdate true: lastUpdate is " + repo.lastUpdate + " and moduleListCache is " + moduleListCache.size)
-                db.close()
-                db2.close()
-                true
-            }
-        } else {
-            db.close()
-            db2.close()
-        }
+        Timber.w("shouldUpdate() called but cache not implemented for %s", preferenceId)
         return true
     }
 
