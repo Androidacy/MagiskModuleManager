@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "5a217dbf3caa5a6b70e7eee98636866c",
+    "identityHash": "7ad41628a74233e6c6d2f88142274d85",
     "entities": [
       {
         "tableName": "ReposList",
@@ -69,14 +69,24 @@
             "id"
           ]
         },
-        "indices": [],
+        "indices": [
+          {
+            "name": "index_ReposList_id",
+            "unique": true,
+            "columnNames": [
+              "id"
+            ],
+            "orders": [],
+            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_ReposList_id` ON `${TABLE_NAME}` (`id`)"
+          }
+        ],
         "foreignKeys": []
       }
     ],
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '5a217dbf3caa5a6b70e7eee98636866c')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '7ad41628a74233e6c6d2f88142274d85')"
     ]
   }
 }

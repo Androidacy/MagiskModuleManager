@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "2abfd2dad332c887d96cdda63d92a639",
+    "identityHash": "0ee5da8f0cbafe111752b3281ecbdfff",
     "entities": [
       {
         "tableName": "modulelistcache",
@@ -129,14 +129,24 @@
             "codename"
           ]
         },
-        "indices": [],
+        "indices": [
+          {
+            "name": "index_modulelistcache_codename",
+            "unique": true,
+            "columnNames": [
+              "codename"
+            ],
+            "orders": [],
+            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_modulelistcache_codename` ON `${TABLE_NAME}` (`codename`)"
+          }
+        ],
         "foreignKeys": []
       }
     ],
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '2abfd2dad332c887d96cdda63d92a639')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '0ee5da8f0cbafe111752b3281ecbdfff')"
     ]
   }
 }
