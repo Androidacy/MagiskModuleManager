@@ -65,7 +65,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.progressindicator.LinearProgressIndicator
 import com.google.android.material.textfield.TextInputEditText
 import ly.count.android.sdk.Countly
-import ly.count.android.sdk.ModuleFeedback.FeedbackCallback
+import ly.count.android.sdk.ModuleFeedback
 import timber.log.Timber
 import java.sql.Timestamp
 
@@ -118,7 +118,7 @@ class MainActivity : AppCompatActivity(), OnRefreshListener, OverScrollHelper {
         onMainActivityCreate(this)
         super.onCreate(savedInstanceState)
         INSTANCE = this
-        
+
         // hide this behind a buildconfig flag for now, but crash the app if it's not an official build and not debug
         if (BuildConfig.ENABLE_PROTECTION && !MainApplication.o && !BuildConfig.DEBUG) {
             throw RuntimeException("This is not an official build of AMM")
@@ -146,8 +146,10 @@ class MainActivity : AppCompatActivity(), OnRefreshListener, OverScrollHelper {
                 // use countly to track enabled repos
                 val repoMap = HashMap<String, String>()
                 repoMap["repos"] = enabledRepos.toString()
-                Countly.sharedInstance().events().recordEvent("enabled_repos",
-                    repoMap as Map<String, Any>?, 1)
+                Countly.sharedInstance().events().recordEvent(
+                    "enabled_repos",
+                    repoMap as Map<String, Any>?, 1
+                )
             }
         }.start()
         val ts = Timestamp(System.currentTimeMillis() - 30L * 24 * 60 * 60 * 1000)
@@ -238,9 +240,10 @@ class MainActivity : AppCompatActivity(), OnRefreshListener, OverScrollHelper {
                 // filter the appropriate list based on visibility
                 if (initMode) return
                 val query = s.toString()
-                Countly.sharedInstance().events().recordEvent("search", HashMap<String, String>().apply {
-                    put("query", query)
-                } as Map<String, Any>?, 1)
+                Countly.sharedInstance().events()
+                    .recordEvent("search", HashMap<String, String>().apply {
+                        put("query", query)
+                    } as Map<String, Any>?, 1)
                 Thread {
                     if (moduleViewListBuilder.setQueryChange(query)) {
                         Timber.i("Query submit: %s on offline list", query)
@@ -266,9 +269,10 @@ class MainActivity : AppCompatActivity(), OnRefreshListener, OverScrollHelper {
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                 // filter the appropriate list based on visibility
                 val query = textInputEditText.text.toString()
-                Countly.sharedInstance().events().recordEvent("search", HashMap<String, String>().apply {
-                    put("query", query)
-                } as Map<String, Any>?, 1)
+                Countly.sharedInstance().events()
+                    .recordEvent("search", HashMap<String, String>().apply {
+                        put("query", query)
+                    } as Map<String, Any>?, 1)
                 Thread {
                     if (moduleViewListBuilder.setQueryChange(query)) {
                         Timber.i("Query submit: %s on offline list", query)
@@ -325,30 +329,30 @@ class MainActivity : AppCompatActivity(), OnRefreshListener, OverScrollHelper {
             // show reboot dialog with options to reboot, reboot to recovery, bootloader, or edl, and use RuntimeUtils to reboot
             val rebootDialog =
                 MaterialAlertDialogBuilder(this@MainActivity).setTitle(R.string.reboot).setItems(
-                        arrayOf(
-                            getString(R.string.reboot),
-                            getString(R.string.reboot_recovery),
-                            getString(R.string.reboot_bootloader),
-                            getString(R.string.reboot_edl)
+                    arrayOf(
+                        getString(R.string.reboot),
+                        getString(R.string.reboot_recovery),
+                        getString(R.string.reboot_bootloader),
+                        getString(R.string.reboot_edl)
+                    )
+                ) { _: DialogInterface?, which: Int ->
+                    when (which) {
+                        0 -> RuntimeUtils.reboot(
+                            this@MainActivity,
+                            RuntimeUtils.RebootMode.REBOOT
                         )
-                    ) { _: DialogInterface?, which: Int ->
-                        when (which) {
-                            0 -> RuntimeUtils.reboot(
-                                this@MainActivity,
-                                RuntimeUtils.RebootMode.REBOOT
-                            )
 
-                            1 -> RuntimeUtils.reboot(
-                                this@MainActivity, RuntimeUtils.RebootMode.RECOVERY
-                            )
+                        1 -> RuntimeUtils.reboot(
+                            this@MainActivity, RuntimeUtils.RebootMode.RECOVERY
+                        )
 
-                            2 -> RuntimeUtils.reboot(
-                                this@MainActivity, RuntimeUtils.RebootMode.BOOTLOADER
-                            )
+                        2 -> RuntimeUtils.reboot(
+                            this@MainActivity, RuntimeUtils.RebootMode.BOOTLOADER
+                        )
 
-                            3 -> RuntimeUtils.reboot(this@MainActivity, RuntimeUtils.RebootMode.EDL)
-                        }
-                    }.setNegativeButton(R.string.cancel, null).create()
+                        3 -> RuntimeUtils.reboot(this@MainActivity, RuntimeUtils.RebootMode.EDL)
+                    }
+                }.setNegativeButton(R.string.cancel, null).create()
             rebootDialog.show()
         }
         // get background color and elevation of reboot fab
@@ -651,6 +655,59 @@ class MainActivity : AppCompatActivity(), OnRefreshListener, OverScrollHelper {
         }
         ExternalHelper.INSTANCE.refreshHelper(this)
         initMode = false
+        if (MainApplication.shouldShowFeedback()) {
+            // wait a bit before showing feedback
+            Handler(Looper.getMainLooper()).postDelayed({
+                showFeedback()
+            }, 5000)
+            Timber.i("Should show feedback")
+        } else {
+            Timber.i("Should not show feedback")
+        }
+    }
+
+    private fun showFeedback() {
+        Countly.sharedInstance().feedback()
+            .getAvailableFeedbackWidgets { retrievedWidgets, error ->
+                Timber.i("Got feedback widgets: %s", retrievedWidgets.size)
+                if (error == null) {
+                    if (retrievedWidgets.size > 0) {
+                        val feedbackWidget = retrievedWidgets[0]
+                        Countly.sharedInstance().feedback().presentFeedbackWidget(
+                            feedbackWidget,
+                            this@MainActivity,
+                            "Close",
+                            object : ModuleFeedback.FeedbackCallback {
+                                override fun onClosed() {
+                                }
+
+                                // maybe show a toast when the widget is closed
+                                override fun onFinished(error: String?) {
+                                    // error handling here
+                                    if (!error.isNullOrEmpty()) {
+                                        Toast.makeText(
+                                            this@MainActivity,
+                                            "Error: $error",
+                                            Toast.LENGTH_LONG
+                                        ).show()
+                                        Timber.e(error, "Feedback error")
+                                    } else {
+                                        Toast.makeText(
+                                            this@MainActivity,
+                                            "Feedback sent",
+                                            Toast.LENGTH_LONG
+                                        ).show()
+                                    }
+                                }
+                            })
+                        // update last feedback time
+                        MainApplication.getSharedPreferences("mmm")?.edit()
+                            ?.putLong("last_feedback", System.currentTimeMillis())?.apply()
+                    }
+                } else {
+                    Timber.e(error, "Failed to get feedback widgets")
+                }
+            }
     }
 
     private fun updateBlurState() {
@@ -747,44 +804,6 @@ class MainActivity : AppCompatActivity(), OnRefreshListener, OverScrollHelper {
             moduleViewListBuilder.applyTo(moduleList!!, moduleViewAdapter!!)
             moduleViewListBuilderOnline.applyTo(moduleListOnline!!, moduleViewAdapterOnline!!)
         }, "Repo update thread").start()
-        if (MainApplication.shouldShowFeedback()) {
-            Countly.sharedInstance().feedback()
-                .getAvailableFeedbackWidgets { retrievedWidgets, error ->
-                    if (error == null) {
-                        if (retrievedWidgets.size > 0) {
-                            val feedbackWidget = retrievedWidgets[0]
-                            Countly.sharedInstance().feedback().presentFeedbackWidget(
-                                feedbackWidget,
-                                this@MainActivity,
-                                "Close",
-                                object : FeedbackCallback {
-                                    override fun onClosed() {
-                                    }
-
-                                    // maybe show a toast when the widget is closed
-                                    override fun onFinished(error: String) {
-                                        // error handling here
-                                        if (error.isNotEmpty()) {
-                                            Toast.makeText(
-                                                this@MainActivity,
-                                                "Error: $error",
-                                                Toast.LENGTH_LONG
-                                            ).show()
-                                        } else {
-                                            Toast.makeText(
-                                                this@MainActivity,
-                                                "Feedback sent",
-                                                Toast.LENGTH_LONG
-                                            ).show()
-                                        }
-                                    }
-                                })
-                        }
-                    } else {
-                        Timber.e(error)
-                    }
-                }
-        }
     }
 
     fun maybeShowUpgrade() {

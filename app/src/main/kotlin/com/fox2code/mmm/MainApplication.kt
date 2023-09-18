@@ -680,29 +680,11 @@ class MainApplication : Application(), Configuration.Provider, ActivityLifecycle
         }
 
         fun shouldShowFeedback(): Boolean {
-            // should not have been shown in 30 days and only 1 in 5 chance
-            return if (getSharedPreferences("mmm")!!.getBoolean("pref_feedback_shown", false)) {
-                false
-            } else {
-                val random = Random()
-                val chance = random.nextInt(5)
-                if (chance == 0) {
-                    val lastFeedback = getSharedPreferences("mmm")!!.getLong(
-                        "pref_last_feedback", 0
-                    )
-                    val now = System.currentTimeMillis()
-                    if (now - lastFeedback > 2592000000L) {
-                        val editor = getSharedPreferences("mmm")!!.edit()
-                        editor.putLong("pref_last_feedback", now)
-                        editor.apply()
-                        true
-                    } else {
-                        false
-                    }
-                } else {
-                    false
-                }
-            }
+            // should not have been shown in 14 days and only 1 in 5 chance
+            val randChance = Random().nextInt(5)
+            val lastShown = getSharedPreferences("mmm")!!.getLong("last_feedback", 0)
+            if (BuildConfig.DEBUG) Timber.d("Last feedback shown: %d, randChance: %d", lastShown, randChance)
+            return System.currentTimeMillis() - lastShown > 1209600000 && randChance == 0
         }
     }
 
