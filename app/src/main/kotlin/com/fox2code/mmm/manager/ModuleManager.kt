@@ -17,7 +17,7 @@ import com.fox2code.mmm.utils.room.ModuleListCacheDatabase
 import com.topjohnwu.superuser.Shell
 import com.topjohnwu.superuser.io.SuFile
 import com.topjohnwu.superuser.io.SuFileInputStream
-import org.matomo.sdk.extra.TrackHelper
+import ly.count.android.sdk.Countly
 import timber.log.Timber
 import java.io.BufferedReader
 import java.io.IOException
@@ -30,9 +30,9 @@ class ModuleManager private constructor() : SyncManager() {
     private var updatableModuleCount = 0
 
     override fun scanInternal(updateListener: UpdateListener) {
-        // if last_shown_setup is not "v4", then refuse to continue
+        // if last_shown_setup is not "v5", then refuse to continue
         if (MainApplication.getSharedPreferences("mmm")!!
-                .getString("last_shown_setup", "") != "v4"
+                .getString("last_shown_setup", "") != "v5"
         ) {
             return
         }
@@ -145,9 +145,12 @@ class ModuleManager private constructor() : SyncManager() {
         if (modulesList.isNotEmpty()) {
             modulesList.deleteCharAt(modulesList.length - 1)
         }
-        // send list to matomo
-        TrackHelper.track().event("installed_modules", modulesList.toString())
-            .with(MainApplication.INSTANCE!!.tracker)
+        // send list to countly if analytics is enabled
+        if (MainApplication.analyticsAllowed()) {
+            Countly.sharedInstance().events().recordEvent("modules", HashMap<String, Any?>().apply {
+                put("modules", modulesList.toString())
+            })
+        }
         if (BuildConfig.DEBUG) if (BuildConfig.DEBUG) Timber.d("Scan update")
         val modulesUpdate = SuFile("/data/adb/modules_update").list()
         if (modulesUpdate != null) {

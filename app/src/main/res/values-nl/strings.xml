@@ -295,7 +295,7 @@
     <string name="empty_field">URL is vereist</string>
     <string name="repo_already_added">Repo bestaat al.</string>
     <string name="showcase_mode_dialogue_message">Een herstart van de app is vereist om de showcase-modus in te schakelen.</string>
-    <string name="analytics_desc">Sta ons toe app-gebruik en installaties bij te houden. Volledig GDPR-compatibel en maakt gebruik van Matomo, gehost door Androidacy.</string>
+    <string name="analytics_desc">Sta ons toe app-gebruik en installaties bij te houden. Volledig GDPR-compatibel en maakt gebruik van Countly, gehost door Androidacy.</string>
     <string name="announcements">Nieuws en updates</string>
     <string name="debug_cat">Debugging</string>
     <string name="back">Ga terug</string>

@@ -17,6 +17,7 @@ import android.content.pm.PackageManager
 import android.content.res.Resources
 import android.os.Build
 import android.os.Bundle
+import android.os.Process
 import android.os.SystemClock
 import android.util.Log
 import androidx.annotation.StyleRes
@@ -28,7 +29,6 @@ import androidx.emoji2.text.EmojiCompat
 import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKey
 import androidx.work.Configuration
-import com.fox2code.foxcompat.app.internal.FoxProcessExt
 import com.fox2code.mmm.installer.InstallerInitializer
 import com.fox2code.mmm.installer.InstallerInitializer.Companion.peekMagiskVersion
 import com.fox2code.mmm.manager.LocalModuleInfo
@@ -37,8 +37,6 @@ import com.fox2code.mmm.utils.TimberUtils.configTimber
 import com.fox2code.mmm.utils.io.FileUtils
 import com.fox2code.mmm.utils.io.GMSProviderInstaller.Companion.installIfNeeded
 import com.fox2code.mmm.utils.io.net.Http.Companion.getHttpClientWithCache
-import com.fox2code.mmm.utils.sentry.SentryMain
-import com.fox2code.mmm.utils.sentry.SentryMain.initialize
 import com.fox2code.rosettax.LanguageSwitcher
 import com.google.common.hash.Hashing
 import com.topjohnwu.superuser.Shell
@@ -46,12 +44,8 @@ import io.noties.markwon.Markwon
 import io.noties.markwon.html.HtmlPlugin
 import io.noties.markwon.image.ImagesPlugin
 import io.noties.markwon.image.network.OkHttpNetworkSchemeHandler
-import io.sentry.Sentry
-import io.sentry.SentryLevel
-import org.matomo.sdk.Matomo
-import org.matomo.sdk.Tracker
-import org.matomo.sdk.TrackerBuilder
-import org.matomo.sdk.extra.TrackHelper
+import ly.count.android.sdk.Countly
+import ly.count.android.sdk.CountlyConfig
 import timber.log.Timber
 import java.io.File
 import java.security.SecureRandom
@@ -59,6 +53,7 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Random
 import kotlin.math.abs
+
 
 @Suppress("unused", "MemberVisibilityCanBePrivate")
 class MainApplication : Application(), Configuration.Provider, ActivityLifecycleCallbacks {
@@ -97,18 +92,6 @@ class MainApplication : Application(), Configuration.Provider, ActivityLifecycle
             return field
         }
     private var existingKey: CharArray? = null
-
-    var tracker: Tracker? = null
-        get() {
-            if (field == null) {
-                field = TrackerBuilder.createDefault(BuildConfig.ANALYTICS_ENDPOINT, 1)
-                    .build(Matomo.getInstance(this))
-                val tracker = field!!
-                tracker.startNewSession()
-                tracker.dispatchInterval = 1000
-            }
-            return field
-        }
     private var makingNewKey = false
     private var isCrashHandler = false
 
@@ -216,6 +199,27 @@ class MainApplication : Application(), Configuration.Provider, ActivityLifecycle
         get() = !this.isLightTheme
 
     override fun onCreate() {
+
+        Thread.setDefaultUncaughtExceptionHandler { _: Thread?, throwable: Throwable ->
+            clearCachedSharedPrefs()
+            // open crash handler and exit
+            val intent = Intent(this, CrashHandler::class.java)
+            // pass the entire exception to the crash handler
+            intent.putExtra("exception", throwable)
+            // add stacktrace as string
+            intent.putExtra("stacktrace", throwable.stackTrace)
+            // serialize Sentry.captureException and pass it to the crash handler
+            intent.putExtra("sentryException", throwable)
+            // pass crashReportingEnabled to crash handler
+            intent.putExtra("crashReportingEnabled", isCrashReportingEnabled)
+            // add isCrashing to intent
+            intent.putExtra("isCrashing", true)
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+            Timber.e("Starting crash handler")
+            startActivity(intent)
+            Timber.e("Exiting")
+            Process.killProcess(Process.myPid())
+        }
         supportedLocales.addAll(
             listOf(
                 "ar",
@@ -254,7 +258,6 @@ class MainApplication : Application(), Configuration.Provider, ActivityLifecycle
                 Timber.e(e, "Failed to register activity lifecycle callbacks")
             }
         }
-        initialize(this)
         // Initialize Timber
         configTimber()
         Timber.i(
@@ -276,19 +279,25 @@ class MainApplication : Application(), Configuration.Provider, ActivityLifecycle
         if (BuildConfig.DEBUG) Timber.d("Started from background: %s", !isInForeground)
         if (BuildConfig.DEBUG) Timber.d("AMM is running in debug mode")
         // analytics
-        if (BuildConfig.DEBUG) Timber.d("Initializing matomo")
-        if (!isMatomoAllowed()) {
-            if (BuildConfig.DEBUG) Timber.d("Matomo is not allowed")
-            tracker!!.isOptOut = true
+        if (BuildConfig.DEBUG) Timber.d("Initializing countly")
+        if (!analyticsAllowed()) {
+            if (BuildConfig.DEBUG) Timber.d("countly is not allowed")
         } else {
-            tracker!!.isOptOut = false
-        }
-        if (getSharedPreferences("matomo")!!.getBoolean("install_tracked", false)) {
-            TrackHelper.track().download().with(INSTANCE!!.tracker)
-            if (BuildConfig.DEBUG) Timber.d("Sent install event to matomo")
-            getSharedPreferences("matomo")!!.edit().putBoolean("install_tracked", true).apply()
-        } else {
-            if (BuildConfig.DEBUG) Timber.d("Matomo already has install")
+            val config = CountlyConfig(
+                this,
+                "ff1dc022295f64a7a5f6a5ca07c0294400c71b60",
+                "https://ctly.androidacy.com"
+            )
+            if (isCrashReportingEnabled) {
+                config.enableCrashReporting()
+            }
+            config.enableAutomaticViewTracking()
+            config.setPushIntentAddMetadata(true)
+            config.setLoggingEnabled(BuildConfig.DEBUG)
+            config.setRequiresConsent(false)
+            config.setRecordAppStartTime(true)
+            Countly.sharedInstance().init(config)
+            Countly.applicationOnCreate()
         }
         try {
             @Suppress("DEPRECATION") @SuppressLint("PackageManagerGetSignatures") val s =
@@ -454,17 +463,12 @@ class MainApplication : Application(), Configuration.Provider, ActivityLifecycle
                 // prepend [TAINTED] to the message
                 message = "[TAINTED] $message"
             }
-            if (priority >= Log.WARN) {
+            if (priority >= Log.ERROR) {
                 if (t != null) {
                     Log.println(priority, tag, message)
                     t.printStackTrace()
-                    Sentry.captureException(t)
                 } else {
                     Log.println(priority, tag, message)
-                    when (priority) {
-                        Log.ERROR -> Sentry.captureMessage(message, SentryLevel.ERROR)
-                        Log.WARN -> Sentry.captureMessage(message, SentryLevel.WARNING)
-                    }
                 }
             }
         }
@@ -481,8 +485,7 @@ class MainApplication : Application(), Configuration.Provider, ActivityLifecycle
 
         // Is application wrapped, and therefore must reduce it's feature set.
         @SuppressLint("RestrictedApi") // Use FoxProcess wrapper helper.
-        @JvmField
-        val isWrapped = !FoxProcessExt.isRootLoader()
+        const val isWrapped = false
         private val callers = ArrayList<String>()
 
         @JvmField
@@ -656,7 +659,7 @@ class MainApplication : Application(), Configuration.Provider, ActivityLifecycle
         }
 
         val isCrashReportingEnabled: Boolean
-            get() = SentryMain.IS_SENTRY_INSTALLED && getSharedPreferences("mmm")!!.getBoolean(
+            get() = getSharedPreferences("mmm")!!.getBoolean(
                 "pref_crash_reporting", BuildConfig.DEFAULT_ENABLE_CRASH_REPORTING
             )
         val bootSharedPreferences: SharedPreferences?
@@ -670,10 +673,36 @@ class MainApplication : Application(), Configuration.Provider, ActivityLifecycle
         val isNotificationPermissionGranted: Boolean
             get() = NotificationManagerCompat.from((INSTANCE)!!).areNotificationsEnabled()
 
-        fun isMatomoAllowed(): Boolean {
+        fun analyticsAllowed(): Boolean {
             return getSharedPreferences("mmm")!!.getBoolean(
                 "pref_analytics_enabled", BuildConfig.DEFAULT_ENABLE_ANALYTICS
             )
+        }
+
+        fun shouldShowFeedback(): Boolean {
+            // should not have been shown in 30 days and only 1 in 5 chance
+            return if (getSharedPreferences("mmm")!!.getBoolean("pref_feedback_shown", false)) {
+                false
+            } else {
+                val random = Random()
+                val chance = random.nextInt(5)
+                if (chance == 0) {
+                    val lastFeedback = getSharedPreferences("mmm")!!.getLong(
+                        "pref_last_feedback", 0
+                    )
+                    val now = System.currentTimeMillis()
+                    if (now - lastFeedback > 2592000000L) {
+                        val editor = getSharedPreferences("mmm")!!.edit()
+                        editor.putLong("pref_last_feedback", now)
+                        editor.apply()
+                        true
+                    } else {
+                        false
+                    }
+                } else {
+                    false
+                }
+            }
         }
     }
 
@@ -683,6 +712,7 @@ class MainApplication : Application(), Configuration.Provider, ActivityLifecycle
     }
 
     override fun onActivityStarted(activity: Activity) {
+        Countly.sharedInstance().onStart(activity)
     }
 
     override fun onActivityResumed(activity: Activity) {
@@ -694,6 +724,7 @@ class MainApplication : Application(), Configuration.Provider, ActivityLifecycle
     }
 
     override fun onActivityStopped(activity: Activity) {
+        Countly.sharedInstance().onStop()
     }
 
     override fun onActivitySaveInstanceState(activity: Activity, outState: Bundle) {

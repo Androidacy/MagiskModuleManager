@@ -311,7 +311,7 @@
     <string name="setup_background_update_check_require_wifi_summary">Exigir wifi ou uma conexão ilimitada para buscar por atualizações</string>
     <string name="clear_cache_dialogue_message">Isso irá limpar o cache do aplicativo. Suas preferências serão salvas, mas o aplicativo poderá demorar para realizar algumas operações temporariamente.</string>
     <string name="showcase_mode_dialogue_message">Uma reinicialização é necessária para ativar o modo showcase.</string>
-    <string name="analytics_desc">Nos permite monitorar o uso e instalação do app. Totalmente conforme o GDPR, utilizando Matomo, hospedado pelo Androidacy.</string>
+    <string name="analytics_desc">Nos permite monitorar o uso e instalação do app. Totalmente conforme o GDPR, utilizando Countly, hospedado pelo Androidacy.</string>
     <string name="debug_cat">Depuração</string>
     <string name="announcements">Novidades e atualizações</string>
     <string name="back">Voltar</string>

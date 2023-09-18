@@ -16,7 +16,6 @@ import com.fox2code.mmm.Constants
 import com.fox2code.mmm.MainApplication
 import com.fox2code.mmm.R
 import com.fox2code.mmm.installer.InstallerInitializer
-import com.fox2code.mmm.utils.sentry.SentryMain
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import org.apache.commons.io.FileUtils
 import timber.log.Timber
@@ -90,7 +89,7 @@ class DebugFragment : PreferenceFragmentCompat() {
                     }.setNegativeButton(R.string.no) { _: DialogInterface?, _: Int -> }.show()
                 true
             }
-        if (!SentryMain.IS_SENTRY_INSTALLED || !BuildConfig.DEBUG || InstallerInitializer.peekMagiskPath() == null) {
+        if (!BuildConfig.DEBUG || InstallerInitializer.peekMagiskPath() == null) {
             // Hide the pref_crash option if not in debug mode - stop users from purposely crashing the app
             Timber.i(InstallerInitializer.peekMagiskPath())
             findPreference<Preference?>("pref_test_crash")!!.isVisible = false

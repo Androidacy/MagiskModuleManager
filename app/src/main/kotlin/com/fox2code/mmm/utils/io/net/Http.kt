@@ -29,7 +29,7 @@ import com.fox2code.mmm.installer.InstallerInitializer.Companion.peekMagiskPath
 import com.fox2code.mmm.installer.InstallerInitializer.Companion.peekMagiskVersion
 import com.fox2code.mmm.utils.io.Files.Companion.makeBuffer
 import com.google.net.cronet.okhttptransport.CronetInterceptor
-import io.sentry.android.okhttp.SentryOkHttpInterceptor
+import ly.count.android.sdk.Countly
 import okhttp3.Cache
 import okhttp3.Dns
 import okhttp3.HttpUrl.*
@@ -53,11 +53,13 @@ import org.chromium.net.CronetEngine
 import timber.log.Timber
 import java.io.File
 import java.io.IOException
+import java.lang.Long.*
 import java.net.InetAddress
 import java.net.Proxy
 import java.net.UnknownHostException
 import java.nio.charset.StandardCharsets
 import java.util.Objects
+import java.util.UUID.randomUUID
 import java.util.concurrent.TimeUnit
 import kotlin.system.exitProcess
 
@@ -290,9 +292,9 @@ enum class Http {;
             // User-Agent format was agreed on telegram
             androidacyUA = if (hasWebView) {
                 WebSettings.getDefaultUserAgent(mainApplication)
-                    .replace("wv", "") + " FoxMMM/" + BuildConfig.VERSION_CODE
+                    .replace("wv", "") + " AMMM/" + BuildConfig.VERSION_CODE
             } else {
-                "Mozilla/5.0 (Linux; Android " + Build.VERSION.RELEASE + "; " + Build.DEVICE + ")" + " AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.131 Mobile Safari/537.36" + " FoxMmm/" + BuildConfig.VERSION_CODE
+                "Mozilla/5.0 (Linux; Android " + Build.VERSION.RELEASE + "; " + Build.DEVICE + ")" + " AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.131 Mobile Safari/537.36" + " AMMM/" + BuildConfig.VERSION_CODE
             }
             httpclientBuilder.addInterceptor(Interceptor { chain: Interceptor.Chain? ->
                 val request: Request.Builder = chain!!.request().newBuilder()
@@ -339,9 +341,6 @@ enum class Http {;
                 )
                 chain.proceed(request.build())
             })
-
-            // add sentry interceptor
-            httpclientBuilder.addInterceptor(SentryOkHttpInterceptor())
 
             // Add cronet interceptor
             // init cronet
@@ -457,6 +456,10 @@ enum class Http {;
             if (url.isEmpty()) {
                 throw IOException("Empty URL")
             }
+            val uniqid = randomUUID().toString()
+            if (MainApplication.analyticsAllowed() && MainApplication.isCrashReportingEnabled) {
+                Countly.sharedInstance().apm().startNetworkRequest(uniqid, url)
+            }
             var response: Response?
             response = try {
                 (if (allowCache) getHttpClientWithCache() else getHttpClient())!!.newCall(
@@ -465,7 +468,7 @@ enum class Http {;
                     ).get().build()
                 ).execute()
             } catch (e: IOException) {
-                Timber.e(e, "Failed to post %s", url)
+                Timber.e(e, "Failed to get %s", url)
                 // detect ssl errors, i.e., cert authority invalid by looking at the message
                 if (e.message != null && e.message!!.contains("_CERT_")) {
                     MainApplication.INSTANCE!!.lastActivity!!.runOnUiThread {
@@ -540,6 +543,11 @@ enum class Http {;
                     if (BuildConfig.DEBUG) Timber.d("doHttpGet: returning " + responseBody.contentLength() + " bytes")
                 }
             }
+            if (MainApplication.analyticsAllowed() && MainApplication.isCrashReportingEnabled) {
+                Countly.sharedInstance().apm().endNetworkRequest(uniqid, url, response!!.code,
+                    0, responseBody!!.contentLength().toInt()
+                )
+            }
             return responseBody?.bytes() ?: ByteArray(0)
         }
 
@@ -552,6 +560,11 @@ enum class Http {;
         @Throws(IOException::class)
         private fun doHttpPostRaw(url: String, data: String, allowCache: Boolean): Any {
             if (BuildConfig.DEBUG) Timber.d("POST %s", url)
+
+            val uniqid = randomUUID().toString()
+            if (MainApplication.analyticsAllowed() && MainApplication.isCrashReportingEnabled) {
+                Countly.sharedInstance().apm().startNetworkRequest(uniqid, url)
+            }
             var response: Response?
             try {
                 response =
@@ -625,11 +638,20 @@ enum class Http {;
                 response = response.cacheResponse
                 if (response != null) responseBody = response.body
             }
+            if (MainApplication.analyticsAllowed() && MainApplication.isCrashReportingEnabled) {
+                Countly.sharedInstance().apm().endNetworkRequest(uniqid, url, response!!.code,
+                    data.toByteArray().size.toLong().toInt(), responseBody.contentLength().toInt()
+                )
+            }
             return responseBody.bytes()
         }
 
         @Throws(IOException::class)
         fun doHttpGet(url: String, progressListener: ProgressListener): ByteArray {
+            val uniqid = randomUUID().toString()
+            if (MainApplication.analyticsAllowed() && MainApplication.isCrashReportingEnabled) {
+                Countly.sharedInstance().apm().startNetworkRequest(uniqid, url)
+            }
             val response: Response
             try {
                 response =
@@ -713,6 +735,11 @@ enum class Http {;
             progressListener.onUpdate(
                 (downloaded / divider).toInt(), (target / divider).toInt(), true
             )
+            if (MainApplication.analyticsAllowed() && MainApplication.isCrashReportingEnabled) {
+                Countly.sharedInstance().apm().endNetworkRequest(uniqid, url, response.code,
+                    0, responseBody.contentLength().toInt()
+                )
+            }
             return byteArrayOutputStream.toByteArray()
         }
 

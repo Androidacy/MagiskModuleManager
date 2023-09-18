@@ -4,7 +4,6 @@
 
 @file:Suppress(
     "KotlinConstantConditions",
-    "UNINITIALIZED_ENUM_COMPANION_WARNING",
     "ktConcatNullable"
 )
 
@@ -207,14 +206,15 @@ enum class NotificationType(
                 compatActivity.cacheDir, "installer" + File.separator + "module.zip"
             )
             IntentHelper.openFileTo(compatActivity, module) { d: File, u: Uri, s: Int ->
+                val companion = NotificationType.Companion
                 if (s == IntentHelper.RESPONSE_FILE) {
                     try {
-                        if (needPatch(d)) {
+                        if (companion.needPatch(d)) {
                             patchModuleSimple(
                                 read(d), FileOutputStream(d)
                             )
                         }
-                        if (needPatch(d)) {
+                        if (companion.needPatch(d)) {
                             if (d.exists() && !d.delete()) Timber.w("Failed to delete non module zip")
                             Toast.makeText(
                                 compatActivity, R.string.invalid_format, Toast.LENGTH_SHORT

@@ -304,7 +304,7 @@
     <string name="empty_field">Je vyžadováná URL</string>
     <string name="repo_already_added">Repozitář už existuje.</string>
     <string name="showcase_mode_dialogue_message">K aktivaci režimu prezentace je vyžadován restart aplikace.</string>
-    <string name="analytics_desc">Umožněte nám sledovat používání a instalace aplikací. Plně kompatibilní s GDPR a používá Matomo, hostované společností Androidacy.</string>
+    <string name="analytics_desc">Umožněte nám sledovat používání a instalace aplikací. Plně kompatibilní s GDPR a používá Countly, hostované společností Androidacy.</string>
     <string name="announcements">Novinky a aktualizace</string>
     <string name="debug_cat">Ladění</string>
     <string name="back">Zpátky</string>

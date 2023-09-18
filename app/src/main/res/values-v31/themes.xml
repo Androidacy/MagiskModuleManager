@@ -22,7 +22,7 @@
 
     <style name="Theme.MagiskModuleManager.Monet.Dark" parent="Theme.Material3.DynamicColors.Dark">
         <item name="android:statusBarColor">@color/status_bar_color</item>
-        <item name="colorBackgroundFloating">@color/system_neutral1_800</item>
+        <item name="colorBackgroundFloating">@color/system_neutral1_700</item>
         <item name="android:windowBackground">@color/system_neutral1_900</item>
         <item name="chipStyle">@style/Widget.Material3.Chip.Assist.Elevated</item>
         <item name="windowActionBar">false</item>
@@ -36,7 +36,7 @@
 
     <!-- Black monet theme, which is just dark monet theme with black background -->
     <style name="Theme.MagiskModuleManager.Monet.Black" parent="Theme.MagiskModuleManager.Monet.Dark">
-        <item name="colorBackgroundFloating">@color/system_neutral2_900</item>
+        <item name="colorBackgroundFloating">@color/system_neutral1_900</item>
         <item name="boxBackgroundColor">@color/black</item>
         <item name="android:windowBackground">@color/black</item>
         <item name="backgroundColor">@color/black</item>

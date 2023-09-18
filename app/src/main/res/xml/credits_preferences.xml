@@ -1,30 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
 
 
     <PreferenceCategory app:title="@string/pref_category_contributors">
         <!-- Small lil thanks to Androidacy -->
         <com.fox2code.mmm.settings.LongClickablePreference
-            app:icon="@drawable/baseline_favorite_24"
+            app:icon="@drawable/ic_baseline_android_24"
             app:key="pref_androidacy_thanks"
             app:singleLineTitle="false"
-            app:summary="@string/androidacy_thanks_desc"
-            app:title="@string/androidacy_thanks" />
+            app:summary="@string/androidacy_thanks_desc_v2"
+            app:title="@string/androidacy_thanks_v2" />
         <!-- Small lil thanks to Fox2Code -->
         <com.fox2code.mmm.settings.LongClickablePreference
             app:icon="@drawable/baseline_favorite_24"
             app:key="pref_fox2code_thanks"
             app:singleLineTitle="false"
-            app:summary="@string/fox2code_thanks_desc"
-            app:title="@string/fox2code_thanks" />
+            app:summary="@string/fox2code_thanks_desc_v2"
+            app:title="@string/fox2code_thanks_v2" />
         <!-- OKay, so we'll thank all the other contributors too -->
         <com.fox2code.mmm.settings.LongClickablePreference
-            android:textAppearance="?android:attr/textAppearanceSmall"
             app:iconSpaceReserved="false"
             app:key="pref_contributors"
             app:singleLineTitle="false"
-            app:title="@string/contributors" />
+            app:summary="@string/contributors" />
         <!-- And the translators -->
     </PreferenceCategory>
 

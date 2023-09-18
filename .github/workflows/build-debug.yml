@@ -62,33 +62,33 @@ jobs:
 
       # UPLOAD ARTIFACT SECTION
       # Will be shorter, when https://github.com/actions/upload-artifact/pull/354 will be merged
-      # FoxMMM-default-debug
-      - name: Upload FoxMMM-default-arm64-v8a-debug
+      # AMMM-default-debug
+      - name: Upload AMMM-default-arm64-v8a-debug
         uses: actions/upload-artifact@v3
         with:
-          name: FoxMMM-default-arm64-v8a-debug
+          name: AMMM-default-arm64-v8a-debug
           path: app/build/outputs/apk/default/debug/*-default-arm64-v8a-debug.apk
 
-      - name: Upload FoxMMM-default-armeabi-v7a-debug
+      - name: Upload AMMM-default-armeabi-v7a-debug
         uses: actions/upload-artifact@v3
         with:
-          name: FoxMMM-default-armeabi-v7a-debug
+          name: AMMM-default-armeabi-v7a-debug
           path: app/build/outputs/apk/default/debug/*-default-armeabi-v7a-debug.apk
 
-      - name: Upload FoxMMM-default-universal-debug
+      - name: Upload AMMM-default-universal-debug
         uses: actions/upload-artifact@v3
         with:
-          name: FoxMMM-default-universal-debug
+          name: AMMM-default-universal-debug
           path: app/build/outputs/apk/default/debug/*-default-universal-debug.apk
 
-      - name: Upload FoxMMM-default-x86-debug
+      - name: Upload AMMM-default-x86-debug
         uses: actions/upload-artifact@v3
         with:
-          name: FoxMMM-default-x86-debug
+          name: AMMM-default-x86-debug
           path: app/build/outputs/apk/default/debug/*-default-x86-debug.apk
 
-      - name: Upload FoxMMM-default-x86_64-debug
+      - name: Upload AMMM-default-x86_64-debug
         uses: actions/upload-artifact@v3
         with:
-          name: FoxMMM-default-x86_64-debug
+          name: AMMM-default-x86_64-debug
           path: app/build/outputs/apk/default/debug/*-default-x86_64-debug.apk

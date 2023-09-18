@@ -313,7 +313,7 @@
     <string name="crash_reporting_pii_desc">Permite enviar información adicional en reportes de fallos, algunos de los cuales pueden contener información de identificación personal, como la dirección IP y los identificadores de dispositivo.</string>
     <string name="setup_crash_reporting_pii_summary">Esto puede incluir identificadores de dispositivo y direcciones IP. No se utilizarán datos para ningún otro propósito que no sea analizar fallas y mejorar el rendimiento.</string>
     <string name="showcase_mode_dialogue_message">Se requiere reiniciar la aplicación para activar el modo de exhibición.</string>
-    <string name="analytics_desc">Permítanos rastrear el uso y las instalaciones de la aplicación. Totalmente compatible con GDPR y utiliza Matomo, alojado por Androidacy.</string>
+    <string name="analytics_desc">Permítanos rastrear el uso y las instalaciones de la aplicación. Totalmente compatible con GDPR y utiliza Countly, alojado por Androidacy.</string>
     <string name="reinstall">Reinstalar</string>
     <string name="warning_pls_restart">Tenga en cuenta que es posible que algunas configuraciones no surtan efecto hasta que reinicie la aplicación.</string>
     <string name="promo_code_copied">¡Use el código copiado para obtener la mitad de descuento en su primer mes!</string>

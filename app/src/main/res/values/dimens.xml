@@ -5,4 +5,7 @@
 <resources>
     <dimen name="card_corner_radius">8dp</dimen>
     <dimen name="markdown_border_content">8dp</dimen>
+    <dimen name="dim5dp">5dp</dimen>
+    <dimen name="dp10">10dp</dimen>
+    <dimen name="dp20">20dp</dimen>
 </resources>

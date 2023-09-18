@@ -11,7 +11,6 @@
     android:layout_height="match_parent"
     android:layout_margin="0dp"
     android:padding="0dp"
-    app:fitsSystemWindowsInsets="start|end|bottom|top"
     tools:context=".SetupActivity">
 
     <ScrollView

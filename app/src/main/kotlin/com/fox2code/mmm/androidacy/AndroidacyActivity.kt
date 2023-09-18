@@ -46,7 +46,6 @@ import com.fox2code.mmm.utils.io.net.Http.Companion.doHttpGet
 import com.fox2code.mmm.utils.io.net.Http.Companion.hasWebView
 import com.fox2code.mmm.utils.io.net.Http.Companion.markCaptchaAndroidacySolved
 import com.google.android.material.progressindicator.LinearProgressIndicator
-import org.matomo.sdk.extra.TrackHelper
 import timber.log.Timber
 import java.io.ByteArrayInputStream
 import java.io.File
@@ -76,7 +75,7 @@ class AndroidacyActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         moduleFile = File(this.cacheDir, "module.zip")
         super.onCreate(savedInstanceState)
-        TrackHelper.track().screen(this).with(MainApplication.INSTANCE!!.tracker)
+        
         val intent = this.intent
         var uri: Uri? = intent.data
         @Suppress("KotlinConstantConditions")

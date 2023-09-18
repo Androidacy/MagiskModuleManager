@@ -26,7 +26,6 @@ import com.google.android.material.button.MaterialButton
 import com.google.android.material.progressindicator.LinearProgressIndicator
 import com.google.android.material.textview.MaterialTextView
 import org.json.JSONException
-import org.matomo.sdk.extra.TrackHelper
 import timber.log.Timber
 import java.io.File
 import java.io.FileOutputStream
@@ -64,9 +63,6 @@ class UpdateActivity : AppCompatActivity() {
             }
         }
         chgWv = findViewById(R.id.changelog_webview)
-        if (MainApplication.isMatomoAllowed()) {
-            TrackHelper.track().screen(this).with(MainApplication.INSTANCE!!.tracker)
-        }
         val changelogWebView = chgWv!!
         val webSettings = changelogWebView.settings
         webSettings.userAgentString = Http.androidacyUA

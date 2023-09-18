@@ -299,7 +299,7 @@
     <string name="empty_field">URL が必要です</string>
     <string name="repo_already_added">リポジトリがすでに存在します。</string>
     <string name="showcase_mode_dialogue_message">ショーケースモードを有効化するにはアプリを再起動してください。</string>
-    <string name="analytics_desc">アプリの使用状況とインストール済みモジュールの追跡を許可します。GDPR に完全に準拠し、Androidacy によって運営されている Matomo を使用します。</string>
+    <string name="analytics_desc">アプリの使用状況とインストール済みモジュールの追跡を許可します。GDPR に完全に準拠し、Androidacy によって運営されている Countly を使用します。</string>
     <string name="debug_cat">デバッグ</string>
     <string name="announcements">ニュースとアップデート</string>
     <string name="back">戻る</string>

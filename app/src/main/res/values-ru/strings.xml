@@ -302,7 +302,7 @@
     <string name="blur_desc">Создаёт эффект размытия позади некоторых диалоговых окон и элементов. Обратите внимание, что размытие может на некоторых устройствах работать плохо и не во всех местах.</string>
     <string name="error_encrypted_shared_preferences">Произошла ошибка при чтении общих настроек. Пожалуйста, перезагрузите приложение.</string>
     <string name="showcase_mode_dialogue_message">Для включения режима демонстрации требуется перезапуск приложения.</string>
-    <string name="analytics_desc">Разрешите нам отслеживать использование и установки приложения. Полностью соответсвует GDPR и использует Matomo, размещенный на Androidacy.</string>
+    <string name="analytics_desc">Разрешите нам отслеживать использование и установки приложения. Полностью соответсвует GDPR и использует Countly, размещенный на Androidacy.</string>
     <string name="debug_cat">Отладка</string>
     <string name="announcements">Новости и обновления</string>
     <string name="back">Назад</string>

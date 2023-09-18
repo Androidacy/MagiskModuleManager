@@ -4,8 +4,6 @@
     tools:ignore="QueryAllPackagesPermission"
     tools:targetApi="tiramisu">
 
-    <uses-sdk tools:overrideLibrary="io.sentry.android" />
-
     <queries>
         <intent>
             <action android:name="com.fox2code.mmm.utils.intent.action.OPEN_EXTERNAL" />
@@ -32,9 +30,12 @@
     <!-- Open config apps for applications -->
     <uses-permission-sdk-23 android:name="android.permission.QUERY_ALL_PACKAGES" />
     <!-- Open and read zips -->
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"
+        android:maxSdkVersion="32" />
     <!-- Write to external storage -->
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        android:maxSdkVersion="32"
+        tools:ignore="ScopedStorage" />
     <!-- Post background notifications -->
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <!-- Install updates -->
@@ -187,31 +188,6 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/shared_file_paths" />
         </provider>
-
-        <meta-data
-            android:name="io.sentry.auto-init"
-            android:value="false" />
-        <meta-data
-            android:name="io.sentry.dsn"
-            android:value="https://09652942e9c042e39daed0bc5a8a98c3@g-fe.androidacy.com/3" /> <!-- enable view hierarchy for crashes -->
-        <meta-data
-            android:name="io.sentry.attach-view-hierarchy"
-            android:value="true" /> <!-- Sane value, but feel free to lower it -->
-        <meta-data
-            android:name="io.sentry.traces.sample-rate"
-            android:value="0.2" /> <!-- Doesn't actually monitor anything, just used to get the activities the user went through -->
-        <meta-data
-            android:name="io.sentry.traces.user-interaction.enable"
-            android:value="true" /> <!-- Just a screenshot of ONLY the current activity at the time of the crash -->
-        <meta-data
-            android:name="io.sentry.attach-screenshot"
-            android:value="true" /> <!-- Just the current activity at the time of the crash -->
-        <meta-data
-            android:name="io.sentry.attach-stacktrace"
-            android:value="true" /> <!-- Performance profiling -->
-        <meta-data
-            android:name="io.sentry.traces.profiling.sample-rate"
-            android:value="0.2" />
     </application>
 
 </manifest>

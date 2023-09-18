@@ -2,20 +2,29 @@
   ~ Copyright (c) 2023 to present Androidacy and contributors. Names, logos, icons, and the Androidacy name are all trademarks of Androidacy and may not be used without license. See LICENSE for more information.
   -->
 
-<ScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/scroll_view"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:layout_gravity="center"
+    android:padding="4dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
-        <!-- layout with crash_text header and crash_details body -->
+        <!-- first, app name -->
+        <com.google.android.material.textview.MaterialTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:gravity="center"
+            android:text="@string/app_name_v2"
+            android:textSize="24sp"
+            android:textStyle="bold" />
 
-        <!-- first, crash icon -->
-        <ImageView
+        <!-- second, crash icon -->
+        <com.google.android.material.imageview.ShapeableImageView
             android:layout_width="101dp"
             android:layout_height="93dp"
             android:layout_gravity="center"
@@ -39,7 +48,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             android:gravity="fill"
-            android:text="@string/crash_details_suggestion"
+            android:text="@string/crash_details_suggestion_v2"
             android:textSize="14sp" />
 
         <!-- copyable crash_details body with copy button in top right corner -->
@@ -79,110 +88,36 @@
                 android:padding="4dp" />
         </FrameLayout>
 
-        <!-- feedback form -->
+        <!-- feedback form placeholder. just tell the user we've receive a report if they have crash reporting on -->
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/feedback_placeholder"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:text="@string/feedback_placeholder"
+            android:textSize="14sp" />
+
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_gravity="center|bottom"
+            android:orientation="horizontal">
 
-            <!-- feedback form header -->
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/feedback_text"
-                android:layout_width="match_parent"
+            <!-- restart button -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/restart"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
-                android:gravity="fill"
-                android:text="@string/please_feedback"
-                android:textSize="18sp" />
+                android:text="@string/restart" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/reset"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <!-- feedback form name -->
-                <EditText
-                    android:id="@+id/feedback_name"
-                    android:enabled="false"
-                    android:layout_width="320dp"
-                    android:layout_height="48dp"
-                    android:layout_margin="10dp"
-                    android:hint="@string/feedback_name"
-                    android:inputType="text"
-                    android:autofillHints="name" />
-
-                <!-- feedback form email -->
-                <EditText
-                    android:id="@+id/feedback_email"
-                    android:layout_width="320dp"
-                    android:layout_height="48dp"
-                    android:enabled="false"
-                    android:layout_margin="10dp"
-                    android:hint="@string/feedback_email"
-                    android:inputType="textEmailAddress"
-                    android:autofillHints="emailAddress" />
-
-                <!-- feedback form message -->
-                <EditText
-                    android:id="@+id/feedback_message"
-                    android:enabled="false"
-                    android:layout_width="320dp"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
-                    android:hint="@string/feedback_message"
-                    android:inputType="textMultiLine"
-                    android:importantForAutofill="no" />
-
-            </LinearLayout>
-
-
-            <!-- button group for submit feedback & restart / restart only -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <!-- submit feedback button -->
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/feedback_submit"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:enabled="false"
-                    android:layout_margin="10dp"
-                    android:text="@string/submit_feedback" />
-
-                <!-- restart button -->
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/restart"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
-                    android:text="@string/restart" />
-
-            </LinearLayout>
-
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <com.google.android.material.textview.MaterialTextView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_margin="10dp"
-                    android:gravity="fill"
-                    android:text="@string/reset_warning"
-                    android:textSize="16sp" />
-
-                <!-- reset app button -->
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/reset"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
-                    android:text="@string/reset_app" />
-            </LinearLayout>
+                android:layout_margin="10dp"
+                android:text="@string/reset_app" />
         </LinearLayout>
     </LinearLayout>
 </ScrollView>

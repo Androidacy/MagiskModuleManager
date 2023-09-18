@@ -310,7 +310,7 @@
     <string name="error_creating_cookie_database">Errore nell\'accesso a WebView. La funzionalità potrebbe non essere disponibile.</string>
     <string name="empty_field">L\'URL è richiesto</string>
     <string name="repo_already_added">La repository esiste già.</string>
-    <string name="analytics_desc">Ci consente di tracciare l\'utilizzo della app e la quantità di installazioni. Conforme al GDPR, usa Matomo, un servizio offerto da Androidacy.</string>
+    <string name="analytics_desc">Ci consente di tracciare l\'utilizzo della app e la quantità di installazioni. Conforme al GDPR, usa Countly, un servizio offerto da Androidacy.</string>
     <string name="debug_cat">Debug</string>
     <string name="announcements">Notizie e aggiornamenti</string>
     <string name="back">Indietro</string>

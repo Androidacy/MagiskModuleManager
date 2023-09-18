@@ -309,7 +309,7 @@
     <string name="empty_field">URL dibutuhkan</string>
     <string name="repo_already_added">Repo sudah ada.</string>
     <string name="showcase_mode_dialogue_message">Mulai ulang aplikasi dibutuhkan untuk mengaktifkan mode showcase.</string>
-    <string name="analytics_desc">Mengizinkan kami untuk mencatat penggunaan aplikasi dan pemasangan. Sepenuhnya mengikuti GDPR dan menggunakan Matomo, di hosting oleh Androidacy.</string>
+    <string name="analytics_desc">Mengizinkan kami untuk mencatat penggunaan aplikasi dan pemasangan. Sepenuhnya mengikuti GDPR dan menggunakan Countly, di hosting oleh Androidacy.</string>
     <string name="debug_cat">Men-debug</string>
     <string name="announcements">Berita dan pembaruan</string>
     <string name="back">Kembali</string>

@@ -292,7 +292,7 @@
     <string name="empty_field">Se requiere una URL</string>
     <string name="repo_already_added">Este repositorio ya existe.</string>
     <string name="showcase_mode_dialogue_message">Se requiere reiniciar la aplicación para habilitar el modo de presentación.</string>
-    <string name="analytics_desc">Permítenos usar el seguimiento de uso e instalaciones. Totalmente compatible con el RGPD y utiliza Matomo, alojado por Androidacy.</string>
+    <string name="analytics_desc">Permítenos usar el seguimiento de uso e instalaciones. Totalmente compatible con el RGPD y utiliza Countly, alojado por Androidacy.</string>
     <string name="announcements">Novedades y actualizaciones</string>
     <string name="debug_cat">Depuración</string>
     <string name="back">Atrás</string>

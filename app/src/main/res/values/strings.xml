@@ -327,7 +327,7 @@
     <string name="error_encrypted_shared_preferences">An error occurred reading shared preferences. Please reset the app.</string>
     <string name="showcase_mode_dialogue_message">An app restart is required to enable showcase mode.</string>
     <string name="eula_agree_v2">You agree to be bound by the LGPL-3.0 (https://www.gnu.org/licenses/lgpl-3.0.en.html) license and the EULA (https://www.androidacy.com/foxmmm-eula/), in addition to any third party terms, and that the authors of this app bear no responsibility of your usage of it, nor do we offer any warranties express or implied.</string>
-    <string name="analytics_desc">Allow us to track app usage and installs. Fully GDPR compliant and uses Matomo, hosted by Androidacy.</string>
+    <string name="analytics_desc">Allow us to track app usage and installs. Fully GDPR compliant and uses Countly, hosted by Androidacy.</string>
     <string name="debug_cat">Debugging</string>
     <string name="announcements">News and updates</string>
     <string name="back">Go back</string>
@@ -398,4 +398,10 @@
     <string name="setup_agree_eula_toast">Please agree to the terms first</string>
     <string name="setup_androidacy_repo_recommendation">We recommend you to enable just the Androidacy repo. This ensures you will receive an optimized and more secure experience.</string>
     <string name="install_terminal_support_link">Support: %s</string>
+    <string name="feedback_placeholder">We\'re sorry for this error. If you enabled crash reporting, we already received a report and are working on the issue. Feel free to restart the app when you\'re ready! You may also reset the app if you keep seeing this screen.</string>
+    <string name="crash_details_suggestion_v2">Below is the stacktrace. However, automatic reporting will automatically send this to us if enabled in settings. Hit the copy icon in the corner to copy it to your clipboard.</string>
+    <string name="androidacy_thanks_desc_v2">This app is maintained, updated, and supported by Androidacy, and names, logos, and trademarks are copyright Androidacy.</string>
+    <string name="androidacy_thanks_v2">An Androidacy app</string>
+    <string name="fox2code_thanks_v2">v0.x by Fox2Code</string>
+    <string name="fox2code_thanks_desc_v2">Versions before 0.6.8 were developed by Fox2Code and versions up to 1.1 were contributed to by him. We thank him for his work.</string>
 </resources>

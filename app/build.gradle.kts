@@ -5,7 +5,6 @@
 @file:Suppress("UnstableApiUsage", "SpellCheckingInspection")
 
 import com.android.build.api.variant.FilterConfiguration.FilterType.ABI
-import io.sentry.android.gradle.instrumentation.logcat.LogcatLevel
 import java.util.Properties
 
 plugins {
@@ -14,11 +13,8 @@ plugins {
     id("com.mikepenz.aboutlibraries.plugin")
     kotlin("android")
     kotlin("kapt")
-    id("com.google.devtools.ksp") version "1.8.22-1.0.11"
-    id("io.sentry.android.gradle") version "3.12.0"
+    id("com.google.devtools.ksp") version "1.9.10-1.0.13"
 }
-
-val hasSentryConfig = File(rootProject.projectDir, "sentry.properties").exists()
 android {
     // functions to get git info: gitCommitHash, gitBranch, gitRemote
     val gitCommitHash = providers.exec {
@@ -52,8 +48,8 @@ android {
         applicationId = "com.fox2code.mmm"
         minSdk = 26
         targetSdk = 34
-        versionCode = 85
-        versionName = "2.3.1"
+        versionCode = 86
+        versionName = "2.3.2"
         vectorDrawables {
             useSupportLibrary = true
         }
@@ -85,10 +81,6 @@ android {
                 "en"
             )
         )
-        // ksp room processor
-        room {
-            schemaLocationDir.set(file("roomSchemas"))
-        }
     }
 
     splits {
@@ -159,39 +151,23 @@ android {
             buildConfigField("boolean", "DEFAULT_ENABLE_CRASH_REPORTING", "true")
             buildConfigField("boolean", "DEFAULT_ENABLE_CRASH_REPORTING_PII", "true")
             buildConfigField("boolean", "DEFAULT_ENABLE_ANALYTICS", "true")
-            val properties = Properties()
-            if (project.rootProject.file("local.properties").exists()) {
-                properties.load(project.rootProject.file("local.properties").reader())
-                // grab matomo.url
-                buildConfigField(
-                    "String", "ANALYTICS_ENDPOINT", "\"" + properties.getProperty(
-                        "matomo.url", "https://s-api.androidacy.com/matomo.php"
-                    ) + "\""
-                )
-            } else {
-                buildConfigField(
-                    "String", "ANALYTICS_ENDPOINT", "\"https://s-api.androidacy.com/matomo.php\""
-                )
-            }
             buildConfigField("boolean", "ENABLE_PROTECTION", "true")
             // Get the androidacy client ID from the androidacy.properties
 
             val propertiesA = Properties()
-            // If androidacy.properties doesn"t exist, use the default client ID which is heavily
-            // rate limited to 30 requests per minute
+            val default = "5KYccdYxWB2RxMq5FTbkWisXi2dS6yFN9R7RVlFCG98FRdz6Mf5ojY2fyJCUlXJZ"
             if (project.rootProject.file("androidacy.properties").exists()) {
                 propertiesA.load(project.rootProject.file("androidacy.properties").reader())
-                properties.setProperty(
-                    "client_id", "\"" + propertiesA.getProperty(
+                propertiesA.setProperty(
+                    "client_id", propertiesA.getProperty(
                         "client_id",
-                        "5KYccdYxWB2RxMq5FTbkWisXi2dS6yFN9R7RVlFCG98FRdz6Mf5ojY2fyJCUlXJZ"
-                    ) + "\""
+                        default
+                    )
                 )
             } else {
-                properties.setProperty(
-                    "client_id", "5KYccdYxWB2RxMq5FTbkWisXi2dS6yFN9R7RVlFCG98FRdz6Mf5ojY2fyJCUlXJZ"
-                )
+                propertiesA.setProperty("client_id", "\"" + default + "\"")
             }
+
             buildConfigField(
                 "String", "ANDROIDACY_CLIENT_ID", "\"" + propertiesA.getProperty("client_id") + "\""
             )
@@ -228,38 +204,21 @@ android {
             buildConfigField("boolean", "DEFAULT_ENABLE_CRASH_REPORTING", "true")
             buildConfigField("boolean", "DEFAULT_ENABLE_CRASH_REPORTING_PII", "true")
             buildConfigField("boolean", "DEFAULT_ENABLE_ANALYTICS", "true")
-            val properties = Properties()
-            if (project.rootProject.file("local.properties").exists()) {
-                properties.load(project.rootProject.file("local.properties").reader())
-                // grab matomo.url
-                buildConfigField(
-                    "String", "ANALYTICS_ENDPOINT", "\"" + properties.getProperty(
-                        "matomo.url", "https://s-api.androidacy.com/matomo.php"
-                    ) + "\""
-                )
-            } else {
-                buildConfigField(
-                    "String", "ANALYTICS_ENDPOINT", "\"https://s-api.androidacy.com/matomo.php\""
-                )
-            }
             buildConfigField("boolean", "ENABLE_PROTECTION", "true")
             // Get the androidacy client ID from the androidacy.properties
 
             val propertiesA = Properties()
-            // If androidacy.properties doesn"t exist, use the default client ID which is heavily
-            // rate limited to 30 requests per minute
+            val default = "5KYccdYxWB2RxMq5FTbkWisXi2dS6yFN9R7RVlFCG98FRdz6Mf5ojY2fyJCUlXJZ"
             if (project.rootProject.file("androidacy.properties").exists()) {
                 propertiesA.load(project.rootProject.file("androidacy.properties").reader())
-                properties.setProperty(
-                    "client_id", "\"" + propertiesA.getProperty(
-                        "play_client_id",
-                        "5KYccdYxWB2RxMq5FTbkWisXi2dS6yFN9R7RVlFCG98FRdz6Mf5ojY2fyJCUlXJZ"
-                    ) + "\""
+                propertiesA.setProperty(
+                    "client_id", propertiesA.getProperty(
+                        "client_id",
+                        default
+                    )
                 )
             } else {
-                properties.setProperty(
-                    "client_id", "5KYccdYxWB2RxMq5FTbkWisXi2dS6yFN9R7RVlFCG98FRdz6Mf5ojY2fyJCUlXJZ"
-                )
+                propertiesA.setProperty("client_id", "\"" + default + "\"")
             }
             buildConfigField(
                 "String", "ANDROIDACY_CLIENT_ID", "\"" + propertiesA.getProperty("client_id") + "\""
@@ -300,20 +259,6 @@ android {
             buildConfigField("boolean", "DEFAULT_ENABLE_CRASH_REPORTING", "false")
             buildConfigField("boolean", "DEFAULT_ENABLE_CRASH_REPORTING_PII", "false")
             buildConfigField("boolean", "DEFAULT_ENABLE_ANALYTICS", "false")
-            val properties = Properties()
-            if (project.rootProject.file("local.properties").exists()) {
-                properties.load(project.rootProject.file("local.properties").reader())
-                // grab matomo.url
-                buildConfigField(
-                    "String", "ANALYTICS_ENDPOINT", "\"" + properties.getProperty(
-                        "matomo.url", "https://s-api.androidacy.com/matomo.php"
-                    ) + "\""
-                )
-            } else {
-                buildConfigField(
-                    "String", "ANALYTICS_ENDPOINT", "\"https://s-api.androidacy.com/matomo.php\""
-                )
-            }
             buildConfigField("boolean", "ENABLE_PROTECTION", "true")
 
             // Repo with ads or tracking feature are disabled by default for the
@@ -353,44 +298,6 @@ android {
     lint {
         disable.add("MissingTranslation")
     }
-}
-
-sentry {
-
-    includeProguardMapping.set(true)
-
-    autoUploadProguardMapping.set(hasSentryConfig)
-
-    experimentalGuardsquareSupport.set(true)
-
-    uploadNativeSymbols.set(hasSentryConfig)
-
-    includeNativeSources.set(hasSentryConfig)
-
-    tracingInstrumentation {
-        enabled.set(true)
-
-        logcat {
-            enabled.set(true)
-
-            minLevel.set(LogcatLevel.WARNING)
-        }
-    }
-
-    autoInstallation {
-        enabled.set(true)
-    }
-
-    includeDependenciesReport.set(true)
-    includeSourceContext.set(hasSentryConfig)
-
-    // Includes additional source directories into the source bundle.
-    // These directories are resolved relative to the project directory.
-    additionalSourceDirsForSourceContext.set(setOf("src/main/java", "src/main/kotlin"))
-
-    org.set("androidacy")
-    projectName.set("foxmmm")
-    uploadNativeSymbols.set(hasSentryConfig)
 }
 
 val abiCodes = mapOf("armeabi-v7a" to 1, "x86" to 2, "x86_64" to 3, "arm64-v8a" to 4)
@@ -452,11 +359,7 @@ dependencies {
     implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
     implementation("androidx.webkit:webkit:1.8.0")
     implementation("com.google.android.material:material:1.9.0")
-    implementation("dev.rikka.rikkax.layoutinflater:layoutinflater:1.3.0")
-    implementation("dev.rikka.rikkax.insets:insets:1.3.0")
-    implementation("com.github.KieronQuinn:MonetCompat:0.4.1")
-    implementation("com.github.Fox2Code.FoxCompat:foxcompat:1.2.14")
-    implementation("com.github.Fox2Code.FoxCompat:hiddenapis:1.2.14")
+
     implementation("com.mikepenz:aboutlibraries:10.8.3")
 
     // Utils
@@ -481,9 +384,6 @@ dependencies {
     implementation("com.github.Fox2Code:RosettaX:1.0.9")
     implementation("com.github.Fox2Code:AndroidANSI:1.2.1")
 
-    // sentry
-    implementation("io.sentry:sentry-android:6.29.0")
-
     // Markdown
     // TODO: switch to an updated implementation
     implementation("io.noties.markwon:core:4.6.2")
@@ -492,10 +392,6 @@ dependencies {
     implementation("io.noties.markwon:syntax-highlight:4.6.2")
     implementation("com.google.net.cronet:cronet-okhttp:0.1.0")
     implementation("com.caverock:androidsvg:1.4")
-
-    implementation("dev.rikka.rikkax.core:core:1.4.1")
-    implementation("org.lsposed.hiddenapibypass:hiddenapibypass:4.3")
-    implementation("com.github.tiann:FreeReflection:3.1.0")
 
     implementation("androidx.core:core-ktx:1.12.0")
 
@@ -510,7 +406,7 @@ dependencies {
     implementation("org.apache.commons:commons-compress:1.24.0")
 
     // analytics
-    implementation("com.github.matomo-org:matomo-sdk-android:HEAD")
+    implementation("ly.count.android:sdk:23.8.2")
 
     // annotations
     implementation("org.jetbrains:annotations-java5:24.0.1")

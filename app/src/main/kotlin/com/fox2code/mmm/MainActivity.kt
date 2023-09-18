@@ -35,7 +35,6 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.room.Room
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout.OnRefreshListener
-import com.fox2code.foxcompat.view.FoxDisplay
 import com.fox2code.mmm.AppUpdateManager.Companion.appUpdateManager
 import com.fox2code.mmm.OverScrollManager.OverScrollHelper
 import com.fox2code.mmm.androidacy.AndroidacyRepoData
@@ -65,7 +64,8 @@ import com.google.android.material.elevation.SurfaceColors
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.progressindicator.LinearProgressIndicator
 import com.google.android.material.textfield.TextInputEditText
-import org.matomo.sdk.extra.TrackHelper
+import ly.count.android.sdk.Countly
+import ly.count.android.sdk.ModuleFeedback.FeedbackCallback
 import timber.log.Timber
 import java.sql.Timestamp
 
@@ -118,7 +118,7 @@ class MainActivity : AppCompatActivity(), OnRefreshListener, OverScrollHelper {
         onMainActivityCreate(this)
         super.onCreate(savedInstanceState)
         INSTANCE = this
-        TrackHelper.track().screen(this).with(MainApplication.INSTANCE!!.tracker)
+        
         // hide this behind a buildconfig flag for now, but crash the app if it's not an official build and not debug
         if (BuildConfig.ENABLE_PROTECTION && !MainApplication.o && !BuildConfig.DEBUG) {
             throw RuntimeException("This is not an official build of AMM")
@@ -143,8 +143,11 @@ class MainActivity : AppCompatActivity(), OnRefreshListener, OverScrollHelper {
             db.close()
             if (enabledRepos.isNotEmpty()) {
                 enabledRepos.delete(enabledRepos.length - 2, enabledRepos.length)
-                TrackHelper.track().event("Enabled Repos", enabledRepos.toString())
-                    .with(MainApplication.INSTANCE!!.tracker)
+                // use countly to track enabled repos
+                val repoMap = HashMap<String, String>()
+                repoMap["repos"] = enabledRepos.toString()
+                Countly.sharedInstance().events().recordEvent("enabled_repos",
+                    repoMap as Map<String, Any>?, 1)
             }
         }.start()
         val ts = Timestamp(System.currentTimeMillis() - 30L * 24 * 60 * 60 * 1000)
@@ -235,7 +238,9 @@ class MainActivity : AppCompatActivity(), OnRefreshListener, OverScrollHelper {
                 // filter the appropriate list based on visibility
                 if (initMode) return
                 val query = s.toString()
-                TrackHelper.track().search(query).with(MainApplication.INSTANCE!!.tracker)
+                Countly.sharedInstance().events().recordEvent("search", HashMap<String, String>().apply {
+                    put("query", query)
+                } as Map<String, Any>?, 1)
                 Thread {
                     if (moduleViewListBuilder.setQueryChange(query)) {
                         Timber.i("Query submit: %s on offline list", query)
@@ -261,7 +266,9 @@ class MainActivity : AppCompatActivity(), OnRefreshListener, OverScrollHelper {
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                 // filter the appropriate list based on visibility
                 val query = textInputEditText.text.toString()
-                TrackHelper.track().search(query).with(MainApplication.INSTANCE!!.tracker)
+                Countly.sharedInstance().events().recordEvent("search", HashMap<String, String>().apply {
+                    put("query", query)
+                } as Map<String, Any>?, 1)
                 Thread {
                     if (moduleViewListBuilder.setQueryChange(query)) {
                         Timber.i("Query submit: %s on offline list", query)
@@ -396,7 +403,6 @@ class MainActivity : AppCompatActivity(), OnRefreshListener, OverScrollHelper {
                 }
             }
         })
-        textInputEditText.minimumHeight = FoxDisplay.dpToPixel(16f)
         textInputEditText.imeOptions =
             EditorInfo.IME_ACTION_SEARCH or EditorInfo.IME_FLAG_NO_FULLSCREEN
 
@@ -405,8 +411,6 @@ class MainActivity : AppCompatActivity(), OnRefreshListener, OverScrollHelper {
         bottomNavigationView.setOnItemSelectedListener { item: MenuItem ->
             when (item.itemId) {
                 R.id.settings_menu_item -> {
-                    TrackHelper.track().event("view_list", "settings")
-                        .with(MainApplication.INSTANCE!!.tracker)
                     // start settings activity so that when user presses back, they go back to main activity and on api34 they see a preview of the main activity. tell settings activity current active tab so that it can be selected when user goes back to main activity
                     val intent = Intent(this@MainActivity, SettingsActivity::class.java)
                     when (bottomNavigationView.selectedItemId) {
@@ -417,8 +421,6 @@ class MainActivity : AppCompatActivity(), OnRefreshListener, OverScrollHelper {
                 }
 
                 R.id.online_menu_item -> {
-                    TrackHelper.track().event("view_list", "online_modules")
-                        .with(MainApplication.INSTANCE!!.tracker)
                     searchTextInputEditText!!.clearFocus()
                     searchTextInputEditText!!.text?.clear()
                     // set module_list_online as visible and module_list as gone. fade in/out
@@ -439,8 +441,6 @@ class MainActivity : AppCompatActivity(), OnRefreshListener, OverScrollHelper {
                 }
 
                 R.id.installed_menu_item -> {
-                    TrackHelper.track().event("view_list", "installed_modules")
-                        .with(MainApplication.INSTANCE!!.tracker)
                     searchTextInputEditText!!.clearFocus()
                     searchTextInputEditText!!.text?.clear()
                     // set module_list_online as gone and module_list as visible. fade in/out
@@ -747,6 +747,44 @@ class MainActivity : AppCompatActivity(), OnRefreshListener, OverScrollHelper {
             moduleViewListBuilder.applyTo(moduleList!!, moduleViewAdapter!!)
             moduleViewListBuilderOnline.applyTo(moduleListOnline!!, moduleViewAdapterOnline!!)
         }, "Repo update thread").start()
+        if (MainApplication.shouldShowFeedback()) {
+            Countly.sharedInstance().feedback()
+                .getAvailableFeedbackWidgets { retrievedWidgets, error ->
+                    if (error == null) {
+                        if (retrievedWidgets.size > 0) {
+                            val feedbackWidget = retrievedWidgets[0]
+                            Countly.sharedInstance().feedback().presentFeedbackWidget(
+                                feedbackWidget,
+                                this@MainActivity,
+                                "Close",
+                                object : FeedbackCallback {
+                                    override fun onClosed() {
+                                    }
+
+                                    // maybe show a toast when the widget is closed
+                                    override fun onFinished(error: String) {
+                                        // error handling here
+                                        if (error.isNotEmpty()) {
+                                            Toast.makeText(
+                                                this@MainActivity,
+                                                "Error: $error",
+                                                Toast.LENGTH_LONG
+                                            ).show()
+                                        } else {
+                                            Toast.makeText(
+                                                this@MainActivity,
+                                                "Feedback sent",
+                                                Toast.LENGTH_LONG
+                                            ).show()
+                                        }
+                                    }
+                                })
+                        }
+                    } else {
+                        Timber.e(error)
+                    }
+                }
+        }
     }
 
     fun maybeShowUpgrade() {

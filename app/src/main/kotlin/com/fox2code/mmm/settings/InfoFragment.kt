@@ -152,7 +152,7 @@ class InfoFragment : PreferenceFragmentCompat() {
                         // open androidacy
                         IntentHelper.openUrl(
                             MainApplication.INSTANCE!!.lastActivity!!,
-                            "https://www.androidacy.com/membership-join/?utm_source=foxmmm&utm_medium=app&utm_campaign=donate"
+                            "https://www.androidacy.com/membership-join/?utm_source=AMMM&utm_medium=app&utm_campaign=donate"
                         )
                         true
                     }
@@ -164,7 +164,7 @@ class InfoFragment : PreferenceFragmentCompat() {
                         clipboard.setPrimaryClip(
                             ClipData.newPlainText(
                                 toastText,
-                                "https://www.androidacy.com/membership-join/?utm_source=foxmmm&utm_medium=app&utm_campaign=donate"
+                                "https://www.androidacy.com/membership-join/?utm_source=AMMM&utm_medium=app&utm_campaign=donate"
                             )
                         )
                         Toast.makeText(requireContext(), toastText, Toast.LENGTH_SHORT).show()

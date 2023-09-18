@@ -8,7 +8,6 @@
     android:id="@+id/markdownBackground"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    app:fitsSystemWindowsInsets="left|right"
     tools:context=".markdown.MarkdownActivity">
 
     <androidx.core.widget.NestedScrollView

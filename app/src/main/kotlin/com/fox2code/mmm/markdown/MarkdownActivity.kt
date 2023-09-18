@@ -25,7 +25,6 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import org.matomo.sdk.extra.TrackHelper
 import timber.log.Timber
 import java.io.IOException
 import java.nio.charset.StandardCharsets
@@ -35,7 +34,7 @@ class MarkdownActivity : AppCompatActivity() {
     private var footer: TextView? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        TrackHelper.track().screen(this).with(MainApplication.INSTANCE!!.tracker)
+        
         val intent = this.intent
         if (!MainApplication.checkSecret(intent)) {
             Timber.e("Impersonation detected!")

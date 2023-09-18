@@ -300,7 +300,7 @@
     <string name="androidacy_test_mode_warning">Você está configurando o aplicativo para usar um servidor de testes do Androidacy. Isso pode resultar em instabilidade no aplicativo e falha ao carregar o repositório online. NÃO reporte falhas se você tiver esta opção habilitada. O aplicativo será reinicializado para recarregar os repositórios.</string>
     <string name="fox2code_thanks_desc">Fox2Code é o desenvolvedor original do aplicativo. Sem ele, isso nunca seria possível.</string>
     <string name="showcase_mode_dialogue_message">Uma reinicialização é necessária para ativar o modo showcase.</string>
-    <string name="analytics_desc">Nos permite monitorar o uso e instalação do app. Totalmente conforme o GDPR, utilizando Matomo, hospedado pelo Androidacy.</string>
+    <string name="analytics_desc">Nos permite monitorar o uso e instalação do app. Totalmente conforme o GDPR, utilizando Countly, hospedado pelo Androidacy.</string>
     <string name="debug_cat">Depuração</string>
     <string name="announcements">Novidades e atualizações</string>
     <string name="back">Voltar</string>

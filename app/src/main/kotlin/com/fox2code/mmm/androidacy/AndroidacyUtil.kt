@@ -8,15 +8,13 @@ package com.fox2code.mmm.androidacy
 
 import android.net.Uri
 import com.fox2code.mmm.BuildConfig
-import com.fox2code.mmm.utils.io.net.Http.Companion.doHttpGet
-import java.io.IOException
 
 @Suppress("MemberVisibilityCanBePrivate", "MemberVisibilityCanBePrivate")
 enum class AndroidacyUtil {
     ;
 
     companion object {
-        const val REFERRER = "utm_source=FoxMMM&utm_medium=app"
+        const val REFERRER = "utm_source=AMMM&utm_medium=app"
         fun isAndroidacyLink(uri: Uri?): Boolean {
             return uri != null && isAndroidacyLink(uri.toString(), uri)
         }
@@ -106,40 +104,6 @@ enum class AndroidacyUtil {
                 } else {
                     moduleUrl.substring(i + 10, j)
                 }
-            }
-            return null
-        }
-
-        /**
-         * Check if the url is a premium direct download link
-         * @param url url to check
-         * @return true if it is a premium direct download link
-         * @noinspection unused
-         */
-        fun isPremiumDirectDownloadLink(url: String): Boolean {
-            return url.contains("/magisk/ddl/")
-        }
-
-        /**
-         * Returns the markdown directly from the API for rendering. Premium only, and internal testing only currently.
-         * /#blocked-by: A#F-0815
-         * @param url URL to get markdown from
-         * @return String of markdown
-         * @noinspection unused
-         */
-        fun getMarkdownFromAPI(url: String?): String? {
-            val md: ByteArray = try {
-                doHttpGet(url!!, false)
-            } catch (ignored: IOException) {
-                return null
-            }
-            return String(md)
-        }
-
-        fun getMarkdownForModule(moduleId: String): String? {
-            try {
-                return getMarkdownFromAPI("https://production-api.androidacy.com/magisk/$moduleId/markdown")
-            } catch (ignored: IOException) {
             }
             return null
         }

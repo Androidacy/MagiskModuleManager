@@ -11,7 +11,6 @@ import android.text.Spanned
 import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.DrawableRes
-import com.fox2code.foxcompat.view.FoxDisplay
 import com.fox2code.mmm.BuildConfig
 import com.fox2code.mmm.MainApplication
 import com.fox2code.mmm.MainApplication.Companion.INSTANCE
@@ -31,7 +30,7 @@ import com.fox2code.mmm.utils.IntentHelper.Companion.openUrlAndroidacy
 import com.google.android.material.chip.Chip
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import io.noties.markwon.Markwon
-import org.matomo.sdk.extra.TrackHelper
+import ly.count.android.sdk.Countly
 import timber.log.Timber
 import java.util.Objects
 
@@ -50,7 +49,12 @@ enum class ActionButtonType {
             } else {
                 moduleHolder.repoModule?.moduleInfo?.name
             }
-            TrackHelper.track().event("view_notes", name).with(INSTANCE!!.tracker)
+            // if analytics is enabled, track the event
+            if (MainApplication.analyticsAllowed()) {
+                Countly.sharedInstance().events().recordEvent("view_description", HashMap<String, Any>().apply {
+                    put("module", name ?: "null")
+                })
+            }
             val notesUrl = moduleHolder.repoModule?.notesUrl
             if (isAndroidacyLink(notesUrl)) {
                 try {
@@ -145,7 +149,10 @@ enum class ActionButtonType {
             } else {
                 moduleHolder.repoModule?.moduleInfo?.name
             }
-            TrackHelper.track().event("view_update_install", name).with(INSTANCE!!.tracker)
+            // send event to countly
+            Countly.sharedInstance().events().recordEvent("view_update_install", HashMap<String, Any>().apply {
+                put("module", name ?: "null")
+            })
             // if text is reinstall, we need to uninstall first - warn the user but don't proceed
             if (moduleHolder.moduleInfo != null) {
                 // get the text
@@ -216,7 +223,9 @@ enum class ActionButtonType {
                 { Uri.parse(updateZipUrl) },
                 moduleHolder.updateZipRepo
             )
-            val dim5dp = FoxDisplay.dpToPixel(5f)
+            val dim5dp = INSTANCE!!.lastActivity?.resources!!.getDimensionPixelSize(
+                R.dimen.dim5dp
+            )
             builder.setBackgroundInsetStart(dim5dp).setBackgroundInsetEnd(dim5dp)
             val alertDialog = builder.show()
             for (i in -3..-1) {
@@ -255,7 +264,12 @@ enum class ActionButtonType {
             } else {
                 moduleHolder.repoModule?.moduleInfo?.name
             }
-            TrackHelper.track().event("uninstall_module", name).with(INSTANCE!!.tracker)
+            // if analytics is enabled, track the event
+            if (MainApplication.analyticsAllowed()) {
+                Countly.sharedInstance().events().recordEvent("view_uninstall", HashMap<String, Any>().apply {
+                    put("module", name ?: "null")
+                })
+            }
             Timber.i(Integer.toHexString(moduleHolder.moduleInfo?.flags ?: 0))
             if (!instance!!.setUninstallState(
                     moduleHolder.moduleInfo!!, !moduleHolder.hasFlag(
@@ -310,7 +324,11 @@ enum class ActionButtonType {
             } else {
                 moduleHolder.repoModule?.moduleInfo?.name
             }
-            TrackHelper.track().event("config_module", name).with(INSTANCE!!.tracker)
+            if (MainApplication.analyticsAllowed()) {
+                Countly.sharedInstance().events().recordEvent("view_config", HashMap<String, Any>().apply {
+                    put("module", name ?: "null")
+                })
+            }
             if (isAndroidacyLink(config)) {
                 openUrlAndroidacy(button.context, config, true)
             } else {
@@ -333,7 +351,11 @@ enum class ActionButtonType {
             } else {
                 moduleHolder.repoModule?.moduleInfo?.name
             }
-            TrackHelper.track().event("support_module", name).with(INSTANCE!!.tracker)
+            if (MainApplication.analyticsAllowed()) {
+                Countly.sharedInstance().events().recordEvent("view_support", HashMap<String, Any>().apply {
+                    put("module", name ?: "null")
+                })
+            }
             openUrl(button.context, Objects.requireNonNull(moduleHolder.mainModuleInfo.support))
         }
     },
@@ -352,7 +374,11 @@ enum class ActionButtonType {
             } else {
                 moduleHolder.repoModule?.moduleInfo?.name
             }
-            TrackHelper.track().event("donate_module", name).with(INSTANCE!!.tracker)
+if (MainApplication.analyticsAllowed()) {
+                Countly.sharedInstance().events().recordEvent("view_donate", HashMap<String, Any>().apply {
+                    put("module", name ?: "null")
+                })
+            }
             openUrl(button.context, moduleHolder.mainModuleInfo.donate)
         }
     },
@@ -368,7 +394,11 @@ enum class ActionButtonType {
             } else {
                 moduleHolder.repoModule?.moduleInfo?.name
             }
-            TrackHelper.track().event("warning_module", name).with(INSTANCE!!.tracker)
+            if (MainApplication.analyticsAllowed()) {
+                Countly.sharedInstance().events().recordEvent("view_warning", HashMap<String, Any>().apply {
+                    put("module", name ?: "null")
+                })
+            }
             MaterialAlertDialogBuilder(button.context).setTitle(R.string.warning)
                 .setMessage(R.string.warning_message).setPositiveButton(
                 R.string.understand
@@ -390,7 +420,11 @@ enum class ActionButtonType {
             } else {
                 moduleHolder.repoModule?.moduleInfo?.name
             }
-            TrackHelper.track().event("safe_module", name).with(INSTANCE!!.tracker)
+            if (MainApplication.analyticsAllowed()) {
+                Countly.sharedInstance().events().recordEvent("view_safe", HashMap<String, Any>().apply {
+                    put("module", name ?: "null")
+                })
+            }
             MaterialAlertDialogBuilder(button.context).setTitle(R.string.safe_module)
                 .setMessage(R.string.safe_message).setPositiveButton(
                 R.string.understand
@@ -409,7 +443,11 @@ enum class ActionButtonType {
                 moduleHolder.repoModule?.moduleInfo?.name
             }
             // positive button executes install logic and says reinstall. negative button does nothing
-            TrackHelper.track().event("remote_module", name).with(INSTANCE!!.tracker)
+            if (MainApplication.analyticsAllowed()) {
+                Countly.sharedInstance().events().recordEvent("view_update_install", HashMap<String, Any>().apply {
+                    put("module", name ?: "null")
+                })
+            }
             val madb = MaterialAlertDialogBuilder(button.context)
             madb.setTitle(R.string.remote_module)
             val moduleInfo: ModuleInfo = if (moduleHolder.mainModuleInfo != null) {
@@ -462,8 +500,11 @@ enum class ActionButtonType {
                         moduleHolder.repoModule?.moduleInfo?.name
                     }
                     if (BuildConfig.DEBUG) Timber.d("doAction: remote module for %s", name)
-                    TrackHelper.track().event("view_update_install", name)
-                        .with(INSTANCE!!.tracker)
+                    if (MainApplication.analyticsAllowed()) {
+                        Countly.sharedInstance().events().recordEvent("view_update_install", HashMap<String, Any>().apply {
+                            put("module", name ?: "null")
+                        })
+                    }
                     // Androidacy manage the selection between download and install
                     if (isAndroidacyLink(updateZipUrl)) {
                         if (BuildConfig.DEBUG) Timber.d("Androidacy link detected")
@@ -518,7 +559,9 @@ enum class ActionButtonType {
                         { Uri.parse(updateZipUrl) },
                         moduleHolder.updateZipRepo
                     )
-                    val dim5dp = FoxDisplay.dpToPixel(5f)
+                    val dim5dp = INSTANCE!!.lastActivity?.resources!!.getDimensionPixelSize(
+                        R.dimen.dim5dp
+                    )
                     builder.setBackgroundInsetStart(dim5dp).setBackgroundInsetEnd(dim5dp)
                     val alertDialog = builder.show()
                     for (i in -3..-1) {

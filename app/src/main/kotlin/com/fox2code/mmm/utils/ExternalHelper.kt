@@ -15,7 +15,6 @@ import android.net.Uri
 import android.os.Build
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
-import androidx.core.app.ActivityOptionsCompat
 import androidx.core.util.Supplier
 import com.fox2code.mmm.Constants
 import com.topjohnwu.superuser.internal.UiThreadHandler
@@ -57,13 +56,6 @@ class ExternalHelper private constructor() {
 
     fun openExternal(context: Context, uri: Uri?, repoId: String?): Boolean {
         if (label == null) return false
-        val param =
-            ActivityOptionsCompat.makeCustomAnimation(
-                context,
-                rikka.core.R.anim.fade_in,
-                rikka.core.R.anim.fade_out
-            )
-                .toBundle()
         var intent = Intent(FOX_MMM_OPEN_EXTERNAL, uri)
         intent.flags = IntentHelper.FLAG_GRANT_URI_PERMISSION
         intent.putExtra(FOX_MMM_EXTRA_REPO_ID, repoId)
@@ -76,7 +68,7 @@ class ExternalHelper private constructor() {
             if (multi) {
                 context.startActivity(intent)
             } else {
-                context.startActivity(intent, param)
+                context.startActivity(intent, null)
             }
             return true
         } catch (e: ActivityNotFoundException) {
@@ -90,7 +82,7 @@ class ExternalHelper private constructor() {
             }
             intent.component = fallback
             try {
-                context.startActivity(intent, param)
+                context.startActivity(intent, null)
                 return true
             } catch (e: ActivityNotFoundException) {
                 Timber.e(e)

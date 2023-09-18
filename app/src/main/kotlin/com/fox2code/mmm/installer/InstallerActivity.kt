@@ -46,8 +46,6 @@ import com.fox2code.mmm.utils.io.Files.Companion.write
 import com.fox2code.mmm.utils.io.Hashes.Companion.checkSumMatch
 import com.fox2code.mmm.utils.io.PropUtils
 import com.fox2code.mmm.utils.io.net.Http
-import com.fox2code.mmm.utils.sentry.SentryBreadcrumb
-import com.fox2code.mmm.utils.sentry.SentryMain
 import com.google.android.material.bottomnavigation.BottomNavigationItemView
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -56,8 +54,8 @@ import com.topjohnwu.superuser.CallbackList
 import com.topjohnwu.superuser.Shell
 import com.topjohnwu.superuser.internal.UiThreadHandler
 import com.topjohnwu.superuser.io.SuFile
+import ly.count.android.sdk.Countly
 import org.apache.commons.compress.archivers.zip.ZipFile
-import org.matomo.sdk.extra.TrackHelper
 import timber.log.Timber
 import java.io.BufferedReader
 import java.io.File
@@ -89,7 +87,7 @@ class InstallerActivity : AppCompatActivity() {
         moduleCache = File(this.cacheDir, "installer")
         if (!moduleCache!!.exists() && !moduleCache!!.mkdirs()) Timber.e("Failed to mkdir module cache dir!")
         super.onCreate(savedInstanceState)
-        TrackHelper.track().screen(this).with(MainApplication.INSTANCE!!.tracker)
+
         val intent = this.intent
         val target: String
         val name: String?
@@ -131,15 +129,9 @@ class InstallerActivity : AppCompatActivity() {
             finish()
             return
         }
-        // Note: Sentry only send this info on crash.
         if (MainApplication.isCrashReportingEnabled) {
-            val breadcrumb = SentryBreadcrumb()
-            breadcrumb.setType("install")
-            breadcrumb.setData("target", target)
-            breadcrumb.setData("name", name)
-            breadcrumb.setData("checksum", checksum)
-            breadcrumb.setCategory("app.action.preinstall")
-            SentryMain.addSentryBreadcrumb(breadcrumb)
+            // set countly breadcrumb
+            Countly.sharedInstance().crashes().addCrashBreadcrumb("InstallerActivity.onCreate")
         }
         val urlMode = target.startsWith("http://") || target.startsWith("https://")
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
@@ -183,9 +175,18 @@ class InstallerActivity : AppCompatActivity() {
         wakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "Fox:Installer")
         prgInd?.visibility = View.VISIBLE
         if (urlMode) installerTerminal!!.addLine("- Downloading $name")
-        TrackHelper.track().event("installer_start", name).with(MainApplication.INSTANCE!!.tracker)
+        // track install
+        if (MainApplication.analyticsAllowed()) {
+            Countly.sharedInstance().events().recordEvent("install", mapOf(
+                "name" to name,
+                "url" to target,
+                "checksum" to checksum,
+                "noExtensions" to noExtensions,
+                "rootless" to rootless,
+                "mmtReborn" to mmtReborn
+            ))
+        }
         Thread(Runnable {
-
             // ensure module cache is is in our cache dir
             if (urlMode && !moduleCache!!.absolutePath.startsWith(MainApplication.INSTANCE!!.cacheDir.absolutePath)) throw SecurityException(
                 "Module cache is not in cache dir!"
@@ -533,18 +534,7 @@ class InstallerActivity : AppCompatActivity() {
             }
             // Note: Sentry only send this info on crash.
             if (MainApplication.isCrashReportingEnabled) {
-                val breadcrumb = SentryBreadcrumb()
-                breadcrumb.setType("install")
-                breadcrumb.setData("moduleId", if (moduleId == null) "<null>" else moduleId)
-                breadcrumb.setData("mmtReborn", if (mmtReborn) "true" else "false")
-                breadcrumb.setData("isAnyKernel3", if (anyKernel3) "true" else "false")
-                breadcrumb.setData("noExtensions", if (noExtensions) "true" else "false")
-                breadcrumb.setData("magiskCmdLine", if (magiskCmdLine) "true" else "false")
-                breadcrumb.setData(
-                    "ansi", if (installerTerminal!!.isAnsiEnabled) "enabled" else "disabled"
-                )
-                breadcrumb.setCategory("app.action.install")
-                SentryMain.addSentryBreadcrumb(breadcrumb)
+                Countly.sharedInstance().crashes().addCrashBreadcrumb("InstallerActivity.doInstall")
             }
             if (mmtReborn && magiskCmdLine) {
                 Timber.w("mmtReborn and magiskCmdLine may not work well together")

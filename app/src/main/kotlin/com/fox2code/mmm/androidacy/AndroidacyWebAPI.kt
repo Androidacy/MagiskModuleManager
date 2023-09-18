@@ -16,7 +16,6 @@ import android.webkit.JavascriptInterface
 import android.widget.Toast
 import androidx.annotation.Keep
 import androidx.core.content.ContextCompat
-import com.fox2code.foxcompat.view.FoxDisplay
 import com.fox2code.mmm.BuildConfig
 import com.fox2code.mmm.MainApplication
 import com.fox2code.mmm.R
@@ -158,7 +157,7 @@ class AndroidacyWebAPI(
                 return@injectButton null
             }
         }, "androidacy_repo")
-        val dim5dp = FoxDisplay.dpToPixel(5f)
+        val dim5dp = activity.resources.getDimensionPixelSize(R.dimen.dim5dp)
         builder.setBackgroundInsetStart(dim5dp).setBackgroundInsetEnd(dim5dp)
         activity.runOnUiThread {
             val alertDialog = builder.show()

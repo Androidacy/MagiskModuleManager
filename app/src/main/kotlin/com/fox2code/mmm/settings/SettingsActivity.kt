@@ -33,7 +33,6 @@ import com.fox2code.rosettax.LanguageActivity
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationBarView
 import com.mikepenz.aboutlibraries.LibsBuilder
-import org.matomo.sdk.extra.TrackHelper
 import timber.log.Timber
 import java.sql.Timestamp
 
@@ -89,7 +88,7 @@ class SettingsActivity : AppCompatActivity(), LanguageActivity,
                 .commit()
             true
         }
-        TrackHelper.track().screen(this).with(INSTANCE!!.tracker)
+
         setContentView(R.layout.settings_activity)
         setTitle(R.string.app_name_v2)
         val ts = Timestamp(System.currentTimeMillis() - 30L * 24 * 60 * 60 * 1000)

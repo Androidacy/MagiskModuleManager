@@ -24,8 +24,6 @@ import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.SwitchPreferenceCompat
 import androidx.preference.TwoStatePreference
 import androidx.room.Room
-import com.fox2code.foxcompat.view.FoxDisplay
-import com.fox2code.foxcompat.view.FoxViewCompat
 import com.fox2code.mmm.BuildConfig
 import com.fox2code.mmm.MainActivity
 import com.fox2code.mmm.MainApplication
@@ -177,7 +175,7 @@ class RepoFragment : PreferenceFragmentCompat() {
                             // User clicked OK button. Open GitHub releases page
                             val browserIntent = Intent(
                                 Intent.ACTION_VIEW,
-                                Uri.parse("https://www.androidacy.com/downloads/?view=FoxMMM&utm_source=FoxMMM&utm_medium=app&utm_campaign=FoxMMM")
+                                Uri.parse("https://www.androidacy.com/downloads/?view=AMMM&utm_source=AMMM&utm_medium=app&utm_campaign=AMMM")
                             )
                             startActivity(browserIntent)
                         }.show()
@@ -623,9 +621,17 @@ class RepoFragment : PreferenceFragmentCompat() {
                         override fun afterTextChanged(s: Editable) {}
                     })
                     positiveButton.isEnabled = false
-                    val dp10 = FoxDisplay.dpToPixel(10f)
-                    val dp20 = FoxDisplay.dpToPixel(20f)
-                    FoxViewCompat.setMargin(input, dp20, dp10, dp20, dp10)
+                    val dp10 = MainApplication.INSTANCE!!.lastActivity?.resources?.getDimensionPixelSize(
+                        R.dimen.dp10
+                    ) ?: 0
+                    val dp20 = MainApplication.INSTANCE!!.lastActivity?.resources?.getDimensionPixelSize(
+                        R.dimen.dp20
+                    ) ?: 0
+                    alertDialog.window!!.setSoftInputMode(20)
+                    alertDialog.window!!.setLayout(
+                        dp20,
+                        dp10
+                    )
                     true
                 }
         }

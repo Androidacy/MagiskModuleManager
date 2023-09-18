@@ -284,7 +284,7 @@
     <string name="empty_field">URL là bắt buộc</string>
     <string name="repo_already_added">Kho lưu trữ đã tồn tại.</string>
     <string name="showcase_mode_dialogue_message">Cần khởi động lại ứng dụng để bật chế độ giới thiệu.</string>
-    <string name="analytics_desc">Cho phép chúng tôi theo dõi việc sử dụng và cài đặt ứng dụng. Hoàn toàn tuân thủ GDPR và sử dụng Matomo, được lưu trữ bởi Androidacy.</string>
+    <string name="analytics_desc">Cho phép chúng tôi theo dõi việc sử dụng và cài đặt ứng dụng. Hoàn toàn tuân thủ GDPR và sử dụng Countly, được lưu trữ bởi Androidacy.</string>
     <string name="debug_cat">Gỡ lỗi</string>
     <string name="announcements">Tin tức và cập nhật</string>
     <string name="back">Quay lại</string>

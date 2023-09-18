@@ -26,7 +26,6 @@ import androidx.annotation.StringRes
 import androidx.cardview.widget.CardView
 import androidx.core.graphics.ColorUtils
 import androidx.recyclerview.widget.RecyclerView
-import com.fox2code.foxcompat.view.FoxDisplay
 import com.fox2code.mmm.BuildConfig
 import com.fox2code.mmm.MainApplication
 import com.fox2code.mmm.R
@@ -74,7 +73,6 @@ class ModuleViewAdapter : RecyclerView.Adapter<ModuleViewAdapter.ViewHolder>() {
         private val creditText: TextView
         private val descriptionText: TextView
         private val moduleOptionsHolder: HorizontalScrollView
-        private val moduleLayoutHelper: TextView
         private val updateText: TextView
         private val actionsButtons: Array<Chip?>
         private val actionButtonsTypes: ArrayList<ActionButtonType?>
@@ -93,7 +91,6 @@ class ModuleViewAdapter : RecyclerView.Adapter<ModuleViewAdapter.ViewHolder>() {
             creditText = itemView.findViewById(R.id.credit_text)
             descriptionText = itemView.findViewById(R.id.description_text)
             moduleOptionsHolder = itemView.findViewById(R.id.module_options_holder)
-            moduleLayoutHelper = itemView.findViewById(R.id.module_layout_helper)
             updateText = itemView.findViewById(R.id.updated_text)
             actionsButtons = arrayOfNulls(6)
             actionsButtons[0] = itemView.findViewById(R.id.button_action1)
@@ -194,7 +191,6 @@ class ModuleViewAdapter : RecyclerView.Adapter<ModuleViewAdapter.ViewHolder>() {
                 }
                 creditText.visibility = View.VISIBLE
                 moduleOptionsHolder.visibility = View.VISIBLE
-                moduleLayoutHelper.visibility = View.VISIBLE
                 descriptionText.visibility = View.VISIBLE
                 val moduleInfo = moduleHolder.mainModuleInfo
                 moduleInfo.verify()
@@ -249,7 +245,6 @@ class ModuleViewAdapter : RecyclerView.Adapter<ModuleViewAdapter.ViewHolder>() {
                     descriptionText.text = moduleInfo.description
                 }
                 val updateText = moduleHolder.updateTimeText
-                var hasUpdateText = true
                 if (updateText.isNotEmpty()) {
                     val repoModule = moduleHolder.repoModule
                     this.updateText.visibility = View.VISIBLE
@@ -267,7 +262,6 @@ ${getString(R.string.module_repo)} ${moduleHolder.repoName}""" + if ((repoModule
                     this.updateText.setText(R.string.substratum_builtin_module)
                 } else {
                     this.updateText.visibility = View.GONE
-                    hasUpdateText = false
                 }
                 actionButtonsTypes.clear()
                 moduleHolder.getButtons(itemView.context, actionButtonsTypes, showCaseMode)
@@ -290,12 +284,6 @@ ${getString(R.string.module_repo)} ${moduleHolder.repoName}""" + if ((repoModule
                 }
                 if (actionButtonsTypes.isEmpty()) {
                     moduleOptionsHolder.visibility = View.GONE
-                    moduleLayoutHelper.visibility = View.GONE
-                } else if (actionButtonsTypes.size > 2 || !hasUpdateText) {
-                    moduleLayoutHelper.minHeight = FoxDisplay.dpToPixel(36f)
-                        .coerceAtLeast(moduleOptionsHolder.height - FoxDisplay.dpToPixel(14f))
-                } else {
-                    moduleLayoutHelper.minHeight = FoxDisplay.dpToPixel(4f)
                 }
                 cardView.isClickable = false
                 if (moduleHolder.isModuleHolder && moduleHolder.hasFlag(ModuleInfo.FLAG_MODULE_ACTIVE)) {
@@ -316,7 +304,6 @@ ${getString(R.string.module_repo)} ${moduleHolder.repoName}""" + if ((repoModule
                 switchMaterial.visibility = View.GONE
                 creditText.visibility = View.GONE
                 moduleOptionsHolder.visibility = View.GONE
-                moduleLayoutHelper.visibility = View.GONE
                 descriptionText.visibility = View.GONE
                 updateText.visibility = View.GONE
                 titleText.text = " "
@@ -331,7 +318,9 @@ ${getString(R.string.module_repo)} ${moduleHolder.repoName}""" + if ((repoModule
                 }
                 if (type === ModuleHolder.Type.NOTIFICATION) {
                     val notificationType = moduleHolder.notificationType
-                    titleText.setText(notificationType?.textId ?: 0)
+                    if (notificationType?.textId != null) {
+                        titleText.setText(notificationType.textId)
+                    }
                     // set title text appearance
                     titleText.setTextAppearance(com.google.android.material.R.style.TextAppearance_Material3_BodyLarge)
                     if (notificationType != null) {
@@ -353,7 +342,9 @@ ${getString(R.string.module_repo)} ${moduleHolder.repoName}""" + if ((repoModule
                 }
             }
             if (type === ModuleHolder.Type.SEPARATOR) {
-                titleText.setText(if (moduleHolder.separator != null) moduleHolder.separator.title else 0)
+                if (moduleHolder.separator != null) {
+                    titleText.text = getString(moduleHolder.separator.title)
+                }
             }
             if (DEBUG) {
                 if (vType != null) {

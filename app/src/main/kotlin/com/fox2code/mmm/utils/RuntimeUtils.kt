@@ -159,7 +159,7 @@ class RuntimeUtils {
         if (BuildConfig.DEBUG) Timber.i("Checking if we need to run setup")
         // Check if context is the first launch using prefs and if doSetupRestarting was passed in the intent
         val prefs = MainApplication.getSharedPreferences("mmm")!!
-        var firstLaunch = prefs.getString("last_shown_setup", null) != "v4"
+        var firstLaunch = prefs.getString("last_shown_setup", null) != "v5"
         // First launch
         // context is intentionally separate from the above if statement, because it needs to be checked even if the first launch check is true due to some weird edge cases
         if (activity.intent.getBooleanExtra("doSetupRestarting", false)) {
@@ -264,7 +264,7 @@ class RuntimeUtils {
         snackbar.setAction(R.string.upgrade_now) {
             val intent = Intent(Intent.ACTION_VIEW)
             intent.data =
-                Uri.parse("https://androidacy.com/membership-join/#utm_source=foxmmm&utm_medium=app&utm_campaign=upgrade_snackbar")
+                Uri.parse("https://androidacy.com/membership-join/#utm_source=AMMM&utm_medium=app&utm_campaign=upgrade_snackbar")
             activity.startActivity(intent)
         }
         snackbar.setAnchorView(R.id.bottom_navigation)

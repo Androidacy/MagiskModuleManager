@@ -299,7 +299,7 @@
     <string name="crash_reporting_pii_desc">السماح بإرسال معلومات إضافية في تقارير الأعطال ، والتي قد يحتوي بعضها على معلومات تعريف شخصية مثل عنوان IP ومعرفات الجهاز.</string>
     <string name="setup_crash_reporting_pii_summary">قد يشمل ذلك معرفات الجهاز وعناوين IP. لن يتم استخدام أي بيانات لأي غرض آخر بخلاف تحليل الأعطال وتحسين الأداء.</string>
     <string name="error_creating_cookie_database">خطأ في الوصول إلى WebView. قد تتأثر الوظيفة.</string>
-    <string name="analytics_desc">اسمح لنا بتتبع استخدام التطبيق وعمليات التثبيت. متوافق تمامًا مع إجمالي الناتج المحلي ويستخدم Matomo ، الذي مخزن عن طريق Androidacy.</string>
+    <string name="analytics_desc">اسمح لنا بتتبع استخدام التطبيق وعمليات التثبيت. متوافق تمامًا مع إجمالي الناتج المحلي ويستخدم Countly ، الذي مخزن عن طريق Androidacy.</string>
     <string name="language_not_available">لم تتم ترجمة اللغة %s. أتود ترجمتها ؟</string>
     <string name="blur_desc">إنشاء تأثير تمويه (Blur) خلف بعض الحوارات والعناصر. لاحظ أن التمويه (Blur) قد لا يعمل بشكل جيد على بعض الأجهزة وقد لا يعمل مع الجميع.</string>
     <string name="error_encrypted_shared_preferences">حدث خطأ أثناء قراءة الخصائص المشتركة. الرجاء إعادة تعيين التطبيق.</string>

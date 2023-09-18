@@ -17,7 +17,6 @@ import com.fox2code.mmm.BuildConfig
 import com.fox2code.mmm.MainActivity
 import com.fox2code.mmm.MainApplication
 import com.fox2code.mmm.R
-import com.fox2code.mmm.utils.sentry.SentryMain
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import timber.log.Timber
 import kotlin.system.exitProcess
@@ -53,7 +52,6 @@ class PrivacyFragment : PreferenceFragmentCompat() {
         // Crash reporting
         val crashReportingPreference =
             findPreference<TwoStatePreference>("pref_crash_reporting")
-        if (!SentryMain.IS_SENTRY_INSTALLED) crashReportingPreference!!.isVisible = false
         crashReportingPreference!!.isChecked = MainApplication.isCrashReportingEnabled
         val initialValue: Any = MainApplication.isCrashReportingEnabled
         crashReportingPreference.onPreferenceChangeListener =
@@ -86,5 +84,16 @@ class PrivacyFragment : PreferenceFragmentCompat() {
                 materialAlertDialogBuilder.show()
                 true
             }
+        // on pref_analytics_enabled change, update pref_crash_reporting (switch must be off and disabled if analytics is off)
+        val analyticsPreference = findPreference<TwoStatePreference>("pref_analytics_enabled")
+        analyticsPreference!!.onPreferenceChangeListener =
+            Preference.OnPreferenceChangeListener { _: Preference?, newValue: Any ->
+                if (initialValue === newValue) return@OnPreferenceChangeListener true
+                crashReportingPreference.isEnabled = newValue as Boolean
+                if (!newValue) crashReportingPreference.isChecked = false
+                true
+            }
+        // now, disable pref_crash_reporting if analytics is off
+        crashReportingPreference.isEnabled = analyticsPreference.isChecked
     }
 }

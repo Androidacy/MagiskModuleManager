@@ -307,7 +307,7 @@
     <string name="setup_crash_reporting_pii_summary">這可能會包含IP地址以及終端識別碼。收到的資料將不會用作分析錯誤以及提升服務品質以外的任何用途。</string>
     <string name="empty_field">URL不能為空</string>
     <string name="repo_already_added">倉庫已存在。</string>
-    <string name="analytics_desc">允許我們追踪應用的使用以及安裝。完全支援並符合GDPR且使用Androidacy運營的Matomo。</string>
+    <string name="analytics_desc">允許我們追踪應用的使用以及安裝。完全支援並符合GDPR且使用Androidacy運營的Countly。</string>
     <string name="debug_cat">偵錯</string>
     <string name="announcements">消息與更新</string>
     <string name="back">返回</string>

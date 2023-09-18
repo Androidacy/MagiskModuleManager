@@ -150,18 +150,41 @@ class SetupActivity : AppCompatActivity(), LanguageActivity {
         }
         (Objects.requireNonNull<Any>(view.findViewById(R.id.setup_background_update_check)) as MaterialSwitch).isChecked =
             BuildConfig.ENABLE_AUTO_UPDATER
-        (Objects.requireNonNull<Any>(view.findViewById(R.id.setup_crash_reporting)) as MaterialSwitch).isChecked =
+        val setupCrashReporting = view.findViewById<MaterialSwitch>(R.id.setup_crash_reporting)
+        val analyticsEnabled = view.findViewById<MaterialSwitch>(R.id.setup_app_analytics)
+        val crashReportingPii = view.findViewById<MaterialSwitch>(R.id.setup_crash_reporting_pii)
+        setupCrashReporting.isChecked =
             BuildConfig.DEFAULT_ENABLE_CRASH_REPORTING
         // pref_crash_reporting_pii
-        (Objects.requireNonNull<Any>(view.findViewById(R.id.setup_crash_reporting_pii)) as MaterialSwitch).isChecked =
+        crashReportingPii.isChecked =
             BuildConfig.DEFAULT_ENABLE_CRASH_REPORTING_PII
         // pref_analytics_enabled
-        (Objects.requireNonNull<Any>(view.findViewById(R.id.setup_app_analytics)) as MaterialSwitch).isChecked =
+        analyticsEnabled.isChecked =
             BuildConfig.DEFAULT_ENABLE_ANALYTICS
+        // if analytics is disabled, force disable crash reporting
+        if (!view.findViewById<MaterialSwitch>(R.id.setup_app_analytics).isChecked) {
+            setupCrashReporting.isEnabled = false
+            crashReportingPii.isEnabled = false
+            setupCrashReporting.isChecked = false
+            crashReportingPii.isChecked = false
+        }
+        // listen for changes to the analytics switch
+        analyticsEnabled.setOnCheckedChangeListener { _: CompoundButton?, isChecked: Boolean ->
+            // if analytics is disabled, force disable crash reporting
+            if (!isChecked) {
+                setupCrashReporting.isChecked = false
+                crashReportingPii.isChecked = false
+                setupCrashReporting.isEnabled = false
+                crashReportingPii.isEnabled = false
+            } else {
+                setupCrashReporting.isEnabled = true
+                crashReportingPii.isEnabled = true
+            }
+        }
         // assert that both switches match the build config on debug builds
         if (BuildConfig.DEBUG) {
             assert((Objects.requireNonNull<Any>(view.findViewById(R.id.setup_background_update_check)) as MaterialSwitch).isChecked == BuildConfig.ENABLE_AUTO_UPDATER)
-            assert((Objects.requireNonNull<Any>(view.findViewById(R.id.setup_crash_reporting)) as MaterialSwitch).isChecked == BuildConfig.DEFAULT_ENABLE_CRASH_REPORTING)
+            assert(setupCrashReporting.isChecked == BuildConfig.DEFAULT_ENABLE_CRASH_REPORTING)
         }
         // Repos are a little harder, as the enabled_repos build config is an arraylist
         val andRepoView =
@@ -178,7 +201,7 @@ class SetupActivity : AppCompatActivity(), LanguageActivity {
                     isChecked
                 )
             }
-            (Objects.requireNonNull<Any>(view.findViewById(R.id.setup_crash_reporting)) as MaterialSwitch).setOnCheckedChangeListener { _: CompoundButton?, isChecked: Boolean ->
+            setupCrashReporting.setOnCheckedChangeListener { _: CompoundButton?, isChecked: Boolean ->
                 Timber.i(
                     "Crash Reporting: %s",
                     isChecked
@@ -302,7 +325,7 @@ class SetupActivity : AppCompatActivity(), LanguageActivity {
             // Set the crash reporting pref
             editor.putBoolean(
                 "pref_crash_reporting",
-                (Objects.requireNonNull<Any>(view.findViewById(R.id.setup_crash_reporting)) as MaterialSwitch).isChecked
+                setupCrashReporting.isChecked
             )
             // Set the crash reporting PII pref
             editor.putBoolean(
@@ -339,7 +362,7 @@ class SetupActivity : AppCompatActivity(), LanguageActivity {
             reposListDao.setEnabled(androidacyRepoRoomObj.id, androidacyRepoRoom)
             reposListDao.setEnabled(magiskAltRepoRoomObj.id, magiskAltRepoRoom)
             db.close()
-            editor.putString("last_shown_setup", "v4")
+            editor.putString("last_shown_setup", "v5")
             // Commit the changes
             editor.commit()
             // Log the changes
