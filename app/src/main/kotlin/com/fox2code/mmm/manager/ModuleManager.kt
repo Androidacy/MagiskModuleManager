@@ -67,6 +67,8 @@ class ModuleManager private constructor() : SyncManager() {
             ).allowMainThreadQueries().build()
             for (module in modules) {
                 if (!SuFile("/data/adb/modules/$module").isDirectory) continue  // Ignore non directory files inside modules folder
+                // don't care about lost+found (case insensitive)
+                if (module.equals("lost+found", ignoreCase = true)) continue
                 if (BuildConfig.DEBUG) Timber.d("Found module %s", module)
                 var moduleInfo = moduleInfos[module]
                 // next, merge the module info with a record from ModuleListCache room db if it exists

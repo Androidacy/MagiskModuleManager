@@ -34,14 +34,12 @@ enum class AndroidacyUtil {
 
         fun isAndroidacyFileUrl(url: String?): Boolean {
             if (url == null) return false
-            for (prefix in arrayOf(
-                "https://production-api.androidacy.com/downloads/",
-                "https://production-api.androidacy.com/magisk/file/",
-                "https://staging-api.androidacy.com/magisk/file/"
-            )) { // Make both staging and non staging act the same
-                if (url.startsWith(prefix)) return true
+            val uri = Uri.parse(url)
+            return if (BuildConfig.DEBUG) {
+                uri.host?.endsWith("api.androidacy.com") ?: false && (uri.path?.startsWith("/downloads") ?: false || uri.path?.startsWith("/magisk/file") ?: false || uri.path?.startsWith("/magisk/ddl") ?: false)
+            } else {
+                uri.host?.equals("production-api.androidacy.com") ?: false && (uri.path?.startsWith("/downloads") ?: false || uri.path?.startsWith("/magisk/file") ?: false || uri.path?.startsWith("/magisk/ddl") ?: false)
             }
-            return false
         }
 
         // Avoid logging token
@@ -124,6 +122,7 @@ enum class AndroidacyUtil {
 
         /**
          * Returns the markdown directly from the API for rendering. Premium only, and internal testing only currently.
+         * /#blocked-by: A#F-0815
          * @param url URL to get markdown from
          * @return String of markdown
          * @noinspection unused

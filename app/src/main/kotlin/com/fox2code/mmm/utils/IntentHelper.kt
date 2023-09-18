@@ -9,15 +9,17 @@ package com.fox2code.mmm.utils
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.ActivityNotFoundException
+import android.content.ContentResolver
 import android.content.Context
 import android.content.ContextWrapper
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.os.Environment
 import android.util.TypedValue
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.ActivityCompat.startActivityForResult
 import androidx.core.app.ActivityOptionsCompat
 import com.fox2code.mmm.BuildConfig
 import com.fox2code.mmm.Constants
@@ -29,11 +31,17 @@ import com.fox2code.mmm.XHooks.Companion.isModuleActive
 import com.fox2code.mmm.androidacy.AndroidacyActivity
 import com.fox2code.mmm.installer.InstallerActivity
 import com.fox2code.mmm.markdown.MarkdownActivity
+import com.fox2code.mmm.utils.io.Files.Companion.closeSilently
+import com.fox2code.mmm.utils.io.Files.Companion.copy
 import com.fox2code.mmm.utils.io.net.Http.Companion.hasWebView
 import com.topjohnwu.superuser.CallbackList
 import com.topjohnwu.superuser.Shell
+import com.topjohnwu.superuser.io.SuFileInputStream
 import timber.log.Timber
 import java.io.File
+import java.io.FileOutputStream
+import java.io.InputStream
+import java.io.OutputStream
 import java.net.URISyntaxException
 
 @Suppress("unused")
@@ -364,15 +372,61 @@ enum class IntentHelper {;
                 callback.onReceived(destination, null, RESPONSE_ERROR)
                 return
             }
-            // start file picker by registering for result. call callback with file and appropriate response
-            // do not use startActivityForResult, it is deprecated
-            val intent = Intent()
-                .setType("application/zip")
-                .setAction(Intent.ACTION_GET_CONTENT)
-
-            startActivityForResult(
-                compatActivity, intent, RESPONSE_FILE, null
-            )
+            val getContent = compatActivity.registerForActivityResult(
+                ActivityResultContracts.GetContent()
+            ) { uri: Uri? ->
+                if (uri == null) {
+                    Timber.d("invalid uri received")
+                    callback.onReceived(destination, null, RESPONSE_ERROR)
+                    return@registerForActivityResult
+                }
+                Timber.i("FilePicker returned %s", uri)
+                if ("http" == uri.scheme || "https" == uri.scheme) {
+                    callback.onReceived(destination, uri, RESPONSE_URL)
+                    return@registerForActivityResult
+                }
+                if (ContentResolver.SCHEME_FILE == uri.scheme) {
+                    Toast.makeText(
+                        compatActivity, R.string.file_picker_wierd, Toast.LENGTH_SHORT
+                    ).show()
+                }
+                var inputStream: InputStream? = null
+                var outputStream: OutputStream? = null
+                var success = false
+                try {
+                    if (ContentResolver.SCHEME_FILE == uri.scheme) {
+                        var path = uri.path
+                        if (path!!.startsWith("/sdcard/")) { // Fix file paths
+                            path =
+                                Environment.getExternalStorageDirectory().absolutePath + path.substring(
+                                    7
+                                )
+                        }
+                        inputStream = SuFileInputStream.open(
+                            File(path).absoluteFile
+                        )
+                    } else {
+                        inputStream = compatActivity.contentResolver.openInputStream(uri)
+                    }
+                    outputStream = FileOutputStream(destination)
+                    copy(inputStream!!, outputStream)
+                    Timber.i("File saved at %s", destination)
+                    success = true
+                } catch (e: Exception) {
+                    Timber.e(e)
+                    Toast.makeText(
+                        compatActivity, R.string.file_picker_failure, Toast.LENGTH_SHORT
+                    ).show()
+                } finally {
+                    closeSilently(inputStream)
+                    closeSilently(outputStream)
+                    if (!success && destination.exists() && !destination.delete()) Timber.e("Failed to delete artifact!")
+                }
+                callback.onReceived(
+                    destination, uri, if (success) RESPONSE_FILE else RESPONSE_ERROR
+                )
+            }
+            getContent.launch("application/zip")
         }
 
         fun openFileTo(compatActivity: AppCompatActivity, module: File, function: (File, Uri, Int) -> Unit) {
