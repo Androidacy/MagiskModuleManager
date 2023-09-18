@@ -81,6 +81,9 @@ android {
                 "en"
             )
         )
+        ksp {
+            arg("room.schemaLocation", "$projectDir/roomSchemas")
+        }
     }
 
     splits {
@@ -165,7 +168,7 @@ android {
                     )
                 )
             } else {
-                propertiesA.setProperty("client_id", "\"" + default + "\"")
+                propertiesA.setProperty("client_id", default)
             }
 
             buildConfigField(
