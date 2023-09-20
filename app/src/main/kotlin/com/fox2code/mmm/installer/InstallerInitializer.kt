@@ -146,26 +146,38 @@ class InstallerInitializer {
                 }
                 if (MainApplication.forceDebugLogging) {
                     Timber.i("Found ramdisk: %s", output[0])
-                    if (MainApplication.forceDebugLogging) Timber.i("Searching for Magisk path. Current path: %s", mgskPth)
+                    if (MainApplication.forceDebugLogging) Timber.i(
+                        "Searching for Magisk path. Current path: %s",
+                        mgskPth
+                    )
                 }
                 // reset output
                 output.clear()
                 // try to use magisk --path. if that fails, check for /data/adb/ksu for kernelsu support
-                if (Shell.cmd("magisk --path", "su -V").to(output).exec().isSuccess && output[0].isNotEmpty() && !output[0].contains(
+                if (Shell.cmd("magisk --path", "su -V").to(output)
+                        .exec().isSuccess && output[0].isNotEmpty() && !output[0].contains(
                         "not found"
-                    )) {
+                    )
+                ) {
                     mgskPth = output[0]
                     if (MainApplication.forceDebugLogging) {
                         Timber.i("Magisk path 1: %s", mgskPth)
                     }
-                } else if (Shell.cmd("if [ -d /data/adb/ksu ]; then echo true; else echo false; fi", "su -V").to(
+                } else if (Shell.cmd(
+                        "if [ -d /data/adb/ksu ]; then echo true; else echo false; fi",
+                        "su -V"
+                    ).to(
                         output
                     ).exec().isSuccess && "true" == output[0]
                 ) {
                     // check su -v for kernelsu
                     val suVer: ArrayList<String> = ArrayList()
                     Shell.cmd("su -v").to(suVer).exec()
-                    if (suVer.size > 0 && suVer[0].contains("ksu") || suVer[0].contains("Kernelsu", true)) {
+                    if (suVer.size > 0 && suVer[0].contains("ksu") || suVer[0].contains(
+                            "Kernelsu",
+                            true
+                        )
+                    ) {
                         if (MainApplication.forceDebugLogging) {
                             Timber.i("Kernelsu detected")
                         }
@@ -176,18 +188,23 @@ class InstallerInitializer {
                             Countly.sharedInstance().crashes().addCrashBreadcrumb("ksu detected")
                         }
                     } else {
-                        if (MainApplication.forceDebugLogging) {                            Timber.e("[ANOMALY] Kernelsu not detected but /data/adb/ksu exists")
+                        if (MainApplication.forceDebugLogging) {
+                            Timber.e("[ANOMALY] Kernelsu not detected but /data/adb/ksu exists")
                         }
                         return null
                     }
                 } else {
-                    if (MainApplication.forceDebugLogging) {                        Timber.e("Failed to get Magisk path")
+                    if (MainApplication.forceDebugLogging) {
+                        Timber.e("Failed to get Magisk path")
                     }
                     return null
                 }
                 if (MainApplication.forceDebugLogging) Timber.i("Magisk runtime path: %s", mgskPth)
                 mgskVerCode = output[1].toInt()
-                if (MainApplication.forceDebugLogging) Timber.i("Magisk version code: %s", mgskVerCode)
+                if (MainApplication.forceDebugLogging) Timber.i(
+                    "Magisk version code: %s",
+                    mgskVerCode
+                )
                 if (mgskVerCode >= Constants.MAGISK_VER_CODE_FLAT_MODULES && mgskVerCode < Constants.MAGISK_VER_CODE_PATH_SUPPORT && (mgskPth.isEmpty() || !File(
                         mgskPth
                     ).exists())

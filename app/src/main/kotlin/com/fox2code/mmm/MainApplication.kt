@@ -258,7 +258,10 @@ class MainApplication : Application(), Configuration.Provider, ActivityLifecycle
                 if (forceDebugLogging) Timber.d("Root access granted")
                 setHasGottenRootAccess(true)
             } else {
-                if (forceDebugLogging) Timber.d("Root access or we're not uid 0. Current uid: %s", output)
+                if (forceDebugLogging) Timber.d(
+                    "Root access or we're not uid 0. Current uid: %s",
+                    output
+                )
                 setHasGottenRootAccess(false)
             }
         }
@@ -478,7 +481,7 @@ class MainApplication : Application(), Configuration.Provider, ActivityLifecycle
             }
             if (forceDebugLogging) {
                 if (priority >= Log.DEBUG) {
-                    when(priority) {
+                    when (priority) {
                         Log.DEBUG -> Log.d(tag, message, t)
                         Log.INFO -> Log.i(tag, message, t)
                         Log.WARN -> Log.w(tag, message, t)
@@ -497,7 +500,11 @@ class MainApplication : Application(), Configuration.Provider, ActivityLifecycle
 
     companion object {
 
-        var forceDebugLogging: Boolean = BuildConfig.DEBUG || getSharedPreferences("mmm")?.getBoolean("pref_force_debug_logging", false) ?: false
+        var forceDebugLogging: Boolean =
+            BuildConfig.DEBUG || getSharedPreferences("mmm")?.getBoolean(
+                "pref_force_debug_logging",
+                false
+            ) ?: false
 
         // Warning! Locales that don't exist will crash the app
         // Anything that is commented out is supported but the translation is not complete to at least 60%
@@ -606,7 +613,8 @@ class MainApplication : Application(), Configuration.Provider, ActivityLifecycle
                     }
                     try {
                         val masterKey =
-                            MasterKey.Builder(mContext!!).setKeyScheme(MasterKey.KeyScheme.AES256_GCM)
+                            MasterKey.Builder(mContext!!)
+                                .setKeyScheme(MasterKey.KeyScheme.AES256_GCM)
                                 .build()
                         val sharedPreferences = EncryptedSharedPreferences.create(
                             mContext,
@@ -730,7 +738,11 @@ class MainApplication : Application(), Configuration.Provider, ActivityLifecycle
             // should not have been shown in 14 days and only 1 in 5 chance
             val randChance = Random().nextInt(5)
             val lastShown = getSharedPreferences("mmm")!!.getLong("last_feedback", 0)
-            if (forceDebugLogging) Timber.d("Last feedback shown: %d, randChance: %d", lastShown, randChance)
+            if (forceDebugLogging) Timber.d(
+                "Last feedback shown: %d, randChance: %d",
+                lastShown,
+                randChance
+            )
             return System.currentTimeMillis() - lastShown > 1209600000 && randChance == 0
         }
     }

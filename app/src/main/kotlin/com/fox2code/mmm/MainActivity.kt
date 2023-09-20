@@ -163,7 +163,13 @@ class MainActivity : AppCompatActivity(), OnRefreshListener, OverScrollHelper {
                 Toast.makeText(
                     this@MainActivity, R.string.file_picker_not_zip, Toast.LENGTH_SHORT
                 ).show()
-                Timber.e("File is not a zip! Expected 0x504B0304, got %02X%02X%02X%02X", bytes[0], bytes[1], bytes[2], bytes[3])
+                Timber.e(
+                    "File is not a zip! Expected 0x504B0304, got %02X%02X%02X%02X",
+                    bytes[0],
+                    bytes[1],
+                    bytes[2],
+                    bytes[3]
+                )
                 callback?.onReceived(
                     destination,
                     uri,

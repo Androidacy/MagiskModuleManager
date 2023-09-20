@@ -40,7 +40,10 @@ class ModuleViewListBuilder(private val activity: Activity) {
             Timber.w("addNotification(null) called!")
             return
         } else {
-            if (MainApplication.forceDebugLogging) Timber.i("addNotification(%s) called", notificationType)
+            if (MainApplication.forceDebugLogging) Timber.i(
+                "addNotification(%s) called",
+                notificationType
+            )
         }
         synchronized(updateLock) { notifications.add(notificationType) }
     }
@@ -49,13 +52,22 @@ class ModuleViewListBuilder(private val activity: Activity) {
         if (MainApplication.forceDebugLogging) Timber.i("appendInstalledModules() called")
         synchronized(updateLock) {
             for (moduleHolder in mappedModuleHolders.values) {
-                if (MainApplication.forceDebugLogging) Timber.i("zeroing module %s", moduleHolder.moduleInfo?.id)
+                if (MainApplication.forceDebugLogging) Timber.i(
+                    "zeroing module %s",
+                    moduleHolder.moduleInfo?.id
+                )
                 moduleHolder.moduleInfo = null
             }
             val moduleManager = instance
             moduleManager?.runAfterScan {
-                if (MainApplication.forceDebugLogging) Timber.i("A0: runAfterScan %s", moduleManager.modules.size)
-                if (MainApplication.forceDebugLogging) Timber.i("A1: %s", moduleManager.modules.size)
+                if (MainApplication.forceDebugLogging) Timber.i(
+                    "A0: runAfterScan %s",
+                    moduleManager.modules.size
+                )
+                if (MainApplication.forceDebugLogging) Timber.i(
+                    "A1: %s",
+                    moduleManager.modules.size
+                )
                 for (moduleInfo in moduleManager.modules.values) {
                     // add the local module to the list in MainActivity
                     MainActivity.localModuleInfoList += moduleInfo
@@ -129,7 +141,10 @@ class ModuleViewListBuilder(private val activity: Activity) {
                     // retry up to five times, waiting i * 100ms between each try
                     if (tries < 5) {
                         tries++
-                        if (MainApplication.forceDebugLogging) Timber.i("appendRemoteModules() retrying in %dms", tries * 100)
+                        if (MainApplication.forceDebugLogging) Timber.i(
+                            "appendRemoteModules() retrying in %dms",
+                            tries * 100
+                        )
                         Handler(Looper.getMainLooper()).postDelayed({
                             appendRemoteModules()
                         }, tries * 100.toLong())

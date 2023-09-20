@@ -98,7 +98,10 @@ class RuntimeUtils {
                         val granted = ContextCompat.checkSelfPermission(
                             context, Manifest.permission.POST_NOTIFICATIONS
                         ) == PackageManager.PERMISSION_GRANTED
-                        if (MainApplication.forceDebugLogging) Timber.i("Request Notification Permission Done. Result: %s", granted)
+                        if (MainApplication.forceDebugLogging) Timber.i(
+                            "Request Notification Permission Done. Result: %s",
+                            granted
+                        )
                     }
                     MainActivity.doSetupNowRunning = false
                 }
