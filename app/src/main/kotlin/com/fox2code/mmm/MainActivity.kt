@@ -878,9 +878,6 @@ class MainActivity : AppCompatActivity(), OnRefreshListener, OverScrollHelper {
     }
 
     companion object {
-        fun getAppCompatActivity(activity: AppCompatActivity): AppCompatActivity {
-            return activity
-        }
 
         fun getAppCompatActivity(context: Context): AppCompatActivity {
             return context as AppCompatActivity

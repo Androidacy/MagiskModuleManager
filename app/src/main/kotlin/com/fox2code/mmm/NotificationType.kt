@@ -10,7 +10,6 @@
 package com.fox2code.mmm
 
 import android.content.Intent
-import android.net.Uri
 import android.view.View
 import android.widget.Toast
 import androidx.annotation.AttrRes
@@ -20,8 +19,9 @@ import com.fox2code.mmm.installer.InstallerInitializer
 import com.fox2code.mmm.module.ModuleViewListBuilder
 import com.fox2code.mmm.repo.RepoManager
 import com.fox2code.mmm.utils.IntentHelper
+import com.fox2code.mmm.utils.IntentHelper.Companion.OnFileReceivedCallback
+import com.fox2code.mmm.utils.io.Files
 import com.fox2code.mmm.utils.io.Files.Companion.patchModuleSimple
-import com.fox2code.mmm.utils.io.Files.Companion.read
 import com.fox2code.mmm.utils.io.net.Http
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import timber.log.Timber
@@ -205,49 +205,68 @@ enum class NotificationType(
             val module = File(
                 compatActivity.cacheDir, "installer" + File.separator + "module.zip"
             )
-            IntentHelper.openFileTo(compatActivity, module) { d: File, u: Uri, s: Int ->
-                val companion = NotificationType.Companion
-                if (s == IntentHelper.RESPONSE_FILE) {
-                    try {
-                        if (companion.needPatch(d)) {
-                            patchModuleSimple(
-                                read(d), FileOutputStream(d)
-                            )
-                        }
-                        if (companion.needPatch(d)) {
-                            if (d.exists() && !d.delete()) Timber.w("Failed to delete non module zip")
+            IntentHelper.openFileTo(compatActivity, module, object :
+                OnFileReceivedCallback {
+
+                override fun onReceived(
+                    target: File?,
+                    uri: android.net.Uri?,
+                    response: Int
+                ) {
+                    val companion = NotificationType.Companion
+                    if (response == IntentHelper.RESPONSE_FILE) {
+                        try {
+                            if (companion.needPatch(target)) {
+                                patchModuleSimple(
+                                    Files.read(target),
+                                    FileOutputStream(target)
+                                )
+                            }
+                            if (companion.needPatch(target)) {
+                                if (target?.exists() == true && !target.delete()) Timber.w("Failed to delete non module zip")
+                                Toast.makeText(
+                                    compatActivity,
+                                    R.string.invalid_format,
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            } else {
+                                IntentHelper.openInstaller(
+                                    compatActivity,
+                                    target?.absolutePath,
+                                    compatActivity.getString(
+                                        R.string.local_install_title
+                                    ),
+                                    null,
+                                    null,
+                                    false,
+                                    BuildConfig.DEBUG &&  // Use debug mode if no root
+                                            InstallerInitializer.peekMagiskPath() == null
+                                )
+                            }
+                        } catch (ignored: IOException) {
+                            if (target?.exists() == true && !target.delete()) Timber.w("Failed to delete invalid module")
                             Toast.makeText(
-                                compatActivity, R.string.invalid_format, Toast.LENGTH_SHORT
-                            ).show()
-                        } else {
-                            IntentHelper.openInstaller(
                                 compatActivity,
-                                d.absolutePath,
-                                compatActivity.getString(
-                                    R.string.local_install_title
-                                ),
-                                null,
-                                null,
-                                false,
-                                BuildConfig.DEBUG &&  // Use debug mode if no root
-                                        InstallerInitializer.peekMagiskPath() == null
-                            )
+                                R.string.invalid_format,
+                                Toast.LENGTH_SHORT
+                            ).show()
                         }
-                    } catch (ignored: IOException) {
-                        if (d.exists() && !d.delete()) Timber.w("Failed to delete invalid module")
-                        Toast.makeText(
-                            compatActivity, R.string.invalid_format, Toast.LENGTH_SHORT
-                        ).show()
+                    } else if (response == IntentHelper.RESPONSE_URL) {
+                        IntentHelper.openInstaller(
+                            compatActivity,
+                            uri.toString(),
+                            compatActivity.getString(
+                                R.string.remote_install_title
+                            ),
+                            null,
+                            null,
+                            false,
+                            BuildConfig.DEBUG &&  // Use debug mode if no root
+                                    InstallerInitializer.peekMagiskPath() == null
+                        )
                     }
-                } else if (s == IntentHelper.RESPONSE_URL) {
-                    IntentHelper.openInstaller(
-                        compatActivity, u.toString(), compatActivity.getString(
-                            R.string.remote_install_title
-                        ), null, null, false, BuildConfig.DEBUG &&  // Use debug mode if no root
-                                InstallerInitializer.peekMagiskPath() == null
-                    )
                 }
-            }
+            })
         },
         false
     ) {
@@ -324,4 +343,5 @@ enum class NotificationType(
             return false
         }
     }
+
 }

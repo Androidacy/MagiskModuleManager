@@ -23,7 +23,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityOptionsCompat
 import com.fox2code.mmm.BuildConfig
 import com.fox2code.mmm.Constants
-import com.fox2code.mmm.MainActivity
 import com.fox2code.mmm.MainApplication
 import com.fox2code.mmm.R
 import com.fox2code.mmm.XHooks.Companion.getConfigIntent
@@ -368,7 +367,7 @@ enum class IntentHelper {;
             if ((destination == null) || (destination.parentFile.also {
                     destinationFolder = it
                 } == null) || (!destinationFolder?.mkdirs()!! && !destinationFolder!!.isDirectory)) {
-                Timber.w("dest null.for open")
+                Timber.w("dest null for open")
                 callback.onReceived(destination, null, RESPONSE_ERROR)
                 return
             }
@@ -427,27 +426,6 @@ enum class IntentHelper {;
                 )
             }
             getContent.launch("application/zip")
-        }
-
-        fun openFileTo(compatActivity: AppCompatActivity, module: File, function: (File, Uri, Int) -> Unit) {
-            openFileTo(compatActivity, module, object : OnFileReceivedCallback {
-                override fun onReceived(target: File?, uri: Uri?, response: Int) {
-                    if (response == RESPONSE_ERROR) {
-                        MainActivity.getAppCompatActivity(compatActivity).runOnUiThread {
-                            Toast.makeText(
-                                compatActivity, R.string.no_file_provided, Toast.LENGTH_SHORT
-                            ).show()
-                        }
-                    } else {
-                        try {
-                            function(target!!, uri!!, response)
-                        } catch (e: Exception) {
-                            Timber.e(e)
-                            compatActivity.finish()
-                        }
-                    }
-                }
-            })
         }
     }
 }
