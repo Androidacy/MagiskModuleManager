@@ -17,6 +17,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.core.util.Supplier
 import com.fox2code.mmm.Constants
+import com.fox2code.mmm.MainApplication
 import com.topjohnwu.superuser.internal.UiThreadHandler
 import timber.log.Timber
 
@@ -40,13 +41,13 @@ class ExternalHelper private constructor() {
                 )
             }
         if (resolveInfos.isEmpty()) {
-            Timber.i("No external provider installed!")
+            if (MainApplication.forceDebugLogging) Timber.i("No external provider installed!")
             label = if (TEST_MODE) "External" else null
             multi = TEST_MODE
             fallback = null
         } else {
             val resolveInfo = resolveInfos[0]
-            Timber.i("Found external provider: %s", resolveInfo.activityInfo.packageName)
+            if (MainApplication.forceDebugLogging) Timber.i("Found external provider: %s", resolveInfo.activityInfo.packageName)
             fallback =
                 ComponentName(resolveInfo.activityInfo.packageName, resolveInfo.activityInfo.name)
             label = resolveInfo.loadLabel(context.packageManager)

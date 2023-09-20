@@ -7,7 +7,7 @@ import android.content.Context
 import android.content.pm.PackageManager
 import android.view.View
 import androidx.annotation.StringRes
-import com.fox2code.mmm.BuildConfig
+import com.fox2code.mmm.MainApplication
 import com.fox2code.mmm.MainApplication.Companion.INSTANCE
 import com.fox2code.mmm.MainApplication.Companion.formatTime
 import com.fox2code.mmm.MainApplication.Companion.getSharedPreferences
@@ -117,7 +117,7 @@ class ModuleHolder : Comparable<ModuleHolder?> {
         } else if (moduleInfo == null && repoModule != null) {
             Type.INSTALLABLE
         } else if (moduleInfo!!.versionCode < moduleInfo!!.updateVersionCode || repoModule != null && moduleInfo!!.versionCode < repoModule!!.moduleInfo.versionCode) {
-            Timber.i("Module %s is updateable", moduleId)
+            if (MainApplication.forceDebugLogging) Timber.i("Module %s is updateable", moduleId)
             var ignoreUpdate = false
             try {
                 if (getSharedPreferences("mmm")?.getStringSet(
@@ -138,13 +138,13 @@ class ModuleHolder : Comparable<ModuleHolder?> {
                 HashSet()
             )
             var version = ""
-            if (BuildConfig.DEBUG) Timber.d(stringSetT.toString())
+            if (MainApplication.forceDebugLogging) Timber.d(stringSetT.toString())
             // unfortunately, stringset.contains() doesn't work for partial matches
             // so we have to iterate through the set
             for (s in stringSetT!!) {
                 if (s.startsWith(moduleInfo!!.id)) {
                     version = s
-                    if (BuildConfig.DEBUG) Timber.d("igV: %s", version)
+                    if (MainApplication.forceDebugLogging) Timber.d("igV: %s", version)
                     break
                 }
             }
@@ -158,34 +158,34 @@ class ModuleHolder : Comparable<ModuleHolder?> {
                 val wantsVersion = version.split(":".toRegex()).dropLastWhile { it.isEmpty() }
                     .toTypedArray()[1].replace("[^0-9]".toRegex(), "").toInt()
                 // now find out if user wants up to and including this version, or this version and newer
-                if (BuildConfig.DEBUG) Timber.d("igV start with")
+                if (MainApplication.forceDebugLogging) Timber.d("igV start with")
                 version =
                     version.split(":".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()[1]
                 // this version and newer
                 if (version.startsWith("^")) {
-                    if (BuildConfig.DEBUG) Timber.d("igV: newer")
+                    if (MainApplication.forceDebugLogging) Timber.d("igV: newer")
                     // the wantsversion and newer
                     if (remoteVersionCodeInt >= wantsVersion) {
-                        if (BuildConfig.DEBUG) Timber.d("igV: skipping")
+                        if (MainApplication.forceDebugLogging) Timber.d("igV: skipping")
                         // if it is, we skip it
                         ignoreUpdate = true
                     }
                 } else if (version.endsWith("$")) {
-                    if (BuildConfig.DEBUG) Timber.d("igV: older")
+                    if (MainApplication.forceDebugLogging) Timber.d("igV: older")
                     // this wantsversion and older
                     if (remoteVersionCodeInt <= wantsVersion) {
-                        if (BuildConfig.DEBUG) Timber.d("igV: skipping")
+                        if (MainApplication.forceDebugLogging) Timber.d("igV: skipping")
                         // if it is, we skip it
                         ignoreUpdate = true
                     }
                 } else if (wantsVersion == remoteVersionCodeInt) {
-                    if (BuildConfig.DEBUG) Timber.d("igV: equal")
+                    if (MainApplication.forceDebugLogging) Timber.d("igV: equal")
                     // if it is, we skip it
                     ignoreUpdate = true
                 }
             }
             if (ignoreUpdate) {
-                if (BuildConfig.DEBUG) Timber.d("Module %s has update, but is ignored", moduleId)
+                if (MainApplication.forceDebugLogging) Timber.d("Module %s has update, but is ignored", moduleId)
                 Type.INSTALLABLE
             } else {
                 INSTANCE!!.modulesHaveUpdates = true
@@ -193,7 +193,7 @@ class ModuleHolder : Comparable<ModuleHolder?> {
                     INSTANCE!!.updateModules += moduleId
                     INSTANCE!!.updateModuleCount++
                 }
-                if (BuildConfig.DEBUG) Timber.d(
+                if (MainApplication.forceDebugLogging) Timber.d(
                     "modulesHaveUpdates = %s, updateModuleCount = %s",
                     INSTANCE!!.modulesHaveUpdates,
                     INSTANCE!!.updateModuleCount
@@ -250,16 +250,16 @@ class ModuleHolder : Comparable<ModuleHolder?> {
             // set updatezipurl on moduleholder
 
             if (localModuleInfo.updateZipUrl != null) {
-                if (BuildConfig.DEBUG) Timber.d("localModuleInfo: %s", localModuleInfo.updateZipUrl)
+                if (MainApplication.forceDebugLogging) Timber.d("localModuleInfo: %s", localModuleInfo.updateZipUrl)
                 updateZipUrl = localModuleInfo.updateZipUrl
             }
             if (repoModule != null) {
-                if (BuildConfig.DEBUG) Timber.d("repoModule: %s", repoModule!!.zipUrl)
+                if (MainApplication.forceDebugLogging) Timber.d("repoModule: %s", repoModule!!.zipUrl)
                 updateZipUrl = repoModule!!.zipUrl
             }
             // last ditch effort, try to get remoteModuleInfo from localModuleInfo
             if (rInfo != null) {
-                if (BuildConfig.DEBUG) Timber.d("remoteModuleInfo: %s", rInfo.zipUrl)
+                if (MainApplication.forceDebugLogging) Timber.d("remoteModuleInfo: %s", rInfo.zipUrl)
                 updateZipUrl = rInfo.zipUrl
                 moduleInfo?.updateZipUrl = rInfo.zipUrl
             }

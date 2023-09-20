@@ -71,7 +71,7 @@ class SettingsActivity : AppCompatActivity(), LanguageActivity,
         }
 
 
-    @SuppressLint("RestrictedApi")
+    @SuppressLint("RestrictedApi", "CommitTransaction")
     override fun onCreate(savedInstanceState: Bundle?) {
         devModeStep = 0
         super.onCreate(savedInstanceState)
@@ -194,7 +194,7 @@ class SettingsActivity : AppCompatActivity(), LanguageActivity,
             findPreference<Preference>("pref_pkg_info")!!.onPreferenceClickListener =
                 Preference.OnPreferenceClickListener { p: Preference ->
                     versionClicks++
-                    if (BuildConfig.DEBUG) Timber.d("Version clicks: %d", versionClicks)
+                    if (MainApplication.forceDebugLogging) Timber.d("Version clicks: %d", versionClicks)
                     if (versionClicks == 7) {
                         versionClicks = 0
                         openUrl(p.context, "https://www.youtube.com/watch?v=dQw4w9WgXcQ")
@@ -262,7 +262,7 @@ class SettingsActivity : AppCompatActivity(), LanguageActivity,
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
                     points += 1
                 }
-                if (BuildConfig.DEBUG) Timber.d("Device performance class: %d", points)
+                if (MainApplication.forceDebugLogging) Timber.d("Device performance class: %d", points)
                 return if (points <= 7) {
                     PERFORMANCE_CLASS_LOW
                 } else if (points <= 12) {
@@ -274,6 +274,7 @@ class SettingsActivity : AppCompatActivity(), LanguageActivity,
 
     }
 
+    @SuppressLint("CommitTransaction")
     override fun onPreferenceStartFragment(
         caller: PreferenceFragmentCompat, pref: Preference
     ): Boolean {

@@ -5,6 +5,7 @@ package com.fox2code.mmm.utils.io
 
 import android.content.Context
 import android.content.pm.PackageManager
+import com.fox2code.mmm.MainApplication
 import timber.log.Timber
 
 /**
@@ -34,7 +35,7 @@ enum class GMSProviderInstaller {
                 val cl =
                     remote.classLoader.loadClass("com.google.android.gms.common.security.ProviderInstallerImpl")
                 cl.getDeclaredMethod("insertProvider", Context::class.java).invoke(null, remote)
-                Timber.i("Installed GMS security providers!")
+                if (MainApplication.forceDebugLogging) Timber.i("Installed GMS security providers!")
             } catch (e: PackageManager.NameNotFoundException) {
                 Timber.w("No GMS Implementation are installed on this device")
             } catch (e: Exception) {

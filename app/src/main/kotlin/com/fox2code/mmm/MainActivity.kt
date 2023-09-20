@@ -7,12 +7,15 @@ package com.fox2code.mmm
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.annotation.SuppressLint
+import android.content.ContentResolver
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.Rect
+import android.net.Uri
 import android.os.Bundle
+import android.os.Environment
 import android.os.Handler
 import android.os.Looper
 import android.text.Editable
@@ -26,6 +29,7 @@ import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsAnimationCompat
@@ -53,8 +57,10 @@ import com.fox2code.mmm.repo.RepoManager
 import com.fox2code.mmm.repo.RepoModule
 import com.fox2code.mmm.settings.SettingsActivity
 import com.fox2code.mmm.utils.ExternalHelper
+import com.fox2code.mmm.utils.IntentHelper
 import com.fox2code.mmm.utils.RuntimeUtils
 import com.fox2code.mmm.utils.SyncManager
+import com.fox2code.mmm.utils.io.Files
 import com.fox2code.mmm.utils.io.net.Http.Companion.cleanDnsCache
 import com.fox2code.mmm.utils.io.net.Http.Companion.hasWebView
 import com.fox2code.mmm.utils.room.ReposListDatabase
@@ -64,9 +70,15 @@ import com.google.android.material.elevation.SurfaceColors
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.progressindicator.LinearProgressIndicator
 import com.google.android.material.textfield.TextInputEditText
+import com.topjohnwu.superuser.io.SuFileInputStream
 import ly.count.android.sdk.Countly
 import ly.count.android.sdk.ModuleFeedback
 import timber.log.Timber
+import java.io.File
+import java.io.FileOutputStream
+import java.io.InputStream
+import java.io.OutputStream
+import java.nio.file.Files.*
 import java.sql.Timestamp
 
 
@@ -91,6 +103,94 @@ class MainActivity : AppCompatActivity(), OnRefreshListener, OverScrollHelper {
     private var rebootFab: FloatingActionButton? = null
     private var initMode = false
     private var runtimeUtils: RuntimeUtils? = null
+    var callback: IntentHelper.Companion.OnFileReceivedCallback? = null
+    var destination: File? = null
+
+
+    @SuppressLint("SdCardPath")
+    val getContent = this.registerForActivityResult(
+        ActivityResultContracts.GetContent()
+    ) { uri: Uri? ->
+        if (uri == null) {
+            Timber.d("invalid uri received")
+            callback?.onReceived(destination, null, IntentHelper.RESPONSE_ERROR)
+            return@registerForActivityResult
+        }
+        if (MainApplication.forceDebugLogging) Timber.i("FilePicker returned %s", uri)
+        if ("http" == uri.scheme || "https" == uri.scheme) {
+            callback?.onReceived(destination, uri, IntentHelper.RESPONSE_URL)
+            return@registerForActivityResult
+        }
+        if (ContentResolver.SCHEME_FILE == uri.scheme) {
+            Toast.makeText(
+                this@MainActivity, R.string.file_picker_wierd, Toast.LENGTH_SHORT
+            ).show()
+        }
+        var inputStream: InputStream? = null
+        var outputStream: OutputStream? = null
+        var success = false
+        try {
+            if (ContentResolver.SCHEME_FILE == uri.scheme) {
+                var path = uri.path
+                if (path!!.startsWith("/sdcard/")) { // Fix file paths
+                    path =
+                        Environment.getExternalStorageDirectory().absolutePath + path.substring(
+                            7
+                        )
+                }
+                inputStream = SuFileInputStream.open(
+                    File(path).absoluteFile
+                )
+            } else {
+                inputStream = this.contentResolver.openInputStream(uri)
+            }
+            // check if the file is a zip
+            if (inputStream == null) {
+                Toast.makeText(
+                    this@MainActivity, R.string.file_picker_failure, Toast.LENGTH_SHORT
+                ).show()
+                callback?.onReceived(
+                    destination,
+                    uri,
+                    IntentHelper.RESPONSE_ERROR
+                )
+                return@registerForActivityResult
+            }
+            // check if the file is a zip by reading the first 4 bytes
+            val bytes = ByteArray(4)
+            inputStream.read(bytes, 0, 4)
+            if (!(bytes[0] == 0x50.toByte() && bytes[1] == 0x4B.toByte() && bytes[2] == 0x03.toByte() && bytes[3] == 0x04.toByte())) {
+                Toast.makeText(
+                    this@MainActivity, R.string.file_picker_not_zip, Toast.LENGTH_SHORT
+                ).show()
+                Timber.e("File is not a zip! Expected 0x504B0304, got %02X%02X%02X%02X", bytes[0], bytes[1], bytes[2], bytes[3])
+                callback?.onReceived(
+                    destination,
+                    uri,
+                    IntentHelper.RESPONSE_ERROR
+                )
+                return@registerForActivityResult
+            }
+            outputStream = FileOutputStream(destination)
+            Files.copy(inputStream, outputStream)
+            if (MainApplication.forceDebugLogging) Timber.i("File saved at %s", destination)
+            success = true
+        } catch (e: Exception) {
+            Timber.e(e)
+            Toast.makeText(
+                this@MainActivity, R.string.file_picker_failure, Toast.LENGTH_SHORT
+            ).show()
+        } finally {
+            Files.closeSilently(inputStream)
+            Files.closeSilently(outputStream)
+            if (!success && destination?.exists() == true && !destination!!.delete()) Timber.e("Failed to delete artifact!")
+        }
+        callback?.onReceived(
+            destination,
+            uri,
+            if (success) IntentHelper.RESPONSE_FILE else IntentHelper.RESPONSE_ERROR
+        )
+    }
 
     init {
         moduleViewListBuilder.addNotification(NotificationType.INSTALL_FROM_STORAGE)
@@ -246,7 +346,10 @@ class MainActivity : AppCompatActivity(), OnRefreshListener, OverScrollHelper {
                     } as Map<String, Any>?, 1)
                 Thread {
                     if (moduleViewListBuilder.setQueryChange(query)) {
-                        Timber.i("Query submit: %s on offline list", query)
+                        if (MainApplication.forceDebugLogging) Timber.i(
+                            "Query submit: %s on offline list",
+                            query
+                        )
                         Thread(
                             { moduleViewListBuilder.applyTo(moduleList!!, moduleViewAdapter!!) },
                             "Query update thread"
@@ -254,7 +357,10 @@ class MainActivity : AppCompatActivity(), OnRefreshListener, OverScrollHelper {
                     }
                     // same for online list
                     if (moduleViewListBuilderOnline.setQueryChange(query)) {
-                        Timber.i("Query submit: %s on online list", query)
+                        if (MainApplication.forceDebugLogging) Timber.i(
+                            "Query submit: %s on online list",
+                            query
+                        )
                         Thread({
                             moduleViewListBuilderOnline.applyTo(
                                 moduleListOnline!!, moduleViewAdapterOnline!!
@@ -275,7 +381,10 @@ class MainActivity : AppCompatActivity(), OnRefreshListener, OverScrollHelper {
                     } as Map<String, Any>?, 1)
                 Thread {
                     if (moduleViewListBuilder.setQueryChange(query)) {
-                        Timber.i("Query submit: %s on offline list", query)
+                        if (MainApplication.forceDebugLogging) Timber.i(
+                            "Query submit: %s on offline list",
+                            query
+                        )
                         Thread(
                             { moduleViewListBuilder.applyTo(moduleList!!, moduleViewAdapter!!) },
                             "Query update thread"
@@ -283,7 +392,10 @@ class MainActivity : AppCompatActivity(), OnRefreshListener, OverScrollHelper {
                     }
                     // same for online list
                     if (moduleViewListBuilderOnline.setQueryChange(query)) {
-                        Timber.i("Query submit: %s on online list", query)
+                        if (MainApplication.forceDebugLogging) Timber.i(
+                            "Query submit: %s on online list",
+                            query
+                        )
                         Thread({
                             moduleViewListBuilderOnline.applyTo(
                                 moduleListOnline!!, moduleViewAdapterOnline!!
@@ -478,7 +590,7 @@ class MainActivity : AppCompatActivity(), OnRefreshListener, OverScrollHelper {
         MainApplication.INSTANCE!!.resetUpdateModule()
         tryGetMagiskPathAsync(object : InstallerInitializer.Callback {
             override fun onPathReceived(path: String?) {
-                Timber.i("Got magisk path: %s", path)
+                if (MainApplication.forceDebugLogging) Timber.i("Got magisk path: %s", path)
                 if (peekMagiskVersion() < Constants.MAGISK_VER_CODE_INSTALL_COMMAND) {
                     if (!InstallerInitializer.isKsu) {
                         moduleViewListBuilder.addNotification(
@@ -508,14 +620,14 @@ class MainActivity : AppCompatActivity(), OnRefreshListener, OverScrollHelper {
 
             fun commonNext() {
                 if (BuildConfig.DEBUG) {
-                    if (BuildConfig.DEBUG) Timber.d("Common next")
+                    if (MainApplication.forceDebugLogging) Timber.d("Common next")
                     moduleViewListBuilder.addNotification(NotificationType.DEBUG)
                 }
                 NotificationType.NO_INTERNET.autoAdd(moduleViewListBuilderOnline)
                 val progressIndicator = progressIndicator!!
                 // hide progress bar is repo-manager says we have no internet
                 if (!RepoManager.getINSTANCE()!!.hasConnectivity()) {
-                    Timber.i("No connection, hiding progress")
+                    if (MainApplication.forceDebugLogging) Timber.i("No connection, hiding progress")
                     runOnUiThread {
                         progressIndicator.visibility = View.GONE
                         progressIndicator.isIndeterminate = false
@@ -524,7 +636,7 @@ class MainActivity : AppCompatActivity(), OnRefreshListener, OverScrollHelper {
                 }
                 val context: Context = this@MainActivity
                 if (runtimeUtils!!.waitInitialSetupFinished(context, this@MainActivity)) {
-                    if (BuildConfig.DEBUG) Timber.d("waiting...")
+                    if (MainApplication.forceDebugLogging) Timber.d("waiting...")
                     return
                 }
                 swipeRefreshBlocker = System.currentTimeMillis() + 5000L
@@ -541,8 +653,8 @@ class MainActivity : AppCompatActivity(), OnRefreshListener, OverScrollHelper {
                     }
                 }
                 moduleViewListBuilder.applyTo(moduleList, moduleViewAdapter!!)
-                Timber.i("Scanning for modules!")
-                if (BuildConfig.DEBUG) Timber.i("Initialize Update")
+                if (MainApplication.forceDebugLogging) Timber.i("Scanning for modules!")
+                if (MainApplication.forceDebugLogging) Timber.i("Initialize Update")
                 val max = instance!!.getUpdatableModuleCount()
                 if (RepoManager.getINSTANCE()!!.customRepoManager != null && RepoManager.getINSTANCE()!!.customRepoManager!!.needUpdate()) {
                     Timber.w("Need update on create")
@@ -550,9 +662,9 @@ class MainActivity : AppCompatActivity(), OnRefreshListener, OverScrollHelper {
                     Timber.w("CustomRepoManager is null")
                 }
                 // update compat metadata
-                if (BuildConfig.DEBUG) Timber.i("Check Update Compat")
+                if (MainApplication.forceDebugLogging) Timber.i("Check Update Compat")
                 appUpdateManager.checkUpdateCompat()
-                if (BuildConfig.DEBUG) Timber.i("Check Update")
+                if (MainApplication.forceDebugLogging) Timber.i("Check Update")
                 // update repos
                 if (hasWebView()) {
                     val updateListener: SyncManager.UpdateListener =
@@ -588,11 +700,11 @@ class MainActivity : AppCompatActivity(), OnRefreshListener, OverScrollHelper {
                     }
                     // Compatibility data still needs to be updated
                     val appUpdateManager = appUpdateManager
-                    if (BuildConfig.DEBUG) Timber.i("Check App Update")
+                    if (MainApplication.forceDebugLogging) Timber.i("Check App Update")
                     if (BuildConfig.ENABLE_AUTO_UPDATER && appUpdateManager.checkUpdate(true)) moduleViewListBuilder.addNotification(
                         NotificationType.UPDATE_AVAILABLE
                     )
-                    if (BuildConfig.DEBUG) Timber.i("Check Json Update")
+                    if (MainApplication.forceDebugLogging) Timber.i("Check Json Update")
                     if (max != 0) {
                         var current = 0
                         for (localModuleInfo in instance!!.modules.values) {
@@ -601,7 +713,7 @@ class MainActivity : AppCompatActivity(), OnRefreshListener, OverScrollHelper {
                             // the reasoning is that remote repos are considered "validated" while local modules are not
                             // for instance, a potential attacker could hijack a perfectly legitimate module and inject an updateJson with a malicious update - thereby bypassing any checks repos may have, without anyone noticing until it's too late
                             if (localModuleInfo.updateJson != null && localModuleInfo.flags and ModuleInfo.FLAG_MM_REMOTE_MODULE == 0) {
-                                if (BuildConfig.DEBUG) Timber.i(localModuleInfo.id)
+                                if (MainApplication.forceDebugLogging) Timber.i(localModuleInfo.id)
                                 try {
                                     localModuleInfo.checkModuleUpdate()
                                 } catch (e: Exception) {
@@ -618,7 +730,7 @@ class MainActivity : AppCompatActivity(), OnRefreshListener, OverScrollHelper {
                         }
                     }
                 }
-                if (BuildConfig.DEBUG) Timber.i("Apply")
+                if (MainApplication.forceDebugLogging) Timber.i("Apply")
                 RepoManager.getINSTANCE()
                     ?.runAfterUpdate { moduleViewListBuilderOnline.appendRemoteModules() }
                 moduleViewListBuilder.applyTo(moduleList, moduleViewAdapter!!)
@@ -626,13 +738,13 @@ class MainActivity : AppCompatActivity(), OnRefreshListener, OverScrollHelper {
                 moduleViewListBuilderOnline.applyTo(moduleListOnline, moduleViewAdapterOnline!!)
                 // if moduleViewListBuilderOnline has the upgradeable notification, show a badge on the online repo nav item
                 if (MainApplication.INSTANCE!!.modulesHaveUpdates) {
-                    Timber.i("Applying badge")
+                    if (MainApplication.forceDebugLogging) Timber.i("Applying badge")
                     Handler(Looper.getMainLooper()).post {
                         val badge = bottomNavigationView.getOrCreateBadge(R.id.online_menu_item)
                         badge.isVisible = true
                         badge.number = MainApplication.INSTANCE!!.updateModuleCount
                         badge.applyTheme(MainApplication.INSTANCE!!.theme)
-                        Timber.i("Badge applied")
+                        if (MainApplication.forceDebugLogging) Timber.i("Badge applied")
                     }
                 }
                 runOnUiThread {
@@ -640,7 +752,7 @@ class MainActivity : AppCompatActivity(), OnRefreshListener, OverScrollHelper {
                     progressIndicator.visibility = View.GONE
                 }
                 maybeShowUpgrade()
-                Timber.i("Finished app opening state!")
+                if (MainApplication.forceDebugLogging) Timber.i("Finished app opening state!")
             }
         }, true)
         // if system lang is not in MainApplication.supportedLocales, show a snackbar to ask user to help translate
@@ -660,16 +772,19 @@ class MainActivity : AppCompatActivity(), OnRefreshListener, OverScrollHelper {
             Handler(Looper.getMainLooper()).postDelayed({
                 showFeedback()
             }, 5000)
-            Timber.i("Should show feedback")
+            if (MainApplication.forceDebugLogging) Timber.i("Should show feedback")
         } else {
-            Timber.i("Should not show feedback")
+            if (MainApplication.forceDebugLogging) Timber.i("Should not show feedback")
         }
     }
 
     private fun showFeedback() {
         Countly.sharedInstance().feedback()
             .getAvailableFeedbackWidgets { retrievedWidgets, error ->
-                Timber.i("Got feedback widgets: %s", retrievedWidgets.size)
+                if (MainApplication.forceDebugLogging) Timber.i(
+                    "Got feedback widgets: %s",
+                    retrievedWidgets.size
+                )
                 if (error == null) {
                     if (retrievedWidgets.size > 0) {
                         val feedbackWidget = retrievedWidgets[0]
@@ -730,7 +845,7 @@ class MainActivity : AppCompatActivity(), OnRefreshListener, OverScrollHelper {
             swipeRefreshLayout!!.isRefreshing = false
             return  // Do not double scan
         }
-        if (BuildConfig.DEBUG) Timber.i("Refresh")
+        if (MainApplication.forceDebugLogging) Timber.i("Refresh")
         progressIndicator!!.visibility = View.VISIBLE
         progressIndicator!!.setProgressCompat(0, false)
         swipeRefreshBlocker = System.currentTimeMillis() + 5000L
@@ -764,16 +879,16 @@ class MainActivity : AppCompatActivity(), OnRefreshListener, OverScrollHelper {
             } else {
                 // Compatibility data still needs to be updated
                 val appUpdateManager = appUpdateManager
-                if (BuildConfig.DEBUG) Timber.i("Check App Update")
+                if (MainApplication.forceDebugLogging) Timber.i("Check App Update")
                 if (BuildConfig.ENABLE_AUTO_UPDATER && appUpdateManager.checkUpdate(true)) moduleViewListBuilder.addNotification(
                     NotificationType.UPDATE_AVAILABLE
                 )
-                if (BuildConfig.DEBUG) Timber.i("Check Json Update")
+                if (MainApplication.forceDebugLogging) Timber.i("Check Json Update")
                 if (max != 0) {
                     var current = 0
                     for (localModuleInfo in instance!!.modules.values) {
                         if (localModuleInfo.updateJson != null && localModuleInfo.flags and ModuleInfo.FLAG_MM_REMOTE_MODULE == 0) {
-                            if (BuildConfig.DEBUG) Timber.i(localModuleInfo.id)
+                            if (MainApplication.forceDebugLogging) Timber.i(localModuleInfo.id)
                             try {
                                 localModuleInfo.checkModuleUpdate()
                             } catch (e: Exception) {
@@ -790,7 +905,7 @@ class MainActivity : AppCompatActivity(), OnRefreshListener, OverScrollHelper {
                     }
                 }
             }
-            if (BuildConfig.DEBUG) Timber.i("Apply")
+            if (MainApplication.forceDebugLogging) Timber.i("Apply")
             runOnUiThread {
                 progressIndicator!!.visibility = View.GONE
                 swipeRefreshLayout!!.isRefreshing = false
@@ -811,7 +926,7 @@ class MainActivity : AppCompatActivity(), OnRefreshListener, OverScrollHelper {
             // wait for up to 10 seconds for AndroidacyRepoData to be initialized
             var i: Int
             if (AndroidacyRepoData.instance.isEnabled && AndroidacyRepoData.instance.memberLevel == null) {
-                if (BuildConfig.DEBUG) Timber.d("Member level is null, waiting for it to be initialized")
+                if (MainApplication.forceDebugLogging) Timber.d("Member level is null, waiting for it to be initialized")
                 i = 0
                 while (AndroidacyRepoData.instance.memberLevel == null && i < 20) {
                     i++
@@ -830,28 +945,28 @@ class MainActivity : AppCompatActivity(), OnRefreshListener, OverScrollHelper {
                 runtimeUtils!!.showUpgradeSnackbar(this, this)
             } else {
                 if (!AndroidacyRepoData.instance.isEnabled) {
-                    Timber.i("AndroidacyRepoData is disabled, not showing upgrade snackbar 1")
+                    if (MainApplication.forceDebugLogging) Timber.i("AndroidacyRepoData is disabled, not showing upgrade snackbar 1")
                 } else if (AndroidacyRepoData.instance.memberLevel != "Guest") {
-                    Timber.i(
+                    if (MainApplication.forceDebugLogging) Timber.i(
                         "AndroidacyRepoData is not Guest, not showing upgrade snackbar 1. Level: %s",
                         AndroidacyRepoData.instance.memberLevel
                     )
                 } else {
-                    Timber.i("Unknown error, not showing upgrade snackbar 1")
+                    if (MainApplication.forceDebugLogging) Timber.i("Unknown error, not showing upgrade snackbar 1")
                 }
             }
         } else if (AndroidacyRepoData.instance.isEnabled && AndroidacyRepoData.instance.memberLevel == "Guest") {
             runtimeUtils!!.showUpgradeSnackbar(this, this)
         } else {
             if (!AndroidacyRepoData.instance.isEnabled) {
-                Timber.i("AndroidacyRepoData is disabled, not showing upgrade snackbar 2")
+                if (MainApplication.forceDebugLogging) Timber.i("AndroidacyRepoData is disabled, not showing upgrade snackbar 2")
             } else if (AndroidacyRepoData.instance.memberLevel != "Guest") {
-                Timber.i(
+                if (MainApplication.forceDebugLogging) Timber.i(
                     "AndroidacyRepoData is not Guest, not showing upgrade snackbar 2. Level: %s",
                     AndroidacyRepoData.instance.memberLevel
                 )
             } else {
-                Timber.i("Unknown error, not showing upgrade snackbar 2")
+                if (MainApplication.forceDebugLogging) Timber.i("Unknown error, not showing upgrade snackbar 2")
             }
         }
     }

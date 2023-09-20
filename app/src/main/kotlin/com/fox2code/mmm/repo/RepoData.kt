@@ -8,6 +8,7 @@ import androidx.room.Room
 import com.fox2code.mmm.AppUpdateManager.Companion.shouldForceHide
 import com.fox2code.mmm.BuildConfig
 import com.fox2code.mmm.MainActivity
+import com.fox2code.mmm.MainApplication
 import com.fox2code.mmm.MainApplication.Companion.INSTANCE
 import com.fox2code.mmm.R
 import com.fox2code.mmm.XRepo
@@ -342,7 +343,7 @@ open class RepoData(url: String, cacheRoot: File) : XRepo() {
                 }
             }
         } else {
-            if (BuildConfig.DEBUG) Timber.d("Metadata file not found for %s", repoModule.id)
+            if (MainApplication.forceDebugLogging) Timber.d("Metadata file not found for %s", repoModule.id)
         }
         repoModule.moduleInfo.flags =
             repoModule.moduleInfo.flags or ModuleInfo.FLAG_METADATA_INVALID

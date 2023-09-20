@@ -9,7 +9,6 @@ import android.content.DialogInterface
 import android.os.Handler
 import android.os.Looper
 import android.widget.Toast
-import com.fox2code.mmm.BuildConfig
 import com.fox2code.mmm.MainActivity
 import com.fox2code.mmm.MainApplication
 import com.fox2code.mmm.MainApplication.Companion.getSharedPreferences
@@ -152,18 +151,18 @@ class RepoManager private constructor(mainApplication: MainApplication) : SyncMa
         }
         for (i in repoDatas.indices) {
             updateListener.update(STEP1 * (i / repoDatas.size))
-            if (BuildConfig.DEBUG) if (BuildConfig.DEBUG) Timber.d("Preparing to fetch: %s", repoDatas[i].name)
+            if (MainApplication.forceDebugLogging) Timber.d("Preparing to fetch: %s", repoDatas[i].name)
             moduleToUpdate += RepoUpdater(repoDatas[i]).also { repoUpdaters[i] = it }.fetchIndex()
             // divvy the 40 of step1 to each repo
             updateListener.update(STEP1 * ((i + 1) / repoDatas.size))
         }
-        if (BuildConfig.DEBUG) if (BuildConfig.DEBUG) Timber.d("Updating meta-data")
+        if (MainApplication.forceDebugLogging) Timber.d("Updating meta-data")
         var updatedModules = 0
         val allowLowQualityModules = isDisableLowQualityModuleFilter
         for (i in repoUpdaters.indices) {
             // Check if the repo is enabled
             if (!repoUpdaters[i]!!.repoData.isEnabled) {
-                if (BuildConfig.DEBUG) if (BuildConfig.DEBUG) Timber.d(
+                if (MainApplication.forceDebugLogging) Timber.d(
                     "Skipping disabled repo: %s",
                     repoUpdaters[i]!!.repoData.name
                 )
@@ -171,7 +170,7 @@ class RepoManager private constructor(mainApplication: MainApplication) : SyncMa
             }
             val repoModules = repoUpdaters[i]!!.toUpdate()
             val repoData = repoDatas[i]
-            if (BuildConfig.DEBUG) if (BuildConfig.DEBUG) Timber.d("Registering %s", repoData.name)
+            if (MainApplication.forceDebugLogging) Timber.d("Registering %s", repoData.name)
             for (repoModule in repoModules!!) {
                 try {
                     if (repoModule.propUrl != null && repoModule.propUrl!!.isNotEmpty()) {
@@ -229,15 +228,15 @@ class RepoManager private constructor(mainApplication: MainApplication) : SyncMa
             }
             MainApplication.INSTANCE!!.repoModules.putAll(modules)
         }
-        if (BuildConfig.DEBUG) if (BuildConfig.DEBUG) Timber.d("Finishing update")
+        if (MainApplication.forceDebugLogging) Timber.d("Finishing update")
         if (hasConnectivity()) {
             for (i in repoDatas.indices) {
                 // If repo is not enabled, skip
                 if (!repoDatas[i].isEnabled) {
-                    if (BuildConfig.DEBUG) if (BuildConfig.DEBUG) Timber.d("Skipping ${repoDatas[i].name} because it's disabled")
+                    if (MainApplication.forceDebugLogging) Timber.d("Skipping ${repoDatas[i].name} because it's disabled")
                     continue
                 }
-                if (BuildConfig.DEBUG) if (BuildConfig.DEBUG) Timber.d("Finishing: %s", repoUpdaters[i]!!.repoData.name)
+                if (MainApplication.forceDebugLogging) Timber.d("Finishing: %s", repoUpdaters[i]!!.repoData.name)
                 isLastUpdateSuccess = repoUpdaters[i]!!.finish()
                 if (!isLastUpdateSuccess || modules.isEmpty()) {
                     Timber.e("Failed to update %s", repoUpdaters[i]!!.repoData.name)
@@ -280,7 +279,7 @@ class RepoManager private constructor(mainApplication: MainApplication) : SyncMa
                 updateListener.update(STEP1 + (STEP2 * (i / repoUpdaters.size)))
             }
         }
-        Timber.i("Got " + modules.size + " modules!")
+        if (MainApplication.forceDebugLogging) Timber.i("Got " + modules.size + " modules!")
         updateListener.update(STEP1 + STEP2 + STEP3)
     }
 

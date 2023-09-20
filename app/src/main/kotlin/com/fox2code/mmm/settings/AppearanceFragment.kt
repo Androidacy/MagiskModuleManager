@@ -17,7 +17,6 @@ import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.TwoStatePreference
 import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKey
-import com.fox2code.mmm.BuildConfig
 import com.fox2code.mmm.MainApplication
 import com.fox2code.mmm.R
 import com.fox2code.rosettax.LanguageSwitcher
@@ -57,7 +56,7 @@ class AppearanceFragment : PreferenceFragmentCompat() {
         val themePreference = findPreference<ListPreference>("pref_theme")
         // If transparent theme(s) are set, disable monet
         if (themePreference!!.value == "transparent_light") {
-            if (BuildConfig.DEBUG) Timber.d("disabling monet")
+            if (MainApplication.forceDebugLogging) Timber.d("disabling monet")
             findPreference<Preference>("pref_enable_monet")!!.isEnabled = false
             // Toggle monet off
             (findPreference<Preference>("pref_enable_monet") as TwoStatePreference?)!!.isChecked =
@@ -76,11 +75,11 @@ class AppearanceFragment : PreferenceFragmentCompat() {
             Preference.SummaryProvider { _: Preference? -> themePreference.entry }
         themePreference.onPreferenceChangeListener =
             Preference.OnPreferenceChangeListener { _: Preference?, newValue: Any ->
-                if (BuildConfig.DEBUG) Timber.d("refreshing activity. New value: %s", newValue)
+                if (MainApplication.forceDebugLogging) Timber.d("refreshing activity. New value: %s", newValue)
                 editor.putString("pref_theme", newValue as String).apply()
                 // If theme contains "transparent" then disable monet
                 if (newValue.toString().contains("transparent")) {
-                    if (BuildConfig.DEBUG) Timber.d("disabling monet")
+                    if (MainApplication.forceDebugLogging) Timber.d("disabling monet")
                     // Show a dialogue warning the user about issues with transparent themes and
                     // that blur/monet will be disabled
                     MaterialAlertDialogBuilder(requireContext()).setTitle(R.string.transparent_theme_dialogue_title)

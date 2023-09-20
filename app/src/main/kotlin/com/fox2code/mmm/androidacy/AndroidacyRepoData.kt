@@ -13,6 +13,7 @@ import android.widget.Toast
 import com.fingerprintjs.android.fingerprint.Fingerprinter
 import com.fingerprintjs.android.fingerprint.FingerprinterFactory.create
 import com.fox2code.mmm.BuildConfig
+import com.fox2code.mmm.MainApplication
 import com.fox2code.mmm.MainApplication.Companion.INSTANCE
 import com.fox2code.mmm.MainApplication.Companion.getSharedPreferences
 import com.fox2code.mmm.R
@@ -84,7 +85,7 @@ class AndroidacyRepoData(cacheRoot: File?, testMode: Boolean) : RepoData(
             // response is JSON
             val jsonObject = JSONObject(String(resp))
             memberLevel = jsonObject.getString("role")
-            if (BuildConfig.DEBUG) Timber.d("Member level: %s", memberLevel)
+            if (MainApplication.forceDebugLogging) Timber.d("Member level: %s", memberLevel)
             val memberPermissions = jsonObject.getJSONArray("permissions")
             // set role and permissions on userInfo property
             userInfo = arrayOf(
@@ -209,16 +210,16 @@ class AndroidacyRepoData(cacheRoot: File?, testMode: Boolean) : RepoData(
                 token =
                     getSharedPreferences("androidacy")?.getString("pref_androidacy_api_token", null)
                 if (token != null && !isValidToken(token)) {
-                    Timber.i("Token expired or invalid, requesting new one...")
+                    if (MainApplication.forceDebugLogging) Timber.i("Token expired or invalid, requesting new one...")
                     token = null
                 } else {
-                    Timber.i("Using cached token")
+                    if (MainApplication.forceDebugLogging) Timber.i("Using cached token")
                 }
             } else if (!isValidToken(token)) {
-                Timber.i("Token expired, requesting new one...")
+                if (MainApplication.forceDebugLogging) Timber.i("Token expired, requesting new one...")
                 token = null
             } else {
-                Timber.i("Using validated cached token")
+                if (MainApplication.forceDebugLogging) Timber.i("Using validated cached token")
             }
         } catch (e: IOException) {
             if (shouldTimeout(e)) {
@@ -228,9 +229,9 @@ class AndroidacyRepoData(cacheRoot: File?, testMode: Boolean) : RepoData(
             return false
         }
         if (token == null) {
-            Timber.i("Token is null, requesting new one...")
+            if (MainApplication.forceDebugLogging) Timber.i("Token is null, requesting new one...")
             try {
-                Timber.i("Requesting new token...")
+                if (MainApplication.forceDebugLogging) Timber.i("Requesting new token...")
                 token = requestNewToken()
                 // Parse token
                 // Ensure token is valid
@@ -252,7 +253,7 @@ class AndroidacyRepoData(cacheRoot: File?, testMode: Boolean) : RepoData(
                     val editor = getSharedPreferences("androidacy")!!.edit()
                     editor.putString("pref_androidacy_api_token", token)
                     editor.apply()
-                    Timber.i("Token saved to shared preference")
+                    if (MainApplication.forceDebugLogging) Timber.i("Token saved to shared preference")
                 }
             } catch (e: Exception) {
                 if (shouldTimeout(e)) {
@@ -270,7 +271,7 @@ class AndroidacyRepoData(cacheRoot: File?, testMode: Boolean) : RepoData(
     @Throws(JSONException::class)
     override fun populate(jsonObject: JSONObject): List<RepoModule>? {
         var jsonObject = jsonObject
-        if (BuildConfig.DEBUG) Timber.d("AndroidacyRepoData populate start")
+        if (MainApplication.forceDebugLogging) Timber.d("AndroidacyRepoData populate start")
         val name = jsonObject.optString("name", "Androidacy Modules Repo")
         val nameForModules =
             if (name.endsWith(" (Official)")) name.substring(0, name.length - 11) else name
@@ -297,7 +298,7 @@ class AndroidacyRepoData(cacheRoot: File?, testMode: Boolean) : RepoData(
                 if (!jsonArray.isNull(i)) {
                     jsonObject = jsonArray.getJSONObject(i)
                 } else {
-                    if (BuildConfig.DEBUG) Timber.d("Skipping null module at index %d", i)
+                    if (MainApplication.forceDebugLogging) Timber.d("Skipping null module at index %d", i)
                     continue
                 }
             } catch (e: JSONException) {

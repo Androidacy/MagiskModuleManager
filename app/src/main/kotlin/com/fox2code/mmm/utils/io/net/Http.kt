@@ -247,7 +247,7 @@ enum class Http {;
                     0, dot
                 ).toInt()
             }
-            if (BuildConfig.DEBUG) Timber.d(
+            if (MainApplication.forceDebugLogging) Timber.d(
                 "Webview version: %s (%d)", webviewVersion, webviewVersionCode
             )
             hasWebView =
@@ -414,7 +414,7 @@ enum class Http {;
             httpClientWithCache = followRedirects(httpclientBuilder, true).build()
             httpclientBuilder.dns(fallbackDNS!!)
             httpClientWithCacheDoH = followRedirects(httpclientBuilder, true).build()
-            Timber.i("Initialized Http successfully!")
+            if (MainApplication.forceDebugLogging) Timber.i("Initialized Http successfully!")
             doh = MainApplication.isDohEnabled
         }
 
@@ -481,7 +481,7 @@ enum class Http {;
                 throw HttpException(e.message, 0)
             }
             if (BuildConfig.DEBUG_HTTP) {
-                if (BuildConfig.DEBUG) Timber.d("doHttpGet: request executed")
+                if (MainApplication.forceDebugLogging) Timber.d("doHttpGet: request executed")
             }
             // 200/204 == success, 304 == cache valid
             if (response != null) {
@@ -502,7 +502,7 @@ enum class Http {;
                         if (retryAfter != null) {
                             try {
                                 val seconds = Integer.parseInt(retryAfter)
-                                if (BuildConfig.DEBUG) Timber.d("Sleeping for $seconds seconds")
+                                if (MainApplication.forceDebugLogging) Timber.d("Sleeping for $seconds seconds")
                                 Thread.sleep(seconds * 1000L)
                             } catch (e: NumberFormatException) {
                                 Timber.e(e, "Failed to parse Retry-After header")
@@ -512,7 +512,7 @@ enum class Http {;
                         } else {// start with one second and try up to five times
                             if (limitedRetries < 5) {
                                 limitedRetries++
-                                if (BuildConfig.DEBUG) Timber.d("Sleeping for 1 second")
+                                if (MainApplication.forceDebugLogging) Timber.d("Sleeping for 1 second")
                                 try {
                                     Thread.sleep(1000L * limitedRetries)
                                 } catch (e: InterruptedException) {
@@ -528,7 +528,7 @@ enum class Http {;
                 }
             }
             if (BuildConfig.DEBUG_HTTP) {
-                if (BuildConfig.DEBUG) Timber.d("doHttpGet: " + url.replace("=[^&]*".toRegex(), "=****") + " succeeded")
+                if (MainApplication.forceDebugLogging) Timber.d("doHttpGet: " + url.replace("=[^&]*".toRegex(), "=****") + " succeeded")
             }
             var responseBody = response?.body
             // Use cache api if used cached response
@@ -540,7 +540,7 @@ enum class Http {;
             }
             if (BuildConfig.DEBUG_HTTP) {
                 if (responseBody != null) {
-                    if (BuildConfig.DEBUG) Timber.d("doHttpGet: returning " + responseBody.contentLength() + " bytes")
+                    if (MainApplication.forceDebugLogging) Timber.d("doHttpGet: returning " + responseBody.contentLength() + " bytes")
                 }
             }
             if (MainApplication.analyticsAllowed() && MainApplication.isCrashReportingEnabled) {
@@ -559,7 +559,7 @@ enum class Http {;
 
         @Throws(IOException::class)
         private fun doHttpPostRaw(url: String, data: String, allowCache: Boolean): Any {
-            if (BuildConfig.DEBUG) Timber.d("POST %s", url)
+            if (MainApplication.forceDebugLogging) Timber.d("POST %s", url)
 
             val uniqid = randomUUID().toString()
             if (MainApplication.analyticsAllowed() && MainApplication.isCrashReportingEnabled) {
@@ -588,7 +588,7 @@ enum class Http {;
             }
             if (response.isRedirect) {
                 // follow redirect with same method
-                if (BuildConfig.DEBUG) Timber.d("doHttpPostRaw: following redirect: %s", response.header("Location"))
+                if (MainApplication.forceDebugLogging) Timber.d("doHttpPostRaw: following redirect: %s", response.header("Location"))
                 response =
                     (if (allowCache) getHttpClientWithCache() else getHttpClient())!!.newCall(
                         Request.Builder().url(
@@ -607,7 +607,7 @@ enum class Http {;
                     if (retryAfter != null) {
                         try {
                             val seconds = Integer.parseInt(retryAfter)
-                            if (BuildConfig.DEBUG) Timber.d("Sleeping for $seconds seconds")
+                            if (MainApplication.forceDebugLogging) Timber.d("Sleeping for $seconds seconds")
                             Thread.sleep(seconds * 1000L)
                         } catch (e: NumberFormatException) {
                             Timber.e(e, "Failed to parse Retry-After header")
@@ -617,7 +617,7 @@ enum class Http {;
                     } else {// start with one second and try up to five times
                         if (limitedRetries < 5) {
                             limitedRetries++
-                            if (BuildConfig.DEBUG) Timber.d("Sleeping for 1 second")
+                            if (MainApplication.forceDebugLogging) Timber.d("Sleeping for 1 second")
                             try {
                                 Thread.sleep(1000L * limitedRetries)
                             } catch (e: InterruptedException) {
@@ -678,7 +678,7 @@ enum class Http {;
                     if (retryAfter != null) {
                         try {
                             val seconds = Integer.parseInt(retryAfter)
-                            if (BuildConfig.DEBUG) Timber.d("Sleeping for $seconds seconds")
+                            if (MainApplication.forceDebugLogging) Timber.d("Sleeping for $seconds seconds")
                             Thread.sleep(seconds * 1000L)
                         } catch (e: NumberFormatException) {
                             Timber.e(e, "Failed to parse Retry-After header")
@@ -688,7 +688,7 @@ enum class Http {;
                     } else {// start with one second and try up to five times
                         if (limitedRetries < 5) {
                             limitedRetries++
-                            if (BuildConfig.DEBUG) Timber.d("Sleeping for 1 second")
+                            if (MainApplication.forceDebugLogging) Timber.d("Sleeping for 1 second")
                             try {
                                 Thread.sleep(1000L * limitedRetries)
                             } catch (e: InterruptedException) {
@@ -716,7 +716,7 @@ enum class Http {;
             val updateInterval: Long = 100
             var nextUpdate = System.currentTimeMillis() + updateInterval
             var currentUpdate: Long
-            Timber.i("Target: $target Divider: $divider")
+            if (MainApplication.forceDebugLogging) Timber.i("Target: $target Divider: $divider")
             progressListener.onUpdate(0, (target / divider).toInt(), false)
             while (true) {
                 val read = inputStream.read(buff)
@@ -758,7 +758,7 @@ enum class Http {;
         }
 
         fun setDoh(doh: Boolean) {
-            Timber.i("DoH: " + Companion.doh + " -> " + doh)
+            if (MainApplication.forceDebugLogging) Timber.i("DoH: " + Companion.doh + " -> " + doh)
             Companion.doh = doh
         }
 
@@ -780,19 +780,19 @@ enum class Http {;
             val systemSaysYes = networkCapabilities != null && networkCapabilities.hasCapability(
                 NetworkCapabilities.NET_CAPABILITY_INTERNET
             )
-            if (BuildConfig.DEBUG) Timber.d("System says we have internet: $systemSaysYes")
+            if (MainApplication.forceDebugLogging) Timber.d("System says we have internet: $systemSaysYes")
             // if we don't already have a listener, add one, so we can invalidate the cache when the network changes
             if (connectivityListener == null) {
                 connectivityListener = object : ConnectivityManager.NetworkCallback() {
                     override fun onAvailable(network: Network) {
                         super.onAvailable(network)
-                        if (BuildConfig.DEBUG) Timber.d("Network became available")
+                        if (MainApplication.forceDebugLogging) Timber.d("Network became available")
                         lastConnectivityCheck = 0
                     }
 
                     override fun onLost(network: Network) {
                         super.onLost(network)
-                        if (BuildConfig.DEBUG) Timber.d("Network became unavailable")
+                        if (MainApplication.forceDebugLogging) Timber.d("Network became unavailable")
                         lastConnectivityCheck = 0
                     }
                 }
@@ -809,7 +809,7 @@ enum class Http {;
                 Timber.e(e, "Failed to check internet connection")
                 false
             }
-            if (BuildConfig.DEBUG) Timber.d("We say we have internet: $hasInternet")
+            if (MainApplication.forceDebugLogging) Timber.d("We say we have internet: $hasInternet")
             lastConnectivityCheck = System.currentTimeMillis()
             @Suppress("KotlinConstantConditions")
             lastConnectivityResult =

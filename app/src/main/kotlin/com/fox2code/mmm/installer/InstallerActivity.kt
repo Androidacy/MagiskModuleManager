@@ -202,7 +202,7 @@ class InstallerActivity : AppCompatActivity() {
             // Set this to the error message if it's a HTTP error
             var rawModule: ByteArray?
             try {
-                Timber.i(
+                if (MainApplication.forceDebugLogging) Timber.i(
                     "%s%s", if (urlMode) "Downloading: " else "Loading: ", AndroidacyUtil.hideToken(
                         target
                     )
@@ -225,7 +225,7 @@ class InstallerActivity : AppCompatActivity() {
                 }
                 if (canceled) return@Runnable
                 if (!checksum.isNullOrEmpty()) {
-                    Timber.i("Checking for checksum: %s", checksum.toString())
+                    if (MainApplication.forceDebugLogging) Timber.i("Checking for checksum: %s", checksum.toString())
                     runOnUiThread { installerTerminal!!.addLine("- Checking file integrity") }
                     if (!checkSumMatch(rawModule, checksum)) {
                         setInstallStateFinished(false, "! File integrity check failed", "")
@@ -332,7 +332,7 @@ class InstallerActivity : AppCompatActivity() {
         if (canceled) return
         // disable back
         runOnUiThread { cancelFloatingButton!!.isEnabled = false }
-        Timber.i("Installing: %s", moduleCache!!.name)
+        if (MainApplication.forceDebugLogging) Timber.i("Installing: %s", moduleCache!!.name)
         val installerController = InstallerController(
             progressIndicator, installerTerminal, file!!.absoluteFile, noExtensions
         )
@@ -361,7 +361,7 @@ class InstallerActivity : AppCompatActivity() {
                     }
                 }
             } catch (e: Exception) {
-                Timber.i(e)
+                if (MainApplication.forceDebugLogging) Timber.i(e)
             }
             installerMonitor = InstallerMonitor(installScript)
             installJob = Shell.cmd(
@@ -690,7 +690,16 @@ class InstallerActivity : AppCompatActivity() {
         override fun onAddElement(s: String?) {
             var s = s ?: return
             if (!enabled) return
-            Timber.i("MSG: %s", s)
+            // sanitize string for logging
+            if (MainApplication.forceDebugLogging) {
+                var tempS = s
+                if (tempS.length > 100) tempS = tempS.substring(0, 100) + "..."
+                // remove ansii color codes
+                tempS = tempS.replace("\u001B\\[[;\\d]*m".toRegex(), "")
+                // remove non-printable characters and replace with ?
+                tempS = tempS.replace("[^\\p{Print}]".toRegex(), "?")
+                Timber.i("New line: %s", tempS)
+            }
             if ("#!useExt" == s.trim { it <= ' ' } && !noExtension) {
                 useExt = true
                 return
@@ -816,7 +825,7 @@ class InstallerActivity : AppCompatActivity() {
 
         override fun onAddElement(e: String?) {
             val e = e ?: return
-            Timber.i("Monitor: %s", e)
+            if (MainApplication.forceDebugLogging) Timber.i("Monitor: %s", e)
             lastCommand = e
         }
 

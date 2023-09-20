@@ -404,4 +404,12 @@
     <string name="androidacy_thanks_v2">An Androidacy app</string>
     <string name="fox2code_thanks_v2">v0.x by Fox2Code</string>
     <string name="fox2code_thanks_desc_v2">Versions before 0.6.8 were developed by Fox2Code and versions up to 1.1 were contributed to by him. We thank him for his work.</string>
+    <string name="force_debug_logging_desc">Forces debug logging in release builds. CAUTION: this may slow down the app significantly. Please do not turn on unless requested by support.</string>
+    <string name="force_debug_logging_pref">Force debug logging</string>
+    <string name="download_started">Started downloading</string>
+    <string name="download_module_description">Downloading Module %s</string>
+    <string name="download_completed">Download finished and saved to default download folder</string>
+    <string name="download_failed">Failed to download!</string>
+    <string name="download_finished">Finished downloading and saved to downloads folder</string>
+    <string name="file_picker_not_zip">The file you picked is not a valid zip file.</string>
 </resources>

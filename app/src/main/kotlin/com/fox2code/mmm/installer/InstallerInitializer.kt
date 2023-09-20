@@ -139,7 +139,7 @@ class InstallerInitializer {
                     ).to(output).exec().isSuccess
                 ) {
                     if (BuildConfig.DEBUG) {
-                        Timber.i("Failed to search for ramdisk")
+                        if (MainApplication.forceDebugLogging) Timber.i("Failed to search for ramdisk")
                     }
                     if (output.size != 0) {
                         hsRmdsk = "false" == output[0] || "true".equals(
@@ -150,8 +150,8 @@ class InstallerInitializer {
                     return null
                 }
                 if (BuildConfig.DEBUG) {
-                    Timber.i("Found ramdisk: %s", output[0])
-                    Timber.i("Searching for Magisk path. Current path: %s", mgskPth)
+                    if (MainApplication.forceDebugLogging) Timber.i("Found ramdisk: %s", output[0])
+                    if (MainApplication.forceDebugLogging) Timber.i("Searching for Magisk path. Current path: %s", mgskPth)
                 }
                 // reset output
                 output.clear()
@@ -161,7 +161,7 @@ class InstallerInitializer {
                     )) {
                     mgskPth = output[0]
                     if (BuildConfig.DEBUG) {
-                        Timber.i("Magisk path 1: %s", mgskPth)
+                        if (MainApplication.forceDebugLogging) Timber.i("Magisk path 1: %s", mgskPth)
                     }
                 } else if (Shell.cmd("if [ -d /data/adb/ksu ]; then echo true; else echo false; fi", "su -V").to(
                         output
@@ -172,7 +172,7 @@ class InstallerInitializer {
                     Shell.cmd("su -v").to(suVer).exec()
                     if (suVer.size > 0 && suVer[0].contains("ksu") || suVer[0].contains("Kernelsu", true)) {
                         if (BuildConfig.DEBUG) {
-                            Timber.i("Kernelsu detected")
+                            if (MainApplication.forceDebugLogging) Timber.i("Kernelsu detected")
                         }
                         mgskPth = "/data/adb"
                         isKsu = true
@@ -192,9 +192,9 @@ class InstallerInitializer {
                     }
                     return null
                 }
-                Timber.i("Magisk runtime path: %s", mgskPth)
+                if (MainApplication.forceDebugLogging) Timber.i("Magisk runtime path: %s", mgskPth)
                 mgskVerCode = output[1].toInt()
-                Timber.i("Magisk version code: %s", mgskVerCode)
+                if (MainApplication.forceDebugLogging) Timber.i("Magisk version code: %s", mgskVerCode)
                 if (mgskVerCode >= Constants.MAGISK_VER_CODE_FLAT_MODULES && mgskVerCode < Constants.MAGISK_VER_CODE_PATH_SUPPORT && (mgskPth.isEmpty() || !File(
                         mgskPth
                     ).exists())

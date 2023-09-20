@@ -39,7 +39,7 @@ class RuntimeUtils {
 
     @SuppressLint("RestrictedApi")
     private fun ensurePermissions(context: Context, activity: MainActivity) {
-        if (BuildConfig.DEBUG) Timber.i("Ensure Permissions")
+        if (MainApplication.forceDebugLogging) Timber.i("Ensure Permissions")
         // First, check if user has said don't ask again by checking if pref_dont_ask_again_notification_permission is true
         if (!PreferenceManager.getDefaultSharedPreferences(context)
                 .getBoolean("pref_dont_ask_again_notification_permission", false)
@@ -48,14 +48,14 @@ class RuntimeUtils {
                     context, Manifest.permission.POST_NOTIFICATIONS
                 ) != PackageManager.PERMISSION_GRANTED
             ) {
-                if (BuildConfig.DEBUG) Timber.i("Request Notification Permission")
+                if (MainApplication.forceDebugLogging) Timber.i("Request Notification Permission")
                 if (MainApplication.INSTANCE!!.lastActivity!!
                         .shouldShowRequestPermissionRationale(Manifest.permission.POST_NOTIFICATIONS)
                 ) {
                     // Show a dialog explaining why we need context permission, which is to show
                     // notifications for updates
                     activity.runOnUiThread {
-                        if (BuildConfig.DEBUG) Timber.i("Show Notification Permission Dialog")
+                        if (MainApplication.forceDebugLogging) Timber.i("Show Notification Permission Dialog")
                         val builder = MaterialAlertDialogBuilder(context)
                         builder.setTitle(R.string.permission_notification_title)
                         builder.setMessage(R.string.permission_notification_message)
@@ -87,18 +87,18 @@ class RuntimeUtils {
                             MainActivity.doSetupNowRunning = false
                         }
                         builder.show()
-                        if (BuildConfig.DEBUG) Timber.i("Show Notification Permission Dialog Done")
+                        if (MainApplication.forceDebugLogging) Timber.i("Show Notification Permission Dialog Done")
                     }
                 } else {
                     // Request the permission
-                    if (BuildConfig.DEBUG) Timber.i("Request Notification Permission")
+                    if (MainApplication.forceDebugLogging) Timber.i("Request Notification Permission")
                     activity.requestPermissions(arrayOf(Manifest.permission.POST_NOTIFICATIONS), 0)
                     if (BuildConfig.DEBUG) {
                         // Log if granted via onRequestPermissionsResult
                         val granted = ContextCompat.checkSelfPermission(
                             context, Manifest.permission.POST_NOTIFICATIONS
                         ) == PackageManager.PERMISSION_GRANTED
-                        Timber.i("Request Notification Permission Done. Result: %s", granted)
+                        if (MainApplication.forceDebugLogging) Timber.i("Request Notification Permission Done. Result: %s", granted)
                     }
                     MainActivity.doSetupNowRunning = false
                 }
@@ -145,7 +145,7 @@ class RuntimeUtils {
                 MainActivity.doSetupNowRunning = false
             }
         } else {
-            if (BuildConfig.DEBUG) Timber.i("Notification Permission Already Granted or Don't Ask Again")
+            if (MainApplication.forceDebugLogging) Timber.i("Notification Permission Already Granted or Don't Ask Again")
             MainActivity.doSetupNowRunning = false
         }
     }
@@ -156,7 +156,7 @@ class RuntimeUtils {
     // Method to show a setup box on first launch
     @SuppressLint("InflateParams", "RestrictedApi", "UnspecifiedImmutableFlag", "ApplySharedPref")
     fun checkShowInitialSetup(context: Context, activity: MainActivity) {
-        if (BuildConfig.DEBUG) Timber.i("Checking if we need to run setup")
+        if (MainApplication.forceDebugLogging) Timber.i("Checking if we need to run setup")
         // Check if context is the first launch using prefs and if doSetupRestarting was passed in the intent
         val prefs = MainApplication.getSharedPreferences("mmm")!!
         var firstLaunch = prefs.getString("last_shown_setup", null) != "v5"
@@ -167,7 +167,7 @@ class RuntimeUtils {
             firstLaunch = false
         }
         if (BuildConfig.DEBUG) {
-            Timber.i(
+            if (MainApplication.forceDebugLogging) Timber.i(
                 "First launch: %s, pref value: %s",
                 firstLaunch,
                 prefs.getString("last_shown_setup", null)
@@ -176,7 +176,7 @@ class RuntimeUtils {
         if (firstLaunch) {
             MainActivity.doSetupNowRunning = true
             // Launch setup wizard
-            if (BuildConfig.DEBUG) Timber.i("Launching setup wizard")
+            if (MainApplication.forceDebugLogging) Timber.i("Launching setup wizard")
             // Show setup activity
             val intent = Intent(context, SetupActivity::class.java)
             activity.finish()
@@ -190,7 +190,7 @@ class RuntimeUtils {
      * @return true if the load workflow must be stopped.
      */
     fun waitInitialSetupFinished(context: Context, activity: MainActivity): Boolean {
-        if (BuildConfig.DEBUG) Timber.i("waitInitialSetupFinished")
+        if (MainApplication.forceDebugLogging) Timber.i("waitInitialSetupFinished")
         try {
             // Wait for doSetupNow to finish
             while (MainActivity.doSetupNowRunning) {
@@ -244,7 +244,7 @@ class RuntimeUtils {
      */
     @SuppressLint("RestrictedApi")
     fun showUpgradeSnackbar(context: Context, activity: MainActivity) {
-        Timber.i("showUpgradeSnackbar start")
+        if (MainApplication.forceDebugLogging) Timber.i("showUpgradeSnackbar start")
         // if sb is already showing, wait 4 seconds and try again
         if (MainActivity.isShowingWeblateSb) {
             Handler(Looper.getMainLooper()).postDelayed({
@@ -271,7 +271,7 @@ class RuntimeUtils {
         snackbar.show()
         // do not show for another 7 days
         prefs.edit().putLong("ugsns4", System.currentTimeMillis()).apply()
-        Timber.i("showUpgradeSnackbar done")
+        if (MainApplication.forceDebugLogging) Timber.i("showUpgradeSnackbar done")
     }
 
     companion object {

@@ -9,6 +9,7 @@ enum class Constants {
     ;
 
     companion object {
+        const val EXTRA_DOWNLOAD_TITLE: String = "Download"
         const val MAGISK_VER_CODE_FLAT_MODULES = 19000
         const val MAGISK_VER_CODE_UTIL_INSTALL = 20400
         const val MAGISK_VER_CODE_PATH_SUPPORT = 21000

@@ -48,6 +48,8 @@
     <uses-permission android:name="android.permission.REQUEST_DELETE_PACKAGES" />
     <!-- wifi -->
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <!-- be gay do crime -->
+    <uses-permission android:name="android.permission.ACCESS_DOWNLOAD_MANAGER" />
 
     <application
         android:name=".MainApplication"

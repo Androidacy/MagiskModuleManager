@@ -9,7 +9,6 @@ import android.net.Uri
 import android.os.Build
 import android.provider.OpenableColumns
 import android.util.Log
-import com.fox2code.mmm.BuildConfig
 import com.fox2code.mmm.MainApplication
 import com.topjohnwu.superuser.io.SuFile
 import com.topjohnwu.superuser.io.SuFileInputStream
@@ -222,7 +221,7 @@ enum class Files {
                     throw IOException("Unable to create temp unzip dir")
                 }
                 // unzip
-                if (BuildConfig.DEBUG) Timber.d("Unzipping module to %s", tempUnzipDir.absolutePath)
+                if (MainApplication.forceDebugLogging) Timber.d("Unzipping module to %s", tempUnzipDir.absolutePath)
                 try {
                     ZipFile(tempFile).use { zipFile ->
                         var files = zipFile.entries
@@ -280,7 +279,7 @@ enum class Files {
                                 Timber.e(e, "Unable to zip up module")
                             }
                         } else {
-                            if (BuildConfig.DEBUG) Timber.d("Module does not have a single folder in the top level, skipping")
+                            if (MainApplication.forceDebugLogging) Timber.d("Module does not have a single folder in the top level, skipping")
                         }
                     }
                 } catch (e: IOException) {

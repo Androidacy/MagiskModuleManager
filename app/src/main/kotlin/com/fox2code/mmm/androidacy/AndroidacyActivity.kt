@@ -196,7 +196,7 @@ class AndroidacyActivity : AppCompatActivity() {
                     // sanitize url
                     @Suppress("NAME_SHADOWING") var url = request.url.toString()
                     url = AndroidacyUtil.hideToken(url)
-                    Timber.i("Exiting WebView %s", url)
+                    if (MainApplication.forceDebugLogging) Timber.i("Exiting WebView %s", url)
                     IntentHelper.openUri(view.context, request.url.toString())
                     return true
                 }
@@ -311,17 +311,17 @@ class AndroidacyActivity : AppCompatActivity() {
             override fun onProgressChanged(view: WebView, newProgress: Int) {
                 if (downloadMode) return
                 if (newProgress != 100 && prgInd.visibility != View.VISIBLE) {
-                    Timber.i("Progress: %d, showing progress bar", newProgress)
+                    if (MainApplication.forceDebugLogging) Timber.i("Progress: %d, showing progress bar", newProgress)
                     prgInd.visibility = View.VISIBLE
                 }
                 // if progress is greater than one, set indeterminate to false
                 if (newProgress > 1) {
-                    Timber.i("Progress: %d, setting indeterminate to false", newProgress)
+                    if (MainApplication.forceDebugLogging) Timber.i("Progress: %d, setting indeterminate to false", newProgress)
                     prgInd.isIndeterminate = false
                 }
                 prgInd.setProgress(newProgress, true)
                 if (newProgress == 100 && prgInd.visibility != View.GONE) {
-                    Timber.i("Progress: %d, hiding progress bar", newProgress)
+                    if (MainApplication.forceDebugLogging) Timber.i("Progress: %d, hiding progress bar", newProgress)
                     prgInd.isIndeterminate = true
                     prgInd.visibility = View.GONE
                 }
@@ -332,9 +332,9 @@ class AndroidacyActivity : AppCompatActivity() {
             if (downloadMode && isDownloadUrl(downloadUrl)) {
                 megaIntercept(pageUrl, downloadUrl)
             }
-            Timber.i("Download mode is on")
+            if (MainApplication.forceDebugLogging) Timber.i("Download mode is on")
             if (AndroidacyUtil.isAndroidacyLink(downloadUrl) && !backOnResume) {
-                Timber.i("Androidacy link detected")
+                if (MainApplication.forceDebugLogging) Timber.i("Androidacy link detected")
                 val androidacyWebAPI = androidacyWebAPI
                 if (androidacyWebAPI != null) {
                     if (!androidacyWebAPI.downloadMode) {
@@ -343,12 +343,12 @@ class AndroidacyActivity : AppCompatActivity() {
                         // Workaround Androidacy bug
                         val moduleId = moduleIdOfUrl(downloadUrl)
                         if (megaIntercept(wbv.url, downloadUrl)) {
-                            Timber.i("megaIntercept failure 2. Forcing onBackPress")
+                            if (MainApplication.forceDebugLogging) Timber.i("megaIntercept failure 2. Forcing onBackPress")
                             // Block request as Androidacy doesn't allow duplicate requests
                             return@setDownloadListener
                         } else if (moduleId != null) {
                             // Download module
-                            Timber.i("megaIntercept failure. Forcing onBackPress")
+                            if (MainApplication.forceDebugLogging) Timber.i("megaIntercept failure. Forcing onBackPress")
                             finish()
                         }
                     }
@@ -356,7 +356,7 @@ class AndroidacyActivity : AppCompatActivity() {
                     androidacyWebAPI.downloadMode = false
                 }
                 backOnResume = true
-                Timber.i("Exiting WebView %s", AndroidacyUtil.hideToken(downloadUrl))
+                if (MainApplication.forceDebugLogging) Timber.i("Exiting WebView %s", AndroidacyUtil.hideToken(downloadUrl))
                 for (prefix in arrayOf<String>(
                     "https://production-api.androidacy.com/magisk/file//",
                     "https://staging-api.androidacy.com/magisk/file/"
@@ -365,7 +365,7 @@ class AndroidacyActivity : AppCompatActivity() {
                         return@setDownloadListener
                     }
                 }
-                IntentHelper.openCustomTab(this, downloadUrl)
+                IntentHelper.startDownloadUsingDownloadManager(this, downloadUrl, title)
             }
         })
         androidacyWebAPI = AndroidacyWebAPI(this, allowInstall)
@@ -452,7 +452,7 @@ class AndroidacyActivity : AppCompatActivity() {
         val androidacyWebAPI = androidacyWebAPI
         val moduleId = AndroidacyUtil.getModuleId(fileUrl)
         if (moduleId == null) {
-            Timber.i("No module id?")
+            if (MainApplication.forceDebugLogging) Timber.i("No module id?")
             // Re-open the page
             webView!!.loadUrl(pageUrl + "&force_refresh=" + System.currentTimeMillis())
         }
@@ -503,7 +503,7 @@ class AndroidacyActivity : AppCompatActivity() {
             webView!!.removeAllViews()
             webView!!.destroy() // fix memory leak
         }
-        Timber.i("onDestroy for %s", this)
+        if (MainApplication.forceDebugLogging) Timber.i("onDestroy for %s", this)
     }
 
     companion object {

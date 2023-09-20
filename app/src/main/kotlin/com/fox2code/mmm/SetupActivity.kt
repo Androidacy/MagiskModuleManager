@@ -196,31 +196,31 @@ class SetupActivity : AppCompatActivity(), LanguageActivity {
         // On debug builds, log when a switch is toggled
         if (BuildConfig.DEBUG) {
             (Objects.requireNonNull<Any>(view.findViewById(R.id.setup_background_update_check)) as MaterialSwitch).setOnCheckedChangeListener { _: CompoundButton?, isChecked: Boolean ->
-                Timber.i(
+                if (MainApplication.forceDebugLogging) Timber.i(
                     "Automatic update Check: %s",
                     isChecked
                 )
             }
             setupCrashReporting.setOnCheckedChangeListener { _: CompoundButton?, isChecked: Boolean ->
-                Timber.i(
+                if (MainApplication.forceDebugLogging) Timber.i(
                     "Crash Reporting: %s",
                     isChecked
                 )
             }
             (Objects.requireNonNull<Any>(view.findViewById(R.id.setup_crash_reporting_pii)) as MaterialSwitch).setOnCheckedChangeListener { _: CompoundButton?, isChecked: Boolean ->
-                Timber.i(
+                if (MainApplication.forceDebugLogging) Timber.i(
                     "Crash Reporting PII: %s",
                     isChecked
                 )
             }
             (Objects.requireNonNull<Any>(view.findViewById(R.id.setup_androidacy_repo)) as MaterialSwitch).setOnCheckedChangeListener { _: CompoundButton?, isChecked: Boolean ->
-                Timber.i(
+                if (MainApplication.forceDebugLogging) Timber.i(
                     "Androidacy Repo: %s",
                     isChecked
                 )
             }
             (Objects.requireNonNull<Any>(view.findViewById(R.id.setup_magisk_alt_repo)) as MaterialSwitch).setOnCheckedChangeListener { _: CompoundButton?, isChecked: Boolean ->
-                Timber.i(
+                if (MainApplication.forceDebugLogging) Timber.i(
                     "Magisk Alt Repo: %s",
                     isChecked
                 )
@@ -301,11 +301,11 @@ class SetupActivity : AppCompatActivity(), LanguageActivity {
                 ).show()
                 return@setOnClickListener
             }
-            Timber.i("Setup button clicked")
+            if (MainApplication.forceDebugLogging) Timber.i("Setup button clicked")
             // get instance of editor
-            if (BuildConfig.DEBUG) Timber.d("Saving preferences")
+            if (MainApplication.forceDebugLogging) Timber.d("Saving preferences")
             val editor = prefs.edit()
-            if (BuildConfig.DEBUG) Timber.d("Got editor: %s", editor)
+            if (MainApplication.forceDebugLogging) Timber.d("Got editor: %s", editor)
             // Set the Automatic update check pref
             editor.putBoolean(
                 "pref_background_update_check", (Objects.requireNonNull<Any>(
@@ -347,7 +347,7 @@ class SetupActivity : AppCompatActivity(), LanguageActivity {
                     )
                 ) as MaterialSwitch).isChecked
             )
-            if (BuildConfig.DEBUG) Timber.d("Saving preferences")
+            if (MainApplication.forceDebugLogging) Timber.d("Saving preferences")
             // now basically do the same thing for room db
             val db = Room.databaseBuilder(
                 applicationContext,
@@ -356,7 +356,7 @@ class SetupActivity : AppCompatActivity(), LanguageActivity {
             val androidacyRepoRoom = andRepoView.isChecked
             val magiskAltRepoRoom = magiskAltRepoView.isChecked
             val reposListDao = db.reposListDao()
-            if (BuildConfig.DEBUG) Timber.d(reposListDao.getAll().toString())
+            if (MainApplication.forceDebugLogging) Timber.d(reposListDao.getAll().toString())
             val androidacyRepoRoomObj = reposListDao.getById("androidacy_repo")
             val magiskAltRepoRoomObj = reposListDao.getById("magisk_alt_repo")
             reposListDao.setEnabled(androidacyRepoRoomObj.id, androidacyRepoRoom)
@@ -366,11 +366,11 @@ class SetupActivity : AppCompatActivity(), LanguageActivity {
             // Commit the changes
             editor.commit()
             // Log the changes
-            if (BuildConfig.DEBUG) Timber.d("Setup finished. Preferences: %s", prefs.all)
-            if (BuildConfig.DEBUG) Timber.d("Androidacy repo: %s", androidacyRepoRoom)
-            if (BuildConfig.DEBUG) Timber.d("Magisk Alt repo: %s", magiskAltRepoRoom)
+            if (MainApplication.forceDebugLogging) Timber.d("Setup finished. Preferences: %s", prefs.all)
+            if (MainApplication.forceDebugLogging) Timber.d("Androidacy repo: %s", androidacyRepoRoom)
+            if (MainApplication.forceDebugLogging) Timber.d("Magisk Alt repo: %s", magiskAltRepoRoom)
             // log last shown setup
-            if (BuildConfig.DEBUG) Timber.d("Last shown setup: %s", prefs.getString("last_shown_setup", "v0"))
+            if (MainApplication.forceDebugLogging) Timber.d("Last shown setup: %s", prefs.getString("last_shown_setup", "v0"))
             // Restart the activity
             MainActivity.doSetupRestarting = true
             val pendingIntent = PendingIntent.getActivity(
@@ -391,7 +391,7 @@ class SetupActivity : AppCompatActivity(), LanguageActivity {
         // unselect the cancel button because it's selected by default
         cancelButton.isSelected = false
         cancelButton.setOnClickListener { _: View? ->
-            Timber.i("Cancel button clicked")
+            if (MainApplication.forceDebugLogging) Timber.i("Cancel button clicked")
             // close the app
             finish()
         }
@@ -450,7 +450,7 @@ class SetupActivity : AppCompatActivity(), LanguageActivity {
     // creates the room database
     private fun createDatabases() {
         val thread = Thread {
-            if (BuildConfig.DEBUG) Timber.d("Creating databases")
+            if (MainApplication.forceDebugLogging) Timber.d("Creating databases")
             val startTime = System.currentTimeMillis()
             val appContext = MainApplication.INSTANCE!!.applicationContext
             val db = Room.databaseBuilder(appContext, ReposListDatabase::class.java, "ReposList.db")
@@ -532,7 +532,7 @@ class SetupActivity : AppCompatActivity(), LanguageActivity {
                     ).show()
                 }
             } else {
-                if (BuildConfig.DEBUG) Timber.d("ReposList is updated with 2 entries")
+                if (MainApplication.forceDebugLogging) Timber.d("ReposList is updated with 2 entries")
             }
             // make sure modulelistcache is updated with 1 entry
             if (moduleListCacheDao.getAll().size != 1) {
@@ -546,12 +546,12 @@ class SetupActivity : AppCompatActivity(), LanguageActivity {
                     ).show()
                 }
             } else {
-                if (BuildConfig.DEBUG) Timber.d("ModuleListCache is updated with 1 entry")
+                if (MainApplication.forceDebugLogging) Timber.d("ModuleListCache is updated with 1 entry")
             }
             // close the databases
             db.close()
             db2.close()
-            if (BuildConfig.DEBUG) Timber.d("Databases created in %s ms", System.currentTimeMillis() - startTime)
+            if (MainApplication.forceDebugLogging) Timber.d("Databases created in %s ms", System.currentTimeMillis() - startTime)
         }
         thread.start()
     }
@@ -590,7 +590,7 @@ class SetupActivity : AppCompatActivity(), LanguageActivity {
             val componentName = ComponentName(this, UpdateActivity::class.java)
             val componentEnabledSetting = pm.getComponentEnabledSetting(componentName)
             if (componentEnabledSetting == PackageManager.COMPONENT_ENABLED_STATE_ENABLED) {
-                if (BuildConfig.DEBUG) Timber.d("Disabling update activity for fdroid flavor")
+                if (MainApplication.forceDebugLogging) Timber.d("Disabling update activity for fdroid flavor")
                 // disable update activity through package manager
                 pm.setComponentEnabledSetting(
                     componentName,

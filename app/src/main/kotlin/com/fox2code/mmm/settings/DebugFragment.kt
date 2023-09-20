@@ -9,6 +9,7 @@ import android.widget.Toast
 import androidx.core.content.FileProvider
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
+import androidx.preference.SwitchPreferenceCompat
 import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKey
 import com.fox2code.mmm.BuildConfig
@@ -91,7 +92,7 @@ class DebugFragment : PreferenceFragmentCompat() {
             }
         if (!BuildConfig.DEBUG || InstallerInitializer.peekMagiskPath() == null) {
             // Hide the pref_crash option if not in debug mode - stop users from purposely crashing the app
-            Timber.i(InstallerInitializer.peekMagiskPath())
+            if (MainApplication.forceDebugLogging) Timber.i(InstallerInitializer.peekMagiskPath())
             findPreference<Preference?>("pref_test_crash")!!.isVisible = false
         } else {
             if (findPreference<Preference?>("pref_test_crash") != null && findPreference<Preference?>(
@@ -206,6 +207,19 @@ class DebugFragment : PreferenceFragmentCompat() {
                 startActivity(Intent.createChooser(shareIntent, getString(R.string.share_logs)))
                 true
             }
+        // handle pref_force_debug_logging, which is always on in debug mode and off by default in release mode
+        val forceDebugLogging = findPreference<SwitchPreferenceCompat>("pref_force_debug_logging")
+        forceDebugLogging!!.onPreferenceChangeListener =
+            Preference.OnPreferenceChangeListener { _: Preference?, newValue: Any? ->
+                // set the debug logging flag
+                MainApplication.forceDebugLogging = newValue as Boolean
+                true
+            }
+        // force enable the pref_force_debug_logging if we're in debug mode and prevent users from disabling it
+        if (BuildConfig.DEBUG) {
+            forceDebugLogging.isEnabled = false
+            forceDebugLogging.isChecked = true
+        }
     }
 
 }

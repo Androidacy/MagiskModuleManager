@@ -8,8 +8,8 @@ package com.fox2code.mmm.utils
 
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.app.DownloadManager
 import android.content.ActivityNotFoundException
-import android.content.ContentResolver
 import android.content.Context
 import android.content.ContextWrapper
 import android.content.Intent
@@ -18,11 +18,12 @@ import android.os.Bundle
 import android.os.Environment
 import android.util.TypedValue
 import android.widget.Toast
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityOptionsCompat
+import androidx.core.content.ContextCompat.getSystemService
 import com.fox2code.mmm.BuildConfig
 import com.fox2code.mmm.Constants
+import com.fox2code.mmm.MainActivity
 import com.fox2code.mmm.MainApplication
 import com.fox2code.mmm.R
 import com.fox2code.mmm.XHooks.Companion.getConfigIntent
@@ -30,17 +31,11 @@ import com.fox2code.mmm.XHooks.Companion.isModuleActive
 import com.fox2code.mmm.androidacy.AndroidacyActivity
 import com.fox2code.mmm.installer.InstallerActivity
 import com.fox2code.mmm.markdown.MarkdownActivity
-import com.fox2code.mmm.utils.io.Files.Companion.closeSilently
-import com.fox2code.mmm.utils.io.Files.Companion.copy
 import com.fox2code.mmm.utils.io.net.Http.Companion.hasWebView
 import com.topjohnwu.superuser.CallbackList
 import com.topjohnwu.superuser.Shell
-import com.topjohnwu.superuser.io.SuFileInputStream
 import timber.log.Timber
 import java.io.File
-import java.io.FileOutputStream
-import java.io.InputStream
-import java.io.OutputStream
 import java.net.URISyntaxException
 
 @Suppress("unused")
@@ -75,7 +70,7 @@ enum class IntentHelper {;
 
         @JvmOverloads
         fun openUrl(context: Context, url: String?, forceBrowser: Boolean = false) {
-            if (BuildConfig.DEBUG) Timber.d("Opening url: %s, forced browser %b", url, forceBrowser)
+            if (MainApplication.forceDebugLogging) Timber.d("Opening url: %s, forced browser %b", url, forceBrowser)
             try {
                 val myIntent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
                 myIntent.flags = FLAG_GRANT_URI_PERMISSION
@@ -84,7 +79,7 @@ enum class IntentHelper {;
                 }
                 startActivity(context, myIntent, false)
             } catch (e: ActivityNotFoundException) {
-                if (BuildConfig.DEBUG) Timber.d(e, "Could not find suitable activity to handle url")
+                if (MainApplication.forceDebugLogging) Timber.d(e, "Could not find suitable activity to handle url")
                 Toast.makeText(
                     context, MainApplication.INSTANCE!!.lastActivity!!.getString(
                         R.string.no_browser
@@ -94,7 +89,7 @@ enum class IntentHelper {;
         }
 
         fun openCustomTab(context: Context, url: String?) {
-            if (BuildConfig.DEBUG) Timber.d("Opening url: %s in custom tab", url)
+            if (MainApplication.forceDebugLogging) Timber.d("Opening url: %s in custom tab", url)
             try {
                 val viewIntent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
                 viewIntent.flags = FLAG_GRANT_URI_PERMISSION
@@ -103,12 +98,62 @@ enum class IntentHelper {;
                 tabIntent.addCategory(Intent.CATEGORY_BROWSABLE)
                 startActivityEx(context, tabIntent, viewIntent)
             } catch (e: ActivityNotFoundException) {
-                if (BuildConfig.DEBUG) Timber.d(e, "Could not find suitable activity to handle url")
+                if (MainApplication.forceDebugLogging) Timber.d(e, "Could not find suitable activity to handle url")
                 Toast.makeText(
                     context, MainApplication.INSTANCE!!.lastActivity!!.getString(
                         R.string.no_browser
                     ), Toast.LENGTH_LONG
                 ).show()
+            }
+        }
+
+        @SuppressLint("Range")
+        fun startDownloadUsingDownloadManager(context: Context, url: String?, title: String?) {
+            if (MainApplication.forceDebugLogging) Timber.d("Downloading url: %s", url)
+            val request = DownloadManager.Request(Uri.parse(url))
+                .setAllowedNetworkTypes(DownloadManager.Request.NETWORK_WIFI or DownloadManager.Request.NETWORK_MOBILE)
+                .setTitle((title?.replace(" ", "_") ?: "Module") + ".zip")
+                .setDescription(MainApplication.INSTANCE!!.lastActivity!!.getString(R.string.download_module_description, title))
+                .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
+                .setAllowedOverMetered(true)
+                .setAllowedOverRoaming(false)
+                .setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, (title?.replace(" ", "_") ?: "Module") + ".zip")
+            val downloadManager= getSystemService(MainApplication.INSTANCE!!.lastActivity!!.applicationContext, DownloadManager::class.java)!!
+            val downloadID = downloadManager.enqueue(request)
+            Toast.makeText(
+                context, MainApplication.INSTANCE!!.lastActivity!!.getString(
+                    R.string.download_started
+                ), Toast.LENGTH_LONG
+            ).show()
+            // listen for error
+            val query = DownloadManager.Query()
+            query.setFilterById(downloadID)
+            var downloading = true
+            while (downloading) {
+                try {
+                    val cursor = downloadManager.query(query)
+                    cursor.moveToFirst()
+                    if (cursor.getInt(cursor.getColumnIndex(DownloadManager.COLUMN_STATUS)) == DownloadManager.STATUS_FAILED) {
+                        downloading = false
+                        Toast.makeText(
+                            context, MainApplication.INSTANCE!!.lastActivity!!.getString(
+                                R.string.download_failed
+                            ), Toast.LENGTH_LONG
+                        ).show()
+                    } else {
+                        if (cursor.getInt(cursor.getColumnIndex(DownloadManager.COLUMN_STATUS)) == DownloadManager.STATUS_SUCCESSFUL) {
+                            downloading = false
+                            Toast.makeText(
+                                context, MainApplication.INSTANCE!!.lastActivity!!.getString(
+                                    R.string.download_finished
+                                ), Toast.LENGTH_LONG
+                            ).show()
+                        }
+                    }
+                    cursor.close()
+                } catch (e: Exception) {
+                    Timber.e(e)
+                }
             }
         }
 
@@ -174,7 +219,7 @@ enum class IntentHelper {;
                             "am start -a android.intent.action.MAIN " + "-c org.lsposed.manager.LAUNCH_MANAGER " + "com.android.shell/.BugreportWarningActivity"
                         ).to(object : CallbackList<String?>() {
                             override fun onAddElement(str: String?) {
-                                Timber.i("LSPosed: %s", str)
+                                if (MainApplication.forceDebugLogging) Timber.i("LSPosed: %s", str)
                             }
                         }).submit()
                         return
@@ -355,13 +400,13 @@ enum class IntentHelper {;
             return context
         }
 
-        private const val RESPONSE_ERROR = 0
+        const val RESPONSE_ERROR = 0
         const val RESPONSE_FILE = 1
         const val RESPONSE_URL = 2
 
         @SuppressLint("SdCardPath")
         fun openFileTo(
-            compatActivity: AppCompatActivity, destination: File?, callback: OnFileReceivedCallback
+            destination: File?, callback: OnFileReceivedCallback
         ) {
             var destinationFolder: File? = null
             if ((destination == null) || (destination.parentFile.also {
@@ -371,61 +416,9 @@ enum class IntentHelper {;
                 callback.onReceived(destination, null, RESPONSE_ERROR)
                 return
             }
-            val getContent = compatActivity.registerForActivityResult(
-                ActivityResultContracts.GetContent()
-            ) { uri: Uri? ->
-                if (uri == null) {
-                    Timber.d("invalid uri received")
-                    callback.onReceived(destination, null, RESPONSE_ERROR)
-                    return@registerForActivityResult
-                }
-                Timber.i("FilePicker returned %s", uri)
-                if ("http" == uri.scheme || "https" == uri.scheme) {
-                    callback.onReceived(destination, uri, RESPONSE_URL)
-                    return@registerForActivityResult
-                }
-                if (ContentResolver.SCHEME_FILE == uri.scheme) {
-                    Toast.makeText(
-                        compatActivity, R.string.file_picker_wierd, Toast.LENGTH_SHORT
-                    ).show()
-                }
-                var inputStream: InputStream? = null
-                var outputStream: OutputStream? = null
-                var success = false
-                try {
-                    if (ContentResolver.SCHEME_FILE == uri.scheme) {
-                        var path = uri.path
-                        if (path!!.startsWith("/sdcard/")) { // Fix file paths
-                            path =
-                                Environment.getExternalStorageDirectory().absolutePath + path.substring(
-                                    7
-                                )
-                        }
-                        inputStream = SuFileInputStream.open(
-                            File(path).absoluteFile
-                        )
-                    } else {
-                        inputStream = compatActivity.contentResolver.openInputStream(uri)
-                    }
-                    outputStream = FileOutputStream(destination)
-                    copy(inputStream!!, outputStream)
-                    Timber.i("File saved at %s", destination)
-                    success = true
-                } catch (e: Exception) {
-                    Timber.e(e)
-                    Toast.makeText(
-                        compatActivity, R.string.file_picker_failure, Toast.LENGTH_SHORT
-                    ).show()
-                } finally {
-                    closeSilently(inputStream)
-                    closeSilently(outputStream)
-                    if (!success && destination.exists() && !destination.delete()) Timber.e("Failed to delete artifact!")
-                }
-                callback.onReceived(
-                    destination, uri, if (success) RESPONSE_FILE else RESPONSE_ERROR
-                )
-            }
-            getContent.launch("application/zip")
+            MainActivity.INSTANCE?.callback = callback
+            MainActivity.INSTANCE?.destination = destination
+            MainActivity.INSTANCE?.getContent?.launch("*/*")
         }
     }
 }

@@ -5,7 +5,6 @@
 package com.fox2code.mmm.repo
 
 import androidx.room.Room
-import com.fox2code.mmm.BuildConfig
 import com.fox2code.mmm.MainApplication
 import com.fox2code.mmm.utils.io.net.Http.Companion.doHttpGet
 import com.fox2code.mmm.utils.room.ModuleListCacheDatabase
@@ -37,7 +36,7 @@ class RepoUpdater(repoData2: RepoData) {
         }
         // if MainApplication.repoModules is not empty, return it
         /*if (MainApplication.INSTANCE!!.repoModules.isNotEmpty()) {
-            if (BuildConfig.DEBUG) Timber.d("Returning MainApplication.repoModules for %s", repoData.preferenceId)
+            if (MainApplication.forceDebugLogging) Timber.d("Returning MainApplication.repoModules for %s", repoData.preferenceId)
             // convert to list for toUpdate
             val toUpdateList = ArrayList<RepoModule>()
             for (module in MainApplication.INSTANCE!!.repoModules) {
@@ -50,7 +49,7 @@ class RepoUpdater(repoData2: RepoData) {
         }*/
         // if we shouldn't update, get the values from the ModuleListCache realm
         if (!repoData.shouldUpdate() && repoData.preferenceId == "androidacy_repo") { // for now, only enable cache reading for androidacy repo, until we handle storing module prop file values in cache
-            if (BuildConfig.DEBUG) Timber.d("Fetching index from cache for %s", repoData.preferenceId)
+            if (MainApplication.forceDebugLogging) Timber.d("Fetching index from cache for %s", repoData.preferenceId)
             // now the above but for room
             val db = Room.databaseBuilder(
                 MainApplication.INSTANCE!!,
@@ -85,7 +84,7 @@ class RepoUpdater(repoData2: RepoData) {
                         )
                     )
                 }
-                if (BuildConfig.DEBUG) Timber.d(
+                if (MainApplication.forceDebugLogging) Timber.d(
                     "Fetched %d modules from cache for %s, from %s records",
                     (toApply as HashSet<RepoModule>).size,
                     repoData.preferenceId,
@@ -118,11 +117,11 @@ class RepoUpdater(repoData2: RepoData) {
                 }
                 // log first 100 chars of indexRaw
                 indexRaw = jsonObject.toString().toByteArray()
-                if (BuildConfig.DEBUG) Timber.d(
+                if (MainApplication.forceDebugLogging) Timber.d(
                     "Index raw: %s",
                     String(indexRaw!!, StandardCharsets.UTF_8).subSequence(0, 100)
                 )
-                if (BuildConfig.DEBUG) Timber.d("Returning %d modules for %s", toUpdate!!.size, repoData.preferenceId)
+                if (MainApplication.forceDebugLogging) Timber.d("Returning %d modules for %s", toUpdate!!.size, repoData.preferenceId)
                 // Return repo to update
                 return toUpdate!!.size
             }
@@ -167,11 +166,11 @@ class RepoUpdater(repoData2: RepoData) {
     fun finish(): Boolean {
         // If repo is not enabled we don't need to do anything, just return true
         if (!repoData.isEnabled) {
-            if (BuildConfig.DEBUG) Timber.d("Repo %s is disabled, skipping", repoData.preferenceId)
+            if (MainApplication.forceDebugLogging) Timber.d("Repo %s is disabled, skipping", repoData.preferenceId)
             return true
         }
         val success = AtomicBoolean(false)
-        if (BuildConfig.DEBUG) Timber.d("Finishing update for %s", repoData.preferenceId)
+        if (MainApplication.forceDebugLogging) Timber.d("Finishing update for %s", repoData.preferenceId)
         if (indexRaw != null) {
             // set lastUpdate
             val db = Room.databaseBuilder(
@@ -184,7 +183,7 @@ class RepoUpdater(repoData2: RepoData) {
             db.close()
             success.set(true)
         } else {
-            if (BuildConfig.DEBUG) Timber.d("No index file found for %s", repoData.preferenceId)
+            if (MainApplication.forceDebugLogging) Timber.d("No index file found for %s", repoData.preferenceId)
             success.set(true) // assume we're reading from cache. this may be unsafe but it's better than nothing
         }
         return success.get()

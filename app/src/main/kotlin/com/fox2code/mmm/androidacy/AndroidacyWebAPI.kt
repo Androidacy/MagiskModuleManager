@@ -32,6 +32,7 @@ import com.fox2code.mmm.utils.ExternalHelper
 import com.fox2code.mmm.utils.IntentHelper.Companion.openCustomTab
 import com.fox2code.mmm.utils.IntentHelper.Companion.openInstaller
 import com.fox2code.mmm.utils.IntentHelper.Companion.openUrl
+import com.fox2code.mmm.utils.IntentHelper.Companion.startDownloadUsingDownloadManager
 import com.fox2code.mmm.utils.io.Files.Companion.readSU
 import com.fox2code.mmm.utils.io.Files.Companion.writeSU
 import com.fox2code.mmm.utils.io.Hashes.Companion.checkSumFormat
@@ -74,7 +75,7 @@ class AndroidacyWebAPI(
         checksum: String?,
         canInstall: Boolean
     ) {
-        if (BuildConfig.DEBUG) if (BuildConfig.DEBUG) Timber.d(
+        if (MainApplication.forceDebugLogging) Timber.d(
             "ModuleDialog, downloadUrl: " + hideToken(
                 moduleUrl!!
             ) + ", moduleId: " + moduleId + ", installTitle: " + installTitle + ", checksum: " + checksum + ", canInstall: " + canInstall
@@ -112,7 +113,9 @@ class AndroidacyWebAPI(
             .setIcon(R.drawable.ic_baseline_extension_24)
         builder.setNegativeButton(R.string.download_module) { _: DialogInterface?, _: Int ->
             downloadMode = true
-            openCustomTab(activity, moduleUrl)
+            startDownloadUsingDownloadManager(activity, moduleUrl, title)
+            // close activity
+            activity.runOnUiThread { activity.finishAndRemoveTask() }
         }
         if (canInstall) {
             var hasUpdate = false
@@ -174,7 +177,7 @@ class AndroidacyWebAPI(
     fun notifyCompatModeRaw(value: Int) {
         var value = value
         if (consumedAction) return
-        if (BuildConfig.DEBUG) if (BuildConfig.DEBUG) Timber.d("Androidacy Compat mode: %s", value)
+        if (MainApplication.forceDebugLogging) Timber.d("Androidacy Compat mode: %s", value)
         notifiedCompatMode = value
         if (value < 0) {
             value = 0
@@ -208,7 +211,7 @@ class AndroidacyWebAPI(
         if (consumedAction) return
         consumedAction = true
         downloadMode = false
-        if (BuildConfig.DEBUG) if (BuildConfig.DEBUG) Timber.d("Received openUrl request: %s", url)
+        if (MainApplication.forceDebugLogging) Timber.d("Received openUrl request: %s", url)
         if (Uri.parse(url).scheme == "https") {
             openUrl(activity, url)
         }
@@ -222,7 +225,7 @@ class AndroidacyWebAPI(
         if (consumedAction) return
         consumedAction = true
         downloadMode = false
-        if (BuildConfig.DEBUG) if (BuildConfig.DEBUG) Timber.d("Received openCustomTab request: %s", url)
+        if (MainApplication.forceDebugLogging) Timber.d("Received openCustomTab request: %s", url)
         if (Uri.parse(url).scheme == "https") {
             openCustomTab(activity, url)
         }
@@ -266,7 +269,7 @@ class AndroidacyWebAPI(
         }
         consumedAction = true
         downloadMode = false
-        if (BuildConfig.DEBUG) if (BuildConfig.DEBUG) Timber.d("Received install request: $moduleUrl $installTitle $checksum")
+        if (MainApplication.forceDebugLogging) Timber.d("Received install request: $moduleUrl $installTitle $checksum")
         if (!isAndroidacyLink(moduleUrl)) {
             forceQuitRaw("Non Androidacy module link used on Androidacy")
             return

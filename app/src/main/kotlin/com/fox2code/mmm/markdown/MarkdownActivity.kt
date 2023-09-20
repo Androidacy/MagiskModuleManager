@@ -72,7 +72,7 @@ class MarkdownActivity : AppCompatActivity() {
             finish()
             return
         }
-        Timber.i("Url for markdown %s", url.toString())
+        if (MainApplication.forceDebugLogging) Timber.i("Url for markdown %s", url.toString())
         setContentView(R.layout.markdown_view)
         val markdownBackground = findViewById<ViewGroup>(R.id.markdownBackground)
         val textView = findViewById<TextView>(R.id.markdownView)
@@ -89,11 +89,11 @@ class MarkdownActivity : AppCompatActivity() {
         if (maxApi != 0) this.addChip(MarkdownChip.MAX_SDK, parseAndroidVersion(maxApi))
         Thread({
             try {
-                Timber.i("Downloading")
+                if (MainApplication.forceDebugLogging) Timber.i("Downloading")
                 val rawMarkdown = getRawMarkdown(url)
-                Timber.i("Encoding")
+                if (MainApplication.forceDebugLogging) Timber.i("Encoding")
                 val markdown = String(rawMarkdown, StandardCharsets.UTF_8)
-                Timber.i("Done!")
+                if (MainApplication.forceDebugLogging) Timber.i("Done!")
                 runOnUiThread {
                     MainApplication.INSTANCE!!.markwon?.setMarkdown(
                         textView, MarkdownUrlLinker.urlLinkify(markdown)

@@ -11,7 +11,6 @@ import android.text.Spanned
 import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.DrawableRes
-import com.fox2code.mmm.BuildConfig
 import com.fox2code.mmm.MainApplication
 import com.fox2code.mmm.MainApplication.Companion.INSTANCE
 import com.fox2code.mmm.MainApplication.Companion.isShowcaseMode
@@ -22,11 +21,11 @@ import com.fox2code.mmm.manager.ModuleInfo
 import com.fox2code.mmm.manager.ModuleManager.Companion.instance
 import com.fox2code.mmm.utils.ExternalHelper
 import com.fox2code.mmm.utils.IntentHelper.Companion.openConfig
-import com.fox2code.mmm.utils.IntentHelper.Companion.openCustomTab
 import com.fox2code.mmm.utils.IntentHelper.Companion.openInstaller
 import com.fox2code.mmm.utils.IntentHelper.Companion.openMarkdown
 import com.fox2code.mmm.utils.IntentHelper.Companion.openUrl
 import com.fox2code.mmm.utils.IntentHelper.Companion.openUrlAndroidacy
+import com.fox2code.mmm.utils.IntentHelper.Companion.startDownloadUsingDownloadManager
 import com.google.android.material.chip.Chip
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import io.noties.markwon.Markwon
@@ -198,12 +197,15 @@ enum class ActionButtonType {
             } else {
                 builder.setMessage(desc)
             }
-            Timber.i("URL: %s", updateZipUrl)
-            builder.setNegativeButton(R.string.download_module) { _: DialogInterface?, _: Int ->
-                openCustomTab(
+            if (MainApplication.forceDebugLogging) Timber.i("URL: %s", updateZipUrl)
+            builder.setNegativeButton(R.string.download_module) { d: DialogInterface?, _: Int ->
+                startDownloadUsingDownloadManager(
                     button.context,
-                    updateZipUrl
+                    updateZipUrl,
+                    moduleInfo.name,
                 )
+                // close the dialog and finish
+                d?.cancel()
             }
             if (hasRoot) {
                 builder.setPositiveButton(if (moduleHolder.hasUpdate()) R.string.update_module else R.string.install_module) { _: DialogInterface?, _: Int ->
@@ -270,7 +272,7 @@ enum class ActionButtonType {
                     put("module", name ?: "null")
                 })
             }
-            Timber.i(Integer.toHexString(moduleHolder.moduleInfo?.flags ?: 0))
+            if (MainApplication.forceDebugLogging) Timber.i(Integer.toHexString(moduleHolder.moduleInfo?.flags ?: 0))
             if (!instance!!.setUninstallState(
                     moduleHolder.moduleInfo!!, !moduleHolder.hasFlag(
                         ModuleInfo.FLAG_MODULE_UNINSTALLING
@@ -435,7 +437,7 @@ if (MainApplication.analyticsAllowed()) {
     REMOTE {
         @Suppress("NAME_SHADOWING")
         override fun doAction(button: Chip, moduleHolder: ModuleHolder) {
-            if (BuildConfig.DEBUG) Timber.d("doAction: remote module for %s", moduleHolder.moduleInfo?.name ?: "null")
+            if (MainApplication.forceDebugLogging) Timber.d("doAction: remote module for %s", moduleHolder.moduleInfo?.name ?: "null")
             // that module is from remote repo
             val name: String? = if (moduleHolder.moduleInfo != null) {
                 moduleHolder.moduleInfo!!.name
@@ -493,13 +495,13 @@ if (MainApplication.analyticsAllowed()) {
                 madb.setPositiveButton(
                     R.string.reinstall
                 ) { _: DialogInterface?, _: Int ->
-                    if (BuildConfig.DEBUG) Timber.d("Set moduleinfo to %s", moduleInfo.name)
+                    if (MainApplication.forceDebugLogging) Timber.d("Set moduleinfo to %s", moduleInfo.name)
                     val name: String? = if (moduleHolder.moduleInfo != null) {
                         moduleHolder.moduleInfo!!.name
                     } else {
                         moduleHolder.repoModule?.moduleInfo?.name
                     }
-                    if (BuildConfig.DEBUG) Timber.d("doAction: remote module for %s", name)
+                    if (MainApplication.forceDebugLogging) Timber.d("doAction: remote module for %s", name)
                     if (MainApplication.analyticsAllowed()) {
                         Countly.sharedInstance().events().recordEvent("view_update_install", HashMap<String, Any>().apply {
                             put("module", name ?: "null")
@@ -507,7 +509,7 @@ if (MainApplication.analyticsAllowed()) {
                     }
                     // Androidacy manage the selection between download and install
                     if (isAndroidacyLink(updateZipUrl)) {
-                        if (BuildConfig.DEBUG) Timber.d("Androidacy link detected")
+                        if (MainApplication.forceDebugLogging) Timber.d("Androidacy link detected")
                         openUrlAndroidacy(
                             button.context,
                             updateZipUrl,
@@ -534,12 +536,14 @@ if (MainApplication.analyticsAllowed()) {
                     } else {
                         builder.setMessage(desc)
                     }
-                    Timber.i("URL: %s", updateZipUrl)
-                    builder.setNegativeButton(R.string.download_module) { _: DialogInterface?, _: Int ->
-                        openCustomTab(
+                    if (MainApplication.forceDebugLogging) Timber.i("URL: %s", updateZipUrl)
+                    builder.setNegativeButton(R.string.download_module) { d: DialogInterface?, _: Int ->
+                        startDownloadUsingDownloadManager(
                             button.context,
-                            updateZipUrl
+                            updateZipUrl,
+                            moduleInfo.name,
                         )
+                        d?.cancel()
                     }
                     if (hasRoot) {
                         builder.setPositiveButton(if (moduleHolder.hasUpdate()) R.string.update_module else R.string.install_module) { _: DialogInterface?, _: Int ->

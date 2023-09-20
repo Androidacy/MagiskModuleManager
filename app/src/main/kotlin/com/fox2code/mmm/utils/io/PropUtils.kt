@@ -7,6 +7,7 @@ package com.fox2code.mmm.utils.io
 import android.os.Build
 import android.text.TextUtils
 import com.fox2code.mmm.AppUpdateManager
+import com.fox2code.mmm.MainApplication
 import com.fox2code.mmm.manager.ModuleInfo
 import com.topjohnwu.superuser.io.SuFileInputStream
 import timber.log.Timber
@@ -392,7 +393,7 @@ enum class PropUtils {
                     }
                 }
             } catch (e: IOException) {
-                Timber.i(e)
+                if (MainApplication.forceDebugLogging) Timber.i(e)
             }
             return moduleId
         }

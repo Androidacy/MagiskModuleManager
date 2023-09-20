@@ -13,7 +13,6 @@ import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.TwoStatePreference
 import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKey
-import com.fox2code.mmm.BuildConfig
 import com.fox2code.mmm.MainActivity
 import com.fox2code.mmm.MainApplication
 import com.fox2code.mmm.R
@@ -76,7 +75,7 @@ class PrivacyFragment : PreferenceFragmentCompat() {
                     val mgr =
                         requireContext().getSystemService(AppCompatActivity.ALARM_SERVICE) as AlarmManager
                     mgr[AlarmManager.RTC, System.currentTimeMillis() + 100] = mPendingIntent
-                    if (BuildConfig.DEBUG) Timber.d("Restarting app to save crash reporting preference: %s", newValue)
+                    if (MainApplication.forceDebugLogging) Timber.d("Restarting app to save crash reporting preference: %s", newValue)
                     exitProcess(0) // Exit app process
                 }
                 // Do not reverse the change if the user cancels the dialog

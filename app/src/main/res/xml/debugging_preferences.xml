@@ -30,6 +30,15 @@
             app:singleLineTitle="false"
             app:summary="@string/use_magisk_install_command_desc"
             app:title="@string/use_magisk_install_command_pref" />
+        <!-- force debug logging -->
+        <SwitchPreferenceCompat
+            android:widgetLayout="@layout/preference_material_switch"
+            app:defaultValue="false"
+            app:icon="@drawable/ic_baseline_bug_report_24"
+            app:key="pref_force_debug_logging"
+            app:singleLineTitle="false"
+            app:summary="@string/force_debug_logging_desc"
+            app:title="@string/force_debug_logging_pref" />
         <!-- Purposely crash the app -->
         <Preference
             app:icon="@drawable/ic_baseline_bug_report_24"

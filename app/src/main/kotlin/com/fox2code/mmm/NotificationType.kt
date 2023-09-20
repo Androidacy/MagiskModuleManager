@@ -205,7 +205,7 @@ enum class NotificationType(
             val module = File(
                 compatActivity.cacheDir, "installer" + File.separator + "module.zip"
             )
-            IntentHelper.openFileTo(compatActivity, module, object :
+            IntentHelper.openFileTo(module, object :
                 OnFileReceivedCallback {
 
                 override fun onReceived(

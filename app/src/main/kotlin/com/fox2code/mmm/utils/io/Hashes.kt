@@ -2,10 +2,9 @@
  * Copyright (c) 2023 to present Androidacy and contributors. Names, logos, icons, and the Androidacy name are all trademarks of Androidacy and may not be used without license. See LICENSE for more information.
  */
 
-@file:Suppress("UNUSED_PARAMETER")
-
 package com.fox2code.mmm.utils.io
 
+import com.fox2code.mmm.MainApplication
 import timber.log.Timber
 import java.security.MessageDigest
 import java.security.NoSuchAlgorithmException
@@ -66,7 +65,7 @@ enum class Hashes {;
                     return false
                 }
             }
-            Timber.i("Checksum result (data: $hash,expected: $checksum)")
+            if (MainApplication.forceDebugLogging) Timber.i("Checksum result (data: $hash,expected: $checksum)")
             return hash == checksum.lowercase()
         }
 

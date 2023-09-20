@@ -10,6 +10,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.fox2code.mmm.BuildConfig
+import com.fox2code.mmm.MainApplication
 import com.fox2code.mmm.R
 import com.fox2code.mmm.installer.InstallerInitializer.Companion.peekMagiskPath
 import com.fox2code.mmm.utils.IntentHelper.Companion.openInstaller
@@ -40,7 +41,7 @@ class ZipFileOpener : AppCompatActivity() {
             }
             .show()
         Thread(Runnable {
-            if (BuildConfig.DEBUG) Timber.d("onCreate: %s", intent)
+            if (MainApplication.forceDebugLogging) Timber.d("onCreate: %s", intent)
             val zipFile: File
             val uri = intent.data
             if (uri == null) {
@@ -108,7 +109,7 @@ class ZipFileOpener : AppCompatActivity() {
                 }
                 return@Runnable
             } else {
-                if (BuildConfig.DEBUG) Timber.d("onCreate: Zip file is " + zipFile.length() + " bytes")
+                if (MainApplication.forceDebugLogging) Timber.d("onCreate: Zip file is " + zipFile.length() + " bytes")
             }
             var entry: ZipEntry?
             var zip: ZipFile? = null
@@ -120,7 +121,7 @@ class ZipFileOpener : AppCompatActivity() {
                 if (zip.getEntry("module.prop").also { entry = it } == null) {
                     Timber.e("onCreate: Zip file is not a valid magisk module")
                     if (BuildConfig.DEBUG) {
-                        if (BuildConfig.DEBUG) Timber.d(
+                        if (MainApplication.forceDebugLogging) Timber.d(
                             "onCreate: Zip file contents: %s",
                             zip.stream().map { obj: ZipEntry -> obj.name }
                                 .reduce { a: String, b: String -> "$a, $b" }.orElse("empty")
@@ -147,7 +148,7 @@ class ZipFileOpener : AppCompatActivity() {
                 }
                 return@Runnable
             }
-            if (BuildConfig.DEBUG) Timber.d("onCreate: Zip file is valid")
+            if (MainApplication.forceDebugLogging) Timber.d("onCreate: Zip file is valid")
             var moduleInfo: String?
             try {
                 moduleInfo = readModulePropSimple(zip.getInputStream(entry), "name")

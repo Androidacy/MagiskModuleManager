@@ -250,6 +250,18 @@ class MainApplication : Application(), Configuration.Provider, ActivityLifecycle
         if (INSTANCE == null) INSTANCE = this
         relPackageName = this.packageName
         super.onCreate()
+        var output = Shell.cmd("echo $(id -u)").exec().out[0]
+        if (output != null) {
+            output = output.trim { it <= ' ' }
+            if (forceDebugLogging) Timber.d("UID: %s", output)
+            if (output == "0") {
+                if (forceDebugLogging) Timber.d("Root access granted")
+                setHasGottenRootAccess(true)
+            } else {
+                if (forceDebugLogging) Timber.d("Root access or we're not uid 0. Current uid: %s", output)
+                setHasGottenRootAccess(false)
+            }
+        }
         if (!callbacksRegistered) {
             try {
                 registerActivityLifecycleCallbacks(this)
@@ -260,7 +272,7 @@ class MainApplication : Application(), Configuration.Provider, ActivityLifecycle
         }
         // Initialize Timber
         configTimber()
-        Timber.i(
+        if (forceDebugLogging) Timber.i(
             "Starting AMM version %s (%d) - commit %s",
             BuildConfig.VERSION_NAME,
             BuildConfig.VERSION_CODE,
@@ -275,13 +287,13 @@ class MainApplication : Application(), Configuration.Provider, ActivityLifecycle
             fileUtils.ensureCacheDirs()
             fileUtils.ensureURLHandler(this)
         }
-        if (BuildConfig.DEBUG) Timber.d("Initializing AMM")
-        if (BuildConfig.DEBUG) Timber.d("Started from background: %s", !isInForeground)
-        if (BuildConfig.DEBUG) Timber.d("AMM is running in debug mode")
+        if (forceDebugLogging) Timber.d("Initializing AMM")
+        if (forceDebugLogging) Timber.d("Started from background: %s", !isInForeground)
+        if (forceDebugLogging) Timber.d("AMM is running in debug mode")
         // analytics
-        if (BuildConfig.DEBUG) Timber.d("Initializing countly")
+        if (forceDebugLogging) Timber.d("Initializing countly")
         if (!analyticsAllowed()) {
-            if (BuildConfig.DEBUG) Timber.d("countly is not allowed")
+            if (forceDebugLogging) Timber.d("countly is not allowed")
         } else {
             val config = CountlyConfig(
                 this,
@@ -344,9 +356,9 @@ class MainApplication : Application(), Configuration.Provider, ActivityLifecycle
             fontRequestEmojiCompatConfig.setMetadataLoadStrategy(EmojiCompat.LOAD_STRATEGY_MANUAL)
             val emojiCompat = EmojiCompat.init(fontRequestEmojiCompatConfig)
             Thread({
-                Timber.i("Loading emoji compat...")
+                if (forceDebugLogging) Timber.i("Loading emoji compat...")
                 emojiCompat.load()
-                Timber.i("Emoji compat loaded!")
+                if (forceDebugLogging) Timber.i("Emoji compat loaded!")
             }, "Emoji compat init.").start()
         }
         @Suppress("KotlinConstantConditions") if ((BuildConfig.ANDROIDACY_CLIENT_ID == "")) {
@@ -386,7 +398,7 @@ class MainApplication : Application(), Configuration.Provider, ActivityLifecycle
                     // make sure the directory exists
                     if (!dataDir.exists()) {
                         if (!dataDir.mkdirs()) {
-                            if (BuildConfig.DEBUG) Timber.w(
+                            if (forceDebugLogging) Timber.w(
                                 "Failed to create directory %s", dataDir
                             )
                         }
@@ -397,7 +409,7 @@ class MainApplication : Application(), Configuration.Provider, ActivityLifecycle
                 // create the directory if it doesn't exist
                 if (!dataDir.exists()) {
                     if (!dataDir.mkdirs()) {
-                        if (BuildConfig.DEBUG) Timber.w("Failed to create directory %s", dataDir)
+                        if (forceDebugLogging) Timber.w("Failed to create directory %s", dataDir)
                     }
                 }
             }
@@ -422,12 +434,12 @@ class MainApplication : Application(), Configuration.Provider, ActivityLifecycle
             val activityManager = this.getSystemService(ACTIVITY_SERVICE) as ActivityManager
             val appProcesses = activityManager.runningAppProcesses
             if (appProcesses == null) {
-                if (BuildConfig.DEBUG) Timber.d("appProcesses is null")
+                if (forceDebugLogging) Timber.d("appProcesses is null")
                 return false
             }
             val packageName = this.packageName
             for (appProcess in appProcesses) {
-                if (BuildConfig.DEBUG) Timber.d(
+                if (forceDebugLogging) Timber.d(
                     "Process: %s, Importance: %d", appProcess.processName, appProcess.importance
                 )
                 if (appProcess.importance == RunningAppProcessInfo.IMPORTANCE_FOREGROUND && appProcess.processName == packageName) {
@@ -456,6 +468,7 @@ class MainApplication : Application(), Configuration.Provider, ActivityLifecycle
     }
 
     class ReleaseTree : Timber.Tree() {
+        @SuppressLint("LogNotTimber")
         override fun log(priority: Int, tag: String?, message: String, t: Throwable?) {
             // basically silently drop all logs below error, and write the rest to logcat
             @Suppress("NAME_SHADOWING") var message = message
@@ -463,18 +476,28 @@ class MainApplication : Application(), Configuration.Provider, ActivityLifecycle
                 // prepend [TAINTED] to the message
                 message = "[TAINTED] $message"
             }
-            if (priority >= Log.ERROR) {
-                if (t != null) {
-                    Log.println(priority, tag, message)
-                    t.printStackTrace()
-                } else {
-                    Log.println(priority, tag, message)
+            if (forceDebugLogging) {
+                if (priority >= Log.DEBUG) {
+                    when(priority) {
+                        Log.DEBUG -> Log.d(tag, message, t)
+                        Log.INFO -> Log.i(tag, message, t)
+                        Log.WARN -> Log.w(tag, message, t)
+                        Log.ERROR -> Log.e(tag, message, t)
+                        Log.ASSERT -> Log.wtf(tag, message, t)
+                    }
+                    t?.printStackTrace()
+                }
+            } else {
+                if (priority >= Log.ERROR) {
+                    Log.e(tag, message, t)
                 }
             }
         }
     }
 
     companion object {
+
+        var forceDebugLogging: Boolean = BuildConfig.DEBUG || getSharedPreferences("mmm")?.getBoolean("pref_force_debug_logging", false) ?: false
 
         // Warning! Locales that don't exist will crash the app
         // Anything that is commented out is supported but the translation is not complete to at least 60%
@@ -522,7 +545,7 @@ class MainApplication : Application(), Configuration.Provider, ActivityLifecycle
             }
             // prewarm shell
             Shell.getShell {
-                // do nothing
+                if (forceDebugLogging) Timber.d("Shell prewarmed")
             }
             val random = Random()
             do {
@@ -574,8 +597,32 @@ class MainApplication : Application(), Configuration.Provider, ActivityLifecycle
                 mSharedPrefs!![name] = sharedPreferences
                 sharedPreferences
             } catch (e: Exception) {
-                Timber.e(e, "Failed to create encrypted shared preferences")
-                mContext!!.getSharedPreferences(name, MODE_PRIVATE)
+                // try again five times, with a 250ms delay between each try. if we still can't get the shared preferences, throw an exception
+                var i = 0
+                while (i < 5) {
+                    try {
+                        Thread.sleep(250)
+                    } catch (ignored: InterruptedException) {
+                    }
+                    try {
+                        val masterKey =
+                            MasterKey.Builder(mContext!!).setKeyScheme(MasterKey.KeyScheme.AES256_GCM)
+                                .build()
+                        val sharedPreferences = EncryptedSharedPreferences.create(
+                            mContext,
+                            name,
+                            masterKey,
+                            EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
+                            EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
+                        )
+                        mSharedPrefs!![name] = sharedPreferences
+                        return sharedPreferences
+                    } catch (e: Exception) {
+                        Timber.e(e, "Failed to get shared preferences")
+                    }
+                    i++
+                }
+                throw IllegalStateException("Failed to get shared preferences")
             }
         }
 
@@ -683,7 +730,7 @@ class MainApplication : Application(), Configuration.Provider, ActivityLifecycle
             // should not have been shown in 14 days and only 1 in 5 chance
             val randChance = Random().nextInt(5)
             val lastShown = getSharedPreferences("mmm")!!.getLong("last_feedback", 0)
-            if (BuildConfig.DEBUG) Timber.d("Last feedback shown: %d, randChance: %d", lastShown, randChance)
+            if (forceDebugLogging) Timber.d("Last feedback shown: %d, randChance: %d", lastShown, randChance)
             return System.currentTimeMillis() - lastShown > 1209600000 && randChance == 0
         }
     }

@@ -4,7 +4,7 @@
 
 package com.fox2code.mmm.markdown
 
-import com.fox2code.mmm.BuildConfig
+import com.fox2code.mmm.MainApplication
 import timber.log.Timber
 
 enum class MarkdownUrlLinker {
@@ -33,7 +33,7 @@ enum class MarkdownUrlLinker {
                     if (endDomain != -1 && endDomain < end && endCh != '>' && endCh != ')' && endCh != ']') {
                         linkifyTasks.add(LinkifyTask(index, end))
                         extra += end - index + 4
-                        if (BuildConfig.DEBUG) Timber.d("Linkify url: %s", url.substring(end))
+                        if (MainApplication.forceDebugLogging) Timber.d("Linkify url: %s", url.substring(end))
                     }
                 }
                 index = url.indexOf("https://", end)
@@ -48,7 +48,7 @@ enum class MarkdownUrlLinker {
                 prev = linkifyTask
             }
             if (prev.end != url.length) stringBuilder.append(url, prev.end, url.length)
-            Timber.i("Added Markdown link to " + linkifyTasks.size + " urls")
+            if (MainApplication.forceDebugLogging) Timber.i("Added Markdown link to " + linkifyTasks.size + " urls")
             return stringBuilder.toString()
         }
     }

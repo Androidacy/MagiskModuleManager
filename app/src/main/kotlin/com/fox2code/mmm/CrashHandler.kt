@@ -22,9 +22,9 @@ class CrashHandler : AppCompatActivity() {
     @Suppress("DEPRECATION")
     @SuppressLint("RestrictedApi")
     override fun onCreate(savedInstanceState: Bundle?) {
-        Timber.i("CrashHandler.onCreate(%s)", savedInstanceState)
+        if (MainApplication.forceDebugLogging) Timber.i("CrashHandler.onCreate(%s)", savedInstanceState)
         // log intent with extras
-        if (BuildConfig.DEBUG) Timber.d("CrashHandler.onCreate: intent=%s", intent)
+        if (MainApplication.forceDebugLogging) Timber.d("CrashHandler.onCreate: intent=%s", intent)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_crash_handler)
         // set crash_details MaterialTextView to the exception passed in the intent or unknown if null

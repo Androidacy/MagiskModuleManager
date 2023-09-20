@@ -41,22 +41,22 @@ class ModuleViewListBuilder(private val activity: Activity) {
             Timber.w("addNotification(null) called!")
             return
         } else {
-            Timber.i("addNotification(%s) called", notificationType)
+            if (MainApplication.forceDebugLogging) Timber.i("addNotification(%s) called", notificationType)
         }
         synchronized(updateLock) { notifications.add(notificationType) }
     }
 
     fun appendInstalledModules() {
-        Timber.i("appendInstalledModules() called")
+        if (MainApplication.forceDebugLogging) Timber.i("appendInstalledModules() called")
         synchronized(updateLock) {
             for (moduleHolder in mappedModuleHolders.values) {
-                Timber.i("zeroing module %s", moduleHolder.moduleInfo?.id)
+                if (MainApplication.forceDebugLogging) Timber.i("zeroing module %s", moduleHolder.moduleInfo?.id)
                 moduleHolder.moduleInfo = null
             }
             val moduleManager = instance
             moduleManager?.runAfterScan {
-                Timber.i("A0: runAfterScan %s", moduleManager.modules.size)
-                Timber.i("A1: %s", moduleManager.modules.size)
+                if (MainApplication.forceDebugLogging) Timber.i("A0: runAfterScan %s", moduleManager.modules.size)
+                if (MainApplication.forceDebugLogging) Timber.i("A1: %s", moduleManager.modules.size)
                 for (moduleInfo in moduleManager.modules.values) {
                     // add the local module to the list in MainActivity
                     MainActivity.localModuleInfoList += moduleInfo
@@ -74,10 +74,10 @@ class ModuleViewListBuilder(private val activity: Activity) {
 
     fun appendRemoteModules() {
         if (BuildConfig.DEBUG) {
-            Timber.i("appendRemoteModules() called")
+            if (MainApplication.forceDebugLogging) Timber.i("appendRemoteModules() called")
         }
         synchronized(updateLock) {
-            Timber.i("appendRemoteModules() started")
+            if (MainApplication.forceDebugLogging) Timber.i("appendRemoteModules() started")
             val startTime = System.currentTimeMillis()
             val showIncompatible = MainApplication.isShowIncompatibleModules
             for (moduleHolder in mappedModuleHolders.values) {
@@ -85,7 +85,7 @@ class ModuleViewListBuilder(private val activity: Activity) {
             }
             val repoManager = RepoManager.getINSTANCE()
             repoManager?.runAfterUpdate {
-                Timber.i("A2: %s", repoManager.modules.size)
+                if (MainApplication.forceDebugLogging) Timber.i("A2: %s", repoManager.modules.size)
                 val no32bitSupport = Build.SUPPORTED_32_BIT_ABIS.isEmpty()
                 try {
                     for (repoModule in repoManager.modules.values) {
@@ -97,7 +97,7 @@ class ModuleViewListBuilder(private val activity: Activity) {
                             continue
                         }
                         if (!repoModule.repoData.isEnabled) {
-                            Timber.i(
+                            if (MainApplication.forceDebugLogging) Timber.i(
                                 "Repo %s is disabled, skipping module %s",
                                 repoModule.repoData.preferenceId,
                                 repoModule.id
@@ -130,7 +130,7 @@ class ModuleViewListBuilder(private val activity: Activity) {
                     // retry up to five times, waiting i * 100ms between each try
                     if (tries < 5) {
                         tries++
-                        Timber.i("appendRemoteModules() retrying in %dms", tries * 100)
+                        if (MainApplication.forceDebugLogging) Timber.i("appendRemoteModules() retrying in %dms", tries * 100)
                         Handler(Looper.getMainLooper()).postDelayed({
                             appendRemoteModules()
                         }, tries * 100.toLong())
@@ -139,7 +139,7 @@ class ModuleViewListBuilder(private val activity: Activity) {
                         tries = 0
                     }
                 }
-                Timber.i(
+                if (MainApplication.forceDebugLogging) Timber.i(
                     "appendRemoteModules() finished in %dms",
                     System.currentTimeMillis() - startTime
                 )
@@ -247,7 +247,7 @@ class ModuleViewListBuilder(private val activity: Activity) {
                 // Footer is always last
                 //moduleHolders.add(headerFooter[1] =
                 //        new ModuleHolder(this.footerPx * 2, false));
-                Timber.i("Got " + moduleHolders.size + " entries!")
+                if (MainApplication.forceDebugLogging) Timber.i("Got " + moduleHolders.size + " entries!")
             }
         } finally {
             updating = false
@@ -321,7 +321,7 @@ class ModuleViewListBuilder(private val activity: Activity) {
     fun setQueryChange(query: String?): Boolean {
         synchronized(queryLock) {
             val newQuery = query?.trim { it <= ' ' }?.lowercase() ?: ""
-            Timber.i("Query change " + this.query + " -> " + newQuery)
+            if (MainApplication.forceDebugLogging) Timber.i("Query change " + this.query + " -> " + newQuery)
             if (this.query == newQuery) return false
             this.query = newQuery
         }
@@ -333,7 +333,7 @@ class ModuleViewListBuilder(private val activity: Activity) {
         private fun notifySizeChanged(
             moduleViewAdapter: ModuleViewAdapter, index: Int, oldLen: Int, newLen: Int
         ) {
-            // Timber.i("A: " + index + " " + oldLen + " " + newLen);
+            // if (MainApplication.forceDebugLogging) Timber.i("A: " + index + " " + oldLen + " " + newLen);
             if (oldLen == newLen) {
                 if (newLen != 0) moduleViewAdapter.notifyItemRangeChanged(index, newLen)
             } else if (oldLen < newLen) {
