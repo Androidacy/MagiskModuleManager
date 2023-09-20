@@ -620,7 +620,6 @@ class MainActivity : AppCompatActivity(), OnRefreshListener, OverScrollHelper {
 
             fun commonNext() {
                 if (BuildConfig.DEBUG) {
-                    if (MainApplication.forceDebugLogging) Timber.d("Common next")
                     moduleViewListBuilder.addNotification(NotificationType.DEBUG)
                 }
                 NotificationType.NO_INTERNET.autoAdd(moduleViewListBuilderOnline)

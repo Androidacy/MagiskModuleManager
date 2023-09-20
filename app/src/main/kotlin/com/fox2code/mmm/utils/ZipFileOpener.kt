@@ -120,8 +120,8 @@ class ZipFileOpener : AppCompatActivity() {
                 zip = ZipFile(zipFile)
                 if (zip.getEntry("module.prop").also { entry = it } == null) {
                     Timber.e("onCreate: Zip file is not a valid magisk module")
-                    if (BuildConfig.DEBUG) {
-                        if (MainApplication.forceDebugLogging) Timber.d(
+                    if (MainApplication.forceDebugLogging) {
+                        Timber.d(
                             "onCreate: Zip file contents: %s",
                             zip.stream().map { obj: ZipEntry -> obj.name }
                                 .reduce { a: String, b: String -> "$a, $b" }.orElse("empty")

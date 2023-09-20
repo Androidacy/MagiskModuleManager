@@ -4,7 +4,6 @@
 
 package com.fox2code.mmm.installer
 
-import com.fox2code.mmm.BuildConfig
 import com.fox2code.mmm.Constants
 import com.fox2code.mmm.MainApplication
 import com.fox2code.mmm.NotificationType
@@ -134,8 +133,8 @@ class InstallerInitializer {
                         "su -V",
                     ).to(output).exec().isSuccess
                 ) {
-                    if (BuildConfig.DEBUG) {
-                        if (MainApplication.forceDebugLogging) Timber.i("Failed to search for ramdisk")
+                    if (MainApplication.forceDebugLogging) {
+                        Timber.i("Failed to search for ramdisk")
                     }
                     if (output.size != 0) {
                         hsRmdsk = "false" == output[0] || "true".equals(
@@ -145,8 +144,8 @@ class InstallerInitializer {
                     Companion.hsRmdsk = hsRmdsk
                     return null
                 }
-                if (BuildConfig.DEBUG) {
-                    if (MainApplication.forceDebugLogging) Timber.i("Found ramdisk: %s", output[0])
+                if (MainApplication.forceDebugLogging) {
+                    Timber.i("Found ramdisk: %s", output[0])
                     if (MainApplication.forceDebugLogging) Timber.i("Searching for Magisk path. Current path: %s", mgskPth)
                 }
                 // reset output
@@ -156,8 +155,8 @@ class InstallerInitializer {
                         "not found"
                     )) {
                     mgskPth = output[0]
-                    if (BuildConfig.DEBUG) {
-                        if (MainApplication.forceDebugLogging) Timber.i("Magisk path 1: %s", mgskPth)
+                    if (MainApplication.forceDebugLogging) {
+                        Timber.i("Magisk path 1: %s", mgskPth)
                     }
                 } else if (Shell.cmd("if [ -d /data/adb/ksu ]; then echo true; else echo false; fi", "su -V").to(
                         output
@@ -167,8 +166,8 @@ class InstallerInitializer {
                     val suVer: ArrayList<String> = ArrayList()
                     Shell.cmd("su -v").to(suVer).exec()
                     if (suVer.size > 0 && suVer[0].contains("ksu") || suVer[0].contains("Kernelsu", true)) {
-                        if (BuildConfig.DEBUG) {
-                            if (MainApplication.forceDebugLogging) Timber.i("Kernelsu detected")
+                        if (MainApplication.forceDebugLogging) {
+                            Timber.i("Kernelsu detected")
                         }
                         mgskPth = "/data/adb"
                         isKsu = true
@@ -177,14 +176,12 @@ class InstallerInitializer {
                             Countly.sharedInstance().crashes().addCrashBreadcrumb("ksu detected")
                         }
                     } else {
-                        if (BuildConfig.DEBUG) {
-                            Timber.e("[ANOMALY] Kernelsu not detected but /data/adb/ksu exists")
+                        if (MainApplication.forceDebugLogging) {                            Timber.e("[ANOMALY] Kernelsu not detected but /data/adb/ksu exists")
                         }
                         return null
                     }
                 } else {
-                    if (BuildConfig.DEBUG) {
-                        Timber.e("Failed to get Magisk path")
+                    if (MainApplication.forceDebugLogging) {                        Timber.e("Failed to get Magisk path")
                     }
                     return null
                 }

@@ -11,7 +11,6 @@ import android.os.Looper
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import com.fox2code.mmm.AppUpdateManager
-import com.fox2code.mmm.BuildConfig
 import com.fox2code.mmm.MainActivity
 import com.fox2code.mmm.MainApplication
 import com.fox2code.mmm.NotificationType
@@ -73,8 +72,8 @@ class ModuleViewListBuilder(private val activity: Activity) {
     }
 
     fun appendRemoteModules() {
-        if (BuildConfig.DEBUG) {
-            if (MainApplication.forceDebugLogging) Timber.i("appendRemoteModules() called")
+        if (MainApplication.forceDebugLogging) {
+            Timber.i("appendRemoteModules() called")
         }
         synchronized(updateLock) {
             if (MainApplication.forceDebugLogging) Timber.i("appendRemoteModules() started")

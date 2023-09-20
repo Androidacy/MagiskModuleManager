@@ -166,8 +166,8 @@ class RuntimeUtils {
             // Restarting setup
             firstLaunch = false
         }
-        if (BuildConfig.DEBUG) {
-            if (MainApplication.forceDebugLogging) Timber.i(
+        if (MainApplication.forceDebugLogging) {
+            Timber.i(
                 "First launch: %s, pref value: %s",
                 firstLaunch,
                 prefs.getString("last_shown_setup", null)
