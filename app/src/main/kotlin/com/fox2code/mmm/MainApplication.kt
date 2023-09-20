@@ -256,13 +256,11 @@ class MainApplication : Application(), Configuration.Provider, ActivityLifecycle
             if (forceDebugLogging) Timber.d("UID: %s", output)
             if (output == "0") {
                 if (forceDebugLogging) Timber.d("Root access granted")
-                setHasGottenRootAccess(true)
             } else {
                 if (forceDebugLogging) Timber.d(
                     "Root access or we're not uid 0. Current uid: %s",
                     output
                 )
-                setHasGottenRootAccess(false)
             }
         }
         if (!callbacksRegistered) {
