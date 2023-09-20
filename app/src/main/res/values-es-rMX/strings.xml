@@ -386,8 +386,10 @@
     <string name="setup_require_security">Requiere que los módulos sean seguros</string>
     <string name="setup_agree_eula_toast">Por favor, acepte los términos primero</string>
     <string name="setup_androidacy_repo_recommendation">Le recomendamos activar solo el repositorio de Androidacy. Esto garantiza que recibirá una experiencia optimizada y más segura.</string>
-    <string name="install_terminal_support_link">Apoyo: %s</string>
+    <string name="install_terminal_support_link">Soporte: %s</string>
     <string name="require_safe_modules_pref">Permitir solo módulos seguros</string>
     <string name="install_from_storage_safe_modules">Por su seguridad, la instalación del módulo local está deshabilitada por la seguridad del módulo. Puede alternar esto en la configuración <b>a su propio riesgo</b> .</string>
     <string name="setup_require_security_summary">Requiere que los módulos se marquen como seguros antes de la instalación. Esto deshabilitará la instalación del módulo local y la seguridad del módulo la determinará el propietario del repositorio.</string>
+    <string name="feedback_placeholder">Lamentamos este error. Si habilitó el informe de fallos, ya recibimos un informe y estamos trabajando en el problema. ¡No dudes en reiniciar la aplicación cuando estés listo! También puedes restablecer la aplicación si sigues viendo esta pantalla.</string>
+    <string name="androidacy_thanks_desc_v2">Esta aplicación es mantenida, actualizada y respaldada por Androidacy, y los nombres, logotipos y marcas comerciales tienen derechos de autor de Androidacy.</string>
 </resources>
