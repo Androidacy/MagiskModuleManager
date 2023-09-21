@@ -753,7 +753,7 @@ class MainApplication : Application(), Configuration.Provider, ActivityLifecycle
     }
 
     override fun onActivityStarted(activity: Activity) {
-        if (analyticsAllowed) Countly.sharedInstance().onStart(activity)
+        if (analyticsAllowed()) Countly.sharedInstance().onStart(activity)
     }
 
     override fun onActivityResumed(activity: Activity) {
@@ -765,7 +765,7 @@ class MainApplication : Application(), Configuration.Provider, ActivityLifecycle
     }
 
     override fun onActivityStopped(activity: Activity) {
-        if (analyticsAllowed) Countly.sharedInstance().onStop()
+        if (analyticsAllowed()) Countly.sharedInstance().onStop()
     }
 
     override fun onActivitySaveInstanceState(activity: Activity, outState: Bundle) {
