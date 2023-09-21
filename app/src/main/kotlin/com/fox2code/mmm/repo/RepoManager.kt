@@ -11,7 +11,7 @@ import android.os.Looper
 import android.widget.Toast
 import com.fox2code.mmm.MainActivity
 import com.fox2code.mmm.MainApplication
-import com.fox2code.mmm.MainApplication.Companion.getSharedPreferences
+import com.fox2code.mmm.MainApplication.Companion.getPreferences
 import com.fox2code.mmm.MainApplication.Companion.isAndroidacyTestMode
 import com.fox2code.mmm.MainApplication.Companion.isDisableLowQualityModuleFilter
 import com.fox2code.mmm.R
@@ -55,7 +55,7 @@ class RepoManager private constructor(mainApplication: MainApplication) : SyncMa
         repoData = LinkedHashMap()
         modules = HashMap()
         // refuse to load if setup is not complete
-        if (getSharedPreferences("mmm")!!.getString("last_shown_setup", "") == "v5") {
+        if (getPreferences("mmm")!!.getString("last_shown_setup", "") == "v5") {
             // We do not have repo list config yet.
             androidacyRepoData = addAndroidacyRepoData()
             val altRepo = addRepoData(MAGISK_ALT_REPO, "Magisk Modules Alt Repo")
@@ -82,7 +82,7 @@ class RepoManager private constructor(mainApplication: MainApplication) : SyncMa
 
     private fun populateDefaultCache(repoData: RepoData?) {
         // if last_shown_setup is not "v5", them=n refuse to continue
-        if (getSharedPreferences("mmm")!!.getString("last_shown_setup", "") != "v5") {
+        if (getPreferences("mmm")!!.getString("last_shown_setup", "") != "v5") {
             return
         }
         // make sure repodata is not null
@@ -256,7 +256,7 @@ class RepoManager private constructor(mainApplication: MainApplication) : SyncMa
                             builder.setPositiveButton(android.R.string.ok, null)
                             if (repoUpdaters[i]!!.repoData is AndroidacyRepoData) {
                                 builder.setNeutralButton(R.string.reset_api_key) { _: DialogInterface?, _: Int ->
-                                    val editor = getSharedPreferences("androidacy")!!
+                                    val editor = getPreferences("androidacy")!!
                                         .edit()
                                     editor.putString("androidacy_api_key", "")
                                     editor.apply()

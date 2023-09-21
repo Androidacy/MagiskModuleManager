@@ -55,7 +55,7 @@ class SetupActivity : AppCompatActivity(), LanguageActivity {
         createFiles()
         disableUpdateActivityForFdroidFlavor()
         // Set theme
-        val prefs = MainApplication.getSharedPreferences("mmm")!!
+        val prefs = MainApplication.getPreferences("mmm")!!
         when (prefs.getString("theme", "system")) {
             "light" -> setTheme(R.style.Theme_MagiskModuleManager_Monet_Light)
             "dark" -> setTheme(R.style.Theme_MagiskModuleManager_Monet_Dark)
@@ -405,7 +405,7 @@ class SetupActivity : AppCompatActivity(), LanguageActivity {
             return theme
         }
         // Set the theme
-        val prefs = MainApplication.getSharedPreferences("mmm")!!
+        val prefs = MainApplication.getPreferences("mmm")!!
         when (prefs.getString("pref_theme", "system")) {
             "light" -> {
                 theme.applyStyle(R.style.Theme_MagiskModuleManager_Monet_Light, true)

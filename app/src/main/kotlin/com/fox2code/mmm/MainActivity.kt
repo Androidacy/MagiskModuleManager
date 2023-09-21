@@ -821,7 +821,7 @@ class MainActivity : AppCompatActivity(), OnRefreshListener, OverScrollHelper {
                                 }
                             })
                         // update last feedback time
-                        MainApplication.getSharedPreferences("mmm")?.edit()
+                        MainApplication.getPreferences("mmm")?.edit()
                             ?.putLong("last_feedback", System.currentTimeMillis())?.apply()
                     }
                 } else {

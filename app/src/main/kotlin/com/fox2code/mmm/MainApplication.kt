@@ -143,7 +143,7 @@ class MainApplication : Application(), Configuration.Provider, ActivityLifecycle
         @StyleRes val themeResId: Int
         var theme: String?
         val monet = isMonetEnabled
-        when (getSharedPreferences("mmm")!!.getString("pref_theme", "system").also { theme = it }) {
+        when (getPreferences("mmm")!!.getString("pref_theme", "system").also { theme = it }) {
             "system" -> themeResId =
                 if (monet) R.style.Theme_MagiskModuleManager_Monet else R.style.Theme_MagiskModuleManager
 
@@ -327,9 +327,9 @@ class MainApplication : Application(), Configuration.Provider, ActivityLifecycle
             o = listOf(*osh).contains(oosh)
         } catch (ignored: PackageManager.NameNotFoundException) {
         }
-        val sharedPreferences = getSharedPreferences("mmm")
+        val sharedPreferences = getPreferences("mmm")
         // We are only one process so it's ok to do this
-        val bootPrefs = getSharedPreferences("mmm_boot")
+        val bootPrefs = getPreferences("mmm_boot")
         val lastBoot = System.currentTimeMillis() - SystemClock.elapsedRealtime()
         val lastBootPrefs = bootPrefs!!.getLong("last_boot", 0)
         isFirstBoot = if (lastBootPrefs == 0L || abs(lastBoot - lastBootPrefs) > 100) {
@@ -499,7 +499,7 @@ class MainApplication : Application(), Configuration.Provider, ActivityLifecycle
     companion object {
 
         var forceDebugLogging: Boolean =
-            BuildConfig.DEBUG || getSharedPreferences("mmm")?.getBoolean(
+            BuildConfig.DEBUG || getPreferences("mmm")?.getBoolean(
                 "pref_force_debug_logging",
                 false
             ) ?: false
@@ -577,10 +577,11 @@ class MainApplication : Application(), Configuration.Provider, ActivityLifecycle
         }
 
         @Suppress("NAME_SHADOWING")
-        fun getSharedPreferences(name: String): SharedPreferences? {
+        fun getPreferences(name: String): SharedPreferences? {
             // encryptedSharedPreferences is used
+            return try {
             var name = name
-            val mContext: Context? = INSTANCE
+            val mContext: Context? = INSTANCE!!.applicationContext
             name += "x"
             if (mSharedPrefs == null) {
                 mSharedPrefs = HashMap()
@@ -588,7 +589,6 @@ class MainApplication : Application(), Configuration.Provider, ActivityLifecycle
             if (mSharedPrefs!!.containsKey(name)) {
                 return mSharedPrefs!![name] as SharedPreferences?
             }
-            return try {
                 val masterKey =
                     MasterKey.Builder(mContext!!).setKeyScheme(MasterKey.KeyScheme.AES256_GCM)
                         .build()
@@ -604,6 +604,7 @@ class MainApplication : Application(), Configuration.Provider, ActivityLifecycle
             } catch (e: Exception) {
                 // try again five times, with a 250ms delay between each try. if we still can't get the shared preferences, throw an exception
                 var i = 0
+                var s = false
                 while (i < 5) {
                     try {
                         Thread.sleep(250)
@@ -611,24 +612,25 @@ class MainApplication : Application(), Configuration.Provider, ActivityLifecycle
                     }
                     try {
                         val masterKey =
-                            MasterKey.Builder(mContext!!)
+                            MasterKey.Builder(INSTANCE!!.applicationContext)
                                 .setKeyScheme(MasterKey.KeyScheme.AES256_GCM)
                                 .build()
                         val sharedPreferences = EncryptedSharedPreferences.create(
-                            mContext,
+                            INSTANCE!!.applicationContext,
                             name,
                             masterKey,
                             EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
                             EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
                         )
                         mSharedPrefs!![name] = sharedPreferences
+                        s = true
                         return sharedPreferences
                     } catch (e: Exception) {
                         Timber.e(e, "Failed to get shared preferences")
                     }
                     i++
                 }
-                throw IllegalStateException("Failed to get shared preferences")
+                return null
             }
         }
 
@@ -648,42 +650,42 @@ class MainApplication : Application(), Configuration.Provider, ActivityLifecycle
                     return java.lang.Boolean.parseBoolean(SHOWCASE_MODE_TRUE)
                 }
                 val showcaseMode =
-                    getSharedPreferences("mmm")!!.getBoolean("pref_showcase_mode", false)
+                    getPreferences("mmm")!!.getBoolean("pref_showcase_mode", false)
                 SHOWCASE_MODE_TRUE = showcaseMode.toString()
                 return showcaseMode
             }
 
         fun shouldPreventReboot(): Boolean {
-            return getSharedPreferences("mmm")!!.getBoolean("pref_prevent_reboot", true)
+            return getPreferences("mmm")!!.getBoolean("pref_prevent_reboot", true)
         }
 
         val isShowIncompatibleModules: Boolean
-            get() = getSharedPreferences("mmm")!!.getBoolean("pref_show_incompatible", false)
+            get() = getPreferences("mmm")!!.getBoolean("pref_show_incompatible", false)
         val isForceDarkTerminal: Boolean
-            get() = getSharedPreferences("mmm")!!.getBoolean("pref_force_dark_terminal", false)
+            get() = getPreferences("mmm")!!.getBoolean("pref_force_dark_terminal", false)
         val isTextWrapEnabled: Boolean
-            get() = getSharedPreferences("mmm")!!.getBoolean("pref_wrap_text", false)
+            get() = getPreferences("mmm")!!.getBoolean("pref_wrap_text", false)
         val isDohEnabled: Boolean
-            get() = getSharedPreferences("mmm")!!.getBoolean("pref_dns_over_https", true)
+            get() = getPreferences("mmm")!!.getBoolean("pref_dns_over_https", true)
         val isMonetEnabled: Boolean
-            get() = Build.VERSION.SDK_INT >= Build.VERSION_CODES.S && getSharedPreferences("mmm")!!.getBoolean(
+            get() = Build.VERSION.SDK_INT >= Build.VERSION_CODES.S && getPreferences("mmm")!!.getBoolean(
                 "pref_enable_monet", true
             )
         val isBlurEnabled: Boolean
-            get() = getSharedPreferences("mmm")!!.getBoolean("pref_enable_blur", false)
+            get() = getPreferences("mmm")!!.getBoolean("pref_enable_blur", false)
 
         val isDeveloper: Boolean
             get() {
-                return if (BuildConfig.DEBUG) true else getSharedPreferences("mmm")!!.getBoolean(
+                return if (BuildConfig.DEBUG) true else getPreferences("mmm")!!.getBoolean(
                     "developer", false
                 )
             }
         val isDisableLowQualityModuleFilter: Boolean
-            get() = getSharedPreferences("mmm")!!.getBoolean(
+            get() = getPreferences("mmm")!!.getBoolean(
                 "pref_disable_low_quality_module_filter", false
             ) && isDeveloper
         val isUsingMagiskCommand: Boolean
-            get() = (peekMagiskVersion() >= Constants.MAGISK_VER_CODE_INSTALL_COMMAND) && getSharedPreferences(
+            get() = (peekMagiskVersion() >= Constants.MAGISK_VER_CODE_INSTALL_COMMAND) && getPreferences(
                 "mmm"
             )!!.getBoolean(
                 "pref_use_magisk_install_command",
@@ -696,27 +698,27 @@ class MainApplication : Application(), Configuration.Provider, ActivityLifecycle
                     return java.lang.Boolean.parseBoolean(updateCheckBg)
                 }
                 val wrapped = isWrapped
-                val updateCheckBgTemp = !wrapped && getSharedPreferences("mmm")!!.getBoolean(
+                val updateCheckBgTemp = !wrapped && getPreferences("mmm")!!.getBoolean(
                     "pref_background_update_check", true
                 )
                 updateCheckBg = updateCheckBgTemp.toString()
                 return java.lang.Boolean.parseBoolean(updateCheckBg)
             }
         val isAndroidacyTestMode: Boolean
-            get() = isDeveloper && getSharedPreferences("mmm")!!.getBoolean(
+            get() = isDeveloper && getPreferences("mmm")!!.getBoolean(
                 "pref_androidacy_test_mode", false
             )
 
         fun setHasGottenRootAccess(bool: Boolean) {
-            getSharedPreferences("mmm")!!.edit().putBoolean("has_root_access", bool).apply()
+            getPreferences("mmm")!!.edit().putBoolean("has_root_access", bool).apply()
         }
 
         val isCrashReportingEnabled: Boolean
-            get() = getSharedPreferences("mmm")!!.getBoolean(
+            get() = getPreferences("mmm")!!.getBoolean(
                 "pref_crash_reporting", BuildConfig.DEFAULT_ENABLE_CRASH_REPORTING
             )
         val bootSharedPreferences: SharedPreferences?
-            get() = getSharedPreferences("mmm_boot")
+            get() = getPreferences("mmm_boot")
 
         fun formatTime(timeStamp: Long): String {
             // new Date(x) also get the local timestamp for format
@@ -727,7 +729,7 @@ class MainApplication : Application(), Configuration.Provider, ActivityLifecycle
             get() = NotificationManagerCompat.from((INSTANCE)!!).areNotificationsEnabled()
 
         fun analyticsAllowed(): Boolean {
-            return getSharedPreferences("mmm")!!.getBoolean(
+            return getPreferences("mmm")!!.getBoolean(
                 "pref_analytics_enabled", BuildConfig.DEFAULT_ENABLE_ANALYTICS
             )
         }
@@ -735,7 +737,7 @@ class MainApplication : Application(), Configuration.Provider, ActivityLifecycle
         fun shouldShowFeedback(): Boolean {
             // should not have been shown in 14 days and only 1 in 5 chance
             val randChance = Random().nextInt(5)
-            val lastShown = getSharedPreferences("mmm")!!.getLong("last_feedback", 0)
+            val lastShown = getPreferences("mmm")!!.getLong("last_feedback", 0)
             if (forceDebugLogging) Timber.d(
                 "Last feedback shown: %d, randChance: %d",
                 lastShown,

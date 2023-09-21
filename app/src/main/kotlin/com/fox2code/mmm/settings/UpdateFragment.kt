@@ -104,7 +104,7 @@ class UpdateFragment : PreferenceFragmentCompat() {
                     // set the box to unchecked
                     (backgroundUpdateCheck as SwitchPreferenceCompat?)!!.isChecked = false
                     // ensure that the preference is false
-                    MainApplication.getSharedPreferences("mmm")!!.edit()
+                    MainApplication.getPreferences("mmm")!!.edit()
                         .putBoolean("pref_background_update_check", false).apply()
                     MaterialAlertDialogBuilder(requireContext()).setTitle(R.string.permission_notification_title)
                         .setMessage(

@@ -30,7 +30,7 @@ class ModuleManager private constructor() : SyncManager() {
 
     override fun scanInternal(updateListener: UpdateListener) {
         // if last_shown_setup is not "v5", then refuse to continue
-        if (MainApplication.getSharedPreferences("mmm")!!
+        if (MainApplication.getPreferences("mmm")!!
                 .getString("last_shown_setup", "") != "v5"
         ) {
             return

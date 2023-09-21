@@ -15,7 +15,7 @@ import com.fingerprintjs.android.fingerprint.FingerprinterFactory.create
 import com.fox2code.mmm.BuildConfig
 import com.fox2code.mmm.MainApplication
 import com.fox2code.mmm.MainApplication.Companion.INSTANCE
-import com.fox2code.mmm.MainApplication.Companion.getSharedPreferences
+import com.fox2code.mmm.MainApplication.Companion.getPreferences
 import com.fox2code.mmm.R
 import com.fox2code.mmm.androidacy.AndroidacyUtil.Companion.hideToken
 import com.fox2code.mmm.androidacy.AndroidacyUtil.Companion.isAndroidacyLink
@@ -97,7 +97,7 @@ class AndroidacyRepoData(cacheRoot: File?, testMode: Boolean) : RepoData(
             if (e.errorCode == 401) {
                 Timber.w("Invalid token, resetting...")
                 // Remove saved preference
-                val editor = getSharedPreferences("androidacy")!!.edit()
+                val editor = getPreferences("androidacy")!!.edit()
                 editor.remove("pref_androidacy_api_token")
                 editor.apply()
                 return false
@@ -118,12 +118,12 @@ class AndroidacyRepoData(cacheRoot: File?, testMode: Boolean) : RepoData(
             Timber.w("Invalid token, resetting...")
             Timber.w(e)
             // Remove saved preference
-            val editor = getSharedPreferences("androidacy")!!.edit()
+            val editor = getPreferences("androidacy")!!.edit()
             editor.remove("pref_androidacy_api_token")
             editor.apply()
             requestNewToken()
             isValidToken(
-                getSharedPreferences("androidacy")!!.getString(
+                getPreferences("androidacy")!!.getString(
                     "pref_androidacy_api_token",
                     null
                 ))
@@ -152,7 +152,7 @@ class AndroidacyRepoData(cacheRoot: File?, testMode: Boolean) : RepoData(
             }
         }
         // Save the token to the shared preferences
-        val editor = getSharedPreferences("androidacy")!!.edit()
+        val editor = getPreferences("androidacy")!!.edit()
         editor.putString("pref_androidacy_api_token", token)
         editor.apply()
         return token
@@ -163,7 +163,7 @@ class AndroidacyRepoData(cacheRoot: File?, testMode: Boolean) : RepoData(
         // If ANDROIDACY_CLIENT_ID is not set or is empty, disable this repo and return
         @Suppress("KotlinConstantConditions")
         if (BuildConfig.ANDROIDACY_CLIENT_ID == "") {
-            val editor = getSharedPreferences("mmm")!!.edit()
+            val editor = getPreferences("mmm")!!.edit()
             editor.putBoolean("pref_androidacy_repo_enabled", false)
             editor.apply()
             Timber.w("ANDROIDACY_CLIENT_ID is empty, disabling AndroidacyRepoData 2")
@@ -208,7 +208,7 @@ class AndroidacyRepoData(cacheRoot: File?, testMode: Boolean) : RepoData(
         try {
             if (token == null) {
                 token =
-                    getSharedPreferences("androidacy")?.getString("pref_androidacy_api_token", null)
+                    getPreferences("androidacy")?.getString("pref_androidacy_api_token", null)
                 if (token != null && !isValidToken(token)) {
                     if (MainApplication.forceDebugLogging) Timber.i("Token expired or invalid, requesting new one...")
                     token = null
@@ -250,7 +250,7 @@ class AndroidacyRepoData(cacheRoot: File?, testMode: Boolean) : RepoData(
                     return false
                 } else {
                     // Save token to shared preference
-                    val editor = getSharedPreferences("androidacy")!!.edit()
+                    val editor = getPreferences("androidacy")!!.edit()
                     editor.putString("pref_androidacy_api_token", token)
                     editor.apply()
                     if (MainApplication.forceDebugLogging) Timber.i("Token saved to shared preference")
@@ -468,7 +468,7 @@ class AndroidacyRepoData(cacheRoot: File?, testMode: Boolean) : RepoData(
     companion object {
         private var ANDROIDACY_DEVICE_ID: String? = null
         var token =
-            getSharedPreferences("androidacy")!!.getString("pref_androidacy_api_token", null)
+            getPreferences("androidacy")!!.getString("pref_androidacy_api_token", null)
 
         init {
             @Suppress("LocalVariableName") val OK_HTTP_URL_BUILDER: Builder =
@@ -495,7 +495,7 @@ class AndroidacyRepoData(cacheRoot: File?, testMode: Boolean) : RepoData(
                 return ANDROIDACY_DEVICE_ID
             }
             // Try to get the device ID from the shared preferences
-            val sharedPreferences = getSharedPreferences("androidacy")
+            val sharedPreferences = getPreferences("androidacy")
             val deviceIdPref =
                 sharedPreferences!!.getString("device_id_v2", null)
             return if (deviceIdPref != null) {

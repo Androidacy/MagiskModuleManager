@@ -124,7 +124,7 @@ enum class ActionButtonType {
         }
 
         override fun doAction(button: Chip, moduleHolder: ModuleHolder) {
-            if (MainApplication.getSharedPreferences("mmm")?.getBoolean("pref_require_security", false) == true) {
+            if (MainApplication.getPreferences("mmm")?.getBoolean("pref_require_security", false) == true) {
                 // get safe status from either mainmoduleinfo or repo module
                 val safe = moduleHolder.mainModuleInfo.safe || moduleHolder.repoModule?.moduleInfo?.safe ?: false
                 if (!safe) {

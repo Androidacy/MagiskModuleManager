@@ -192,7 +192,7 @@ enum class NotificationType(
         androidx.appcompat.R.attr.colorBackgroundFloating,
         com.google.android.material.R.attr.colorOnBackground,
         View.OnClickListener { v: View? ->
-            if (MainApplication.getSharedPreferences("mmm")
+            if (MainApplication.getPreferences("mmm")
                     ?.getBoolean("pref_require_security", false) == true
             ) {
                 // block local install for safety

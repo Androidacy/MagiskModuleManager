@@ -6,7 +6,7 @@ package com.fox2code.mmm.repo
 import androidx.room.Room
 import com.fox2code.mmm.MainApplication
 import com.fox2code.mmm.MainApplication.Companion.INSTANCE
-import com.fox2code.mmm.MainApplication.Companion.getSharedPreferences
+import com.fox2code.mmm.MainApplication.Companion.getPreferences
 import com.fox2code.mmm.utils.io.Hashes.Companion.hashSha256
 import com.fox2code.mmm.utils.io.PropUtils.Companion.isNullString
 import com.fox2code.mmm.utils.io.net.Http.Companion.doHttpGet
@@ -29,7 +29,7 @@ class CustomRepoManager internal constructor(
     init {
         repoCount = 0
         // refuse to load if setup is not complete
-        if (getSharedPreferences("mmm")!!.getString("last_shown_setup", "") == "v5") {
+        if (getPreferences("mmm")!!.getString("last_shown_setup", "") == "v5") {
             val i = 0
             val lastFilled = intArrayOf(0)
             // now the same as above but for room database

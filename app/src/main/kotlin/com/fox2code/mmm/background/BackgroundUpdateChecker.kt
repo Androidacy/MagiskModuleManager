@@ -114,7 +114,7 @@ class BackgroundUpdateChecker(context: Context, workerParams: WorkerParameters) 
         @Suppress("NAME_SHADOWING", "KotlinConstantConditions")
         fun doCheck(context: Context) {
             // first, check if the user has enabled background update checking
-            if (!MainApplication.getSharedPreferences("mmm")!!
+            if (!MainApplication.getPreferences("mmm")!!
                     .getBoolean("pref_background_update_check", false)
             ) {
                 return
@@ -124,7 +124,7 @@ class BackgroundUpdateChecker(context: Context, workerParams: WorkerParameters) 
                 return
             }
             // next, check if user requires wifi
-            if (MainApplication.getSharedPreferences("mmm")!!
+            if (MainApplication.getPreferences("mmm")!!
                     .getBoolean("pref_background_update_check_wifi", true)
             ) {
                 // check if wifi is connected
@@ -192,7 +192,7 @@ class BackgroundUpdateChecker(context: Context, workerParams: WorkerParameters) 
                         // exclude all modules with id's stored in the pref pref_background_update_check_excludes
                         try {
                             if (Objects.requireNonNull(
-                                    MainApplication.getSharedPreferences("mmm")!!.getStringSet(
+                                    MainApplication.getPreferences("mmm")!!.getStringSet(
                                         "pref_background_update_check_excludes",
                                         HashSet()
                                     )
@@ -203,7 +203,7 @@ class BackgroundUpdateChecker(context: Context, workerParams: WorkerParameters) 
                         // now, we just had to make it more fucking complicated, didn't we?
                         // we now have pref_background_update_check_excludes_version, which is a id:version stringset of versions the user may want to "skip"
                         // oh, and because i hate myself, i made ^ at the beginning match that version and newer, and $ at the end match that version and older
-                        val stringSet = MainApplication.getSharedPreferences("mmm")!!.getStringSet(
+                        val stringSet = MainApplication.getPreferences("mmm")!!.getStringSet(
                             "pref_background_update_check_excludes_version",
                             HashSet()
                         )
@@ -277,7 +277,7 @@ class BackgroundUpdateChecker(context: Context, workerParams: WorkerParameters) 
                     }
                 }
                 // check for app updates
-                if (MainApplication.getSharedPreferences("mmm")!!
+                if (MainApplication.getPreferences("mmm")!!
                         .getBoolean("pref_background_update_check_app", false)
                 ) {
 
@@ -308,9 +308,9 @@ class BackgroundUpdateChecker(context: Context, workerParams: WorkerParameters) 
                 }
             }
             // increment or create counter in shared preferences
-            MainApplication.getSharedPreferences("mmm")!!.edit().putInt(
+            MainApplication.getPreferences("mmm")!!.edit().putInt(
                 "pref_background_update_counter",
-                MainApplication.getSharedPreferences("mmm")!!
+                MainApplication.getPreferences("mmm")!!
                     .getInt("pref_background_update_counter", 0) + 1
             ).apply()
         }
@@ -377,7 +377,7 @@ class BackgroundUpdateChecker(context: Context, workerParams: WorkerParameters) 
 
         fun onMainActivityCreate(context: Context) {
             // Refuse to run if first_launch pref is not false
-            if (MainApplication.getSharedPreferences("mmm")!!
+            if (MainApplication.getPreferences("mmm")!!
                     .getString("last_shown_setup", null) != "v5"
             ) return
             // create notification channel group
@@ -417,7 +417,7 @@ class BackgroundUpdateChecker(context: Context, workerParams: WorkerParameters) 
             notificationManagerCompat.cancel(NOTIFICATION_ID_ONGOING)
             if (MainApplication.forceDebugLogging) Timber.d("Scheduling periodic background check")
             // use pref_background_update_check_frequency to set frequency. value is in minutes
-            val frequency = MainApplication.getSharedPreferences("mmm")!!
+            val frequency = MainApplication.getPreferences("mmm")!!
                 .getInt("pref_background_update_check_frequency", 60).toLong()
             if (MainApplication.forceDebugLogging) Timber.d("Frequency: $frequency minutes")
             WorkManager.getInstance(context).enqueueUniquePeriodicWork(

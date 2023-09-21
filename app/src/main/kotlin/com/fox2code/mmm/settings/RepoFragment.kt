@@ -69,7 +69,7 @@ class RepoFragment : PreferenceFragmentCompat() {
                             )
                             .setPositiveButton(android.R.string.ok) { _: DialogInterface?, _: Int ->
                                 // User clicked OK button
-                                MainApplication.getSharedPreferences("mmm")!!
+                                MainApplication.getPreferences("mmm")!!
                                     .edit().putBoolean("androidacy_test_mode", true).apply()
                                 // Check the switch
                                 val mStartActivity =
@@ -101,11 +101,11 @@ class RepoFragment : PreferenceFragmentCompat() {
                                     androidacyTestMode as SwitchPreferenceCompat
                                 switchPreferenceCompat.isChecked = false
                                 // There's probably a better way to do this than duplicate code but I'm too lazy to figure it out
-                                MainApplication.getSharedPreferences("mmm")!!
+                                MainApplication.getPreferences("mmm")!!
                                     .edit().putBoolean("androidacy_test_mode", false).apply()
                             }.show()
                     } else {
-                        MainApplication.getSharedPreferences("mmm")!!
+                        MainApplication.getPreferences("mmm")!!
                             .edit().putBoolean("androidacy_test_mode", false).apply()
                         // Show dialog to restart app with ok button
                         MaterialAlertDialogBuilder(requireContext()).setTitle(R.string.warning)
@@ -221,7 +221,7 @@ class RepoFragment : PreferenceFragmentCompat() {
                     }
                 }
                 val originalApiKeyRef = arrayOf(
-                    MainApplication.getSharedPreferences("androidacy")!!
+                    MainApplication.getPreferences("androidacy")!!
                         .getString("pref_androidacy_api_token", "")
                 )
                 // Get the dummy pref_androidacy_repo_api_token preference with id pref_androidacy_repo_api_token
@@ -281,7 +281,7 @@ class RepoFragment : PreferenceFragmentCompat() {
                         Thread(Runnable {
                             // If key is empty, just remove it and change the text of the snack bar
                             if (apiKey.isEmpty()) {
-                                MainApplication.getSharedPreferences("androidacy")!!.edit()
+                                MainApplication.getPreferences("androidacy")!!.edit()
                                     .remove("pref_androidacy_api_token").apply()
                                 Handler(Looper.getMainLooper()).post {
                                     Snackbar.make(
@@ -332,7 +332,7 @@ class RepoFragment : PreferenceFragmentCompat() {
                                             BaseTransientBottomBar.LENGTH_SHORT
                                         ).show()
                                         // Save the original key
-                                        MainApplication.getSharedPreferences("androidacy")!!
+                                        MainApplication.getPreferences("androidacy")!!
                                             .edit().putString(
                                                 "pref_androidacy_api_token",
                                                 originalApiKeyRef[0]
@@ -366,7 +366,7 @@ class RepoFragment : PreferenceFragmentCompat() {
                                         RepoManager.getINSTANCE()!!.androidacyRepoData!!.setToken(
                                             apiKey
                                         )
-                                        MainApplication.getSharedPreferences("androidacy")!!
+                                        MainApplication.getPreferences("androidacy")!!
                                             .edit()
                                             .putString("pref_androidacy_api_token", apiKey)
                                             .apply()
@@ -420,11 +420,9 @@ class RepoFragment : PreferenceFragmentCompat() {
                                                 BaseTransientBottomBar.LENGTH_SHORT
                                             ).show()
                                             // Save the original key
-                                            MainApplication.INSTANCE!!.getSharedPreferences(
+                                            MainApplication.getPreferences(
                                                 "androidacy",
-                                                0
-                                            )
-                                                .edit().putString(
+                                                )!!.edit().putString(
                                                     "pref_androidacy_api_token",
                                                     originalApiKeyRef[0]
                                                 ).apply()

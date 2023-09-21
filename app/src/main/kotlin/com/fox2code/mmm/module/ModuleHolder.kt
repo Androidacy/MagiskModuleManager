@@ -10,7 +10,7 @@ import androidx.annotation.StringRes
 import com.fox2code.mmm.MainApplication
 import com.fox2code.mmm.MainApplication.Companion.INSTANCE
 import com.fox2code.mmm.MainApplication.Companion.formatTime
-import com.fox2code.mmm.MainApplication.Companion.getSharedPreferences
+import com.fox2code.mmm.MainApplication.Companion.getPreferences
 import com.fox2code.mmm.MainApplication.Companion.isDisableLowQualityModuleFilter
 import com.fox2code.mmm.NotificationType
 import com.fox2code.mmm.R
@@ -120,7 +120,7 @@ class ModuleHolder : Comparable<ModuleHolder?> {
             if (MainApplication.forceDebugLogging) Timber.i("Module %s is updateable", moduleId)
             var ignoreUpdate = false
             try {
-                if (getSharedPreferences("mmm")?.getStringSet(
+                if (getPreferences("mmm")?.getStringSet(
                         "pref_background_update_check_excludes",
                         HashSet()
                     )!!
@@ -133,7 +133,7 @@ class ModuleHolder : Comparable<ModuleHolder?> {
             // now, we just had to make it more fucking complicated, didn't we?
             // we now have pref_background_update_check_excludes_version, which is a id:version stringset of versions the user may want to "skip"
             // oh, and because i hate myself, i made ^ at the beginning match that version and newer, and $ at the end match that version and older
-            val stringSetT = getSharedPreferences("mmm")?.getStringSet(
+            val stringSetT = getPreferences("mmm")?.getStringSet(
                 "pref_background_update_check_excludes_version",
                 HashSet()
             )

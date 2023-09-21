@@ -83,7 +83,7 @@ enum class Http {;
         private val fallbackCache: HashMap<String, List<InetAddress>>
 
         init {
-            sharedPreferences = context.getSharedPreferences("mmm_dns", Context.MODE_PRIVATE)
+            sharedPreferences = MainApplication.getPreferences("mmm_dns")!!
             this.parent = parent
             this.fallbacks =
                 HashSet(listOf(*fallbacks)).toString().replaceAfter("]", "").replace("[", "")
