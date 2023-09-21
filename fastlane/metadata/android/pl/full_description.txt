@@ -1,3 +1,3 @@
-Ta aplikacja nie jest oficjalnie wspierana przez Magisk ani jego programistów.
+AMM (Menedżer Modułów Androidacy) umożliwia zarządzanie modułami dla Magisk i KernelSU. Przeglądaj, wyszukuj i pobieraj moduły z repozytorium modułów Androidacy lub instaluj moduły z dowolnego innego źródła, w tym z kompatybilnych źródeł online. Możesz także zarządzać zainstalowanymi modułami, w tym włączać je, wyłączać i odinstalowywać.
 
-Moduły wyświetlane w tej aplikacji nie są z nią powiązane. W razie potrzeby skontaktuj się z właścicielami repozytoriów.
+Aplikacja nie jest powiązana z Magisk, Google ani żadnym z ich programistów. Repozytoria są zarządzane niezależnie i nie możemy zapewnić dla nich wsparcia.

@@ -375,4 +375,18 @@
     <string name="install_from_storage_safe_modules">لأمانك ، يتم تعطيل تثبيت الإضافة المحلية بواسطة أمن الإضافة. يمكنك تبديل هذا في الإعدادات <b>على مسؤوليتك الخاصة</b>.</string>
     <string name="setup_require_security_summary">يتطلب وضع علامة على الإضافات على أنها آمنة قبل التثبيت. سيؤدي هذا إلى تعطيل تثبيت الإضافة المحلية ويتم تحديد سلامة الإضافة بواسطة مالك الريبو.</string>
     <string name="install_terminal_support_link">الدعم: %s</string>
+    <string name="androidacy_thanks_desc_v2">يتم الحفاظ على هذا التطبيق وتحديثه ودعمه بواسطة Androidacy ، والأسماء والشعارات والعلامات التجارية هي حقوق الطبع والنشر Androidacy.</string>
+    <string name="androidacy_thanks_v2">تطبيق Androidacy</string>
+    <string name="fox2code_thanks_v2">v0.x بواسطة Fox2Code</string>
+    <string name="force_debug_logging_pref">فرض تسجيل المصحح</string>
+    <string name="download_module_description">تنزيل الإضافة %s</string>
+    <string name="download_failed">‌فشل التنزيل!</string>
+    <string name="feedback_placeholder">نأسف لهذا الخطأ. إذا فعلت ميزة الإبلاغ عن الأعطال، فقد تلقينا تقريرا بالفعل ونعمل على حل المشكلة. لا تتردد في إعادة تشغيل التطبيق عندما تكون جاهزا! يمكنك أيضا إعادة تعيين التطبيق إذا كنت لا تزال ترى هذه الشاشة.</string>
+    <string name="crash_details_suggestion_v2">أدناه هو ستاكترايس. ومع ذلك ، سيرسل إعداد التقارير التلقائية هذا تلقائياً إلينا إذا تم تفعيله في الإعدادات. اضغط على أيقونة النسخ في الزاوية لنسخها إلى الحافظة الخاصة بك.</string>
+    <string name="fox2code_thanks_desc_v2">تم تطوير الإصدارات ماقبل 0.6.8 بواسطة Fox2Code وساهم في الإصدارات التي تصل إلى 1.1. ونشكره على عمله.</string>
+    <string name="force_debug_logging_desc">فرض تسجيل مصحح الأخطاء في بناء النشر. تنبيه: قد يؤدي هذا إلى إبطاء التطبيق بشكل كبير. يرجى عدم التشغيل ما لم يطلب الدعم ذلك.</string>
+    <string name="download_started">بدأ التنزيل</string>
+    <string name="download_completed">انتهى التنزيل وحفظه في مجلد التنزيل الافتراضي</string>
+    <string name="download_finished">تم الانتهاء من التنزيل وحفظه في مجلد التنزيلات</string>
+    <string name="file_picker_not_zip">الملف الذي اخترته ليس ملف zip صالح.</string>
 </resources>

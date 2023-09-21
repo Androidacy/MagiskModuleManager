@@ -3,7 +3,7 @@
   ~ Copyright (c) 2023 to present Androidacy and contributors. Names, logos, icons, and the Androidacy name are all trademarks of Androidacy and may not be used without license. See LICENSE for more information.
   --><resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">Fox - Menedżer Modułów Magisk</string>
-    <string name="fail_root_magisk">Nie udało się uzyskać dostępu do Root lub Magisk</string>
+    <string name="fail_root_magisk">Brak dostępu do Roota i/lub Magiska</string>
     <string name="fail_root_denied">Odmówiono dostępu do roota w aplikacji Magisk</string>
     <string name="fail_magisk_missing">Magisk nie jest zainstalowany</string>
     <string name="loading">Wczytywanie…</string>
@@ -12,7 +12,7 @@
     <string name="online_repo">Repozytorium online</string>
     <string name="showcase_mode">Menedżer jest zablokowany</string>
     <string name="failed_download">Nie udało się pobrać pliku</string>
-    <string name="fail_internet">Nie udało się nawiązać połączenia z Internetem</string>
+    <string name="fail_internet">Brak dostępu do internetu</string>
     <string name="no_web_view">Nie można otworzyć systemowego WebView</string>
     <string name="title_activity_settings">SettingsActivity</string>
     <string name="app_update_available">Dostępna jest nowa wersja aplikacji</string>
@@ -383,4 +383,18 @@
     <string name="install_terminal_support_link">Wsparcie: %s</string>
     <string name="install_blocked_message">Obecnie nie możesz zainstalować tego modułu, ponieważ masz włączone zabezpieczenia modułów w ustawieniach. Wyłącz je, jeśli chcesz kontynuować.</string>
     <string name="setup_androidacy_repo_recommendation">Zalecamy włączenie tylko repozytorium Androidacy. Zapewni to zoptymalizowaną i bezpieczniejszą obsługę.</string>
+    <string name="androidacy_thanks_v2">Aplikacja Androidacy</string>
+    <string name="fox2code_thanks_v2">v0.x autorstwa Fox2Code</string>
+    <string name="force_debug_logging_pref">Wymuś logowanie debug</string>
+    <string name="download_started">Rozpoczęto pobieranie</string>
+    <string name="download_module_description">Pobieranie modułu %s</string>
+    <string name="download_completed">Pobrano i zapisano do domyślnego folderu Download</string>
+    <string name="download_failed">Pobieranie nie powiodło się!</string>
+    <string name="file_picker_not_zip">Wybrany plik nie jest prawidłowym plikiem zip.</string>
+    <string name="feedback_placeholder">Przepraszamy za ten błąd. Jeśli raportowanie błędów zostało włączone, otrzymaliśmy już zgłoszenie i pracujemy nad tym problemem. Spróbuj ponownie uruchomić aplikację lub zresetuj ją, jeśli nadal widzisz ten ekran.</string>
+    <string name="crash_details_suggestion_v2">Poniżej znajduje się stacktrace. Zostanie wysłane do nas automatycznie, jeśli automatyczne raportowanie błędów jest włączone. Kliknij ikonę kopiowania, aby skopiować do schowka.</string>
+    <string name="androidacy_thanks_desc_v2">Aplikacja jest utrzymywana, aktualizowana i wspierana przez Androidacy. Nazwa, logo i znaki towarowe są objęte prawami autorskimi Androidacy.</string>
+    <string name="fox2code_thanks_desc_v2">Wersje starsze niż 0.6.8 zostały opracowane przez Fox2Code, a wersje do 1.1 zostały przez niego współtworzone. Dziękujemy mu za jego pracę.</string>
+    <string name="force_debug_logging_desc">Wymusza rejestrowanie logów debug w kompilacjach release. UWAGA: może to znacznie spowolnić działanie aplikacji. Nie włączaj, chyba że poprosi o to pomoc techniczna.</string>
+    <string name="download_finished">Pobieranie ukończone i zapisano do folderu Download</string>
 </resources>

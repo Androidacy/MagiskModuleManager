@@ -1,1 +1,1 @@
-Nowy menedżer modułów dla Magiska.
+AMM jest prostą w użyciu aplikacją zarządzającą modułami Magisk/KernelSU.
