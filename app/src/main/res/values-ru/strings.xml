@@ -352,4 +352,16 @@
     <string name="no_sentry_id">Невозможно отправить отзыв - нет идентификатора события от Sentry. Последнее событие, возможно, не было отправлено.</string>
     <string name="remote_module">Доступно в онлайн-репозитории</string>
     <string name="remote_message">%s доступен в онлайн-репозитории. <b>Мы настоятельно рекомендуем вам выполнить чистую установку, поскольку большинство модулей не справляются с повторной установкой корректно,</b> но вместо этого вы можете переустановить его на свой страх и риск.</string>
+    <string name="setup_uninstall_message">На этом устройстве уже установлена другая версия этого приложения. Мы рекомендуем удалить её для предотвращения возможных ошибок в работе.
+\n
+\nПриложение: %s</string>
+    <string name="debug_build_toast">AMM сборка для разработчиков %1$s собранная на %2$s. Осталось %3$d дня/дней.</string>
+    <string name="update_frequency_15">15 минут</string>
+    <string name="update_frequency_30">30 минут</string>
+    <string name="update_frequency_60">Час</string>
+    <string name="update_frequency_360">6 часов</string>
+    <string name="update_frequency_720">12 часов</string>
+    <string name="update_frequency_1440">Сутки</string>
+    <string name="ksu_experimental">Поддержка KernelSU находится на <b>экспериментальной</b> стадии и может иметь ошибки. Совместимость с модулями не гарантирована.&gt;</string>
+    <string name="setup_agree_eula_toast">Пожалуйста, согласитесь с условиями</string>
 </resources>
