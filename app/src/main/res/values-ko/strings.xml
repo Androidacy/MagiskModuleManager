@@ -245,4 +245,13 @@
     <string name="error_adding">커스텀 저장소 추가 실패</string>
     <string name="background_update_check_excludes">자동 업데이트에서 제외될 모듈</string>
     <string name="checking_for_update">업데이트 확인중…</string>
+    <string name="update_debug_download_pref">업데이트 다운로드 메커니즘 테스트</string>
+    <string name="no_update_available">최신버전 입니다!</string>
+    <string name="invalid_repo_url">입력하신 URL이 옳지 않습니다</string>
+    <string name="download_update">업데이트 다운로드</string>
+    <string name="error_download_update">업데이트 정보를 내려받는동안 오류가 발생했습니다.</string>
+    <string name="downloading_update">업데이트 다운로드중… %1$d%%</string>
+    <string name="installing_update">업데이트 설치중…</string>
+    <string name="no_file_found">에러: 업데이트 패키지를 찾을수 없습니다.</string>
+    <string name="check_for_updates">앱 업데이트 확인</string>
 </resources>
