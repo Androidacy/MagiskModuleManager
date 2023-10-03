@@ -168,7 +168,8 @@ class InstallerInitializer {
                         "/data/adb/ksud -V"
                     ).to(
                         output
-                    ).exec().isSuccess && "true" == output[0]
+                    ).exec().isSuccess && "true" == output[0] && output[1].isNotEmpty() && !output[1].contains(
+                        "not found", true)
                 ) {
                     if (MainApplication.forceDebugLogging) {
                         Timber.i("Kernelsu detected")
