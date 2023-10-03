@@ -113,35 +113,220 @@ class BackgroundUpdateChecker(context: Context, workerParams: WorkerParameters) 
 
         @Suppress("NAME_SHADOWING", "KotlinConstantConditions")
         fun doCheck(context: Context) {
-            // first, check if the user has enabled background update checking
-            if (!MainApplication.getPreferences("mmm")!!
-                    .getBoolean("pref_background_update_check", false)
-            ) {
-                return
-            }
-            if (MainApplication.INSTANCE!!.isInForeground) {
-                // don't check if app is in foreground, this is a background check
-                return
-            }
-            // next, check if user requires wifi
-            if (MainApplication.getPreferences("mmm")!!
-                    .getBoolean("pref_background_update_check_wifi", true)
-            ) {
-                // check if wifi is connected
-                val connectivityManager =
-                    context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-                val networkInfo = connectivityManager.activeNetwork
-                if (networkInfo == null || !connectivityManager.getNetworkCapabilities(
-                        networkInfo
-                    )?.hasCapability(NetworkCapabilities.NET_CAPABILITY_NOT_METERED)!!
+            try {
+                // first, check if the user has enabled background update checking
+                if (!MainApplication.getPreferences("mmm")!!
+                        .getBoolean("pref_background_update_check", false)
                 ) {
-                    Timber.w("Background update check: wifi not connected but required")
                     return
                 }
-            }
-            synchronized(lock) {
+                if (MainApplication.INSTANCE!!.isInForeground) {
+                    // don't check if app is in foreground, this is a background check
+                    return
+                }
+                // next, check if user requires wifi
+                if (MainApplication.getPreferences("mmm")!!
+                        .getBoolean("pref_background_update_check_wifi", true)
+                ) {
+                    // check if wifi is connected
+                    val connectivityManager =
+                        context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+                    val networkInfo = connectivityManager.activeNetwork
+                    if (networkInfo == null || !connectivityManager.getNetworkCapabilities(
+                            networkInfo
+                        )?.hasCapability(NetworkCapabilities.NET_CAPABILITY_NOT_METERED)!!
+                    ) {
+                        Timber.w("Background update check: wifi not connected but required")
+                        return
+                    }
+                }
+                synchronized(lock) {
 
-                // post checking notification if notifications are enabled
+                    // post checking notification if notifications are enabled
+                    if (ContextCompat.checkSelfPermission(
+                            MainApplication.INSTANCE!!.applicationContext,
+                            Manifest.permission.POST_NOTIFICATIONS
+                        ) == PackageManager.PERMISSION_GRANTED
+                    ) {
+                        val notificationManager = NotificationManagerCompat.from(context)
+                        notificationManager.createNotificationChannel(
+                            NotificationChannelCompat.Builder(
+                                NOTIFICATION_CHANNEL_ID_ONGOING,
+                                NotificationManagerCompat.IMPORTANCE_MIN
+                            ).setName(
+                                context.getString(
+                                    R.string.notification_channel_category_background_update
+                                )
+                            ).setDescription(
+                                context.getString(
+                                    R.string.notification_channel_category_background_update_description
+                                )
+                            ).setGroup(
+                                NOTFIICATION_GROUP
+                            ).build()
+                        )
+                        val builder =
+                            NotificationCompat.Builder(context, NOTIFICATION_CHANNEL_ID_ONGOING)
+                        builder.setSmallIcon(R.drawable.ic_baseline_update_24)
+                        builder.priority = NotificationCompat.PRIORITY_MIN
+                        builder.setCategory(NotificationCompat.CATEGORY_SERVICE)
+                        builder.setShowWhen(false)
+                        builder.setOnlyAlertOnce(true)
+                        builder.setOngoing(true)
+                        builder.setAutoCancel(false)
+                        builder.setGroup("update_bg")
+                        builder.setContentTitle(context.getString(R.string.notification_channel_background_update))
+                        builder.setContentText(context.getString(R.string.notification_channel_background_update_description))
+                        notificationManager.notify(NOTIFICATION_ID_ONGOING, builder.build())
+                    } else {
+                        if (MainApplication.forceDebugLogging) Timber.d("Not posting notification because of missing permission")
+                    }
+                    ModuleManager.instance!!.scanAsync()
+                    RepoManager.getINSTANCE()!!.update(null)
+                    ModuleManager.instance!!.runAfterScan {
+                        var moduleUpdateCount = 0
+                        val repoModules = RepoManager.getINSTANCE()!!.modules
+                        // hashmap of updateable modules names
+                        val updateableModules = HashMap<String, String>()
+                        for (localModuleInfo in ModuleManager.instance!!.modules.values) {
+                            if ("twrp-keep" == localModuleInfo.id) continue
+                            // exclude all modules with id's stored in the pref pref_background_update_check_excludes
+                            try {
+                                if (Objects.requireNonNull(
+                                        MainApplication.getPreferences("mmm")!!.getStringSet(
+                                            "pref_background_update_check_excludes",
+                                            HashSet()
+                                        )
+                                    ).contains(localModuleInfo.id)
+                                ) continue
+                            } catch (ignored: Exception) {
+                            }
+                            // now, we just had to make it more fucking complicated, didn't we?
+                            // we now have pref_background_update_check_excludes_version, which is a id:version stringset of versions the user may want to "skip"
+                            // oh, and because i hate myself, i made ^ at the beginning match that version and newer, and $ at the end match that version and older
+                            val stringSet = MainApplication.getPreferences("mmm")!!.getStringSet(
+                                "pref_background_update_check_excludes_version",
+                                HashSet()
+                            )
+                            var version = ""
+                            for (s in stringSet!!) {
+                                if (s.startsWith(localModuleInfo.id)) {
+                                    version = s
+                                    if (MainApplication.forceDebugLogging) Timber.d(
+                                        "igV: %s",
+                                        version
+                                    )
+                                    break
+                                }
+                            }
+                            val repoModule = repoModules[localModuleInfo.id]
+                            localModuleInfo.checkModuleUpdate()
+                            var remoteVersionCode = localModuleInfo.updateVersionCode.toString()
+                            if (repoModule != null) {
+                                remoteVersionCode = repoModule.moduleInfo.versionCode.toString()
+                            }
+                            if (version.isNotEmpty()) {
+                                if (MainApplication.forceDebugLogging) Timber.d(
+                                    "igV found: %s",
+                                    version
+                                )
+                                val remoteVersionCodeInt = remoteVersionCode.toInt()
+                                val wantsVersion =
+                                    version.split(":".toRegex()).dropLastWhile { it.isEmpty() }
+                                        .toTypedArray()[1].replace("[^0-9]".toRegex(), "").toInt()
+                                // now find out if user wants up to and including this version, or this version and newer
+                                // if it starts with ^, it's this version and newer, if it ends with $, it's this version and older
+                                version =
+                                    version.split(":".toRegex()).dropLastWhile { it.isEmpty() }
+                                        .toTypedArray()[1]
+                                if (version.startsWith("^")) {
+                                    if (MainApplication.forceDebugLogging) Timber.d("igV: newer")
+                                    // the wantsversion and newer
+                                    if (remoteVersionCodeInt >= wantsVersion) {
+                                        if (MainApplication.forceDebugLogging) Timber.d("igV: skipping")
+                                        // if it is, we skip it
+                                        continue
+                                    }
+                                } else if (version.endsWith("$")) {
+                                    if (MainApplication.forceDebugLogging) Timber.d("igV: older")
+                                    // this wantsversion and older
+                                    if (remoteVersionCodeInt <= wantsVersion) {
+                                        if (MainApplication.forceDebugLogging) Timber.d("igV: skipping")
+                                        // if it is, we skip it
+                                        continue
+                                    }
+                                } else if (wantsVersion == remoteVersionCodeInt) {
+                                    if (MainApplication.forceDebugLogging) Timber.d("igV: equal")
+                                    // if it is, we skip it
+                                    continue
+                                }
+                            }
+                            if (localModuleInfo.updateVersionCode > localModuleInfo.versionCode && !PropUtils.isNullString(
+                                    localModuleInfo.updateVersion
+                                )
+                            ) {
+                                moduleUpdateCount++
+                                val version: String = localModuleInfo.version!!
+                                val name: String = localModuleInfo.name!!
+                                updateableModules[name] = version
+                            } else if (repoModule != null && repoModule.moduleInfo.versionCode > localModuleInfo.versionCode && !PropUtils.isNullString(
+                                    repoModule.moduleInfo.version
+                                )
+                            ) {
+                                val version: String = localModuleInfo.version!!
+                                val name: String = localModuleInfo.name!!
+                                moduleUpdateCount++
+                                updateableModules[name] = version
+                            }
+                        }
+                        if (moduleUpdateCount != 0) {
+                            if (MainApplication.forceDebugLogging) Timber.d(
+                                "Found %d updates",
+                                moduleUpdateCount
+                            )
+                            postNotification(context, updateableModules, moduleUpdateCount, false)
+                        }
+                    }
+                    // check for app updates
+                    if (MainApplication.getPreferences("mmm")!!
+                            .getBoolean("pref_background_update_check_app", false)
+                    ) {
+                        // don't check if app is from play store or fdroid
+                        if (BuildConfig.FLAVOR != "play" || BuildConfig.FLAVOR != "fdroid") {
+                            try {
+                                val shouldUpdate =
+                                    AppUpdateManager.appUpdateManager.checkUpdate(true)
+                                if (shouldUpdate) {
+                                    if (MainApplication.forceDebugLogging) Timber.d("Found app update")
+                                    postNotificationForAppUpdate(context)
+                                } else {
+                                    if (MainApplication.forceDebugLogging) Timber.d("No app update found")
+                                }
+                            } catch (e: Exception) {
+                                Timber.e("Failed to check for app update")
+                            }
+                        }
+                    }
+                    // remove checking notification
+                    if (ContextCompat.checkSelfPermission(
+                            MainApplication.INSTANCE!!.applicationContext,
+                            Manifest.permission.POST_NOTIFICATIONS
+                        ) == PackageManager.PERMISSION_GRANTED
+                    ) {
+                        if (MainApplication.forceDebugLogging) Timber.d("Removing notification")
+                        val notificationManager = NotificationManagerCompat.from(context)
+                        notificationManager.cancel(NOTIFICATION_ID_ONGOING)
+                    }
+                }
+                // increment or create counter in shared preferences
+                MainApplication.getPreferences("mmm")!!.edit().putInt(
+                    "pref_background_update_counter",
+                    MainApplication.getPreferences("mmm")!!
+                        .getInt("pref_background_update_counter", 0) + 1
+                ).apply()
+            } catch (e: Exception) {
+                Timber.e(e, "Failed to check for updates")
+                // post notification
                 if (ContextCompat.checkSelfPermission(
                         MainApplication.INSTANCE!!.applicationContext,
                         Manifest.permission.POST_NOTIFICATIONS
@@ -167,152 +352,20 @@ class BackgroundUpdateChecker(context: Context, workerParams: WorkerParameters) 
                     val builder =
                         NotificationCompat.Builder(context, NOTIFICATION_CHANNEL_ID_ONGOING)
                     builder.setSmallIcon(R.drawable.ic_baseline_update_24)
-                    builder.priority = NotificationCompat.PRIORITY_MIN
+                    builder.priority = NotificationCompat.PRIORITY_HIGH
                     builder.setCategory(NotificationCompat.CATEGORY_SERVICE)
                     builder.setShowWhen(false)
                     builder.setOnlyAlertOnce(true)
                     builder.setOngoing(true)
                     builder.setAutoCancel(false)
                     builder.setGroup("update_bg")
-                    builder.setContentTitle(context.getString(R.string.notification_channel_background_update))
-                    builder.setContentText(context.getString(R.string.notification_channel_background_update_description))
-                    notificationManager.notify(NOTIFICATION_ID_ONGOING, builder.build())
+                    builder.setContentTitle(context.getString(R.string.update_failed))
+                    builder.setContentText(context.getString(R.string.update_failed_description))
+                    notificationManager.notify(NOTIFICATION_ID, builder.build())
                 } else {
                     if (MainApplication.forceDebugLogging) Timber.d("Not posting notification because of missing permission")
                 }
-                ModuleManager.instance!!.scanAsync()
-                RepoManager.getINSTANCE()!!.update(null)
-                ModuleManager.instance!!.runAfterScan {
-                    var moduleUpdateCount = 0
-                    val repoModules = RepoManager.getINSTANCE()!!.modules
-                    // hashmap of updateable modules names
-                    val updateableModules = HashMap<String, String>()
-                    for (localModuleInfo in ModuleManager.instance!!.modules.values) {
-                        if ("twrp-keep" == localModuleInfo.id) continue
-                        // exclude all modules with id's stored in the pref pref_background_update_check_excludes
-                        try {
-                            if (Objects.requireNonNull(
-                                    MainApplication.getPreferences("mmm")!!.getStringSet(
-                                        "pref_background_update_check_excludes",
-                                        HashSet()
-                                    )
-                                ).contains(localModuleInfo.id)
-                            ) continue
-                        } catch (ignored: Exception) {
-                        }
-                        // now, we just had to make it more fucking complicated, didn't we?
-                        // we now have pref_background_update_check_excludes_version, which is a id:version stringset of versions the user may want to "skip"
-                        // oh, and because i hate myself, i made ^ at the beginning match that version and newer, and $ at the end match that version and older
-                        val stringSet = MainApplication.getPreferences("mmm")!!.getStringSet(
-                            "pref_background_update_check_excludes_version",
-                            HashSet()
-                        )
-                        var version = ""
-                        for (s in stringSet!!) {
-                            if (s.startsWith(localModuleInfo.id)) {
-                                version = s
-                                if (MainApplication.forceDebugLogging) Timber.d("igV: %s", version)
-                                break
-                            }
-                        }
-                        val repoModule = repoModules[localModuleInfo.id]
-                        localModuleInfo.checkModuleUpdate()
-                        var remoteVersionCode = localModuleInfo.updateVersionCode.toString()
-                        if (repoModule != null) {
-                            remoteVersionCode = repoModule.moduleInfo.versionCode.toString()
-                        }
-                        if (version.isNotEmpty()) {
-                            if (MainApplication.forceDebugLogging) Timber.d("igV found: %s", version)
-                            val remoteVersionCodeInt = remoteVersionCode.toInt()
-                            val wantsVersion =
-                                version.split(":".toRegex()).dropLastWhile { it.isEmpty() }
-                                    .toTypedArray()[1].replace("[^0-9]".toRegex(), "").toInt()
-                            // now find out if user wants up to and including this version, or this version and newer
-                            // if it starts with ^, it's this version and newer, if it ends with $, it's this version and older
-                            version = version.split(":".toRegex()).dropLastWhile { it.isEmpty() }
-                                .toTypedArray()[1]
-                            if (version.startsWith("^")) {
-                                if (MainApplication.forceDebugLogging) Timber.d("igV: newer")
-                                // the wantsversion and newer
-                                if (remoteVersionCodeInt >= wantsVersion) {
-                                    if (MainApplication.forceDebugLogging) Timber.d("igV: skipping")
-                                    // if it is, we skip it
-                                    continue
-                                }
-                            } else if (version.endsWith("$")) {
-                                if (MainApplication.forceDebugLogging) Timber.d("igV: older")
-                                // this wantsversion and older
-                                if (remoteVersionCodeInt <= wantsVersion) {
-                                    if (MainApplication.forceDebugLogging) Timber.d("igV: skipping")
-                                    // if it is, we skip it
-                                    continue
-                                }
-                            } else if (wantsVersion == remoteVersionCodeInt) {
-                                if (MainApplication.forceDebugLogging) Timber.d("igV: equal")
-                                // if it is, we skip it
-                                continue
-                            }
-                        }
-                        if (localModuleInfo.updateVersionCode > localModuleInfo.versionCode && !PropUtils.isNullString(
-                                localModuleInfo.updateVersion
-                            )
-                        ) {
-                            moduleUpdateCount++
-                            val version: String = localModuleInfo.version!!
-                            val name: String = localModuleInfo.name!!
-                            updateableModules[name] = version
-                        } else if (repoModule != null && repoModule.moduleInfo.versionCode > localModuleInfo.versionCode && !PropUtils.isNullString(
-                                repoModule.moduleInfo.version
-                            )
-                        ) {
-                            val version: String = localModuleInfo.version!!
-                            val name: String = localModuleInfo.name!!
-                            moduleUpdateCount++
-                            updateableModules[name] = version
-                        }
-                    }
-                    if (moduleUpdateCount != 0) {
-                        if (MainApplication.forceDebugLogging) Timber.d("Found %d updates", moduleUpdateCount)
-                        postNotification(context, updateableModules, moduleUpdateCount, false)
-                    }
-                }
-                // check for app updates
-                if (MainApplication.getPreferences("mmm")!!
-                        .getBoolean("pref_background_update_check_app", false)
-                ) {
-
-                    // don't check if app is from play store or fdroid
-                    if (BuildConfig.FLAVOR != "play" || BuildConfig.FLAVOR != "fdroid") {
-                        try {
-                            val shouldUpdate = AppUpdateManager.appUpdateManager.checkUpdate(true)
-                            if (shouldUpdate) {
-                                if (MainApplication.forceDebugLogging) Timber.d("Found app update")
-                                postNotificationForAppUpdate(context)
-                            } else {
-                                if (MainApplication.forceDebugLogging) Timber.d("No app update found")
-                            }
-                        } catch (e: Exception) {
-                            Timber.e("Failed to check for app update")
-                        }
-                    }
-                }
-                // remove checking notification
-                if (ContextCompat.checkSelfPermission(
-                        MainApplication.INSTANCE!!.applicationContext,
-                        Manifest.permission.POST_NOTIFICATIONS
-                    ) == PackageManager.PERMISSION_GRANTED
-                ) {
-                    if (MainApplication.forceDebugLogging) Timber.d("Removing notification")
-                    val notificationManager = NotificationManagerCompat.from(context)
-                    notificationManager.cancel(NOTIFICATION_ID_ONGOING)
-                }
             }
-            // increment or create counter in shared preferences
-            MainApplication.getPreferences("mmm")!!.edit().putInt(
-                "pref_background_update_counter",
-                MainApplication.getPreferences("mmm")!!
-                    .getInt("pref_background_update_counter", 0) + 1
-            ).apply()
         }
 
         fun postNotification(
