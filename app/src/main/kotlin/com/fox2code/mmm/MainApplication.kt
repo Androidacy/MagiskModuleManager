@@ -4,14 +4,12 @@
 
 package com.fox2code.mmm
 
-import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.ActivityManager
 import android.app.ActivityManager.RunningAppProcessInfo
 import android.app.Application
 import android.app.Application.ActivityLifecycleCallbacks
-import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
@@ -24,14 +22,13 @@ import android.util.Log
 import androidx.annotation.StyleRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.view.ContextThemeWrapper
-import androidx.core.app.ActivityCompat
-import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.emoji2.text.DefaultEmojiCompatConfig
 import androidx.emoji2.text.EmojiCompat
 import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKey
 import androidx.work.Configuration
+import cat.ereza.customactivityoncrash.config.CaocConfig
 import com.fox2code.mmm.installer.InstallerInitializer
 import com.fox2code.mmm.installer.InstallerInitializer.Companion.peekMagiskVersion
 import com.fox2code.mmm.manager.LocalModuleInfo
@@ -51,8 +48,6 @@ import ly.count.android.sdk.Countly
 import ly.count.android.sdk.CountlyConfig
 import timber.log.Timber
 import java.io.File
-import java.io.PrintWriter
-import java.io.StringWriter
 import java.security.SecureRandom
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -204,53 +199,15 @@ class MainApplication : Application(), Configuration.Provider, ActivityLifecycle
         get() = !this.isLightTheme
 
     override fun onCreate() {
-
-        Thread.setDefaultUncaughtExceptionHandler { _: Thread?, throwable: Throwable ->
-            clearCachedSharedPrefs()
-            // send high importance notification with pending intent to open CrashHandler activity with stacktrace
-            val intent = Intent(this, CrashHandler::class.java)
-            intent.putExtra("exception", throwable)
-            intent.putExtra("isCrashing", true)
-            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-            val pendingIntent = PendingIntent.getActivity(
-                this, 0, intent,
-                PendingIntent.FLAG_CANCEL_CURRENT or PendingIntent.FLAG_IMMUTABLE
-            )
-            // set pref
-            val sharedPreferences = getPreferences("mmm")
-            val editor = sharedPreferences!!.edit()
-            editor.putBoolean("pref_crashed", true)
-            val stringWriter = StringWriter()
-            throwable.printStackTrace(PrintWriter(stringWriter))
-            val stacktrace = stringWriter.toString()
-            editor.putString("pref_crash_stacktrace", stacktrace)
-            editor.apply()
-            val crashreportingenabled = sharedPreferences.getBoolean(
-                "pref_crashreportingenabled",
-                true
-            )
-            // send notification
-            val notificationManagerCompat = NotificationManagerCompat.from(this)
-            val notifBody = if (crashreportingenabled) getString(R.string.crash_notification_body) else getString(
-                R.string.crash_notification_body_noreport
-            )
-            val notification = NotificationCompat.Builder(this, "crash")
-                .setSmallIcon(R.drawable.ic_baseline_error_24)
-                .setContentTitle(getString(R.string.crash_notification_title))
-                .setContentText(notifBody)
-                .setPriority(NotificationCompat.PRIORITY_HIGH)
-                .setCategory(NotificationCompat.CATEGORY_ERROR)
-                .setContentIntent(pendingIntent)
-                .setAutoCancel(true)
-                .build()
-            if (ActivityCompat.checkSelfPermission(
-                    this,
-                    Manifest.permission.POST_NOTIFICATIONS
-                ) == PackageManager.PERMISSION_GRANTED
-            ) {
-                notificationManagerCompat.notify(0, notification)
-            }
-        }
+        super.onCreate()
+        CaocConfig.Builder.create()
+            .backgroundMode(CaocConfig.BACKGROUND_MODE_SILENT) //default: CaocConfig.BACKGROUND_MODE_SHOW_CUSTOM
+            .enabled(true) //default: true
+            .trackActivities(true) //default: false
+            .minTimeBetweenCrashesMs(2000)
+            .restartActivity(MainActivity::class.java) //default: null (your app's launch activity)
+            .errorActivity(CrashHandler::class.java) //default: null (default error activity)
+            .apply()
         supportedLocales.addAll(
             listOf(
                 "ar",
@@ -280,7 +237,6 @@ class MainApplication : Application(), Configuration.Provider, ActivityLifecycle
         )
         if (INSTANCE == null) INSTANCE = this
         relPackageName = this.packageName
-        super.onCreate()
         var output = Shell.cmd("echo $(id -u)").exec().out[0]
         if (output != null) {
             output = output.trim { it <= ' ' }

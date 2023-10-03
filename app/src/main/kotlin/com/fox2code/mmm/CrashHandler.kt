@@ -13,17 +13,18 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import cat.ereza.customactivityoncrash.CustomActivityOnCrash
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textview.MaterialTextView
 import timber.log.Timber
-import java.io.PrintWriter
-import java.io.StringWriter
 
 class CrashHandler : AppCompatActivity() {
-    @Suppress("DEPRECATION")
     @SuppressLint("RestrictedApi")
     override fun onCreate(savedInstanceState: Bundle?) {
-        if (MainApplication.forceDebugLogging) Timber.i("CrashHandler.onCreate(%s)", savedInstanceState)
+        if (MainApplication.forceDebugLogging) Timber.i(
+            "CrashHandler.onCreate(%s)",
+            savedInstanceState
+        )
         // log intent with extras
         if (MainApplication.forceDebugLogging) Timber.d("CrashHandler.onCreate: intent=%s", intent)
         super.onCreate(savedInstanceState)
@@ -32,21 +33,7 @@ class CrashHandler : AppCompatActivity() {
         // convert stacktrace from array to string, and pretty print it (first line is the exception, the rest is the stacktrace, with each line indented by 4 spaces)
         val crashDetails = findViewById<MaterialTextView>(R.id.crash_details)
         crashDetails.text = ""
-        // get the exception from the intent
-        val exceptionFromIntent = intent.getSerializableExtra("exception") as Throwable?
-        var exception: String? = null
-        // parse the exception from the intent into exception if it is not null
-        if (exceptionFromIntent != null) {
-            val stringWriter = StringWriter()
-            exceptionFromIntent.printStackTrace(PrintWriter(stringWriter))
-            var stacktrace = stringWriter.toString()
-            stacktrace = stacktrace.replace(",", "\n     ")
-            exception = stacktrace
-        }
-        val sharedPreferences = MainApplication.getPreferences("mmm")
-        if (exception == null && sharedPreferences != null) {
-            exception = sharedPreferences.getString("pref_crash_stacktrace", null)
-        }
+        val exception = CustomActivityOnCrash.getStackTraceFromIntent(intent)
         // if the exception is null, set the crash details to "Unknown"
         if (exception == null) {
             crashDetails.setText(R.string.crash_details)
@@ -74,8 +61,6 @@ class CrashHandler : AppCompatActivity() {
             startActivity(intent)
             finish()
         }
-        // remove pref_crashed from shared preferences
-        sharedPreferences?.edit()?.remove("pref_crashed")?.apply()
     }
 
     fun copyCrashDetails(view: View) {

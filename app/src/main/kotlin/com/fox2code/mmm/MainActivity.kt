@@ -624,11 +624,10 @@ class MainActivity : AppCompatActivity(), OnRefreshListener, OverScrollHelper {
                         moduleViewListBuilder.addNotification(
                             NotificationType.MAGISK_OUTDATED
                         )
-                    } else {
-                        moduleViewListBuilder.addNotification(
-                            NotificationType.KSU_EXPERIMENTAL
-                        )
                     }
+                }
+                if (InstallerInitializer.isKsu) {
+                    moduleViewListBuilder.addNotification(NotificationType.KSU_EXPERIMENTAL)
                 }
                 if (!MainApplication.isShowcaseMode) moduleViewListBuilder.addNotification(
                     NotificationType.INSTALL_FROM_STORAGE

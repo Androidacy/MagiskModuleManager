@@ -128,20 +128,20 @@ class InstallerInitializer {
                 }
             }
             try {
-                if (!Shell.cmd(
-                        "if grep ' / ' /proc/mounts | grep -q '/dev/root' &> /dev/null; " + "then echo true; else echo false; fi",
-                        "su -V",
+                if (Shell.cmd(
+                        "if grep ' / ' /proc/mounts | grep -q '/dev/root' &> /dev/null; " + "then echo true; else echo false; fi"
                     ).to(output).exec().isSuccess
                 ) {
-                    if (MainApplication.forceDebugLogging) {
-                        Timber.i("Failed to search for ramdisk")
-                    }
                     if (output.size != 0) {
                         hsRmdsk = "false" == output[0] || "true".equals(
                             System.getProperty("ro.build.ab_update"), ignoreCase = true
                         )
                     }
                     Companion.hsRmdsk = hsRmdsk
+                } else {
+                    if (MainApplication.forceDebugLogging) {
+                        Timber.e("Failed to check for ramdisk")
+                    }
                     return null
                 }
                 if (MainApplication.forceDebugLogging) {
@@ -165,34 +165,24 @@ class InstallerInitializer {
                     }
                 } else if (Shell.cmd(
                         "if [ -d /data/adb/ksu ]; then echo true; else echo false; fi",
-                        "su -V"
+                        "/data/adb/ksud -V"
                     ).to(
                         output
                     ).exec().isSuccess && "true" == output[0]
                 ) {
-                    // check su -v for kernelsu
-                    val suVer: ArrayList<String> = ArrayList()
-                    Shell.cmd("su -v").to(suVer).exec()
-                    if (suVer.size > 0 && suVer[0].contains("ksu") || suVer[0].contains(
-                            "Kernelsu",
-                            true
-                        )
-                    ) {
-                        if (MainApplication.forceDebugLogging) {
-                            Timber.i("Kernelsu detected")
-                        }
-                        mgskPth = "/data/adb"
-                        isKsu = true
-                        // if analytics enabled, set breadcrumb for countly
-                        if (MainApplication.analyticsAllowed()) {
-                            Countly.sharedInstance().crashes().addCrashBreadcrumb("ksu detected")
-                        }
-                    } else {
-                        if (MainApplication.forceDebugLogging) {
-                            Timber.e("[ANOMALY] Kernelsu not detected but /data/adb/ksu exists")
-                        }
-                        return null
+                    if (MainApplication.forceDebugLogging) {
+                        Timber.i("Kernelsu detected")
                     }
+                    mgskPth = "/data/adb"
+                    isKsu = true
+                    // if analytics enabled, set breadcrumb for countly
+                    if (MainApplication.analyticsAllowed()) {
+                        Countly.sharedInstance().crashes().addCrashBreadcrumb("ksu detected")
+                    }
+                    if (MainApplication.forceDebugLogging) {
+                        Timber.e("[ANOMALY] Kernelsu not detected but /data/adb/ksu exists - maybe outdated?")
+                    }
+                    return mgskPth
                 } else {
                     if (MainApplication.forceDebugLogging) {
                         Timber.e("Failed to get Magisk path")

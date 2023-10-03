@@ -433,6 +433,9 @@ dependencies {
     implementation("androidx.room:room-ktx:2.5.2")
 
     implementation("pl.droidsonroids.gif:android-gif-drawable:1.2.28")
+
+    // crash activity
+    implementation("cat.ereza:customactivityoncrash:2.4.0")
 }
 
 android {
