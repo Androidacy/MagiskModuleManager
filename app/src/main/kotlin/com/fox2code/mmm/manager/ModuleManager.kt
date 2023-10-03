@@ -29,9 +29,9 @@ class ModuleManager private constructor() : SyncManager() {
     private var updatableModuleCount = 0
 
     override fun scanInternal(updateListener: UpdateListener) {
-        // if last_shown_setup is not "v5", then refuse to continue
+        // if last_shown_setup is not "v6", then refuse to continue
         if (MainApplication.getPreferences("mmm")!!
-                .getString("last_shown_setup", "") != "v5"
+                .getString("last_shown_setup", "") != "v6"
         ) {
             return
         }

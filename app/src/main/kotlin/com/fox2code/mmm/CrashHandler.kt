@@ -8,6 +8,7 @@ import android.annotation.SuppressLint
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.DialogInterface
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
@@ -32,20 +33,25 @@ class CrashHandler : AppCompatActivity() {
         val crashDetails = findViewById<MaterialTextView>(R.id.crash_details)
         crashDetails.text = ""
         // get the exception from the intent
-        val exception = intent.getSerializableExtra("exception") as Throwable?
-        // get the crashReportingEnabled from the intent
-        intent.getBooleanExtra("crashReportingEnabled", false)
+        val exceptionFromIntent = intent.getSerializableExtra("exception") as Throwable?
+        var exception: String? = null
+        // parse the exception from the intent into exception if it is not null
+        if (exceptionFromIntent != null) {
+            val stringWriter = StringWriter()
+            exceptionFromIntent.printStackTrace(PrintWriter(stringWriter))
+            var stacktrace = stringWriter.toString()
+            stacktrace = stacktrace.replace(",", "\n     ")
+            exception = stacktrace
+        }
+        val sharedPreferences = MainApplication.getPreferences("mmm")
+        if (exception == null && sharedPreferences != null) {
+            exception = sharedPreferences.getString("pref_crash_stacktrace", null)
+        }
         // if the exception is null, set the crash details to "Unknown"
         if (exception == null) {
             crashDetails.setText(R.string.crash_details)
         } else {
-            // if the exception is not null, set the crash details to the exception and stacktrace
-            // stacktrace is an StacktraceElement, so convert it to a string and replace the commas with newlines
-            val stringWriter = StringWriter()
-            exception.printStackTrace(PrintWriter(stringWriter))
-            var stacktrace = stringWriter.toString()
-            stacktrace = stacktrace.replace(",", "\n     ")
-            crashDetails.text = getString(R.string.crash_full_stacktrace, stacktrace)
+            crashDetails.text = getString(R.string.crash_full_stacktrace, exception)
         }
         // handle reset button
         findViewById<View>(R.id.reset).setOnClickListener { _: View? ->
@@ -60,6 +66,16 @@ class CrashHandler : AppCompatActivity() {
             builder.setNegativeButton(R.string.cancel) { _: DialogInterface?, _: Int -> }
             builder.show()
         }
+        // restart button
+        findViewById<View>(R.id.restart).setOnClickListener { _: View? ->
+            // restart the app
+            val intent = packageManager.getLaunchIntentForPackage(packageName)
+            intent!!.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+            startActivity(intent)
+            finish()
+        }
+        // remove pref_crashed from shared preferences
+        sharedPreferences?.edit()?.remove("pref_crashed")?.apply()
     }
 
     fun copyCrashDetails(view: View) {

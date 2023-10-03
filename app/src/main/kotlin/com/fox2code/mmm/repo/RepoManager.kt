@@ -31,6 +31,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import timber.log.Timber
 import java.io.File
 import java.nio.charset.StandardCharsets
+import kotlin.math.roundToInt
 
 @Suppress("NAME_SHADOWING")
 class RepoManager private constructor(mainApplication: MainApplication) : SyncManager() {
@@ -55,7 +56,7 @@ class RepoManager private constructor(mainApplication: MainApplication) : SyncMa
         repoData = LinkedHashMap()
         modules = HashMap()
         // refuse to load if setup is not complete
-        if (getPreferences("mmm")!!.getString("last_shown_setup", "") == "v5") {
+        if (getPreferences("mmm")!!.getString("last_shown_setup", "") == "v6") {
             // We do not have repo list config yet.
             androidacyRepoData = addAndroidacyRepoData()
             val altRepo = addRepoData(MAGISK_ALT_REPO, "Magisk Modules Alt Repo")
@@ -81,8 +82,8 @@ class RepoManager private constructor(mainApplication: MainApplication) : SyncMa
     }
 
     private fun populateDefaultCache(repoData: RepoData?) {
-        // if last_shown_setup is not "v5", them=n refuse to continue
-        if (getPreferences("mmm")!!.getString("last_shown_setup", "") != "v5") {
+        // if last_shown_setup is not "v6", them=n refuse to continue
+        if (getPreferences("mmm")!!.getString("last_shown_setup", "") != "v6") {
             return
         }
         // make sure repodata is not null
@@ -146,15 +147,16 @@ class RepoManager private constructor(mainApplication: MainApplication) : SyncMa
         val repoUpdaters = arrayOfNulls<RepoUpdater>(repoDatas.size)
         var moduleToUpdate = 0
         if (!this.hasConnectivity()) {
-            updateListener.update(STEP3)
+            updateListener.update(50)
             return
         }
         for (i in repoDatas.indices) {
-            updateListener.update(STEP1 * (i / repoDatas.size))
+            // we have 50% to work with, so divvy it up. getting ready to update should get 40% of the 50% we have
+            updateListener.update(50 * ((i / repoDatas.size) / 3))
             if (MainApplication.forceDebugLogging) Timber.d("Preparing to fetch: %s", repoDatas[i].name)
             moduleToUpdate += RepoUpdater(repoDatas[i]).also { repoUpdaters[i] = it }.fetchIndex()
             // divvy the 40 of step1 to each repo
-            updateListener.update(STEP1 * ((i + 1) / repoDatas.size))
+            updateListener.update(50 * ((i / repoDatas.size) / 2))
         }
         if (MainApplication.forceDebugLogging) Timber.d("Updating meta-data")
         var updatedModules = 0
@@ -208,9 +210,12 @@ class RepoManager private constructor(mainApplication: MainApplication) : SyncMa
                     Timber.e(e)
                 }
                 updatedModules++
-                val repoProgressIncrement = STEP2 / repoDatas.size.toDouble()
+                val repoProgressIncrement = 50 / repoDatas.size.toDouble()
                 val moduleProgressIncrement = repoProgressIncrement / repoModules.size.toDouble()
-                updateListener.update((STEP1 + moduleProgressIncrement * updatedModules).toInt())
+                // we've already used half of our 50 steps, so we have 25 left. divide out the 25 by the number of modules we have to update and round to the nearest int
+                updateListener.update(
+                    (50 + (repoProgressIncrement * i) + (moduleProgressIncrement * updatedModules).toInt()).roundToInt()
+                )
             }
             for (repoModule in repoUpdaters[i]!!.toApply()!!) {
                 if (repoModule.moduleInfo.flags and ModuleInfo.FLAG_METADATA_INVALID == 0) {
@@ -276,11 +281,11 @@ class RepoManager private constructor(mainApplication: MainApplication) : SyncMa
                     }
                     repoLastErrorName = repoUpdaters[i]!!.repoData.name
                 }
-                updateListener.update(STEP1 + (STEP2 * (i / repoUpdaters.size)))
+                updateListener.update(50 + (50 / repoDatas.size.toDouble() * i).roundToInt())
             }
         }
         if (MainApplication.forceDebugLogging) Timber.i("Got " + modules.size + " modules!")
-        updateListener.update(STEP1 + STEP2 + STEP3)
+        updateListener.update(50)
     }
 
     fun updateEnabledStates() {
@@ -350,9 +355,9 @@ class RepoManager private constructor(mainApplication: MainApplication) : SyncMa
         private const val MAGISK_REPO_MANAGER =
             "https://magisk-modules-repo.github.io/submission/modules.json"
         private val lock = Any()
-        private const val STEP1 = 20
-        private const val STEP2 = 60
-        private const val STEP3 = 20
+        private const val STEP1 = 30
+        private const val STEP2 = 80
+        private const val STEP3 = 99
 
         @Volatile
         private var INSTANCE: RepoManager? = null

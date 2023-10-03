@@ -162,7 +162,7 @@ class RuntimeUtils {
         if (MainApplication.forceDebugLogging) Timber.i("Checking if we need to run setup")
         // Check if context is the first launch using prefs and if doSetupRestarting was passed in the intent
         val prefs = MainApplication.getPreferences("mmm")!!
-        var firstLaunch = prefs.getString("last_shown_setup", null) != "v5"
+        var firstLaunch = prefs.getString("last_shown_setup", null) != "v6"
         // First launch
         // context is intentionally separate from the above if statement, because it needs to be checked even if the first launch check is true due to some weird edge cases
         if (activity.intent.getBooleanExtra("doSetupRestarting", false)) {
@@ -258,20 +258,17 @@ class RuntimeUtils {
         val prefs = MainApplication.getPreferences("mmm")!!
         // if last shown < 7 days ago
         if (prefs.getLong("ugsns4", 0) > System.currentTimeMillis() - 604800000) return
-        val snackbar: Snackbar = Snackbar.make(
-            context,
-            activity.findViewById(R.id.blur_frame),
-            activity.getString(R.string.upgrade_snackbar),
-            7000
-        )
-        snackbar.setAction(R.string.upgrade_now) {
+        // rewrite that to use a material alert dialog
+        val builder = MaterialAlertDialogBuilder(context)
+        builder.setTitle(R.string.upgrade_now)
+        builder.setMessage(R.string.upgrade_dialog_message)
+        builder.setPositiveButton(R.string.upgrade_now) { dialog, _ ->
             val intent = Intent(Intent.ACTION_VIEW)
             intent.data =
                 Uri.parse("https://androidacy.com/membership-join/#utm_source=AMMM&utm_medium=app&utm_campaign=upgrade_snackbar")
             activity.startActivity(intent)
+            dialog.dismiss()
         }
-        snackbar.setAnchorView(R.id.bottom_navigation)
-        snackbar.show()
         // do not show for another 7 days
         prefs.edit().putLong("ugsns4", System.currentTimeMillis()).apply()
         if (MainApplication.forceDebugLogging) Timber.i("showUpgradeSnackbar done")

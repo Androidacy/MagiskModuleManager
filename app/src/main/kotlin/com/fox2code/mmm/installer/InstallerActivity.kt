@@ -589,6 +589,8 @@ class InstallerActivity : AppCompatActivity() {
             if (suFile.exists() && !suFile.delete()) Timber.w("Failed to delete zip file") else toDelete =
                 null
         } else toDelete = null
+        // set dirty in mainapp
+        MainApplication.dirty = true
         runOnUiThread {
             this.window.setFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON, 0)
             // release wakelock

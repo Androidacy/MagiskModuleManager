@@ -478,8 +478,22 @@ class AndroidacyRepoData(cacheRoot: File?, testMode: Boolean) : RepoData(
             OK_HTTP_URL_BUILDER.build()
         }
 
+        private var realInstance: AndroidacyRepoData? = null
+            get() {
+                if (field === null) {
+                    field = AndroidacyRepoData(INSTANCE!!.cacheDir, false)
+                }
+                return field
+            }
+
         val instance: AndroidacyRepoData
-            get() = RepoManager.getINSTANCE()!!.androidacyRepoData!!
+            get() {
+                return if (RepoManager.getINSTANCE()!!.androidacyRepoData !== null) {
+                    RepoManager.getINSTANCE()!!.androidacyRepoData!!
+                } else {
+                    realInstance!!
+                }
+            }
 
         private fun filterURL(url: String?): String? {
             return if (url.isNullOrEmpty() || isInvalidURL(url)) {

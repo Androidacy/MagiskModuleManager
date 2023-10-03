@@ -467,7 +467,7 @@ enum class Http {;
                         url
                     ).get().build()
                 ).execute()
-            } catch (e: IOException) {
+            } catch (e: Exception) {
                 Timber.e(e, "Failed to get %s", url)
                 // detect ssl errors, i.e., cert authority invalid by looking at the message
                 if (e.message != null && e.message!!.contains("_CERT_")) {
@@ -478,6 +478,7 @@ enum class Http {;
                         ).show()
                     }
                 }
+                // check if retrying is allowed
                 throw HttpException(e.message, 0)
             }
             if (BuildConfig.DEBUG_HTTP) {
@@ -805,7 +806,7 @@ enum class Http {;
                 val respString = String(resp)
                 // resp should include that scheme is https and h is production-api.androidacy.com
                 respString.contains("scheme=https") && respString.contains("h=production-api.androidacy.com")
-            } catch (e: HttpException) {
+            } catch (e: Exception) {
                 Timber.e(e, "Failed to check internet connection")
                 false
             }

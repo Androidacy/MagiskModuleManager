@@ -21,6 +21,7 @@ import androidx.preference.PreferenceFragmentCompat
 import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKey
 import com.fox2code.mmm.BuildConfig
+import com.fox2code.mmm.CrashHandler
 import com.fox2code.mmm.ExpiredActivity
 import com.fox2code.mmm.MainActivity
 import com.fox2code.mmm.MainApplication
@@ -75,6 +76,15 @@ class SettingsActivity : AppCompatActivity(), LanguageActivity,
     override fun onCreate(savedInstanceState: Bundle?) {
         devModeStep = 0
         super.onCreate(savedInstanceState)
+
+        // check for pref_crashed and if so start crash handler
+        val sharedPreferences = MainApplication.getPreferences("mmm")
+        if (sharedPreferences?.getBoolean("pref_crashed", false) == true) {
+            val intent = Intent(this, CrashHandler::class.java)
+            startActivity(intent)
+            finish()
+            return
+        }
         // get the active tab from the intent
         activeTabFromIntent = intent.getStringExtra("activeTab") ?: "installed"
         PreferenceFragmentCompat.OnPreferenceStartFragmentCallback { preferenceFragmentCompat: PreferenceFragmentCompat, preference: Preference ->

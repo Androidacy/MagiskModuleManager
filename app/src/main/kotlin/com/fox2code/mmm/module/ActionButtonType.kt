@@ -50,9 +50,10 @@ enum class ActionButtonType {
             }
             // if analytics is enabled, track the event
             if (MainApplication.analyticsAllowed()) {
-                Countly.sharedInstance().events().recordEvent("view_description", HashMap<String, Any>().apply {
-                    put("module", name ?: "null")
-                })
+                Countly.sharedInstance().events()
+                    .recordEvent("view_description", HashMap<String, Any>().apply {
+                        put("module", name ?: "null")
+                    })
             }
             val notesUrl = moduleHolder.repoModule?.notesUrl
             if (isAndroidacyLink(notesUrl)) {
@@ -124,9 +125,12 @@ enum class ActionButtonType {
         }
 
         override fun doAction(button: Chip, moduleHolder: ModuleHolder) {
-            if (MainApplication.getPreferences("mmm")?.getBoolean("pref_require_security", false) == true) {
+            if (MainApplication.getPreferences("mmm")
+                    ?.getBoolean("pref_require_security", false) == true
+            ) {
                 // get safe status from either mainmoduleinfo or repo module
-                val safe = moduleHolder.mainModuleInfo.safe || moduleHolder.repoModule?.moduleInfo?.safe ?: false
+                val safe =
+                    moduleHolder.mainModuleInfo.safe || moduleHolder.repoModule?.moduleInfo?.safe ?: false
                 if (!safe) {
                     // block local install for safety
                     MaterialAlertDialogBuilder(button.context)
@@ -149,26 +153,30 @@ enum class ActionButtonType {
                 moduleHolder.repoModule?.moduleInfo?.name
             }
             // send event to countly
-            Countly.sharedInstance().events().recordEvent("view_update_install", HashMap<String, Any>().apply {
-                put("module", name ?: "null")
-            })
+            if (MainApplication.analyticsAllowed()) Countly.sharedInstance().events()
+                .recordEvent("view_update_install", HashMap<String, Any>().apply {
+                    put("module", name ?: "null")
+                })
             // if text is reinstall, we need to uninstall first - warn the user but don't proceed
-            if (moduleHolder.moduleInfo != null) {
-                // get the text
-                val text = button.text
-                // if the text is reinstall, warn the user
-                if (text == button.context.getString(R.string.reinstall)) {
-                    val builder = MaterialAlertDialogBuilder(button.context)
-                    builder.setTitle(R.string.reinstall)
-                        .setMessage(R.string.reinstall_warning)
-                        .setCancelable(true)
-                        // ok button that does nothing
-                        .setPositiveButton(R.string.ok, null)
-                        .show()
-                    return
-                }
+            if (moduleHolder.moduleInfo != null && moduleHolder.repoModule == null && button.text == button.context.getString(R.string.reinstall)) {
+                val builder = MaterialAlertDialogBuilder(button.context)
+                builder.setTitle(R.string.reinstall)
+                    .setMessage(R.string.reinstall_warning_v2)
+                    .setCancelable(true)
+                    // ok button that does nothing
+                    .setPositiveButton(R.string.ok, null)
+                    .show()
+                return
             }
-            val updateZipUrl = moduleHolder.updateZipUrl ?: return
+            // prefer repomodule if possible
+            var updateZipUrl = ""
+            if (moduleHolder.repoModule != null && moduleHolder.repoModule!!.zipUrl != null) {
+                updateZipUrl = moduleHolder.repoModule!!.zipUrl!!
+            }
+            // if repomodule is null, try localmoduleinfo
+            if (updateZipUrl.isEmpty() && moduleHolder.moduleInfo != null && moduleHolder.moduleInfo!!.updateZipUrl != null) {
+                updateZipUrl = moduleHolder.moduleInfo!!.updateZipUrl!!
+            }
             // Androidacy manage the selection between download and install
             if (isAndroidacyLink(updateZipUrl)) {
                 openUrlAndroidacy(
@@ -268,11 +276,16 @@ enum class ActionButtonType {
             }
             // if analytics is enabled, track the event
             if (MainApplication.analyticsAllowed()) {
-                Countly.sharedInstance().events().recordEvent("view_uninstall", HashMap<String, Any>().apply {
-                    put("module", name ?: "null")
-                })
+                Countly.sharedInstance().events()
+                    .recordEvent("view_uninstall", HashMap<String, Any>().apply {
+                        put("module", name ?: "null")
+                    })
             }
-            if (MainApplication.forceDebugLogging) Timber.i(Integer.toHexString(moduleHolder.moduleInfo?.flags ?: 0))
+            if (MainApplication.forceDebugLogging) Timber.i(
+                Integer.toHexString(
+                    moduleHolder.moduleInfo?.flags ?: 0
+                )
+            )
             if (!instance!!.setUninstallState(
                     moduleHolder.moduleInfo!!, !moduleHolder.hasFlag(
                         ModuleInfo.FLAG_MODULE_UNINSTALLING
@@ -327,9 +340,10 @@ enum class ActionButtonType {
                 moduleHolder.repoModule?.moduleInfo?.name
             }
             if (MainApplication.analyticsAllowed()) {
-                Countly.sharedInstance().events().recordEvent("view_config", HashMap<String, Any>().apply {
-                    put("module", name ?: "null")
-                })
+                Countly.sharedInstance().events()
+                    .recordEvent("view_config", HashMap<String, Any>().apply {
+                        put("module", name ?: "null")
+                    })
             }
             if (isAndroidacyLink(config)) {
                 openUrlAndroidacy(button.context, config, true)
@@ -354,9 +368,10 @@ enum class ActionButtonType {
                 moduleHolder.repoModule?.moduleInfo?.name
             }
             if (MainApplication.analyticsAllowed()) {
-                Countly.sharedInstance().events().recordEvent("view_support", HashMap<String, Any>().apply {
-                    put("module", name ?: "null")
-                })
+                Countly.sharedInstance().events()
+                    .recordEvent("view_support", HashMap<String, Any>().apply {
+                        put("module", name ?: "null")
+                    })
             }
             openUrl(button.context, Objects.requireNonNull(moduleHolder.mainModuleInfo.support))
         }
@@ -376,10 +391,11 @@ enum class ActionButtonType {
             } else {
                 moduleHolder.repoModule?.moduleInfo?.name
             }
-if (MainApplication.analyticsAllowed()) {
-                Countly.sharedInstance().events().recordEvent("view_donate", HashMap<String, Any>().apply {
-                    put("module", name ?: "null")
-                })
+            if (MainApplication.analyticsAllowed()) {
+                Countly.sharedInstance().events()
+                    .recordEvent("view_donate", HashMap<String, Any>().apply {
+                        put("module", name ?: "null")
+                    })
             }
             openUrl(button.context, moduleHolder.mainModuleInfo.donate)
         }
@@ -397,14 +413,15 @@ if (MainApplication.analyticsAllowed()) {
                 moduleHolder.repoModule?.moduleInfo?.name
             }
             if (MainApplication.analyticsAllowed()) {
-                Countly.sharedInstance().events().recordEvent("view_warning", HashMap<String, Any>().apply {
-                    put("module", name ?: "null")
-                })
+                Countly.sharedInstance().events()
+                    .recordEvent("view_warning", HashMap<String, Any>().apply {
+                        put("module", name ?: "null")
+                    })
             }
             MaterialAlertDialogBuilder(button.context).setTitle(R.string.warning)
                 .setMessage(R.string.warning_message).setPositiveButton(
-                R.string.understand
-            ) { _: DialogInterface?, _: Int -> }
+                    R.string.understand
+                ) { _: DialogInterface?, _: Int -> }
                 .create().show()
         }
     },
@@ -423,21 +440,25 @@ if (MainApplication.analyticsAllowed()) {
                 moduleHolder.repoModule?.moduleInfo?.name
             }
             if (MainApplication.analyticsAllowed()) {
-                Countly.sharedInstance().events().recordEvent("view_safe", HashMap<String, Any>().apply {
-                    put("module", name ?: "null")
-                })
+                Countly.sharedInstance().events()
+                    .recordEvent("view_safe", HashMap<String, Any>().apply {
+                        put("module", name ?: "null")
+                    })
             }
             MaterialAlertDialogBuilder(button.context).setTitle(R.string.safe_module)
                 .setMessage(R.string.safe_message).setPositiveButton(
-                R.string.understand
-            ) { _: DialogInterface?, _: Int -> }
+                    R.string.understand
+                ) { _: DialogInterface?, _: Int -> }
                 .create().show()
         }
     },
     REMOTE {
         @Suppress("NAME_SHADOWING")
         override fun doAction(button: Chip, moduleHolder: ModuleHolder) {
-            if (MainApplication.forceDebugLogging) Timber.d("doAction: remote module for %s", moduleHolder.moduleInfo?.name ?: "null")
+            if (MainApplication.forceDebugLogging) Timber.d(
+                "doAction: remote module for %s",
+                moduleHolder.moduleInfo?.name ?: "null"
+            )
             // that module is from remote repo
             val name: String? = if (moduleHolder.moduleInfo != null) {
                 moduleHolder.moduleInfo!!.name
@@ -446,9 +467,10 @@ if (MainApplication.analyticsAllowed()) {
             }
             // positive button executes install logic and says reinstall. negative button does nothing
             if (MainApplication.analyticsAllowed()) {
-                Countly.sharedInstance().events().recordEvent("view_update_install", HashMap<String, Any>().apply {
-                    put("module", name ?: "null")
-                })
+                Countly.sharedInstance().events()
+                    .recordEvent("view_update_install", HashMap<String, Any>().apply {
+                        put("module", name ?: "null")
+                    })
             }
             val madb = MaterialAlertDialogBuilder(button.context)
             madb.setTitle(R.string.remote_module)
@@ -491,21 +513,35 @@ if (MainApplication.analyticsAllowed()) {
                 }
             }
             if (!updateZipUrl.isNullOrEmpty()) {
-                madb.setMessage(Html.fromHtml(button.context.getString(R.string.remote_message, name), Html.FROM_HTML_MODE_COMPACT))
+                madb.setMessage(
+                    Html.fromHtml(
+                        button.context.getString(
+                            R.string.remote_message,
+                            name
+                        ), Html.FROM_HTML_MODE_COMPACT
+                    )
+                )
                 madb.setPositiveButton(
                     R.string.reinstall
                 ) { _: DialogInterface?, _: Int ->
-                    if (MainApplication.forceDebugLogging) Timber.d("Set moduleinfo to %s", moduleInfo.name)
+                    if (MainApplication.forceDebugLogging) Timber.d(
+                        "Set moduleinfo to %s",
+                        moduleInfo.name
+                    )
                     val name: String? = if (moduleHolder.moduleInfo != null) {
                         moduleHolder.moduleInfo!!.name
                     } else {
                         moduleHolder.repoModule?.moduleInfo?.name
                     }
-                    if (MainApplication.forceDebugLogging) Timber.d("doAction: remote module for %s", name)
+                    if (MainApplication.forceDebugLogging) Timber.d(
+                        "doAction: remote module for %s",
+                        name
+                    )
                     if (MainApplication.analyticsAllowed()) {
-                        Countly.sharedInstance().events().recordEvent("view_update_install", HashMap<String, Any>().apply {
-                            put("module", name ?: "null")
-                        })
+                        Countly.sharedInstance().events()
+                            .recordEvent("view_update_install", HashMap<String, Any>().apply {
+                                put("module", name ?: "null")
+                            })
                     }
                     // Androidacy manage the selection between download and install
                     if (isAndroidacyLink(updateZipUrl)) {

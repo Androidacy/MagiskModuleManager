@@ -75,7 +75,6 @@ class InstallerInitializer {
         }
 
         fun tryGetMagiskPathAsync(callback: Callback, forceCheck: Boolean = false) {
-            val mgskPth = mgskPth
             val thread: Thread = object : Thread("Magisk GetPath Thread") {
                 override fun run() {
                     if (mgskPth != null && !forceCheck) {
@@ -83,7 +82,6 @@ class InstallerInitializer {
                         return
                     }
                     var error: Int
-                    @Suppress("NAME_SHADOWING") var mgskPth: String? = null
                     try {
                         mgskPth = tryGetMagiskPath(forceCheck)
                         error = ERROR_NO_PATH
@@ -95,12 +93,14 @@ class InstallerInitializer {
                         Timber.e(e)
                     }
                     if (forceCheck) {
-                        Companion.mgskPth = mgskPth
                         if (mgskPth == null) {
                             mgskVerCode = 0
                         }
                     }
                     if (mgskPth != null) {
+                        if (MainApplication.forceDebugLogging) {
+                            Timber.i("Magisk path async: %s", mgskPth)
+                        }
                         MainApplication.setHasGottenRootAccess(true)
                         callback.onPathReceived(mgskPth)
                     } else {

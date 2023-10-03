@@ -4,12 +4,14 @@
 
 package com.fox2code.mmm
 
+import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.ActivityManager
 import android.app.ActivityManager.RunningAppProcessInfo
 import android.app.Application
 import android.app.Application.ActivityLifecycleCallbacks
+import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
@@ -17,12 +19,13 @@ import android.content.pm.PackageManager
 import android.content.res.Resources
 import android.os.Build
 import android.os.Bundle
-import android.os.Process
 import android.os.SystemClock
 import android.util.Log
 import androidx.annotation.StyleRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.view.ContextThemeWrapper
+import androidx.core.app.ActivityCompat
+import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.emoji2.text.DefaultEmojiCompatConfig
 import androidx.emoji2.text.EmojiCompat
@@ -48,6 +51,8 @@ import ly.count.android.sdk.Countly
 import ly.count.android.sdk.CountlyConfig
 import timber.log.Timber
 import java.io.File
+import java.io.PrintWriter
+import java.io.StringWriter
 import java.security.SecureRandom
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -202,23 +207,49 @@ class MainApplication : Application(), Configuration.Provider, ActivityLifecycle
 
         Thread.setDefaultUncaughtExceptionHandler { _: Thread?, throwable: Throwable ->
             clearCachedSharedPrefs()
-            // open crash handler and exit
+            // send high importance notification with pending intent to open CrashHandler activity with stacktrace
             val intent = Intent(this, CrashHandler::class.java)
-            // pass the entire exception to the crash handler
             intent.putExtra("exception", throwable)
-            // add stacktrace as string
-            intent.putExtra("stacktrace", throwable.stackTrace)
-            // serialize Sentry.captureException and pass it to the crash handler
-            intent.putExtra("sentryException", throwable)
-            // pass crashReportingEnabled to crash handler
-            intent.putExtra("crashReportingEnabled", isCrashReportingEnabled)
-            // add isCrashing to intent
             intent.putExtra("isCrashing", true)
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
-            Timber.e("Starting crash handler")
-            startActivity(intent)
-            Timber.e("Exiting")
-            Process.killProcess(Process.myPid())
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+            val pendingIntent = PendingIntent.getActivity(
+                this, 0, intent,
+                PendingIntent.FLAG_CANCEL_CURRENT or PendingIntent.FLAG_IMMUTABLE
+            )
+            // set pref
+            val sharedPreferences = getPreferences("mmm")
+            val editor = sharedPreferences!!.edit()
+            editor.putBoolean("pref_crashed", true)
+            val stringWriter = StringWriter()
+            throwable.printStackTrace(PrintWriter(stringWriter))
+            val stacktrace = stringWriter.toString()
+            editor.putString("pref_crash_stacktrace", stacktrace)
+            editor.apply()
+            val crashreportingenabled = sharedPreferences.getBoolean(
+                "pref_crashreportingenabled",
+                true
+            )
+            // send notification
+            val notificationManagerCompat = NotificationManagerCompat.from(this)
+            val notifBody = if (crashreportingenabled) getString(R.string.crash_notification_body) else getString(
+                R.string.crash_notification_body_noreport
+            )
+            val notification = NotificationCompat.Builder(this, "crash")
+                .setSmallIcon(R.drawable.ic_baseline_error_24)
+                .setContentTitle(getString(R.string.crash_notification_title))
+                .setContentText(notifBody)
+                .setPriority(NotificationCompat.PRIORITY_HIGH)
+                .setCategory(NotificationCompat.CATEGORY_ERROR)
+                .setContentIntent(pendingIntent)
+                .setAutoCancel(true)
+                .build()
+            if (ActivityCompat.checkSelfPermission(
+                    this,
+                    Manifest.permission.POST_NOTIFICATIONS
+                ) == PackageManager.PERMISSION_GRANTED
+            ) {
+                notificationManagerCompat.notify(0, notification)
+            }
         }
         supportedLocales.addAll(
             listOf(
@@ -604,7 +635,6 @@ class MainApplication : Application(), Configuration.Provider, ActivityLifecycle
             } catch (e: Exception) {
                 // try again five times, with a 250ms delay between each try. if we still can't get the shared preferences, throw an exception
                 var i = 0
-                var s = false
                 while (i < 5) {
                     try {
                         Thread.sleep(250)
@@ -623,7 +653,6 @@ class MainApplication : Application(), Configuration.Provider, ActivityLifecycle
                             EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
                         )
                         mSharedPrefs!![name] = sharedPreferences
-                        s = true
                         return sharedPreferences
                     } catch (e: Exception) {
                         Timber.e(e, "Failed to get shared preferences")
@@ -714,7 +743,7 @@ class MainApplication : Application(), Configuration.Provider, ActivityLifecycle
         }
 
         val isCrashReportingEnabled: Boolean
-            get() = getPreferences("mmm")!!.getBoolean(
+            get() = analyticsAllowed() && getPreferences("mmm")!!.getBoolean(
                 "pref_crash_reporting", BuildConfig.DEFAULT_ENABLE_CRASH_REPORTING
             )
         val bootSharedPreferences: SharedPreferences?
@@ -736,6 +765,9 @@ class MainApplication : Application(), Configuration.Provider, ActivityLifecycle
 
         fun shouldShowFeedback(): Boolean {
             // should not have been shown in 14 days and only 1 in 5 chance
+            if (!analyticsAllowed()) {
+                return false
+            }
             val randChance = Random().nextInt(5)
             val lastShown = getPreferences("mmm")!!.getLong("last_feedback", 0)
             if (forceDebugLogging) Timber.d(
@@ -745,6 +777,8 @@ class MainApplication : Application(), Configuration.Provider, ActivityLifecycle
             )
             return System.currentTimeMillis() - lastShown > 1209600000 && randChance == 0
         }
+
+        var dirty = false
     }
 
     override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle?) {

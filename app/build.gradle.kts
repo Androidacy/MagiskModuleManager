@@ -363,7 +363,7 @@ dependencies {
     implementation("androidx.webkit:webkit:1.8.0")
     implementation("com.google.android.material:material:1.9.0")
 
-    implementation("com.mikepenz:aboutlibraries:10.8.3")
+    implementation("com.mikepenz:aboutlibraries:10.9.1")
 
     // Utils
     implementation("androidx.work:work-runtime:2.8.1")
@@ -405,7 +405,7 @@ dependencies {
     implementation("androidx.security:security-crypto:1.1.0-alpha06")
 
     // some utils
-    implementation("commons-io:commons-io:2.13.0")
+    implementation("commons-io:commons-io:2.14.0")
     implementation("org.apache.commons:commons-compress:1.24.0")
 
     // analytics

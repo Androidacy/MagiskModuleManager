@@ -378,7 +378,7 @@ class BackgroundUpdateChecker(context: Context, workerParams: WorkerParameters) 
         fun onMainActivityCreate(context: Context) {
             // Refuse to run if first_launch pref is not false
             if (MainApplication.getPreferences("mmm")!!
-                    .getString("last_shown_setup", null) != "v5"
+                    .getString("last_shown_setup", null) != "v6"
             ) return
             // create notification channel group
             val groupName: CharSequence = context.getString(R.string.notification_group_updates)

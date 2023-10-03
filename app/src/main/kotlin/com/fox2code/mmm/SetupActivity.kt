@@ -35,6 +35,7 @@ import com.google.android.material.button.MaterialButton
 import com.google.android.material.checkbox.MaterialCheckBox
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.materialswitch.MaterialSwitch
+import com.google.android.material.textview.MaterialTextView
 import com.topjohnwu.superuser.internal.UiThreadHandler
 import org.apache.commons.io.FileUtils
 import timber.log.Timber
@@ -54,6 +55,9 @@ class SetupActivity : AppCompatActivity(), LanguageActivity {
         this.window.navigationBarColor = this.getColor(R.color.black_transparent)
         createFiles()
         disableUpdateActivityForFdroidFlavor()
+        if (BuildConfig.DEBUG) {
+            Timber.d("Starting SetupActivity")
+        }
         // Set theme
         val prefs = MainApplication.getPreferences("mmm")!!
         when (prefs.getString("theme", "system")) {
@@ -155,12 +159,6 @@ class SetupActivity : AppCompatActivity(), LanguageActivity {
         val crashReportingPii = view.findViewById<MaterialSwitch>(R.id.setup_crash_reporting_pii)
         setupCrashReporting.isChecked =
             BuildConfig.DEFAULT_ENABLE_CRASH_REPORTING
-        // pref_crash_reporting_pii
-        crashReportingPii.isChecked =
-            BuildConfig.DEFAULT_ENABLE_CRASH_REPORTING_PII
-        // pref_analytics_enabled
-        analyticsEnabled.isChecked =
-            BuildConfig.DEFAULT_ENABLE_ANALYTICS
         // if analytics is disabled, force disable crash reporting
         if (!view.findViewById<MaterialSwitch>(R.id.setup_app_analytics).isChecked) {
             setupCrashReporting.isEnabled = false
@@ -168,24 +166,31 @@ class SetupActivity : AppCompatActivity(), LanguageActivity {
             setupCrashReporting.isChecked = false
             crashReportingPii.isChecked = false
         }
+        // switch summary for setup_app_analytics_summary
+        val setupAppAnalyticsSummary = view.findViewById<MaterialTextView>(R.id.setup_app_analytics_summary)
         // listen for changes to the analytics switch
         analyticsEnabled.setOnCheckedChangeListener { _: CompoundButton?, isChecked: Boolean ->
+            if (BuildConfig.DEBUG) Timber.i(
+                "Analytics: %s",
+                isChecked)
             // if analytics is disabled, force disable crash reporting
             if (!isChecked) {
                 setupCrashReporting.isChecked = false
-                crashReportingPii.isChecked = false
                 setupCrashReporting.isEnabled = false
-                crashReportingPii.isEnabled = false
             } else {
                 setupCrashReporting.isEnabled = true
-                crashReportingPii.isEnabled = true
+                setupCrashReporting.isChecked =
+                    BuildConfig.DEFAULT_ENABLE_CRASH_REPORTING
+            }
+            if (!isChecked) {
+                setupAppAnalyticsSummary.setText(R.string.analytics_disabled_desc)
+            } else {
+                setupAppAnalyticsSummary.setText(R.string.analytics_enabled_desc)
             }
         }
-        // assert that both switches match the build config on debug builds
-        if (BuildConfig.DEBUG) {
-            assert((Objects.requireNonNull<Any>(view.findViewById(R.id.setup_background_update_check)) as MaterialSwitch).isChecked == BuildConfig.ENABLE_AUTO_UPDATER)
-            assert(setupCrashReporting.isChecked == BuildConfig.DEFAULT_ENABLE_CRASH_REPORTING)
-        }
+        // pref_analytics_enabled
+        analyticsEnabled.isChecked =
+            BuildConfig.DEFAULT_ENABLE_ANALYTICS
         // Repos are a little harder, as the enabled_repos build config is an arraylist
         val andRepoView =
             Objects.requireNonNull<Any>(view.findViewById(R.id.setup_androidacy_repo)) as MaterialSwitch
@@ -362,7 +367,7 @@ class SetupActivity : AppCompatActivity(), LanguageActivity {
             reposListDao.setEnabled(androidacyRepoRoomObj.id, androidacyRepoRoom)
             reposListDao.setEnabled(magiskAltRepoRoomObj.id, magiskAltRepoRoom)
             db.close()
-            editor.putString("last_shown_setup", "v5")
+            editor.putString("last_shown_setup", "v6")
             // Commit the changes
             editor.commit()
             // Log the changes
@@ -395,6 +400,8 @@ class SetupActivity : AppCompatActivity(), LanguageActivity {
             // close the app
             finish()
         }
+        // log finish
+        if (MainApplication.forceDebugLogging) Timber.d("SetupActivity finished oncreate")
     }
 
     override fun getTheme(): Theme {

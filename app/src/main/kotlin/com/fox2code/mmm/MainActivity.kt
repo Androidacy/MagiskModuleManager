@@ -80,6 +80,7 @@ import java.io.InputStream
 import java.io.OutputStream
 import java.nio.file.Files.*
 import java.sql.Timestamp
+import kotlin.math.roundToInt
 
 
 class MainActivity : AppCompatActivity(), OnRefreshListener, OverScrollHelper {
@@ -203,6 +204,7 @@ class MainActivity : AppCompatActivity(), OnRefreshListener, OverScrollHelper {
     }
 
     override fun onResume() {
+        super.onResume()
         onMainActivityResume(this)
         // check that installed or online is selected depending on which recyclerview is visible
         if (moduleList!!.visibility == View.VISIBLE) {
@@ -211,8 +213,16 @@ class MainActivity : AppCompatActivity(), OnRefreshListener, OverScrollHelper {
             bottomNavigationView.selectedItemId = R.id.online_menu_item
         }
         // rescan modules
-        instance!!.scanAsync()
-        super.onResume()
+        if (!MainApplication.dirty) {
+            instance!!.scanAsync()
+        } else {
+            MainApplication.dirty = false
+            // same as onRefresh
+            // call onrefresh
+            swipeRefreshLayout!!.post { swipeRefreshLayout!!.isRefreshing = true }
+            this.onRefresh()
+        }
+
     }
 
     @SuppressLint("RestrictedApi")
@@ -224,6 +234,14 @@ class MainActivity : AppCompatActivity(), OnRefreshListener, OverScrollHelper {
         onMainActivityCreate(this)
         super.onCreate(savedInstanceState)
         INSTANCE = this
+        // check for pref_crashed and if so start crash handler
+        val sharedPreferences = MainApplication.getPreferences("mmm")
+        if (sharedPreferences?.getBoolean("pref_crashed", false) == true) {
+            val intent = Intent(this, CrashHandler::class.java)
+            startActivity(intent)
+            finish()
+            return
+        }
 
         // hide this behind a buildconfig flag for now, but crash the app if it's not an official build and not debug
         if (BuildConfig.ENABLE_PROTECTION && !MainApplication.o && !BuildConfig.DEBUG) {
@@ -252,10 +270,11 @@ class MainActivity : AppCompatActivity(), OnRefreshListener, OverScrollHelper {
                 // use countly to track enabled repos
                 val repoMap = HashMap<String, String>()
                 repoMap["repos"] = enabledRepos.toString()
-                Countly.sharedInstance().events().recordEvent(
-                    "enabled_repos",
-                    repoMap as Map<String, Any>?, 1
-                )
+                if (MainApplication.analyticsAllowed()) Countly.sharedInstance().events()
+                    .recordEvent(
+                        "enabled_repos",
+                        repoMap as Map<String, Any>?, 1
+                    )
             }
         }.start()
         val ts = Timestamp(System.currentTimeMillis() - 30L * 24 * 60 * 60 * 1000)
@@ -284,6 +303,9 @@ class MainActivity : AppCompatActivity(), OnRefreshListener, OverScrollHelper {
         // set navigation bar color based on surfacecolors
         window.navigationBarColor = SurfaceColors.SURFACE_2.getColor(this)
         progressIndicator = findViewById(R.id.progress_bar)
+        progressIndicator?.max = PRECISION
+        progressIndicator?.min = 0
+        progressIndicator?.setProgress(2, true)
         swipeRefreshLayout = findViewById(R.id.swipe_refresh)
         val swipeRefreshLayout = swipeRefreshLayout!!
         swipeRefreshLayoutOrigStartOffset = swipeRefreshLayout.progressViewStartOffset
@@ -346,7 +368,7 @@ class MainActivity : AppCompatActivity(), OnRefreshListener, OverScrollHelper {
                 // filter the appropriate list based on visibility
                 if (initMode) return
                 val query = s.toString()
-                Countly.sharedInstance().events()
+                if (MainApplication.analyticsAllowed()) Countly.sharedInstance().events()
                     .recordEvent("search", HashMap<String, String>().apply {
                         put("query", query)
                     } as Map<String, Any>?, 1)
@@ -381,7 +403,7 @@ class MainActivity : AppCompatActivity(), OnRefreshListener, OverScrollHelper {
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                 // filter the appropriate list based on visibility
                 val query = textInputEditText.text.toString()
-                Countly.sharedInstance().events()
+                if (MainApplication.analyticsAllowed()) Countly.sharedInstance().events()
                     .recordEvent("search", HashMap<String, String>().apply {
                         put("query", query)
                     } as Map<String, Any>?, 1)
@@ -614,6 +636,7 @@ class MainActivity : AppCompatActivity(), OnRefreshListener, OverScrollHelper {
                 instance!!.scan()
                 instance!!.runAfterScan { moduleViewListBuilder.appendInstalledModules() }
                 instance!!.runAfterScan { moduleViewListBuilderOnline.appendRemoteModules() }
+                progressIndicator?.setProgress(10, true)
                 commonNext()
             }
 
@@ -628,14 +651,18 @@ class MainActivity : AppCompatActivity(), OnRefreshListener, OverScrollHelper {
                 if (BuildConfig.DEBUG) {
                     moduleViewListBuilder.addNotification(NotificationType.DEBUG)
                 }
+
                 NotificationType.NO_INTERNET.autoAdd(moduleViewListBuilderOnline)
                 val progressIndicator = progressIndicator!!
+                runOnUiThread {
+                    progressIndicator.isIndeterminate = false
+                    progressIndicator.setProgress(30, true)
+                }
                 // hide progress bar is repo-manager says we have no internet
                 if (!RepoManager.getINSTANCE()!!.hasConnectivity()) {
                     if (MainApplication.forceDebugLogging) Timber.i("No connection, hiding progress")
                     runOnUiThread {
                         progressIndicator.visibility = View.GONE
-                        progressIndicator.isIndeterminate = false
                         progressIndicator.max = PRECISION
                     }
                 }
@@ -670,18 +697,22 @@ class MainActivity : AppCompatActivity(), OnRefreshListener, OverScrollHelper {
                 if (MainApplication.forceDebugLogging) Timber.i("Check Update Compat")
                 appUpdateManager.checkUpdateCompat()
                 if (MainApplication.forceDebugLogging) Timber.i("Check Update")
-                // update repos
+                // update repos. progress is from 30 to 80, so subtract 20 from max
                 if (hasWebView()) {
                     val updateListener: SyncManager.UpdateListener =
                         object : SyncManager.UpdateListener {
                             override fun update(value: Int) {
+                                Timber.i("Update progress: %d", value)
+                                // progress is out of a hundred (Int) and starts at 30 once we've reached this point
                                 runOnUiThread(if (max == 0) Runnable {
-                                    progressIndicator.setProgressCompat(
-                                        value, true
+                                    progressIndicator.setProgress(
+                                        80,
+                                        true
                                     )
                                 } else Runnable {
-                                    progressIndicator.setProgressCompat(
-                                        value, true
+                                    progressIndicator.setProgress(
+                                        30 + value,
+                                        true
                                     )
                                 })
                             }
@@ -698,7 +729,7 @@ class MainActivity : AppCompatActivity(), OnRefreshListener, OverScrollHelper {
                 } else {
                     if (!hasWebView()) {
                         runOnUiThread {
-                            progressIndicator.setProgressCompat(PRECISION, true)
+                            progressIndicator.setProgress(PRECISION, true)
                             progressIndicator.visibility = View.GONE
                         }
                         return
@@ -726,14 +757,25 @@ class MainActivity : AppCompatActivity(), OnRefreshListener, OverScrollHelper {
                                 }
                                 current++
                                 val currentTmp = current
+                                // progress starts at 80 and goes to 99. each module should add a equal amount of progress to the bar, rounded up to the nearest integer
                                 runOnUiThread {
-                                    progressIndicator.setProgressCompat(
-                                        currentTmp / max, true
+                                    progressIndicator.setProgress(
+                                        80 + (currentTmp / max.toFloat() * 20).roundToInt(),
+                                        true
                                     )
+                                    if (BuildConfig.DEBUG) {
+                                        Timber.i(
+                                            "Progress: %d",
+                                            80 + (currentTmp / max.toFloat() * 20).roundToInt()
+                                        )
+                                    }
                                 }
                             }
                         }
                     }
+                }
+                runOnUiThread {
+                    progressIndicator.isIndeterminate = true
                 }
                 if (MainApplication.forceDebugLogging) Timber.i("Apply")
                 RepoManager.getINSTANCE()
@@ -752,12 +794,13 @@ class MainActivity : AppCompatActivity(), OnRefreshListener, OverScrollHelper {
                         if (MainApplication.forceDebugLogging) Timber.i("Badge applied")
                     }
                 }
-                runOnUiThread {
-                    progressIndicator.setProgressCompat(PRECISION, true)
-                    progressIndicator.visibility = View.GONE
-                }
                 maybeShowUpgrade()
                 if (MainApplication.forceDebugLogging) Timber.i("Finished app opening state!")
+                runOnUiThread {
+                    progressIndicator.isIndeterminate = false
+                    progressIndicator.setProgress(PRECISION, true)
+                    progressIndicator.visibility = View.GONE
+                }
             }
         }, true)
         // if system lang is not in MainApplication.supportedLocales, show a snackbar to ask user to help translate
@@ -772,7 +815,7 @@ class MainActivity : AppCompatActivity(), OnRefreshListener, OverScrollHelper {
         }
         ExternalHelper.INSTANCE.refreshHelper(this)
         initMode = false
-        if (MainApplication.shouldShowFeedback()) {
+        if (MainApplication.shouldShowFeedback() && !doSetupNowRunning) {
             // wait a bit before showing feedback
             Handler(Looper.getMainLooper()).postDelayed({
                 showFeedback()
@@ -784,7 +827,7 @@ class MainActivity : AppCompatActivity(), OnRefreshListener, OverScrollHelper {
     }
 
     private fun showFeedback() {
-        Countly.sharedInstance().feedback()
+        if (MainApplication.analyticsAllowed()) Countly.sharedInstance().feedback()
             .getAvailableFeedbackWidgets { retrievedWidgets, error ->
                 if (MainApplication.forceDebugLogging) Timber.i(
                     "Got feedback widgets: %s",
@@ -793,33 +836,34 @@ class MainActivity : AppCompatActivity(), OnRefreshListener, OverScrollHelper {
                 if (error == null) {
                     if (retrievedWidgets.size > 0) {
                         val feedbackWidget = retrievedWidgets[0]
-                        Countly.sharedInstance().feedback().presentFeedbackWidget(
-                            feedbackWidget,
-                            this@MainActivity,
-                            "Close",
-                            object : ModuleFeedback.FeedbackCallback {
-                                override fun onClosed() {
-                                }
-
-                                // maybe show a toast when the widget is closed
-                                override fun onFinished(error: String?) {
-                                    // error handling here
-                                    if (!error.isNullOrEmpty()) {
-                                        Toast.makeText(
-                                            this@MainActivity,
-                                            "Error: $error",
-                                            Toast.LENGTH_LONG
-                                        ).show()
-                                        Timber.e(error, "Feedback error")
-                                    } else {
-                                        Toast.makeText(
-                                            this@MainActivity,
-                                            "Feedback sent",
-                                            Toast.LENGTH_LONG
-                                        ).show()
+                        if (MainApplication.analyticsAllowed()) Countly.sharedInstance().feedback()
+                            .presentFeedbackWidget(
+                                feedbackWidget,
+                                this@MainActivity,
+                                "Close",
+                                object : ModuleFeedback.FeedbackCallback {
+                                    override fun onClosed() {
                                     }
-                                }
-                            })
+
+                                    // maybe show a toast when the widget is closed
+                                    override fun onFinished(error: String?) {
+                                        // error handling here
+                                        if (!error.isNullOrEmpty()) {
+                                            Toast.makeText(
+                                                this@MainActivity,
+                                                "Error: $error",
+                                                Toast.LENGTH_LONG
+                                            ).show()
+                                            Timber.e(error, "Feedback error")
+                                        } else {
+                                            Toast.makeText(
+                                                this@MainActivity,
+                                                "Feedback sent",
+                                                Toast.LENGTH_LONG
+                                            ).show()
+                                        }
+                                    }
+                                })
                         // update last feedback time
                         MainApplication.getPreferences("mmm")?.edit()
                             ?.putLong("last_feedback", System.currentTimeMillis())?.apply()
@@ -852,7 +896,8 @@ class MainActivity : AppCompatActivity(), OnRefreshListener, OverScrollHelper {
         }
         if (MainApplication.forceDebugLogging) Timber.i("Refresh")
         progressIndicator!!.visibility = View.VISIBLE
-        progressIndicator!!.setProgressCompat(0, false)
+        // progress starts at 30 and ends at 80
+        progressIndicator!!.setProgress(20, true)
         swipeRefreshBlocker = System.currentTimeMillis() + 5000L
 
         MainApplication.INSTANCE!!.repoModules.clear()
@@ -863,13 +908,21 @@ class MainActivity : AppCompatActivity(), OnRefreshListener, OverScrollHelper {
             val updateListener: SyncManager.UpdateListener = object : SyncManager.UpdateListener {
                 override fun update(value: Int) {
                     runOnUiThread(if (max == 0) Runnable {
-                        progressIndicator!!.setProgressCompat(
-                            value, true
+                        progressIndicator!!.setProgress(
+                            80, true
                         )
                     } else Runnable {
-                        progressIndicator!!.setProgressCompat(
-                            value, true
+                        progressIndicator!!.setProgress(
+                            // going from 30 to 80 as evenly as possible
+                            30 + value,
+                            true
                         )
+                        if (BuildConfig.DEBUG) {
+                            Timber.i(
+                                "Progress: %d",
+                                30 + value
+                            )
+                        }
                     })
                 }
             }
@@ -891,6 +944,7 @@ class MainActivity : AppCompatActivity(), OnRefreshListener, OverScrollHelper {
                 if (MainApplication.forceDebugLogging) Timber.i("Check Json Update")
                 if (max != 0) {
                     var current = 0
+                    val totalLocalModules = instance!!.modules.size
                     for (localModuleInfo in instance!!.modules.values) {
                         if (localModuleInfo.updateJson != null && localModuleInfo.flags and ModuleInfo.FLAG_MM_REMOTE_MODULE == 0) {
                             if (MainApplication.forceDebugLogging) Timber.i(localModuleInfo.id)
@@ -902,8 +956,10 @@ class MainActivity : AppCompatActivity(), OnRefreshListener, OverScrollHelper {
                             current++
                             val currentTmp = current
                             runOnUiThread {
-                                progressIndicator!!.setProgressCompat(
-                                    currentTmp / max, true
+                                progressIndicator!!.setProgress(
+                                    // from 80 to 99, divided by total modules
+                                    80 + (currentTmp / totalLocalModules.toFloat() * 20).roundToInt(),
+                                    true
                                 )
                             }
                         }
@@ -911,10 +967,6 @@ class MainActivity : AppCompatActivity(), OnRefreshListener, OverScrollHelper {
                 }
             }
             if (MainApplication.forceDebugLogging) Timber.i("Apply")
-            runOnUiThread {
-                progressIndicator!!.visibility = View.GONE
-                swipeRefreshLayout!!.isRefreshing = false
-            }
             NotificationType.NEED_CAPTCHA_ANDROIDACY.autoAdd(moduleViewListBuilder)
             RepoManager.getINSTANCE()!!.updateEnabledStates()
             RepoManager.getINSTANCE()
@@ -923,6 +975,11 @@ class MainActivity : AppCompatActivity(), OnRefreshListener, OverScrollHelper {
                 ?.runAfterUpdate { moduleViewListBuilderOnline.appendRemoteModules() }
             moduleViewListBuilder.applyTo(moduleList!!, moduleViewAdapter!!)
             moduleViewListBuilderOnline.applyTo(moduleListOnline!!, moduleViewAdapterOnline!!)
+            runOnUiThread {
+                progressIndicator!!.setProgress(PRECISION, true)
+                progressIndicator!!.visibility = View.GONE
+                swipeRefreshLayout!!.isRefreshing = false
+            }
         }, "Repo update thread").start()
     }
 
@@ -943,15 +1000,17 @@ class MainActivity : AppCompatActivity(), OnRefreshListener, OverScrollHelper {
                 }
             }
             // if it's still null, but it's enabled, throw an error
-            if (AndroidacyRepoData.instance.isEnabled && AndroidacyRepoData.instance.memberLevel == null) {
+            if (AndroidacyRepoData.instance.memberLevel == null) {
                 Timber.e("AndroidacyRepoData is enabled, but member level is null")
             }
             if (AndroidacyRepoData.instance.isEnabled && AndroidacyRepoData.instance.memberLevel == "Guest") {
                 runtimeUtils!!.showUpgradeSnackbar(this, this)
             } else {
-                if (!AndroidacyRepoData.instance.isEnabled) {
-                    if (MainApplication.forceDebugLogging) Timber.i("AndroidacyRepoData is disabled, not showing upgrade snackbar 1")
-                } else if (AndroidacyRepoData.instance.memberLevel != "Guest") {
+                if (AndroidacyRepoData.instance.memberLevel == null || !AndroidacyRepoData.instance.memberLevel.equals(
+                        "Guest",
+                        ignoreCase = true
+                    )
+                ) {
                     if (MainApplication.forceDebugLogging) Timber.i(
                         "AndroidacyRepoData is not Guest, not showing upgrade snackbar 1. Level: %s",
                         AndroidacyRepoData.instance.memberLevel
@@ -960,7 +1019,7 @@ class MainActivity : AppCompatActivity(), OnRefreshListener, OverScrollHelper {
                     if (MainApplication.forceDebugLogging) Timber.i("Unknown error, not showing upgrade snackbar 1")
                 }
             }
-        } else if (AndroidacyRepoData.instance.isEnabled && AndroidacyRepoData.instance.memberLevel == "Guest") {
+        } else if (AndroidacyRepoData.instance.memberLevel.equals("Guest", ignoreCase = true)) {
             runtimeUtils!!.showUpgradeSnackbar(this, this)
         } else {
             if (!AndroidacyRepoData.instance.isEnabled) {

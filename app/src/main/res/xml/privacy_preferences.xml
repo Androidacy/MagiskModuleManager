@@ -11,12 +11,14 @@
             app:icon="@drawable/ic_baseline_bug_report_24"
             app:key="pref_crash_reporting"
             app:singleLineTitle="false"
-            app:summary="@string/crash_reporting_desc"
+            app:summaryOff="@string/crash_reporting_disabled_desc"
+            app:summaryOn="@string/crash_reporting_enabled_desc"
             app:title="@string/crash_reporting" />
         <!-- allow pii in crash reports -->
         <SwitchPreferenceCompat
             android:widgetLayout="@layout/preference_material_switch"
             app:defaultValue="false"
+            app:isPreferenceVisible="false"
             app:dependency="pref_crash_reporting"
             app:icon="@drawable/ic_baseline_bug_report_24"
             app:key="pref_crash_reporting_pii"
@@ -30,7 +32,8 @@
             app:icon="@drawable/ic_baseline_info_24"
             app:key="pref_analytics_enabled"
             app:singleLineTitle="false"
-            app:summary="@string/analytics_desc"
+            app:summaryOff="@string/analytics_disabled_desc"
+            app:summaryOn="@string/analytics_enabled_desc"
             app:title="@string/setup_app_analytics" />
 
     </PreferenceCategory>
