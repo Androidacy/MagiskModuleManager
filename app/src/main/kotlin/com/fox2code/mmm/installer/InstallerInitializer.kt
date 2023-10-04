@@ -23,11 +23,8 @@ class InstallerInitializer {
 
     companion object {
         var isKsu: Boolean = false
-        private val MAGISK_SBIN = File("/sbin/magisk")
-        private val MAGISK_SYSTEM = File("/system/bin/magisk")
-        private val MAGISK_SYSTEM_EX = File("/system/xbin/magisk")
         private var mgskPth: String? = null
-        private var mgskVerCode = 0
+        private var verCode = 0
         private var hsRmdsk = false
         const val ERROR_NO_PATH = 1
         const val ERROR_NO_SU = 2
@@ -67,7 +64,7 @@ class InstallerInitializer {
         }
 
         fun peekMagiskVersion(): Int {
-            return mgskVerCode
+            return verCode
         }
 
         fun peekHasRamdisk(): Boolean {
@@ -94,7 +91,7 @@ class InstallerInitializer {
                     }
                     if (forceCheck) {
                         if (mgskPth == null) {
-                            mgskVerCode = 0
+                            verCode = 0
                         }
                     }
                     if (mgskPth != null) {
@@ -174,6 +171,7 @@ class InstallerInitializer {
                     if (MainApplication.forceDebugLogging) {
                         Timber.i("Kernelsu detected")
                     }
+                    verCode = output[1].toInt()
                     mgskPth = "/data/adb"
                     isKsu = true
                     // if analytics enabled, set breadcrumb for countly
@@ -212,7 +210,7 @@ class InstallerInitializer {
                 if (mgskPth == null && Shell.isAppGrantedRoot() == true) {
                     Timber.e("[ANOMALY] Failed to get Magisk path but granted root")
                 }
-                Companion.mgskVerCode = mgskVerCode
+                verCode = mgskVerCode
                 return mgskPth
             } catch (ignored: Exception) {
                 // work around edge case
