@@ -389,4 +389,20 @@
     <string name="download_completed">انتهى التنزيل وحفظه في مجلد التنزيل الافتراضي</string>
     <string name="download_finished">تم الانتهاء من التنزيل وحفظه في مجلد التنزيلات</string>
     <string name="file_picker_not_zip">الملف الذي اخترته ليس ملف zip صالح.</string>
+    <string name="crash_notification_title">تعطل AMM!</string>
+    <string name="crash_notification_text">واجه AMM خطأ وتعطل. %s</string>
+    <string name="crash_notification_body">لقد تعطل AMM. تم إشعار المطورين. انقر هنا للاطلاع على التفاصيل أو أعد تشغيل التطبيق.</string>
+    <string name="crash_reporting_disabled_desc">لقد قمت بتعطيل الإبلاغ عن الأعطال. هذا قد يجعل من الصعب علينا العثور على الأخطاء وإصلاح الأعطال.</string>
+    <string name="analytics_disabled_desc">لديك ميزة التحليلات متوقفة. قد يجعل هذا من الصعب تحسين التطبيق وتطويره. إذا قمت بتمكين هذا الإعداد ، فلن يتم إرسال أي معلومات شخصية!</string>
+    <string name="analytics_enabled_desc">لقد اشتركت في التحليلات. سنستخدم هذه البيانات لتطوير التطبيق وتحسينه. لن يتم إرسال أي معلومات شخصية.</string>
+    <string name="setup_crash_reporting_generic">الإبلاغ عن الأعطال</string>
+    <string name="reinstall_warning_v2">"هذه الوحدة متاحة من مصدر عبر الإنترنت ومصدر محلي. للأمان ، ستحتاج إلى التوجه إلى علامة التبويب عبر الإنترنت للتحديث. إذا لم يكن هناك تحديث متاح ، فقد تحتاج إلى إزالة هذه الإضافة قبل  محاولة إعادة التثبيت."</string>
+    <string name="update_failed">تعذر التحقق من وجود تحديثات</string>
+    <string name="update_failed_description">فشل التحقق من وجود تحديثات. إذا استمر حدوث ذلك ، فيرجى التأكد من عدم تقييد التطبيق من الاستخدام في الخلفية.</string>
+    <string name="eula_agree_v3">باستخدام هذا التطبيق ، فإنك توافق على اتفاقية ترخيص المستخدم النهائي (https://www.androidacy.com/foxmmm-eula/) وشروط خدمة Androidacy (https://www.androidacy.com/terms-of-service/). أنت تدرك أنه ستتم معالجة بياناتك وفقا لسياسة خصوصية Androidacy (https://www.androidacy.com/privacy-policy/). الكود المصدري لهذا التطبيق متاح بموجب ترخيص LGPL-3.0 (https://www.gnu.org/licenses/lgpl-3.0.en.html).</string>
+    <string name="crash_notification_body_noreport">لقد تعطل AMM. إذا استمر هذا ، فيرجى الإبلاغ عن خطأ. إذا قمت بتمكين الإبلاغ عن الأعطال في الإعدادات ، فيمكنك القيام بذلك نيابة عنك.</string>
+    <string name="crash_reporting_enabled_desc">يتم تفعيل ميزة الإبلاغ عن الأعطال، وسيرسل التطبيق تقريرا تلقائياً عند تعطله أو تجميده.</string>
+    <string name="upgrade_dialog_message">يساعد شراء اشتراك مميز في دعم هذا التطبيق وخدماتنا الأخرى ، ويفتح ميزات رائعة مثل إزالة الإعلانات والتنزيلات السريعة غير المحدودة وغير ذلك الكثير! تبدأ خطط الأشتراك من 3.49 دولار أمريكي شهريا (قابلة للتغيير). يمكنك الإلغاء في أي وقت.
+\n
+\n<i>ملاحظة: تظل الميزات الأساسية لهذا التطبيق مجانية ولكنها قد تكون محدودة.</i></string>
 </resources>
