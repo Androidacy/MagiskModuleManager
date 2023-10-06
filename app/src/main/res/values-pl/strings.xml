@@ -397,4 +397,20 @@
     <string name="fox2code_thanks_desc_v2">Wersje starsze niż 0.6.8 zostały opracowane przez Fox2Code, a wersje do 1.1 zostały przez niego współtworzone. Dziękujemy mu za jego pracę.</string>
     <string name="force_debug_logging_desc">Wymusza rejestrowanie logów debug w kompilacjach release. UWAGA: może to znacznie spowolnić działanie aplikacji. Nie włączaj, chyba że poprosi o to pomoc techniczna.</string>
     <string name="download_finished">Pobieranie ukończone i zapisano do folderu Download</string>
+    <string name="crash_notification_title">AMM się wypłaszczył!</string>
+    <string name="crash_notification_text">AMM napotkał błąd i uległ awarii. %s</string>
+    <string name="crash_notification_body">AMM uległ awarii. Deweloperzy zostali powiadomieni. Dotknij tutaj, aby zobaczyć szczegóły lub zrestartuj aplikację.</string>
+    <string name="crash_notification_body_noreport">AMM uległ awarii. Jeśli nadal to widzisz, zgłoś błąd. Jeśli raportowanie awarii jest włączone w ustawieniach, zrobimy to za Ciebie.</string>
+    <string name="crash_reporting_enabled_desc">Raportowanie awarii jest włączone, a aplikacja automatycznie wyśle raport, gdy się zawiesi lub wypłaszczy.</string>
+    <string name="analytics_disabled_desc">Analityka jest wyłączona. Może to utrudnić ulepszanie i rozwijanie aplikacji. Jeśli włączysz to ustawienie, żadne osobiste dane nie będą wysyłane!</string>
+    <string name="setup_crash_reporting_generic">Raportowanie awarii</string>
+    <string name="reinstall_warning_v2">Moduł ten jest dostępny w wersji online i lokalnej. Ze względów bezpieczeństwa należy przejść do zakładki online, aby dokonać aktualizacji. Jeśli nie ma dostępnej aktualizacji, może być konieczne usunięcie tego modułu przed ponowną próbą instalacji.</string>
+    <string name="eula_agree_v3">Korzystając z tej aplikacji zgadzasz się na warunki EULA (https://www.androidacy.com/foxmmm-eula/) i warunki świadczenia usług Androidacy (https://www.androidacy.com/terms-of-service/). Twoje dane będą przetwarzane zgodnie z polityką prywatności Androidacy (https://www.androidacy.com/privacy-policy/). Kod źródłowy tej aplikacji jest dostępny na licencji LGPL-3.0 (https://www.gnu.org/licenses/lgpl-3.0.en.html).</string>
+    <string name="crash_reporting_disabled_desc">Raportowanie awarii zostało wyłączone. Może to utrudnić nam znajdowanie błędów i naprawianie awarii.</string>
+    <string name="analytics_enabled_desc">Zezwolono na analitykę. Wykorzystamy te dane do rozwoju i ulepszania aplikacji. Żadne osobiste dane nie są wysyłane.</string>
+    <string name="upgrade_dialog_message">Zakup subskrypcji premium pomaga wspierać tę aplikację i nasze inne usługi oraz odblokowuje fajne funkcje, takie jak usuwanie reklam, szybkie nieograniczone pobieranie i wiele więcej! Plany zaczynają się od 3,49 dolarów miesięcznie (mogą ulec zmianie). Można je anulować w dowolnym momencie.
+\n
+\n<i>Uwaga: Podstawowe funkcje tej aplikacji pozostają bezpłatne, ale mogą być ograniczone.</i></string>
+    <string name="update_failed">Nie można sprawdzić dostępności aktualizacji</string>
+    <string name="update_failed_description">Nie udało się sprawdzić uaktualnień. Jeśli dzieje się tak cały czas, upewnij się, że aplikacja nie ma ograniczeń do działania w tle.</string>
 </resources>
