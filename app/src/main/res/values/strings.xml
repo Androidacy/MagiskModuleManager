@@ -426,4 +426,5 @@
     <string name="reinstall_warning_v2">This module is available from an online source and a local one. For security, you\'ll need to head over to the online tab to update. If there\'s no update available, you may need to remove this module before attemtping to reinstall.</string>
     <string name="update_failed">Could not check for updates</string>
     <string name="update_failed_description">Failed to check for updates. If this keeps happening, please ensure the app is not restricted from background usage.</string>
+    <string name="install_from_storage_file_not_found">Could not find selected file. Please try again.</string>
 </resources>

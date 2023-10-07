@@ -10,6 +10,7 @@
 package com.fox2code.mmm
 
 import android.content.Intent
+import android.net.Uri
 import android.view.View
 import android.widget.Toast
 import androidx.annotation.AttrRes
@@ -20,18 +21,11 @@ import com.fox2code.mmm.module.ModuleViewListBuilder
 import com.fox2code.mmm.repo.RepoManager
 import com.fox2code.mmm.utils.IntentHelper
 import com.fox2code.mmm.utils.IntentHelper.Companion.OnFileReceivedCallback
-import com.fox2code.mmm.utils.io.Files
-import com.fox2code.mmm.utils.io.Files.Companion.patchModuleSimple
 import com.fox2code.mmm.utils.io.net.Http
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import timber.log.Timber
-import java.io.BufferedReader
 import java.io.File
-import java.io.FileOutputStream
-import java.io.IOException
-import java.io.InputStreamReader
 import java.util.Date
-import java.util.zip.ZipFile
 
 
 @Suppress("SameParameterValue")
@@ -85,19 +79,6 @@ enum class NotificationType(
     },
 
     @JvmStatic
-    NO_MAGISK(R.string.fail_magisk_missing,
-        R.drawable.ic_baseline_numbers_24,
-        View.OnClickListener { v: View ->
-            IntentHelper.openUrl(
-                v.context, "https://github.com/topjohnwu/Magisk/blob/master/docs/install.md"
-            )
-        }) {
-        override fun shouldRemove(): Boolean {
-            return InstallerInitializer.errorNotification !== this
-        }
-    },
-
-    @JvmStatic
     NO_ROOT(R.string.fail_root_magisk, R.drawable.ic_baseline_numbers_24) {
         override fun shouldRemove(): Boolean {
             return InstallerInitializer.errorNotification !== this
@@ -118,7 +99,7 @@ enum class NotificationType(
             )
         }) {
         override fun shouldRemove(): Boolean {
-            return InstallerInitializer.peekMagiskPath() == null || InstallerInitializer.peekMagiskVersion() >= Constants.MAGISK_VER_CODE_INSTALL_COMMAND
+            return InstallerInitializer.isKsu || InstallerInitializer.peekMagiskPath() == null || InstallerInitializer.peekMagiskVersion() >= Constants.MAGISK_VER_CODE_INSTALL_COMMAND
         }
     },
 
@@ -210,47 +191,32 @@ enum class NotificationType(
 
                 override fun onReceived(
                     target: File?,
-                    uri: android.net.Uri?,
+                    uri: Uri?,
                     response: Int
                 ) {
-                    val companion = NotificationType.Companion
+                    Companion
                     if (response == IntentHelper.RESPONSE_FILE) {
-                        try {
-                            if (companion.needPatch(target)) {
-                                patchModuleSimple(
-                                    Files.read(target),
-                                    FileOutputStream(target)
-                                )
-                            }
-                            if (companion.needPatch(target)) {
-                                if (target?.exists() == true && !target.delete()) Timber.w("Failed to delete non module zip")
-                                Toast.makeText(
-                                    compatActivity,
-                                    R.string.invalid_format,
-                                    Toast.LENGTH_SHORT
-                                ).show()
-                            } else {
-                                IntentHelper.openInstaller(
-                                    compatActivity,
-                                    target?.absolutePath,
-                                    compatActivity.getString(
-                                        R.string.local_install_title
-                                    ),
-                                    null,
-                                    null,
-                                    false,
-                                    BuildConfig.DEBUG &&  // Use debug mode if no root
-                                            InstallerInitializer.peekMagiskPath() == null
-                                )
-                            }
-                        } catch (ignored: IOException) {
-                            if (target?.exists() == true && !target.delete()) Timber.w("Failed to delete invalid module")
+                        // ensure file exists
+                        if (!target!!.exists()) {
                             Toast.makeText(
                                 compatActivity,
-                                R.string.invalid_format,
-                                Toast.LENGTH_SHORT
+                                R.string.install_from_storage_file_not_found,
+                                Toast.LENGTH_LONG
                             ).show()
+                            return
                         }
+                        IntentHelper.openInstaller(
+                            compatActivity,
+                            target.absolutePath,
+                            compatActivity.getString(
+                                R.string.local_install_title
+                            ),
+                            null,
+                            null,
+                            false,
+                            BuildConfig.DEBUG &&  // Use debug mode if no root
+                                    InstallerInitializer.peekMagiskPath() == null
+                        )
                     } else if (response == IntentHelper.RESPONSE_URL) {
                         IntentHelper.openInstaller(
                             compatActivity,
@@ -304,44 +270,6 @@ enum class NotificationType(
         if (!shouldRemove()) moduleViewListBuilder.addNotification(this)
     }
 
-    companion object {
-        fun needPatch(target: File?): Boolean {
-            try {
-                ZipFile(target).use { zipFile ->
-                    var validEntries = zipFile.getEntry("module.prop") != null
-                    // ensure there's no anykernel.sh
-                    validEntries = validEntries and (zipFile.getEntry("anykernel.sh") == null)
-                    if (validEntries) {
-                        // Ensure id of module is not empty and matches ^[a-zA-Z][a-zA-Z0-9._-]+$ regex
-                        // We need to get the module.prop and parse the id= line
-                        val moduleProp = zipFile.getEntry("module.prop")
-                        // Parse the module.prop
-                        if (moduleProp != null) {
-                            // Find the line with id=, and check if it matches the regex
-                            BufferedReader(InputStreamReader(zipFile.getInputStream(moduleProp))).use { reader ->
-                                var line: String
-                                val iterator = reader.lineSequence().iterator()
-                                // same as above but use iterator
-                                while (iterator.hasNext()) {
-                                    line = iterator.next()
-                                    if (line.startsWith("id=")) {
-                                        val id = line.substring(3)
-                                        return id.isEmpty() || !id.matches(Regex("^[a-zA-Z][a-zA-Z0-9._-]+$"))
-                                    }
-                                }
-                            }
-                        } else {
-                            return true
-                        }
-                    } else {
-                        return true
-                    }
-                }
-            } catch (e: IOException) {
-                return true
-            }
-            return false
-        }
-    }
+    companion object
 
 }
