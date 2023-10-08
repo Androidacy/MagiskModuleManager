@@ -4,7 +4,7 @@
   --><resources>
     <string name="app_name">Fox Magisk Module Manager</string>
     <string name="fail_root_magisk">No fue posible obtener acceso root o Magisk</string>
-    <string name="fail_root_denied">El Acceso Root ha sido denegado desde la aplicación Magisk</string>
+    <string name="fail_root_denied">El acceso root ha sido denegado desde la aplicación Magisk</string>
     <string name="fail_magisk_missing">Magisk no se encuentra instalado en este dispositivo</string>
     <string name="loading">Cargando…</string>
     <string name="updatable">Actualizable</string>
@@ -167,7 +167,7 @@
     <string name="copy_button">Copiar texto</string>
     <string name="crash_details">Causa desconocida</string>
     <string name="reset_app">Reiniciar la aplicación</string>
-    <string name="reset">Reiniciar</string>
+    <string name="reset">Resetear</string>
     <string name="understand">Entiendo</string>
     <string name="setup_theme_title">Elige un tema</string>
     <string name="title_activity_setup">Asistente de configuración</string>
@@ -392,4 +392,32 @@
     <string name="setup_require_security_summary">Requiere que los módulos se marquen como seguros antes de la instalación. Esto deshabilitará la instalación del módulo local y la seguridad del módulo la determinará el propietario del repositorio.</string>
     <string name="feedback_placeholder">Lamentamos este error. Si habilitó el informe de fallos, ya recibimos un informe y estamos trabajando en el problema. ¡No dudes en reiniciar la aplicación cuando estés listo! También puedes restablecer la aplicación si sigues viendo esta pantalla.</string>
     <string name="androidacy_thanks_desc_v2">Esta aplicación es mantenida, actualizada y respaldada por Androidacy, y los nombres, logotipos y marcas comerciales tienen derechos de autor de Androidacy.</string>
+    <string name="androidacy_thanks_v2">Una aplicación de Androidacy</string>
+    <string name="crash_details_suggestion_v2">A continuación, debajo se muestra Stacktrace. Sin embargo, los informes automáticos nos lo enviarán si están habilitados en la configuración. Presione el ícono de copiar en la esquina para copiarlo a su portapapeles.</string>
+    <string name="download_module_description">Descargando módulo %s</string>
+    <string name="download_completed">Descarga finalizada y guardada en la carpeta de descarga predeterminada</string>
+    <string name="download_failed">¡Error al descargar!</string>
+    <string name="force_debug_logging_desc">Fuerza el registro de depuración en las versiones de lanzamiento. PRECAUCIÓN: esto puede ralentizar significativamente la aplicación. No lo encienda a menos que lo solicite el soporte.</string>
+    <string name="force_debug_logging_pref">Forzar el registro de depuración</string>
+    <string name="download_started">Comenzó a descargar</string>
+    <string name="fox2code_thanks_v2">v0.x por Fox2Code</string>
+    <string name="download_finished">Descarga finalizada y guardada en la carpeta de descargas</string>
+    <string name="file_picker_not_zip">El archivo que eligió no es un archivo zip válido.</string>
+    <string name="crash_notification_title">¡AMM se crasheo!</string>
+    <string name="crash_notification_text">AMM encontró un error y se crasheo. %s</string>
+    <string name="crash_reporting_disabled_desc">Ha desactivado los informes de fallos. Esto puede dificultarnos la búsqueda de errores y la corrección de fallos.</string>
+    <string name="crash_reporting_enabled_desc">Los informes de fallos están activados y la aplicación enviará automáticamente un informe cuando falle o se congele.</string>
+    <string name="analytics_disabled_desc">Tiene el análisis desactivado. Esto puede dificultar la mejora y el desarrollo de la aplicación. Si habilita esta configuración, ¡no se enviará ninguna información personal!</string>
+    <string name="setup_crash_reporting_generic">Reportar fallos</string>
+    <string name="update_failed">No se pudo buscar actualizaciones</string>
+    <string name="fox2code_thanks_desc_v2">Las versiones anteriores a la 0.6.8 fueron desarrolladas por Fox2Code y él contribuyó a las versiones hasta la 1.1. Le agradecemos su trabajo.</string>
+    <string name="crash_notification_body">AMM se ha crasheado. Los desarrolladores han sido notificados. Toque aquí para ver detalles o reiniciar la aplicación.</string>
+    <string name="crash_notification_body_noreport">AMM se ha crasheado. Si sigue viendo esto, por favor informe un error. Si activó el informe de errores en la configuración, puede hacerlo por usted.</string>
+    <string name="analytics_enabled_desc">Ha optado por el análisis. Usaremos estos datos para mejorar y desarrollar la aplicación. No se envía información personal.</string>
+    <string name="update_failed_description">No se pudo buscar actualizaciones. Si esto continúa sucediendo, asegúrese que la aplicación no tenga restringido el uso en segundo plano.</string>
+    <string name="eula_agree_v3">Al utilizar esta aplicación, acepta EULA (https://www.androidacy.com/foxmmm-eula/) y los Términos de Servicio de Androidacy (https://www.androidacy.com/terms-of-service/). Usted entiende que sus datos serán procesados de acuerdo con la Política de Privacidad de Androiddacy (https://www.androidacy.com/privacy-policy/) . Él código fuente de esta aplicación está disponible bajo la licencia LGPL-3.0 (https://www.gnu.org/licences/lgpl-3.0.en.html).</string>
+    <string name="upgrade_dialog_message">Comprar una suscripción premium ayuda a respaldar esta aplicación y nuestros otros servicios, y desbloquea funciones interesantes como eliminación de anuncios, descargas rápidas ilimitadas y mucho más. Los planes comienzan en $3.49 USD al mes (sujetos a cambios). Cancele en cualquier momento.
+\n
+\n<i>Nota: Las funciones principales de esta aplicación siguen siendo gratuitas pero pueden ser limitadas.</i></string>
+    <string name="reinstall_warning_v2">Este módulo está disponible en una fuente en línea y local. Por seguridad, deberá dirigirse a la pestaña en línea para actualizar. Si no hay ninguna actualización disponible, es posible que deba eliminar este módulo antes de intentar reinstalarlo.</string>
 </resources>
