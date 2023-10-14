@@ -420,4 +420,5 @@
 \n
 \n<i>Nota: Las funciones principales de esta aplicación siguen siendo gratuitas pero pueden ser limitadas.</i></string>
     <string name="reinstall_warning_v2">Este módulo está disponible en una fuente en línea y local. Por seguridad, deberá dirigirse a la pestaña en línea para actualizar. Si no hay ninguna actualización disponible, es posible que deba eliminar este módulo antes de intentar reinstalarlo.</string>
+    <string name="install_from_storage_file_not_found">No se pudo encontrar el archivo seleccionado. Inténtalo de nuevo.</string>
 </resources>
