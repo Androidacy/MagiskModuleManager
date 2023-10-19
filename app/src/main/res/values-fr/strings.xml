@@ -1,8 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ Copyright (c) 2023 to present Androidacy and contributors. Names, logos, icons, and the Androidacy name are all trademarks of Androidacy and may not be used without license. See LICENSE for more information.
-  -->
-
-<resources>
+  --><resources>
     <string name="app_name">Gestionnaire de modules Magisk de Fox</string>
     <string name="fail_root_magisk">Échec de l\’accès à la racine ou à Magisk</string>
     <string name="fail_root_denied">L\’accès raçine a été refusé par l\’application Magisk</string>
@@ -38,7 +37,6 @@
     <string name="no" translatable="false">Non</string>
     <string name="ok" translatable="false">@android:string/ok</string>
     <string name="cancel" translatable="false">Annuler</string>
-
     <!-- Module section translation -->
     <string name="module_last_update">Dernière mis-à-jour :</string>
     <string name="module_repo">Dépôt :</string>
@@ -52,7 +50,6 @@
     <string name="module_min_magisk_chip">Magisk min. "%s"</string>
     <string name="module_min_sdk_chip">Android Min.</string>
     <string name="module_max_sdk_chip">Android Max.</string>
-
     <!-- Preference Titles -->
     <!-- Note: Lockdown mode used to be called showcase mode -->
     <string name="manage_repos_pref">Gestion des dépôts</string>
@@ -117,13 +114,11 @@
     <string name="androidacy_repo_info">Ce dépôt pourrait afficher certaines publicitées non intruisives pour pallier aux couts financiers des serveurs et du développement.</string>
     <string name="androidacy_test_mode_pref">Mode test Androidacy</string>
     <string name="androidacy_test_mode_desc">Utiliser la mise à disposition Androidacy de test au lieu du point de terminaison stable. (Redémarrera l\’application)</string>
-
     <!-- Background Notification translation -->
     <string name="notification_update_title">%1$d mise(s) à jour de module(s) trouvée(s)</string>
     <string name="notification_update_pref">Vérification automatique de mise à jour pour les modules</string>
     <string name="notification_update_desc">Peut améliorer l\’usage de la batterie</string>
     <string name="notification_update_debug_pref">Test de notification</string>
-
     <!-- Set to true in translation file if your language is right to left -->
     <bool name="lang_support_rtl">false</bool>
     <!-- Always copy language_support_level when translating -->
@@ -174,22 +169,22 @@
     <string name="official">officielle</string>
     <string name="unofficial">non-officielle</string>
     <string name="setup_title">Première mise en service</string>
-    <string name="setup_message">Bienvenue! Cette application vous aidera à installer et gérer vos modules Magisk. Pour commencer, merci de sélectionner les options ci-dessous. Celles-ci et d\’autres peuvent êtres configurées ultérieusement dans les paramètres.</string>
+    <string name="setup_message">Bienvenue ! Cette application vous aidera à installer et gérer vos modules Magisk. Pour commencer, merci de sélectionner les options ci-dessous. Celles-ci et dautres peuvent êtres configurées ultérieusement dans les paramètres.</string>
     <string name="setup_background_update_check">Vérification des MàJ automatique</string>
-    <string name="setup_background_update_check_summary">Nous permettre de vérifier les mises-à-jours en arrière-plan.\nCette fonctionnalité peut utiliser d\’avantage de batterie.</string>
+    <string name="setup_background_update_check_summary">Nous permettre de vérifier les mises-à-jours en arrière-plan. Cette fonctionnalité peut utiliser davantage de batterie.</string>
     <string name="setup_androidacy_repo">Activer le dépôt Androidacy</string>
-    <string name="setup_androidacy_repo_summary">Activer le dépôt Androidacy\nRetours des utilisateurs sur les fonctionnalités, analyse antivirales automatiques, Mises-à-jours rapides, un grand choix de sélection, et soutenu par eux-mêmes.</string>
+    <string name="setup_androidacy_repo_summary">Retours des utilisateurs sur les fonctionnalités, analyse antivirales automatiques, mises-à-jours rapides, un grand choix de sélection, et est soutenu par Androidacy.</string>
     <!-- Peut être qu\’une fois que le dépôt Alt aura corrigé ses conneries et cessera d\’autoriser des modules merdiques ou carrément
     cassés, nous reformullerons ça. -->
     <string name="setup_magisk_alt_repo">Activer le Dépôt Alt Magisk</string>
     <string name="setup_magisk_alt_repo_summary">Bien plus laxiste que l\’original. Offre de nombreux modules au détriement de la sécurité.</string>
     <string name="setup_crash_reporting">Activer Sentry</string>
-    <string name="setup_crash_reporting_summary">Activer la Centralisation de la gestion des rapports de crashs et des problèmes de performances.\nTous les rapports sont strictements anonymisés et confidentiels.</string>
+    <string name="setup_crash_reporting_summary">Centralisation de la gestion des rapports de crashs et des problèmes de performances. Tous les rapports sont strictements anonymisés et confidentiels.</string>
     <string name="setup_custom_repos">Vous pouvez ajouter des dépôts supplémentaires par la suite dans les réglages.</string>
     <string name="repos">Dépôts</string>
     <string name="low_performance_device_dialogue_title">Activer blur sur les périphériques bas de gamme</string>
     <string name="low_performance_device_dialogue_message">Vous tentez d\’activer blur sur un périphérique qui pourrait ne pas fonctionner complêtement avec ça.\nVous pourriez l\’activer, mais ça vous apportera une mauvaise expérience utilisateur et nous ne vous recommendons pas de l\’utiliser.</string>
-    <string name="alt_repo_info">Ce dépôt a moins de restrictions et d\’examens, pouvant résulter à une qualité de modules inférieurs. Très minimalistes mais qui dispose de beaucoup de modules.</string>
+    <string name="alt_repo_info">Ce dépôt a moins de restrictions et d\'examens, pouvant résulter à une qualité de modules inférieurs. Très minimalistes mais qui dispose de beaucoup de modules.</string>
     <string name="install_terminal_reboot_now_message">Vous vous apprêtez à redémarrer votre périphérique. Si vous avez sauvegardé votre travail, appuyez sur OK pour continuer. Ou sinon, pressez annuler.</string>
     <string name="install_terminal_config_missing">Le paquet %s est introuvable pour la configuration du module, nous ne pouvons donc pas le lancer.</string>
     <string name="clear_app_data">Éffacer données application</string>
@@ -324,4 +319,6 @@
     <string name="blur_desc">Créer un effet de blure entre certaines fenêtres et éléments. Noter que ce blure pourrait ne pas parfaitement fonctionner sur certains périphériques et ne pas fonctionner du tout pour tout le monde.</string>
     <string name="error_encrypted_shared_preferences">Une erreure est survenue lors de la lecture des réglages partagés. Merci de réinitialiser l\’application.</string>
     <string name="showcase_mode_dialogue_message">Un redémarrage de l\’application est requis pour activer le mode vitrine.</string>
+    <string name="app_name_v2">Gestionnaire de modules Androidacy</string>
+    <string name="app_name_short_v2">AMM</string>
 </resources>
