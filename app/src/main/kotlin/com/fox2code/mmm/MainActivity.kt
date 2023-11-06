@@ -110,7 +110,7 @@ class MainActivity : AppCompatActivity(), OnRefreshListener, OverScrollHelper {
 
     @SuppressLint("SdCardPath")
     val getContent = this.registerForActivityResult(
-        ActivityResultContracts.GetContent()
+        ActivityResultContracts.GetContent(),
     ) { uri: Uri? ->
         if (uri == null) {
             Timber.d("invalid uri received")
@@ -157,46 +157,28 @@ class MainActivity : AppCompatActivity(), OnRefreshListener, OverScrollHelper {
                 )
                 return@registerForActivityResult
             }
-            // check if the file is a zip by reading the first 4 bytes
-            val bytes = ByteArray(4)
-            inputStream.read(bytes, 0, 4)
-            if (!(bytes[0] == 0x50.toByte() && bytes[1] == 0x4B.toByte() && bytes[2] == 0x03.toByte() && bytes[3] == 0x04.toByte())) {
-                Toast.makeText(
-                    this@MainActivity, R.string.file_picker_not_zip, Toast.LENGTH_SHORT
-                ).show()
-                Timber.e(
-                    "File is not a zip! Expected 0x504B0304, got %02X%02X%02X%02X",
-                    bytes[0],
-                    bytes[1],
-                    bytes[2],
-                    bytes[3]
-                )
+            run {
+                outputStream = FileOutputStream(destination)
+                Files.copy(inputStream, outputStream as FileOutputStream)
+                if (MainApplication.forceDebugLogging) Timber.i("File saved at %s", destination)
+                success = true
                 callback?.onReceived(
                     destination,
                     uri,
-                    IntentHelper.RESPONSE_ERROR
+                    IntentHelper.RESPONSE_FILE
                 )
-                return@registerForActivityResult
             }
-            outputStream = FileOutputStream(destination)
-            Files.copy(inputStream, outputStream)
-            if (MainApplication.forceDebugLogging) Timber.i("File saved at %s", destination)
-            success = true
         } catch (e: Exception) {
             Timber.e(e)
             Toast.makeText(
                 this@MainActivity, R.string.file_picker_failure, Toast.LENGTH_SHORT
             ).show()
+            callback?.onReceived(destination, uri, IntentHelper.RESPONSE_ERROR)
         } finally {
             Files.closeSilently(inputStream)
             Files.closeSilently(outputStream)
             if (!success && destination?.exists() == true && !destination!!.delete()) Timber.e("Failed to delete artifact!")
         }
-        callback?.onReceived(
-            destination,
-            uri,
-            if (success) IntentHelper.RESPONSE_FILE else IntentHelper.RESPONSE_ERROR
-        )
     }
 
     init {

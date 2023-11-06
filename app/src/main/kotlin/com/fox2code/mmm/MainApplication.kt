@@ -489,7 +489,7 @@ class MainApplication : Application(), Configuration.Provider, ActivityLifecycle
             BuildConfig.DEBUG || getPreferences("mmm")?.getBoolean(
                 "pref_force_debug_logging",
                 false
-            ) ?: false
+            ) ?: BuildConfig.DEBUG
 
         // Warning! Locales that don't exist will crash the app
         // Anything that is commented out is supported but the translation is not complete to at least 60%
@@ -641,7 +641,7 @@ class MainApplication : Application(), Configuration.Provider, ActivityLifecycle
             }
 
         fun shouldPreventReboot(): Boolean {
-            return getPreferences("mmm")!!.getBoolean("pref_prevent_reboot", true)
+            return getPreferences("mmm")!!.getBoolean("pref_prevent_reboot", false)
         }
 
         val isShowIncompatibleModules: Boolean
@@ -738,8 +738,12 @@ class MainApplication : Application(), Configuration.Provider, ActivityLifecycle
     }
 
     override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle?) {
-        lastActivity = activity as AppCompatActivity
-        activity.setTheme(managerThemeResId)
+        try {
+            lastActivity = activity as AppCompatActivity
+            activity.setTheme(managerThemeResId)
+        } catch (e: Exception) {
+            Timber.e(e, "Failed to set theme")
+        }
     }
 
     override fun onActivityStarted(activity: Activity) {
@@ -747,8 +751,12 @@ class MainApplication : Application(), Configuration.Provider, ActivityLifecycle
     }
 
     override fun onActivityResumed(activity: Activity) {
-        lastActivity = activity as AppCompatActivity
-        activity.setTheme(managerThemeResId)
+        try {
+            lastActivity = activity as AppCompatActivity
+            activity.setTheme(managerThemeResId)
+        } catch (e: Exception) {
+            Timber.e(e, "Failed to set theme")
+        }
     }
 
     override fun onActivityPaused(activity: Activity) {

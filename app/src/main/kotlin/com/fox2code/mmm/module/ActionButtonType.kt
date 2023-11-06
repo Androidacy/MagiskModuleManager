@@ -11,6 +11,7 @@ import android.text.Spanned
 import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.DrawableRes
+import com.fox2code.mmm.BuildConfig
 import com.fox2code.mmm.MainApplication
 import com.fox2code.mmm.MainApplication.Companion.INSTANCE
 import com.fox2code.mmm.MainApplication.Companion.isShowcaseMode
@@ -159,14 +160,16 @@ enum class ActionButtonType {
                 })
             // if text is reinstall, we need to uninstall first - warn the user but don't proceed
             if (moduleHolder.moduleInfo != null && moduleHolder.repoModule == null && button.text == button.context.getString(R.string.reinstall)) {
-                val builder = MaterialAlertDialogBuilder(button.context)
-                builder.setTitle(R.string.reinstall)
-                    .setMessage(R.string.reinstall_warning_v2)
-                    .setCancelable(true)
-                    // ok button that does nothing
-                    .setPositiveButton(R.string.ok, null)
-                    .show()
-                return
+                if (!BuildConfig.DEBUG) {
+                    val builder = MaterialAlertDialogBuilder(button.context)
+                    builder.setTitle(R.string.reinstall)
+                        .setMessage(R.string.reinstall_warning_v2)
+                        .setCancelable(true)
+                        // ok button that does nothing
+                        .setPositiveButton(R.string.ok, null)
+                        .show()
+                    return
+                }
             }
             // prefer repomodule if possible
             var updateZipUrl = ""

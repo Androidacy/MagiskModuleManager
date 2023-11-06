@@ -76,14 +76,13 @@ enum class Http {;
      *
      * Note: DNS Cache is stored in user data.
      */
-    private class FallBackDNS(context: Context, parent: Dns, vararg fallbacks: String?) : Dns {
+    private class FallBackDNS(parent: Dns, vararg fallbacks: String?) : Dns {
         private val parent: Dns
-        private val sharedPreferences: SharedPreferences
+        private val sharedPreferences: SharedPreferences = MainApplication.getPreferences("mmm_dns")!!
         private val fallbacks: HashSet<String>
         private val fallbackCache: HashMap<String, List<InetAddress>>
 
         init {
-            sharedPreferences = MainApplication.getPreferences("mmm_dns")!!
             this.parent = parent
             this.fallbacks =
                 HashSet(listOf(*fallbacks)).toString().replaceAfter("]", "").replace("[", "")
@@ -291,11 +290,11 @@ enum class Http {;
             }
             // User-Agent format was agreed on telegram
             androidacyUA = if (hasWebView) {
-                WebSettings.getDefaultUserAgent(mainApplication)
-                    .replace("wv", "") + " AMMM/" + BuildConfig.VERSION_CODE
+                WebSettings.getDefaultUserAgent(mainApplication).replaceFirst("(; )?wv".toRegex(), "").replaceFirst(" Version/[^ ]*".toRegex(), "") + " AMM/" + BuildConfig.VERSION_CODE
             } else {
                 "Mozilla/5.0 (Linux; Android " + Build.VERSION.RELEASE + "; " + Build.DEVICE + ")" + " AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.131 Mobile Safari/537.36" + " AMMM/" + BuildConfig.VERSION_CODE
             }
+            Timber.i("User-Agent: %s", androidacyUA)
             httpclientBuilder.addInterceptor(Interceptor { chain: Interceptor.Chain? ->
                 val request: Request.Builder = chain!!.request().newBuilder()
                 request.header("Upgrade-Insecure-Requests", "1")
@@ -383,7 +382,6 @@ enum class Http {;
             }
             // Fallback DNS cache responses in case request fail but already succeeded once in the past
             fallbackDNS = FallBackDNS(
-                mainApplication,
                 dns,
                 "github.com",
                 "api.github.com",

@@ -26,7 +26,7 @@
 
         <SwitchPreferenceCompat
             android:widgetLayout="@layout/preference_material_switch"
-            app:defaultValue="true"
+            app:defaultValue="false"
             app:icon="@drawable/ic_reboot_24"
             app:key="pref_prevent_reboot"
             app:singleLineTitle="false"

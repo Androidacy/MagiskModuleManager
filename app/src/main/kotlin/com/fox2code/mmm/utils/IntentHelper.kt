@@ -418,7 +418,8 @@ enum class IntentHelper {;
             }
             MainActivity.INSTANCE?.callback = callback
             MainActivity.INSTANCE?.destination = destination
-            MainActivity.INSTANCE?.getContent?.launch("*/*")
+            // select zip file
+            MainActivity.INSTANCE?.getContent?.launch("application/zip")
         }
     }
 }
