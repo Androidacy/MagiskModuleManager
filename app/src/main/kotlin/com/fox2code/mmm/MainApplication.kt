@@ -296,6 +296,7 @@ class MainApplication : Application(), Configuration.Provider, ActivityLifecycle
             config.setLoggingEnabled(BuildConfig.DEBUG)
             config.setRequiresConsent(false)
             config.setRecordAppStartTime(true)
+            config.enableServerConfiguration()
             Countly.sharedInstance().init(config)
             Countly.applicationOnCreate()
         }
