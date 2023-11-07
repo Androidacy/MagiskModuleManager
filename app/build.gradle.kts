@@ -48,8 +48,8 @@ android {
         applicationId = "com.fox2code.mmm"
         minSdk = 26
         targetSdk = 34
-        versionCode = 88
-        versionName = "2.3.4"
+        versionCode = 89
+        versionName = "2.3.5"
         vectorDrawables {
             useSupportLibrary = true
         }
@@ -374,7 +374,7 @@ dependencies {
     // Chromium cronet from androidacy
     implementation("org.chromium.net:cronet-embedded:113.5672.61")
 
-    val libsuVersion = "5.1.0"
+    val libsuVersion = "5.2.1"
     // The core module that provides APIs to a shell
     implementation("com.github.topjohnwu.libsu:core:${libsuVersion}")
 

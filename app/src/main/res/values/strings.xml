@@ -427,4 +427,6 @@
     <string name="update_failed">Could not check for updates</string>
     <string name="update_failed_description">Failed to check for updates. If this keeps happening, please ensure the app is not restricted from background usage.</string>
     <string name="install_from_storage_file_not_found">Could not find selected file. Please try again.</string>
+    <string name="invalid_update_url">No update URL found</string>
+    <string name="invalid_update_url_message">Could not determine a suitable URL to reinstall or update this module from. Please check with the source you got this module from.</string>
 </resources>

@@ -11,7 +11,6 @@ import android.text.Spanned
 import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.DrawableRes
-import com.fox2code.mmm.BuildConfig
 import com.fox2code.mmm.MainApplication
 import com.fox2code.mmm.MainApplication.Companion.INSTANCE
 import com.fox2code.mmm.MainApplication.Companion.isShowcaseMode
@@ -158,19 +157,6 @@ enum class ActionButtonType {
                 .recordEvent("view_update_install", HashMap<String, Any>().apply {
                     put("module", name ?: "null")
                 })
-            // if text is reinstall, we need to uninstall first - warn the user but don't proceed
-            if (moduleHolder.moduleInfo != null && moduleHolder.repoModule == null && button.text == button.context.getString(R.string.reinstall)) {
-                if (!BuildConfig.DEBUG) {
-                    val builder = MaterialAlertDialogBuilder(button.context)
-                    builder.setTitle(R.string.reinstall)
-                        .setMessage(R.string.reinstall_warning_v2)
-                        .setCancelable(true)
-                        // ok button that does nothing
-                        .setPositiveButton(R.string.ok, null)
-                        .show()
-                    return
-                }
-            }
             // prefer repomodule if possible
             var updateZipUrl = ""
             if (moduleHolder.repoModule != null && moduleHolder.repoModule!!.zipUrl != null) {
@@ -179,6 +165,16 @@ enum class ActionButtonType {
             // if repomodule is null, try localmoduleinfo
             if (updateZipUrl.isEmpty() && moduleHolder.moduleInfo != null && moduleHolder.moduleInfo!!.updateZipUrl != null) {
                 updateZipUrl = moduleHolder.moduleInfo!!.updateZipUrl!!
+            }
+            // still empty? show dialog
+            if (updateZipUrl.isEmpty()) {
+                val materialAlertDialogBuilder = MaterialAlertDialogBuilder(button.context)
+                materialAlertDialogBuilder.setTitle(R.string.invalid_update_url)
+                materialAlertDialogBuilder.setMessage(R.string.invalid_update_url_message)
+                materialAlertDialogBuilder.setPositiveButton(android.R.string.ok, null)
+                materialAlertDialogBuilder.setIcon(R.drawable.ic_baseline_error_24)
+                materialAlertDialogBuilder.show()
+                return
             }
             // Androidacy manage the selection between download and install
             if (isAndroidacyLink(updateZipUrl)) {
