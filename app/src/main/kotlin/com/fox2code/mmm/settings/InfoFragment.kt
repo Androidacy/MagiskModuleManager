@@ -182,7 +182,7 @@ class InfoFragment : PreferenceFragmentCompat() {
         linkClickable = findPreference("pref_support")
         linkClickable!!.onPreferenceClickListener =
             Preference.OnPreferenceClickListener { p: Preference ->
-                IntentHelper.openUrl(p.context, "https://t.me/Fox2Code_Chat")
+                IntentHelper.openUrl(p.context, "https://t.me/androidacy_discussions")
                 true
             }
         linkClickable.onPreferenceLongClickListener =
@@ -190,7 +190,7 @@ class InfoFragment : PreferenceFragmentCompat() {
                 val toastText = requireContext().getString(R.string.link_copied)
                 clipboard.setPrimaryClip(
                     ClipData.newPlainText(
-                        toastText, "https://t.me/Fox2Code_Chat"
+                        toastText, "https://t.me/androidacy_discussions"
                     )
                 )
                 Toast.makeText(requireContext(), toastText, Toast.LENGTH_SHORT).show()
