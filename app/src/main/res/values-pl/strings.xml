@@ -414,4 +414,6 @@
     <string name="update_failed">Nie można sprawdzić dostępności aktualizacji</string>
     <string name="update_failed_description">Nie udało się sprawdzić uaktualnień. Jeśli dzieje się tak cały czas, upewnij się, że aplikacja nie ma ograniczeń do działania w tle.</string>
     <string name="install_from_storage_file_not_found">Nie można znaleźć wybranego pliku. Spróbuj ponownie.</string>
+    <string name="invalid_update_url">Adres URL aktualizacji nie został znaleziony</string>
+    <string name="invalid_update_url_message">Nie można określić odpowiedniego adresu URL do ponownej instalacji lub aktualizacji tego modułu. Sprawdź źródło, z którego pobrano ten moduł.</string>
 </resources>
