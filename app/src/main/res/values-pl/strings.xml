@@ -358,7 +358,7 @@
     <string name="debug_build_toast">AMM debug %1$s, zbudowano w %2$s, będzie działać %3$d dni</string>
     <string name="remote_message_no_update">%s jest dostępny w repozytorium online. Odinstaluj ten moduł, aby zobaczyć go w zakładce online.</string>
     <string name="remote_module">Dostępne z repozytorium online</string>
-    <string name="remote_message">%s jest dostępny z repozytorium online. <b>Zalecana instalacja na czysto, ponieważ większość modułów nie radzi sobie z ponowną instalacją</b>, ale możesz przeinstalować na własne ryzyko.</string>
+    <string name="remote_message">%s jest dostępny z repozytorium online. <b>Zdecydowanie zalecamy czystą instalację, ponieważ większość modułów nie radzi sobie z ponowną instalacją,</b> ale możesz przeinstalować na własne ryzyko.</string>
     <string name="update_frequency_15">15 minut</string>
     <string name="update_frequency_30">30 minut</string>
     <string name="update_frequency_360">6 godzin</string>
