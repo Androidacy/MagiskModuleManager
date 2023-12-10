@@ -59,8 +59,8 @@ class AndroidacyWebAPI(
      * return current effective compat mode
      */
     @get:JavascriptInterface
-    var effectiveCompatMode = 1
-    var notifiedCompatMode = 1
+    var effectiveCompatMode = 0
+    var notifiedCompatMode = 0
     fun forceQuitRaw(error: String?) {
         Toast.makeText(activity, error, Toast.LENGTH_LONG).show()
         activity.runOnUiThread { activity.finish() }
