@@ -78,7 +78,7 @@ Consult our [Developer Documentation](docs/DEVELOPERS.md?utm_source=fox-readme&u
 
 By using this application, you agree to abide by our [Terms of Service](https://www.androidacy.com/terms/?utm_source=fox-readme&utm_medium=web&utm_campaign=github-readme), our [LICENSE](LICENCE?utm_source=fox-readme&utm_medium=web&utm_campaign=github-readme) and the  [EULA](https://www.androidacy.com/foxmmm-eula/?utm_source=fox-readme&utm_medium=web&utm_campaign=github-readme). **If you do not agree to any of those terms, you are to discontinue usage of the app immediately.**
 
-__The terms of the EULA are in addition to the LGPL, not in replacement or subversion of, regarding your relatiomship with Androidacy. Our Terms apply to usage of any of our services, which this app makes usage of.__
+_The terms of the EULA are in addition to the LGPL, not in replacement or subversion of, regarding your relatiomship with Androidacy. Our Terms apply to usage of any of our services, which this app makes usage of._
 
 ## Disclaimer
 
