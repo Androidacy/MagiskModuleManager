@@ -415,7 +415,7 @@ class RepoFragment : PreferenceFragmentCompat() {
         val customRepoManager = RepoManager.getINSTANCE()!!.customRepoManager
         for (i in 0 until custRepoEntries) {
             // get the id of the repo at current index in customRepos
-            val repoData = customRepoManager!!.getRepo(customRepos[i])
+            val repoData = customRepoManager!!.getRepo(db.reposListDao().getUrl(customRepos[i]))
             // convert repoData to a json string for logging
             if (MainApplication.forceDebugLogging) Timber.d("RepoData for %d is %s", i, repoData.toJSON())
             setRepoData(repoData, "pref_custom_repo_$i")

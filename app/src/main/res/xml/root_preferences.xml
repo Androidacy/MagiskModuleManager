@@ -76,6 +76,11 @@
         app:singleLineTitle="false"
         app:title="@string/show_licenses" />
 
+    <Preference
+        app:icon="@drawable/ic_baseline_list_24"
+        app:key="pref_show_apps"
+        app:singleLineTitle="false"
+        app:title="@string/show_apps" />
 
     <Preference
         app:enabled="true"

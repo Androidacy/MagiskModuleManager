@@ -28,12 +28,11 @@ The Androidacy Module Manager serves as a robust alternative to the official Mag
 - **Security:** Automatic VirusTotal scans.
 - **Community Engagement:** Module reviews.
 - **Revenue Sharing:** Financially rewards module developers.
-- **Ad-Supported:** Ads allow us to keep this app and our repository free, but can be removed with a subscription. [Subscribe Now](https://www.androidacy.com/membership-join/?utm_source=fox-readme&utm_medium=web&utm_campaign=github-readme)
+- **Ad-Supported:** Ads allow us to keep this app and our repository free while being able to support and maintain it, but can be removed with a subscription. [Subscribe Now](https://www.androidacy.com/membership-join/?utm_source=fox-readme&utm_medium=web&utm_campaign=github-readme)
 
 ### Future Updates
 
-- Repository Creation Wizard
-- Module Creation Tool
+- AMM v3 beta in January
 
 ### Screenshots
 
@@ -64,7 +63,7 @@ Join our [Telegram Group](https://telegram.dog/androidacy_discussions?utm_source
 
 ## Installation Guidelines
 
-Visit [our website](https://www.androidacy.com/downloads/?view=FoxMMM&utm_source=fox-readme&utm_medium=web&utm_campaign=github-readme) to download the latest `.apk`.
+Visit [our website](https://www.androidacy.com/downloads/?view=FoxMMM&utm_source=fox-readme&utm_medium=web&utm_campaign=github-readme) to download the latest `.apk` for your device arch.
 
 ## Developer Guidelines
 
@@ -72,16 +71,14 @@ Consult our [Developer Documentation](docs/DEVELOPERS.md?utm_source=fox-readme&u
 
 ## Translation Contributions
 
-Visit our [Weblate page](https://translate.nift4.org/engage/foxmmm/?utm_source=fox-readme&utm_medium=web&utm_campaign=github-readme). Advanced users may also send us a pull request on GitHub.
-
-<a href="http://translate.nift4.org/engage/foxmmm/">
-<img src="http://translate.nift4.org/widgets/foxmmm/-/287x66-grey.png" alt="Translation status" />
-</a>
+**WEBLATE NO LONGER AVAILABLE.** Advanced users may also send us a pull request on GitHub.
 
 ## Legal and Compliance
 
 
 By using this application, you agree to abide by our [Terms of Service](https://www.androidacy.com/terms/?utm_source=fox-readme&utm_medium=web&utm_campaign=github-readme), our [LICENSE](LICENCE?utm_source=fox-readme&utm_medium=web&utm_campaign=github-readme) and the  [EULA](https://www.androidacy.com/foxmmm-eula/?utm_source=fox-readme&utm_medium=web&utm_campaign=github-readme). **If you do not agree to any of those terms, you are to discontinue usage of the app immediately.**
+
+__The terms of the EULA are in addition to the LGPL, not in replacement or subversion of, regarding your relatiomship with Androidacy. Our Terms apply to usage of any of our services, which this app makes usage of.__
 
 ## Disclaimer
 

@@ -3,6 +3,8 @@
  */
 package com.fox2code.mmm.settings
 
+import android.net.Uri
+import com.fox2code.mmm.utils.IntentHelper
 import android.annotation.SuppressLint
 import android.app.ActivityManager
 import android.content.ClipboardManager
@@ -238,6 +240,15 @@ class SettingsActivity : AppCompatActivity(), LanguageActivity,
                 Preference.OnPreferenceClickListener { _: Preference? ->
                     // not correctly themed but less buggy than fragment
                     libsBuilder.start(requireContext())
+                    return@OnPreferenceClickListener true
+                }
+            findPreference<Preference>("pref_show_apps")!!.onPreferenceClickListener =
+                Preference.OnPreferenceClickListener { _: Preference? ->
+		    val browserIntent = Intent(
+                                Intent.ACTION_VIEW,
+                                Uri.parse("https://play.google.com/store/apps/dev?id=6763514284252789381")
+                            )
+                            startActivity(browserIntent)
                     return@OnPreferenceClickListener true
                 }
         }

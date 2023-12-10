@@ -36,7 +36,7 @@ class CustomRepoManager internal constructor(
             val applicationContext = mainApplication!!.applicationContext
             val db = Room.databaseBuilder(
                 applicationContext, ReposListDatabase::class.java, "ReposList.db"
-            ).build()
+            ).allowMainThreadQueries().build()
             val reposListDao = db.reposListDao()
             val reposListList = reposListDao.getAll()
             for (reposList in reposListList) {
@@ -112,7 +112,7 @@ class CustomRepoManager internal constructor(
         val applicationContext = INSTANCE!!.applicationContext
         val db = Room.databaseBuilder(
             applicationContext, ReposListDatabase::class.java, "ReposList.db"
-        ).build()
+        ).allowMainThreadQueries().build()
         val reposListDao = db.reposListDao()
         val reposList = ReposList(id, repo, true, donate, support, submitModule, 0, name, website)
         reposListDao.insert(reposList)
@@ -145,7 +145,7 @@ class CustomRepoManager internal constructor(
             repoCount--
             val customRepoData = repoManager[oldRepo] as CustomRepoData
             if (customRepoData != null) {
-                customRepoData.isEnabled = false
+                //customRepoData.isEnabled = false
                 customRepoData.override = null
             }
             dirty = true
