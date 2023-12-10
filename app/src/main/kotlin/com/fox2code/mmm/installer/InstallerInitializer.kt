@@ -56,7 +56,7 @@ class InstallerInitializer {
          * For read/write only "/data/adb/modules" should be used
          */
         fun peekModulesPath(): String? {
-            return if (mgskPth == null) null else "$mgskPth/.magisk/modules"
+            return if (mgskPth == null) null else "/data/adb/modules"
         }
 
         fun peekMagiskVersion(): Int {
@@ -172,7 +172,7 @@ class InstallerInitializer {
                         }
                         verCode = 0
                     }
-                    mgskPth = "/data/adb/modules" // hardcoded path. all modern versions of ksu and magisk use this path
+                    mgskPth = "/data/adb" // hardcoded path. all modern versions of ksu and magisk use this path
                     if (MainApplication.forceDebugLogging) {
                         Timber.i("Magisk path: %s", mgskPth)
                     }

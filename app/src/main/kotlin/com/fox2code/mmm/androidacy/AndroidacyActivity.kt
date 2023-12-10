@@ -419,7 +419,7 @@ class AndroidacyActivity : AppCompatActivity() {
         if (url == null) return false
         for (prefix in arrayOf(
             "https://production-api.androidacy.com/magisk/file/",
-            "https://staging-api.androidacy.com/magisk/file/"
+            "https://production-api.androidacy.com/downloads/"
         )) { // Make both staging and non staging act the same
             if (url.startsWith(prefix)) {
                 return true

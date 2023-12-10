@@ -338,6 +338,13 @@ class InstallerActivity : AppCompatActivity() {
         )
         val installerMonitor: InstallerMonitor
         val installJob: Shell.Job
+            val mgskPath = InstallerInitializer.peekMagiskPath()
+            val ashExec = if (!InstallerInitializer.isKsu) {
+		"$mgskPath/magisk/busybox ash"
+			} else {
+				"$mgskPath/ksu/busybox ash"
+		}
+
         if (rootless) { // rootless is only used for debugging
             val installScript = extractInstallScript("module_installer_test.sh")
             if (installScript == null) {
@@ -365,7 +372,7 @@ class InstallerActivity : AppCompatActivity() {
             }
             installerMonitor = InstallerMonitor(installScript)
             installJob = Shell.cmd(
-                "export ASH_STANDALONE=1 exec /data/adb/magisk/busybox ash",
+                "export ASH_STANDALONE=1 exec " + ashExec,
                 "export MMM_EXT_SUPPORT=1",
                 "export MMM_USER_LANGUAGE=" + this.resources.configuration.locales[0].toLanguageTag(),
                 "export MMM_APP_VERSION=" + BuildConfig.VERSION_NAME,
@@ -382,12 +389,10 @@ class InstallerActivity : AppCompatActivity() {
             var magiskModule = false
             var installZipMagiskModule = false
             var mmtReborn = false
-            val mgskPath = InstallerInitializer.peekMagiskPath()
             if (mgskPath == null) {
                 setInstallStateFinished(false, "! Unable to resolve magisk path", "")
                 return
             }
-            val ashExec = "$mgskPath/.magisk/busybox/busybox ash"
             try {
                 ZipFile(file).use { zipFile ->
                     // Check if module is AnyKernel module
