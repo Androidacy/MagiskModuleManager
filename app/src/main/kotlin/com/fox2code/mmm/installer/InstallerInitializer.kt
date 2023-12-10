@@ -4,15 +4,11 @@
 
 package com.fox2code.mmm.installer
 
-import com.fox2code.mmm.Constants
 import com.fox2code.mmm.MainApplication
 import com.fox2code.mmm.NotificationType
-import com.fox2code.mmm.utils.io.Files.Companion.existsSU
 import com.topjohnwu.superuser.NoShellException
 import com.topjohnwu.superuser.Shell
-import ly.count.android.sdk.Countly
 import timber.log.Timber
-import java.io.File
 
 @Suppress("unused")
 class InstallerInitializer {
@@ -139,79 +135,75 @@ class InstallerInitializer {
                     if (MainApplication.forceDebugLogging) {
                         Timber.e("Failed to check for ramdisk")
                     }
-                    return null
+                    Companion.hsRmdsk = false
                 }
-                if (MainApplication.forceDebugLogging) {
-                    Timber.i("Found ramdisk: %s", output[0])
-                    if (MainApplication.forceDebugLogging) Timber.i(
-                        "Searching for Magisk path. Current path: %s",
-                        mgskPth
-                    )
-                }
-                // reset output
                 output.clear()
-                // try to use magisk --path. if that fails, check for /data/adb/ksu for kernelsu support
-                if (Shell.cmd("magisk --path", "su -V").to(output)
-                        .exec().isSuccess && output[0].isNotEmpty() && !output[0].contains(
-                        "not found"
-                    )
-                ) {
-                    mgskPth = output[0]
-                    if (MainApplication.forceDebugLogging) {
-                        Timber.i("Magisk path 1: %s", mgskPth)
+                if (Shell.cmd("su -v").to(output).exec().isSuccess) {
+                    Timber.i("SU version small: %s", output[0])
+                    if (output.size != 0) {
+                        // try su -V
+                        if (Shell.cmd("su -V").exec().isSuccess) {
+                            val suVer = Shell.cmd("su -V").exec().out
+                                Timber.i("SU version: %s", suVer[0])
+                                // use regex to get version code
+                                val matcher2 = Regex("(\\d+)").find(suVer[0])
+                                if (matcher2 != null) {
+                                    mgskVerCode = matcher2.groupValues[1].toInt()
+                                    if (mgskVerCode > verCode) {
+                                        verCode = mgskVerCode
+                                        Timber.i("SU version: %d", mgskVerCode)
+                                    }
+                                } else {
+                                    if (MainApplication.forceDebugLogging) {
+                                        Timber.e("Failed to get su version: matcher2 is null")
+                                    }
+                                    verCode = 0
+                                }
+                        } else {
+                            if (MainApplication.forceDebugLogging) {
+                                Timber.e("Failed to get su version: su -V: unsuccessful")
+                            }
+                            verCode = 0
+                            return null
+                        }
+                    } else {
+                        if (MainApplication.forceDebugLogging) {
+                            Timber.e("Failed to get su version: su -v: output size is 0")
+                        }
+                        verCode = 0
                     }
-                } else if (Shell.cmd(
-                        "if [ -d /data/adb/ksu ]; then echo true; else echo false; fi",
-                        "/data/adb/ksud -V"
-                    ).to(
-                        output
-                    ).exec().isSuccess && "true" == output[0] && output[1].isNotEmpty() && !output[1].contains(
-                        "not found", true)
-                ) {
+                    mgskPth = "/data/adb/modules" // hardcoded path. all modern versions of ksu and magisk use this path
                     if (MainApplication.forceDebugLogging) {
-                        Timber.i("Kernelsu detected")
+                        Timber.i("Magisk path: %s", mgskPth)
                     }
-                    verCode = output[1].toInt()
-                    mgskPth = "/data/adb"
-                    isKsu = true
-                    // if analytics enabled, set breadcrumb for countly
-                    if (MainApplication.analyticsAllowed()) {
-                        Countly.sharedInstance().crashes().addCrashBreadcrumb("ksu detected")
-                    }
-                    if (MainApplication.forceDebugLogging) {
-                        Timber.e("[ANOMALY] Kernelsu not detected but /data/adb/ksu exists - maybe outdated?")
+                    Companion.mgskPth = mgskPth
+                    val suVer2 = Shell.cmd("su -v").exec().out
+                    // if output[0] contains kernelsu, then it's ksu. if it contains magisk, then it's magisk. otherwise, it's something we don't know and we return null
+                    if (suVer2[0].contains("kernelsu", true)) {
+                        isKsu = true
+                        if (MainApplication.forceDebugLogging) {
+                            Timber.i("SU version: ksu")
+                        }
+                    } else if (suVer2[0].contains("magisk", true)) {
+                        isKsu = false
+                        if (MainApplication.forceDebugLogging) {
+                            Timber.i("SU version: magisk")
+                        }
+                    } else {
+                        if (MainApplication.forceDebugLogging) {
+                            Timber.e("Failed to get su version: unknown su")
+                        }
+                        verCode = 0
+                        return null
                     }
                     return mgskPth
                 } else {
                     if (MainApplication.forceDebugLogging) {
-                        Timber.e("Failed to get Magisk path")
+                        Timber.e("Failed to get su version")
                     }
+                    verCode = 0
                     return null
                 }
-                if (MainApplication.forceDebugLogging) Timber.i("Magisk runtime path: %s", mgskPth)
-                mgskVerCode = output[1].toInt()
-                if (MainApplication.forceDebugLogging) Timber.i(
-                    "Magisk version code: %s",
-                    mgskVerCode
-                )
-                if (mgskVerCode >= Constants.MAGISK_VER_CODE_FLAT_MODULES && mgskVerCode < Constants.MAGISK_VER_CODE_PATH_SUPPORT && (mgskPth.isEmpty() || !File(
-                        mgskPth
-                    ).exists())
-                ) {
-                    mgskPth = "/sbin"
-                }
-                if (mgskPth.isNotEmpty() && existsSU(File(mgskPth))) {
-                    Companion.mgskPth = mgskPth
-                } else {
-                    Timber.e("Failed to get Magisk path (Got $mgskPth)")
-                    mgskPth = null
-                }
-                // if mgskPth is null, but we're granted root, log an error
-                if (mgskPth == null && Shell.isAppGrantedRoot() == true) {
-                    Timber.e("[ANOMALY] Failed to get Magisk path but granted root")
-                }
-                verCode = mgskVerCode
-                return mgskPth
             } catch (ignored: Exception) {
                 // work around edge case
                 return if (tries <= 10) {
