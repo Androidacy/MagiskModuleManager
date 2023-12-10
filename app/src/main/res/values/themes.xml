@@ -36,6 +36,9 @@
         <item name="android:windowActionBar">false</item>
         <item name="android:windowNoTitle">true</item>
         <item name="cornerRadius">@dimen/card_corner_radius</item>
+        <!-- md3 theme for text input -->
+        <item name="editTextStyle">@style/Widget.Material3.TextInputEditText.OutlinedBox</item>
+        <item name="textInputStyle">@style/Widget.Material3.TextInputLayout.OutlinedBox</item>
     </style>
 
     <style name="Theme.MagiskModuleManager.Transparent.Light" parent="Theme.Material3.Light">
@@ -62,6 +65,9 @@
         <item name="android:windowNoTitle">true</item>
         <item name="cornerRadius">@dimen/card_corner_radius</item>
         <item name="alertDialogTheme">@style/Theme.MagiskModuleManager.AlertDialog</item>
+        <!-- md3 theme for text input -->
+        <item name="editTextStyle">@style/Widget.Material3.TextInputEditText.OutlinedBox</item>
+        <item name="textInputStyle">@style/Widget.Material3.TextInputLayout.OutlinedBox</item>
     </style>
 
     <style name="Theme.MagiskModuleManager.Dark" parent="Theme.Material3.Dark">
@@ -96,6 +102,9 @@
         <item name="android:windowNoTitle">true</item>
         <item name="cornerRadius">@dimen/card_corner_radius</item>
         <item name="alertDialogTheme">@style/Theme.MagiskModuleManager.AlertDialog</item>
+        <!-- md3 theme for text input -->
+        <item name="editTextStyle">@style/Widget.Material3.TextInputEditText.OutlinedBox</item>
+        <item name="textInputStyle">@style/Widget.Material3.TextInputLayout.OutlinedBox</item>
     </style>
 
     <!-- Black theme, which is just a dark theme with a black background -->
@@ -123,6 +132,9 @@
         <item name="android:windowNoTitle">true</item>
         <item name="cornerRadius">@dimen/card_corner_radius</item>
         <item name="alertDialogTheme">@style/Theme.MagiskModuleManager.AlertDialog</item>
+        <!-- md3 theme for text input -->
+        <item name="editTextStyle">@style/Widget.Material3.TextInputEditText.OutlinedBox</item>
+        <item name="textInputStyle">@style/Widget.Material3.TextInputLayout.OutlinedBox</item>
     </style>
 
     <!-- Base application theme. -->
@@ -137,7 +149,7 @@
     </style>
 
 
-    <style name="Theme.MagiskModuleManager.AlertDialog" parent="ThemeOverlay.Material3.MaterialAlertDialog">
+    <style name="Theme.MagiskModuleManager.AlertDialog" parent="MaterialAlertDialog.Material3">
         <item name="dialogCornerRadius">28dp</item>
         <item name="cornerFamily">rounded</item>
         <item name="android:colorBackground">?attr/colorSurface</item>

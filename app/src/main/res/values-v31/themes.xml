@@ -18,6 +18,10 @@
         <item name="android:actionBarStyle">@style/Theme.Design.NoActionBar</item>
         <item name="cornerRadius">@dimen/card_corner_radius</item>
         <item name="alertDialogTheme">@style/Theme.MagiskModuleManager.AlertDialog</item>
+        <!-- md3 theme for text input -->
+        <item name="editTextStyle">@style/Widget.Material3.TextInputEditText.OutlinedBox</item>
+        <item name="textInputStyle">@style/Widget.Material3.TextInputLayout.OutlinedBox</item>
+
     </style>
 
     <style name="Theme.MagiskModuleManager.Monet.Dark" parent="Theme.Material3.DynamicColors.Dark">
@@ -32,6 +36,9 @@
         <item name="android:actionBarStyle">@style/Theme.Design.NoActionBar</item>
         <item name="cornerRadius">@dimen/card_corner_radius</item>
         <item name="alertDialogTheme">@style/Theme.MagiskModuleManager.AlertDialog</item>
+        <!-- md3 theme for text input -->
+        <item name="editTextStyle">@style/Widget.Material3.TextInputEditText.OutlinedBox</item>
+        <item name="textInputStyle">@style/Widget.Material3.TextInputLayout.OutlinedBox</item>
     </style>
 
     <!-- Black monet theme, which is just dark monet theme with black background -->
@@ -58,6 +65,9 @@
         <item name="android:actionBarStyle">@style/Theme.Design.NoActionBar</item>
         <item name="cornerRadius">@dimen/card_corner_radius</item>
         <item name="alertDialogTheme">@style/Theme.MagiskModuleManager.AlertDialog</item>
+        <!-- md3 theme for text input -->
+        <item name="editTextStyle">@style/Widget.Material3.TextInputEditText.OutlinedBox</item>
+        <item name="textInputStyle">@style/Widget.Material3.TextInputLayout.OutlinedBox</item>
     </style>
 
     <!-- I have no idea why this is needed, but it is -->

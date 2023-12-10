@@ -33,5 +33,9 @@
         <item name="android:windowActionBar">false</item>
         <item name="android:windowNoTitle">true</item>
         <item name="cornerRadius">@dimen/card_corner_radius</item>
+        <item name="alertDialogTheme">@style/Theme.MagiskModuleManager.AlertDialog</item>
+        <!-- md3 theme for text input -->
+        <item name="editTextStyle">@style/Widget.Material3.TextInputEditText.OutlinedBox</item>
+        <item name="textInputStyle">@style/Widget.Material3.TextInputLayout.OutlinedBox</item>
     </style>
 </resources>

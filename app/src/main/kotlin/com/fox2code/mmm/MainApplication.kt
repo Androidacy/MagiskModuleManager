@@ -135,10 +135,6 @@ class MainApplication : Application(), Configuration.Provider, ActivityLifecycle
         return existingKey!!
     }
 
-    override fun getWorkManagerConfiguration(): Configuration {
-        return Configuration.Builder().build()
-    }
-
     fun updateTheme() {
         @StyleRes val themeResId: Int
         var theme: String?
@@ -772,4 +768,7 @@ class MainApplication : Application(), Configuration.Provider, ActivityLifecycle
 
     override fun onActivityDestroyed(activity: Activity) {
     }
+
+    override val workManagerConfiguration: Configuration
+        get() = Configuration.Builder().build()
 }

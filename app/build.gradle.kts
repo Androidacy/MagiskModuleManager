@@ -353,20 +353,20 @@ configurations {
 dependencies {
     // UI
     implementation("androidx.appcompat:appcompat:1.6.1")
-    implementation("androidx.activity:activity-ktx:1.8.0")
+    implementation("androidx.activity:activity-ktx:1.8.1")
     implementation("androidx.emoji2:emoji2:1.4.0")
     implementation("androidx.emoji2:emoji2-views-helper:1.4.0")
     implementation("androidx.preference:preference-ktx:1.2.1")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
     implementation("androidx.recyclerview:recyclerview:1.3.2")
     implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
-    implementation("androidx.webkit:webkit:1.8.0")
+    implementation("androidx.webkit:webkit:1.9.0")
     implementation("com.google.android.material:material:1.10.0")
 
-    implementation("com.mikepenz:aboutlibraries:10.9.1")
+    implementation("com.mikepenz:aboutlibraries:10.9.2")
 
     // Utils
-    implementation("androidx.work:work-runtime:2.8.1")
+    implementation("androidx.work:work-runtime:2.9.0")
     implementation("com.squareup.okhttp3:okhttp:5.0.0-alpha.11")
     implementation("com.squareup.okhttp3:okhttp-dnsoverhttps:5.0.0-alpha.11")
     // logging interceptor
@@ -405,14 +405,14 @@ dependencies {
     implementation("androidx.security:security-crypto:1.1.0-alpha06")
 
     // some utils
-    implementation("commons-io:commons-io:2.15.0")
-    implementation("org.apache.commons:commons-compress:1.24.0")
+    implementation("commons-io:commons-io:2.15.1")
+    implementation("org.apache.commons:commons-compress:1.25.0")
 
     // analytics
     implementation("ly.count.android:sdk:23.8.4")
 
     // annotations
-    implementation("org.jetbrains:annotations-java5:24.0.1")
+    implementation("org.jetbrains:annotations-java5:24.1.0")
 
     // debugging
     debugImplementation("com.squareup.leakcanary:leakcanary-android:2.12")
@@ -421,16 +421,16 @@ dependencies {
     coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.0.4")
 
     // yes
-    implementation("com.github.fingerprintjs:fingerprint-android:2.0.2")
+    implementation("com.github.fingerprintjs:fingerprint-android:2.1.0")
 
     // room
-    implementation("androidx.room:room-runtime:2.6.0")
+    implementation("androidx.room:room-runtime:2.6.1")
 
     // To use Kotlin Symbol Processing (KSP)
-    ksp("androidx.room:room-compiler:2.6.0")
+    ksp("androidx.room:room-compiler:2.6.1")
 
     // optional - Kotlin Extensions and Coroutines support for Room
-    implementation("androidx.room:room-ktx:2.6.0")
+    implementation("androidx.room:room-ktx:2.6.1")
 
     implementation("pl.droidsonroids.gif:android-gif-drawable:1.2.28")
 
@@ -445,7 +445,7 @@ android {
         }
     }
 
-    ndkVersion = "25.2.9519653"
+    ndkVersion = "26.1.10909125"
     dependenciesInfo {
         includeInApk = false
         includeInBundle = false

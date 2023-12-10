@@ -15,6 +15,7 @@ import android.os.Handler
 import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
+import android.view.LayoutInflater
 import android.view.inputmethod.EditorInfo
 import android.widget.EditText
 import android.widget.Toast
@@ -38,6 +39,7 @@ import com.fox2code.mmm.utils.room.ReposListDatabase
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.BaseTransientBottomBar
 import com.google.android.material.snackbar.Snackbar
+import com.google.android.material.textfield.TextInputEditText
 import com.topjohnwu.superuser.internal.UiThreadHandler
 import timber.log.Timber
 import java.io.IOException
@@ -55,91 +57,7 @@ class RepoFragment : PreferenceFragmentCompat() {
         // CaptchaWebview.setVisible(false);
         val androidacyTestMode =
             findPreference<Preference>("pref_androidacy_test_mode")!!
-        if (!MainApplication.isDeveloper) {
-            androidacyTestMode.isVisible = false
-        } else {
-            // Show a warning if user tries to enable test mode
-            androidacyTestMode.onPreferenceChangeListener =
-                Preference.OnPreferenceChangeListener { _: Preference?, newValue: Any ->
-                    if (java.lang.Boolean.parseBoolean(newValue.toString())) {
-                        // Use MaterialAlertDialogBuilder
-                        MaterialAlertDialogBuilder(requireContext()).setTitle(R.string.warning)
-                            .setCancelable(false).setMessage(
-                                R.string.androidacy_test_mode_warning
-                            )
-                            .setPositiveButton(android.R.string.ok) { _: DialogInterface?, _: Int ->
-                                // User clicked OK button
-                                MainApplication.getPreferences("mmm")!!
-                                    .edit().putBoolean("androidacy_test_mode", true).apply()
-                                // Check the switch
-                                val mStartActivity =
-                                    Intent(requireContext(), MainActivity::class.java)
-                                mStartActivity.flags =
-                                    Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
-                                val mPendingIntentId = 123456
-                                // If < 23, FLAG_IMMUTABLE is not available
-                                val mPendingIntent: PendingIntent = PendingIntent.getActivity(
-                                    requireContext(),
-                                    mPendingIntentId,
-                                    mStartActivity,
-                                    PendingIntent.FLAG_CANCEL_CURRENT or PendingIntent.FLAG_IMMUTABLE
-                                )
-                                val mgr =
-                                    requireContext().getSystemService(ALARM_SERVICE) as AlarmManager
-                                mgr[AlarmManager.RTC, System.currentTimeMillis() + 100] =
-                                    mPendingIntent
-                                if (MainApplication.forceDebugLogging) Timber.d(
-                                    "Restarting app to save staging endpoint preference: %s",
-                                    newValue
-                                )
-                                exitProcess(0) // Exit app process
-                            }
-                            .setNegativeButton(android.R.string.cancel) { _: DialogInterface?, _: Int ->
-                                // User cancelled the dialog
-                                // Uncheck the switch
-                                val switchPreferenceCompat =
-                                    androidacyTestMode as SwitchPreferenceCompat
-                                switchPreferenceCompat.isChecked = false
-                                // There's probably a better way to do this than duplicate code but I'm too lazy to figure it out
-                                MainApplication.getPreferences("mmm")!!
-                                    .edit().putBoolean("androidacy_test_mode", false).apply()
-                            }.show()
-                    } else {
-                        MainApplication.getPreferences("mmm")!!
-                            .edit().putBoolean("androidacy_test_mode", false).apply()
-                        // Show dialog to restart app with ok button
-                        MaterialAlertDialogBuilder(requireContext()).setTitle(R.string.warning)
-                            .setCancelable(false).setMessage(
-                                R.string.androidacy_test_mode_disable_warning
-                            )
-                            .setNeutralButton(android.R.string.ok) { _: DialogInterface?, _: Int ->
-                                // User clicked OK button
-                                val mStartActivity =
-                                    Intent(requireContext(), MainActivity::class.java)
-                                mStartActivity.flags =
-                                    Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
-                                val mPendingIntentId = 123456
-                                // If < 23, FLAG_IMMUTABLE is not available
-                                val mPendingIntent: PendingIntent = PendingIntent.getActivity(
-                                    requireContext(),
-                                    mPendingIntentId,
-                                    mStartActivity,
-                                    PendingIntent.FLAG_CANCEL_CURRENT or PendingIntent.FLAG_IMMUTABLE
-                                )
-                                val mgr =
-                                    requireContext().getSystemService(ALARM_SERVICE) as AlarmManager
-                                mgr[AlarmManager.RTC, System.currentTimeMillis() + 100] =
-                                    mPendingIntent
-                                if (MainApplication.forceDebugLogging) Timber.d(
-                                    "Restarting app to save staging endpoint preference: %s",
-                                    newValue
-                                )
-                                exitProcess(0) // Exit app process
-                            }.show()
-                    }
-                    true
-                }
-        }
+        androidacyTestMode.isVisible = false
         // Get magisk_alt_repo enabled state from room reposlist db
         val db = Room.databaseBuilder(
             requireContext(),
@@ -218,6 +136,38 @@ class RepoFragment : PreferenceFragmentCompat() {
                             findPreference<LongClickablePreference>("pref_androidacy_repo_donate")!!
                         prefAndroidacyRepoApiD.isEnabled = false
                         prefAndroidacyRepoApiD.isVisible = false
+                    } else {
+                        val clipboard =
+                            requireContext().getSystemService(CLIPBOARD_SERVICE) as ClipboardManager
+                        val prefDonateAndroidacy =
+                            findPreference<LongClickablePreference>("pref_androidacy_repo_donate")!!
+                        prefDonateAndroidacy.onPreferenceClickListener =
+                            Preference.OnPreferenceClickListener { _: Preference? ->
+                                // copy FOX2CODE promo code to clipboard and toast user that they can use it for half off any subscription
+                                val toastText = requireContext().getString(R.string.promo_code_copied)
+                                clipboard.setPrimaryClip(ClipData.newPlainText(toastText, "FOX2CODE"))
+                                Toast.makeText(requireContext(), toastText, Toast.LENGTH_SHORT).show()
+                                // open androidacy
+                                IntentHelper.openUrl(
+                                    MainApplication.INSTANCE!!.lastActivity!!,
+                                    "https://www.androidacy.com/membership-join/?utm_source=AMMM&utm_medium=app&utm_campaign=donate"
+                                )
+                                true
+                            }
+                        // handle long click on pref_donate_androidacy
+                        prefDonateAndroidacy.onPreferenceLongClickListener =
+                            LongClickablePreference.OnPreferenceLongClickListener { _: Preference? ->
+                                // copy to clipboard
+                                val toastText = requireContext().getString(R.string.link_copied)
+                                clipboard.setPrimaryClip(
+                                    ClipData.newPlainText(
+                                        toastText,
+                                        "https://www.androidacy.com/membership-join/?utm_source=AMMM&utm_medium=app&utm_campaign=donate"
+                                    )
+                                )
+                                Toast.makeText(requireContext(), toastText, Toast.LENGTH_SHORT).show()
+                                true
+                            }
                     }
                 }
                 val originalApiKeyRef = arrayOf(
@@ -510,15 +460,13 @@ class RepoFragment : PreferenceFragmentCompat() {
                 Preference.OnPreferenceClickListener {
                     val context = requireContext()
                     val builder = MaterialAlertDialogBuilder(context)
-                    val input = EditText(context)
-                    input.setHint(R.string.custom_url)
-                    input.setHorizontallyScrolling(true)
-                    input.maxLines = 1
+                    val view = LayoutInflater.from(context).inflate(R.layout.custom_repo_input, null)
                     builder.setIcon(R.drawable.ic_baseline_add_box_24)
                     builder.setTitle(R.string.add_repo)
                     // make link in message clickable
                     builder.setMessage(R.string.add_repo_message)
-                    builder.setView(input)
+                    builder.setView(view)
+                    val input = view.findViewById<TextInputEditText>(R.id.custom_repo_input_edit)
                     builder.setPositiveButton("OK") { _: DialogInterface?, _: Int ->
                         var text = input.text.toString()
                         text = text.trim { it <= ' ' }
@@ -571,8 +519,7 @@ class RepoFragment : PreferenceFragmentCompat() {
                         )
                         startActivity(intent)
                     }
-                    val alertDialog = builder.show()
-                    val positiveButton = alertDialog.getButton(DialogInterface.BUTTON_POSITIVE)
+                    val alertDialog = builder.create()
                     // validate as they type
                     input.addTextChangedListener(object : TextWatcher {
                         override fun beforeTextChanged(
@@ -594,42 +541,31 @@ class RepoFragment : PreferenceFragmentCompat() {
                             if (charSequence.toString().isEmpty()) {
                                 input.error = getString(R.string.empty_field)
                                 if (MainApplication.forceDebugLogging) Timber.d("No input for repo")
-                                positiveButton.isEnabled = false
+                                return
                             } else if (!charSequence.toString()
                                     .matches("^https://.*".toRegex())
                             ) {
                                 input.error = getString(R.string.invalid_repo_url)
                                 if (MainApplication.forceDebugLogging) Timber.d("Non https link for repo")
-                                positiveButton.isEnabled = false
+                                return
                             } else if (charSequence.toString().contains(" ")) {
                                 input.error = getString(R.string.invalid_repo_url)
                                 if (MainApplication.forceDebugLogging) Timber.d("Repo url has space")
-                                positiveButton.isEnabled = false
+                                return
                             } else if (!customRepoManager.canAddRepo(charSequence.toString())) {
                                 input.error = getString(R.string.repo_already_added)
                                 if (MainApplication.forceDebugLogging) Timber.d("Could not add repo for misc reason")
-                                positiveButton.isEnabled = false
+                                return
                             } else {
                                 // enable ok button
                                 if (MainApplication.forceDebugLogging) Timber.d("Repo URL is ok")
-                                positiveButton.isEnabled = true
+                                return
                             }
                         }
 
                         override fun afterTextChanged(s: Editable) {}
                     })
-                    positiveButton.isEnabled = false
-                    val dp10 = MainApplication.INSTANCE!!.lastActivity?.resources?.getDimensionPixelSize(
-                        R.dimen.dp10
-                    ) ?: 0
-                    val dp20 = MainApplication.INSTANCE!!.lastActivity?.resources?.getDimensionPixelSize(
-                        R.dimen.dp20
-                    ) ?: 0
-                    alertDialog.window!!.setSoftInputMode(20)
-                    alertDialog.window!!.setLayout(
-                        dp20,
-                        dp10
-                    )
+                    alertDialog.show()
                     true
                 }
         }
