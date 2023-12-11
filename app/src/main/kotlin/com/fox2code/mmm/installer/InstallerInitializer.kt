@@ -144,21 +144,21 @@ class InstallerInitializer {
                         // try su -V
                         if (Shell.cmd("su -V").exec().isSuccess) {
                             val suVer = Shell.cmd("su -V").exec().out
-                                Timber.i("SU version: %s", suVer[0])
-                                // use regex to get version code
-                                val matcher2 = Regex("(\\d+)").find(suVer[0])
-                                if (matcher2 != null) {
-                                    mgskVerCode = matcher2.groupValues[1].toInt()
-                                    if (mgskVerCode > verCode) {
-                                        verCode = mgskVerCode
-                                        Timber.i("SU version: %d", mgskVerCode)
-                                    }
-                                } else {
-                                    if (MainApplication.forceDebugLogging) {
-                                        Timber.e("Failed to get su version: matcher2 is null")
-                                    }
-                                    verCode = 0
+                            Timber.i("SU version: %s", suVer[0])
+                            // use regex to get version code
+                            val matcher2 = Regex("(\\d+)").find(suVer[0])
+                            if (matcher2 != null) {
+                                mgskVerCode = matcher2.groupValues[1].toInt()
+                                if (mgskVerCode > verCode) {
+                                    verCode = mgskVerCode
+                                    Timber.i("SU version: %d", mgskVerCode)
                                 }
+                            } else {
+                                if (MainApplication.forceDebugLogging) {
+                                    Timber.e("Failed to get su version: matcher2 is null")
+                                }
+                                verCode = 0
+                            }
                         } else {
                             if (MainApplication.forceDebugLogging) {
                                 Timber.e("Failed to get su version: su -V: unsuccessful")
@@ -172,22 +172,27 @@ class InstallerInitializer {
                         }
                         verCode = 0
                     }
-                    mgskPth = "/data/adb" // hardcoded path. all modern versions of ksu and magisk use this path
+                    mgskPth =
+                        "/data/adb" // hardcoded path. all modern versions of ksu and magisk use this path
                     if (MainApplication.forceDebugLogging) {
                         Timber.i("Magisk path: %s", mgskPth)
                     }
                     Companion.mgskPth = mgskPth
                     val suVer2 = Shell.cmd("su -v").exec().out
                     // if output[0] contains kernelsu, then it's ksu. if it contains magisk, then it's magisk. otherwise, it's something we don't know and we return null
-                    if (suVer2[0].contains("kernelsu", true)) {
-                        isKsu = true
-                        if (MainApplication.forceDebugLogging) {
-                            Timber.i("SU version: ksu")
-                        }
-                    } else if (suVer2[0].contains("magisk", true)) {
+                    if (suVer2[0].contains("magisk", true)) {
                         isKsu = false
                         if (MainApplication.forceDebugLogging) {
                             Timber.i("SU version: magisk")
+                        }
+                    } else if (suVer2[0].contains("kernelsu", true) || suVer2[0].contains(
+                            "ksu",
+                            true
+                        )
+                    ) {
+                        isKsu = true
+                        if (MainApplication.forceDebugLogging) {
+                            Timber.i("SU version: ksu")
                         }
                     } else {
                         if (MainApplication.forceDebugLogging) {

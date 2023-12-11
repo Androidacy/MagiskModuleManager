@@ -213,7 +213,14 @@ class RepoFragment : PreferenceFragmentCompat() {
                             return@setOnPreferenceChangeListener false
                         }
                         // Make sure originalApiKeyRef is not null
-                        if (originalApiKeyRef[0] == newValue) return@setOnPreferenceChangeListener true
+                        if (originalApiKeyRef[0] == newValue) {
+                            Toast.makeText(
+                                requireContext(),
+                                R.string.api_key_unchanged,
+                                Toast.LENGTH_SHORT
+                            ).show()
+                            return@setOnPreferenceChangeListener false
+                        }
                         // get original api key
                         val apiKey = newValue.toString()
                         // Show snack bar with indeterminate progress

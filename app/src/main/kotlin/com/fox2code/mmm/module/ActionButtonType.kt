@@ -162,6 +162,10 @@ enum class ActionButtonType {
             if (moduleHolder.repoModule != null && moduleHolder.repoModule!!.zipUrl != null) {
                 updateZipUrl = moduleHolder.repoModule!!.zipUrl!!
             }
+            // check if MainApplicaiton.repomodules contains the module
+            if (updateZipUrl.isEmpty() && INSTANCE!!.repoModules.containsKey(moduleInfo.id)) {
+                updateZipUrl = INSTANCE!!.repoModules[moduleInfo.id]?.zipUrl.toString()
+            }
             // if repomodule is null, try localmoduleinfo
             if (updateZipUrl.isEmpty() && moduleHolder.moduleInfo != null && moduleHolder.moduleInfo!!.updateZipUrl != null) {
                 updateZipUrl = moduleHolder.moduleInfo!!.updateZipUrl!!

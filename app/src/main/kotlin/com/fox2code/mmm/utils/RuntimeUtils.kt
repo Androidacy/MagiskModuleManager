@@ -11,8 +11,6 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
-import android.os.Handler
-import android.os.Looper
 import android.provider.Settings
 import android.view.View
 import android.widget.CheckBox
@@ -27,7 +25,6 @@ import com.fox2code.mmm.MainApplication
 import com.fox2code.mmm.R
 import com.fox2code.mmm.SetupActivity
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.google.android.material.snackbar.Snackbar
 import com.topjohnwu.superuser.Shell
 import timber.log.Timber
 
@@ -207,38 +204,6 @@ class RuntimeUtils {
     }
 
     /**
-     * Shows a snackbar offering to take users to Weblate if their language is not available.
-     *
-     * @param language     The language code.
-     * @param languageName The language name.
-     */
-    @SuppressLint("RestrictedApi")
-    fun showWeblateSnackbar(
-        context: Context, activity: MainActivity, language: String, languageName: String
-    ) {
-        MainActivity.isShowingWeblateSb = true
-        // if we haven't shown context snackbar for context version yet
-        val prefs = MainApplication.getPreferences("mmm")!!
-        if (prefs.getInt("weblate_snackbar_shown", 0) == BuildConfig.VERSION_CODE) return
-        val snackbar: Snackbar = Snackbar.make(
-            activity.findViewById(R.id.root_container),
-            activity.getString(R.string.language_not_available, languageName),
-            4000
-        )
-        snackbar.setAction(R.string.ok) {
-            val intent = Intent(Intent.ACTION_VIEW)
-            intent.data = Uri.parse("https://translate.nift4.org/engage/foxmmm/?language=$language")
-            activity.startActivity(intent)
-        }
-        snackbar.show()
-        // after four seconds, set isShowingWeblateSb to false
-        Handler(Looper.getMainLooper()).postDelayed({
-            MainActivity.isShowingWeblateSb = false
-        }, 4000)
-        prefs.edit().putInt("weblate_snackbar_shown", BuildConfig.VERSION_CODE).apply()
-    }
-
-    /**
      * Shows a snackbar to upgrade androidacy membership.
      * Sure it'll be wildly popular but it's only shown for 7 seconds every 7 days.
      * We could y'know stick ads in the app but we're gonna play nice.
@@ -248,13 +213,6 @@ class RuntimeUtils {
     @SuppressLint("RestrictedApi")
     fun showUpgradeSnackbar(context: Context, activity: MainActivity) {
         if (MainApplication.forceDebugLogging) Timber.i("showUpgradeSnackbar start")
-        // if sb is already showing, wait 4 seconds and try again
-        if (MainActivity.isShowingWeblateSb) {
-            Handler(Looper.getMainLooper()).postDelayed({
-                showUpgradeSnackbar(context, activity)
-            }, 4500)
-            return
-        }
         val prefs = MainApplication.getPreferences("mmm")!!
         // if last shown < 7 days ago
         if (prefs.getLong("ugsns4", 0) > System.currentTimeMillis() - 604800000) return

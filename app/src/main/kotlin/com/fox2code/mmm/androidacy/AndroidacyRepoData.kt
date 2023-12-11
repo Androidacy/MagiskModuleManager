@@ -126,7 +126,8 @@ class AndroidacyRepoData(cacheRoot: File?, testMode: Boolean) : RepoData(
                 getPreferences("androidacy")!!.getString(
                     "pref_androidacy_api_token",
                     null
-                ))
+                )
+            )
         }
     }
 
@@ -298,7 +299,10 @@ class AndroidacyRepoData(cacheRoot: File?, testMode: Boolean) : RepoData(
                 if (!jsonArray.isNull(i)) {
                     jsonObject = jsonArray.getJSONObject(i)
                 } else {
-                    if (MainApplication.forceDebugLogging) Timber.d("Skipping null module at index %d", i)
+                    if (MainApplication.forceDebugLogging) Timber.d(
+                        "Skipping null module at index %d",
+                        i
+                    )
                     continue
                 }
             } catch (e: JSONException) {

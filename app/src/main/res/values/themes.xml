@@ -149,7 +149,7 @@
     </style>
 
 
-    <style name="Theme.MagiskModuleManager.AlertDialog" parent="MaterialAlertDialog.Material3">
+    <style name="Theme.MagiskModuleManager.AlertDialog" parent="ThemeOverlay.Material3.MaterialAlertDialog.Centered">
         <item name="dialogCornerRadius">28dp</item>
         <item name="cornerFamily">rounded</item>
         <item name="android:colorBackground">?attr/colorSurface</item>

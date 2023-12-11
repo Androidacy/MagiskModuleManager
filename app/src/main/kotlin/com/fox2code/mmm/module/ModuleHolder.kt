@@ -116,7 +116,7 @@ class ModuleHolder : Comparable<ModuleHolder?> {
             Type.NOTIFICATION
         } else if (moduleInfo == null && repoModule != null) {
             Type.INSTALLABLE
-        } else if (moduleInfo!!.versionCode < moduleInfo!!.updateVersionCode || repoModule != null && moduleInfo!!.versionCode < repoModule!!.moduleInfo.versionCode) {
+        } else if (moduleInfo !== null && moduleInfo!!.versionCode < moduleInfo!!.updateVersionCode || repoModule != null && moduleInfo!!.versionCode < repoModule!!.moduleInfo.versionCode) {
             if (MainApplication.forceDebugLogging) Timber.i("Module %s is updateable", moduleId)
             var ignoreUpdate = false
             try {
@@ -188,17 +188,21 @@ class ModuleHolder : Comparable<ModuleHolder?> {
                 if (MainApplication.forceDebugLogging) Timber.d("Module %s has update, but is ignored", moduleId)
                 Type.INSTALLABLE
             } else {
-                INSTANCE!!.modulesHaveUpdates = true
-                if (!INSTANCE!!.updateModules.contains(moduleId)) {
-                    INSTANCE!!.updateModules += moduleId
-                    INSTANCE!!.updateModuleCount++
+                if (hasUpdate()) {
+                    INSTANCE!!.modulesHaveUpdates = true
+                    if (!INSTANCE!!.updateModules.contains(moduleId)) {
+                        INSTANCE!!.updateModules += moduleId
+                        INSTANCE!!.updateModuleCount++
+                    }
+                    if (MainApplication.forceDebugLogging) Timber.d(
+                        "modulesHaveUpdates = %s, updateModuleCount = %s",
+                        INSTANCE!!.modulesHaveUpdates,
+                        INSTANCE!!.updateModuleCount
+                    )
+                    Type.UPDATABLE
+                } else {
+                    Type.INSTALLED
                 }
-                if (MainApplication.forceDebugLogging) Timber.d(
-                    "modulesHaveUpdates = %s, updateModuleCount = %s",
-                    INSTANCE!!.modulesHaveUpdates,
-                    INSTANCE!!.updateModuleCount
-                )
-                Type.UPDATABLE
             }
         } else {
             Type.INSTALLED
@@ -214,13 +218,40 @@ class ModuleHolder : Comparable<ModuleHolder?> {
     }
 
     fun shouldRemove(): Boolean {
-        if (repoModule != null && moduleInfo != null && !hasUpdate()) {
+        // if type is not installable or updatable and we have repoModule, we should remove
+        if (type !== Type.INSTALLABLE && type !== Type.UPDATABLE && repoModule != null) {
+            Timber.d("Removing %s because type is %s and repoModule is not null", moduleId, type.name)
             return true
         }
+        // if type is updatable but we don't have an update, remove
+        if (type === Type.UPDATABLE && !hasUpdate()) {
+            Timber.d("Removing %s because type is %s and has no update", moduleId, type.name)
+            return true
+        }
+        // if type is installed we have an update, remove
+        if (type === Type.INSTALLED && repoModule != null && hasUpdate()) {
+            Timber.d("Removing %s because type is %s and has update and repoModule is not null", moduleId, type.name)
+            return true
+        }
+        // if type is installed but repomodule is not null, we should remove
+        if (type === Type.INSTALLED && repoModule != null) {
+            Timber.d("Removing %s because type is %s and repoModule is not null", moduleId, type.name)
+            return true
+        }
+        // if lowqualitymodulefilter is enabled and module is low quality, remove
+        if (!isDisableLowQualityModuleFilter) {
+            if (repoModule != null && isLowQualityModule(repoModule!!.moduleInfo)) {
+                Timber.d("Removing %s because repoModule is not null and is low quality", moduleId)
+                return true
+            }
+            if (moduleInfo != null && isLowQualityModule(moduleInfo!!)) {
+                Timber.d("Removing %s because moduleInfo is not null and is low quality", moduleId)
+                return true
+            }
+        }
+        // if type is installed but
         return notificationType?.shouldRemove()
-            ?: (footerPx == -1 && moduleInfo == null && (repoModule == null || !repoModule!!.repoData.isEnabled || isLowQualityModule(
-                repoModule!!.moduleInfo
-            ) && !isDisableLowQualityModuleFilter))
+            ?: (footerPx == -1 && moduleInfo == null && (repoModule == null || !repoModule!!.repoData.isEnabled))
     }
 
     fun getButtons(
@@ -295,7 +326,21 @@ class ModuleHolder : Comparable<ModuleHolder?> {
     }
 
     fun hasUpdate(): Boolean {
-        return moduleInfo != null && repoModule != null && moduleInfo!!.versionCode < repoModule!!.moduleInfo.versionCode
+        if (moduleInfo == null) {
+            Timber.w("Module %s has no moduleInfo", moduleId)
+            return false
+        }
+        if (repoModule == null && !INSTANCE!!.repoModules.containsKey(moduleId)) {
+            if (moduleInfo!!.updateVersionCode > moduleInfo!!.versionCode) {
+                Timber.d("Module %s has update from %s to %s", moduleId, moduleInfo!!.versionCode, moduleInfo!!.updateVersionCode)
+                return true
+            }
+        } else if (repoModule != null && repoModule!!.moduleInfo.versionCode > moduleInfo!!.versionCode) {
+            Timber.d("Module %s has update from repo from %s to %s", moduleId, moduleInfo!!.versionCode, repoModule!!.moduleInfo.versionCode)
+            return true
+        }
+        Timber.d("Module %s has no update", moduleId)
+        return false
     }
 
     override operator fun compareTo(other: ModuleHolder?): Int {

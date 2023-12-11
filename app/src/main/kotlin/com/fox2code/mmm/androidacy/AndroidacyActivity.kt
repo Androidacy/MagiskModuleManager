@@ -75,7 +75,7 @@ class AndroidacyActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         moduleFile = File(this.cacheDir, "module.zip")
         super.onCreate(savedInstanceState)
-        
+
         val intent = this.intent
         var uri: Uri? = intent.data
         @Suppress("KotlinConstantConditions")
@@ -311,17 +311,26 @@ class AndroidacyActivity : AppCompatActivity() {
             override fun onProgressChanged(view: WebView, newProgress: Int) {
                 if (downloadMode) return
                 if (newProgress != 100 && prgInd.visibility != View.VISIBLE) {
-                    if (MainApplication.forceDebugLogging) Timber.i("Progress: %d, showing progress bar", newProgress)
+                    if (MainApplication.forceDebugLogging) Timber.i(
+                        "Progress: %d, showing progress bar",
+                        newProgress
+                    )
                     prgInd.visibility = View.VISIBLE
                 }
                 // if progress is greater than one, set indeterminate to false
                 if (newProgress > 1) {
-                    if (MainApplication.forceDebugLogging) Timber.i("Progress: %d, setting indeterminate to false", newProgress)
+                    if (MainApplication.forceDebugLogging) Timber.i(
+                        "Progress: %d, setting indeterminate to false",
+                        newProgress
+                    )
                     prgInd.isIndeterminate = false
                 }
                 prgInd.setProgress(newProgress, true)
                 if (newProgress == 100 && prgInd.visibility != View.GONE) {
-                    if (MainApplication.forceDebugLogging) Timber.i("Progress: %d, hiding progress bar", newProgress)
+                    if (MainApplication.forceDebugLogging) Timber.i(
+                        "Progress: %d, hiding progress bar",
+                        newProgress
+                    )
                     prgInd.isIndeterminate = true
                     prgInd.visibility = View.GONE
                 }
@@ -356,7 +365,10 @@ class AndroidacyActivity : AppCompatActivity() {
                     androidacyWebAPI.downloadMode = false
                 }
                 backOnResume = true
-                if (MainApplication.forceDebugLogging) Timber.i("Exiting WebView %s", AndroidacyUtil.hideToken(downloadUrl))
+                if (MainApplication.forceDebugLogging) Timber.i(
+                    "Exiting WebView %s",
+                    AndroidacyUtil.hideToken(downloadUrl)
+                )
                 for (prefix in arrayOf<String>(
                     "https://production-api.androidacy.com/magisk/file//",
                     "https://staging-api.androidacy.com/magisk/file/"

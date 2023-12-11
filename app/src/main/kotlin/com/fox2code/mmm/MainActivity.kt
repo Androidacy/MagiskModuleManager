@@ -665,7 +665,6 @@ class MainActivity : AppCompatActivity(), OnRefreshListener, OverScrollHelper {
                         bottomNavigationView.selectedItemId = R.id.installed_menu_item
                     }
                 }
-                moduleViewListBuilder.applyTo(moduleList, moduleViewAdapter!!)
                 if (MainApplication.forceDebugLogging) Timber.i("Scanning for modules!")
                 if (MainApplication.forceDebugLogging) Timber.i("Initialize Update")
                 val max = instance!!.getUpdatableModuleCount()
@@ -761,9 +760,9 @@ class MainActivity : AppCompatActivity(), OnRefreshListener, OverScrollHelper {
                 if (MainApplication.forceDebugLogging) Timber.i("Apply")
                 RepoManager.getINSTANCE()
                     ?.runAfterUpdate { moduleViewListBuilderOnline.appendRemoteModules() }
-                moduleViewListBuilder.applyTo(moduleList, moduleViewAdapter!!)
                 moduleViewListBuilder.applyTo(moduleListOnline, moduleViewAdapterOnline!!)
                 moduleViewListBuilderOnline.applyTo(moduleListOnline, moduleViewAdapterOnline!!)
+                moduleViewListBuilder.applyTo(moduleList, moduleViewAdapter!!)
                 // if moduleViewListBuilderOnline has the upgradeable notification, show a badge on the online repo nav item
                 if (MainApplication.INSTANCE!!.modulesHaveUpdates) {
                     if (MainApplication.forceDebugLogging) Timber.i("Applying badge")
@@ -784,16 +783,6 @@ class MainActivity : AppCompatActivity(), OnRefreshListener, OverScrollHelper {
                 }
             }
         }, true)
-        // if system lang is not in MainApplication.supportedLocales, show a snackbar to ask user to help translate
-        if (!MainApplication.supportedLocales.contains(this.resources.configuration.locales[0].language)) {
-            // call showWeblateSnackbar() with language code and language name
-            runtimeUtils!!.showWeblateSnackbar(
-                this,
-                this,
-                this.resources.configuration.locales[0].language,
-                this.resources.configuration.locales[0].displayLanguage
-            )
-        }
         ExternalHelper.INSTANCE.refreshHelper(this)
         initMode = false
         if (MainApplication.shouldShowFeedback() && !doSetupNowRunning) {
@@ -955,6 +944,7 @@ class MainActivity : AppCompatActivity(), OnRefreshListener, OverScrollHelper {
             RepoManager.getINSTANCE()
                 ?.runAfterUpdate { moduleViewListBuilderOnline.appendRemoteModules() }
             moduleViewListBuilder.applyTo(moduleList!!, moduleViewAdapter!!)
+            moduleViewListBuilder.applyTo(moduleListOnline!!, moduleViewAdapterOnline!!)
             moduleViewListBuilderOnline.applyTo(moduleListOnline!!, moduleViewAdapterOnline!!)
             runOnUiThread {
                 progressIndicator!!.setProgress(PRECISION, true)
@@ -1050,7 +1040,6 @@ class MainActivity : AppCompatActivity(), OnRefreshListener, OverScrollHelper {
         var doSetupRestarting = false
         var localModuleInfoList: List<LocalModuleInfo> = ArrayList()
         var onlineModuleInfoList: List<RepoModule> = ArrayList()
-        var isShowingWeblateSb = false // race condition
         var INSTANCE: MainActivity? = null
     }
 }

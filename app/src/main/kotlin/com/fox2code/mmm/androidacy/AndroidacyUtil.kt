@@ -34,9 +34,15 @@ enum class AndroidacyUtil {
             if (url == null) return false
             val uri = Uri.parse(url)
             return if (BuildConfig.DEBUG) {
-                uri.host?.endsWith("api.androidacy.com") ?: false && (uri.path?.startsWith("/downloads") ?: false || uri.path?.startsWith("/magisk/file") ?: false || uri.path?.startsWith("/magisk/ddl") ?: false)
+                uri.host?.endsWith("api.androidacy.com") ?: false && (uri.path?.startsWith("/downloads") ?: false || uri.path?.startsWith(
+                    "/magisk/file"
+                ) ?: false || uri.path?.startsWith("/magisk/ddl") ?: false)
             } else {
-                uri.host?.equals("production-api.androidacy.com") ?: false && (uri.path?.startsWith("/downloads") ?: false || uri.path?.startsWith("/magisk/file") ?: false || uri.path?.startsWith("/magisk/ddl") ?: false)
+                uri.host?.equals("production-api.androidacy.com") ?: false && (uri.path?.startsWith(
+                    "/downloads"
+                ) ?: false || uri.path?.startsWith("/magisk/file") ?: false || uri.path?.startsWith(
+                    "/magisk/ddl"
+                ) ?: false)
             }
         }
 

@@ -125,8 +125,6 @@ class AppUpdateManager private constructor() {
         const val FLAG_COMPAT_FORCE_HIDE = 0x0080
         const val FLAG_COMPAT_MMT_REBORN = 0x0100
         const val FLAG_COMPAT_ZIP_WRAPPER = 0x0200
-        const val RELEASES_API_URL =
-            "https://api.github.com/repos/Androidacy/MagiskModuleManager/releases/latest"
         val appUpdateManager = AppUpdateManager()
         fun getFlagsForModule(moduleId: String): Int {
             return appUpdateManager.getCompatibilityFlags(moduleId)
