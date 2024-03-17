@@ -1,5 +1,3 @@
-subject=CN=DigiCert Global G2 TLS RSA SHA256 2020 CA1,O=DigiCert Inc,C=US
-issuer=CN=DigiCert Global Root G2,OU=www.digicert.com,O=DigiCert Inc,C=US
 -----BEGIN CERTIFICATE-----
 MIIEyDCCA7CgAwIBAgIQDPW9BitWAvR6uFAsI8zwZjANBgkqhkiG9w0BAQsFADBh
 MQswCQYDVQQGEwJVUzEVMBMGA1UEChMMRGlnaUNlcnQgSW5jMRkwFwYDVQQLExB3
