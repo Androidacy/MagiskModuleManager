@@ -254,35 +254,14 @@ enum class Http {;
             val httpclientBuilder = OkHttpClient.Builder()
             // Default is 10, extend it a bit for slow mobile connections.
             httpclientBuilder.connectTimeout(5, TimeUnit.SECONDS)
-            httpclientBuilder.writeTimeout(10, TimeUnit.SECONDS)
-            httpclientBuilder.readTimeout(15, TimeUnit.SECONDS)
+            httpclientBuilder.writeTimeout(5, TimeUnit.SECONDS)
+            httpclientBuilder.readTimeout(5, TimeUnit.SECONDS)
             httpclientBuilder.proxy(Proxy.NO_PROXY) // Do not use system proxy
-            var dns = Dns.SYSTEM
+	    // TODO: Make compatible w/ cronet
+  //          var dns = Dns.SYSTEM
             try {
-                val cloudflareBootstrap = arrayOf(
-                    InetAddress.getByName("162.159.36.1"),
-                    InetAddress.getByName("162.159.46.1"),
-                    InetAddress.getByName("1.1.1.1"),
-                    InetAddress.getByName("1.0.0.1"),
-                    InetAddress.getByName("162.159.132.53"),
-                    InetAddress.getByName("2606:4700:4700::1111"),
-                    InetAddress.getByName("2606:4700:4700::1001"),
-                    InetAddress.getByName("2606:4700:4700::0064"),
-                    InetAddress.getByName("2606:4700:4700::6400")
-                )
-                dns = Dns { s: String? ->
-                    if ("cloudflare-dns.com" == s) {
-                        return@Dns listOf<InetAddress>(*cloudflareBootstrap)
-                    }
-                    Dns.SYSTEM.lookup(s!!)
-                }
-                httpclientBuilder.dns(dns)
                 val cookieJar = WebkitCookieManagerProxy()
                 httpclientBuilder.cookieJar(cookieJar)
-                dns = DnsOverHttps.Builder().client(httpclientBuilder.build())
-                    .url("https://cloudflare-dns.com/dns-query".toHttpUrl()).bootstrapDnsHosts(
-                        *cloudflareBootstrap
-                    ).build()
             } catch (e: UnknownHostException) {
                 Timber.e(e, "Failed to init DoH")
             } catch (e: RuntimeException) {
@@ -381,7 +360,7 @@ enum class Http {;
                 // Gracefully fallback to okhttp
             }
             // Fallback DNS cache responses in case request fail but already succeeded once in the past
-            fallbackDNS = FallBackDNS(
+/*            fallbackDNS = FallBackDNS(
                 dns,
                 "github.com",
                 "api.github.com",
@@ -395,23 +374,12 @@ enum class Http {;
                 "api.androidacy.com",
                 "production-api.androidacy.com"
             )
-            httpclientBuilder.dns(Dns.SYSTEM)
+            httpclientBuilder.dns(Dns.SYSTEM)*/
             httpClient = followRedirects(httpclientBuilder, true).build()
             followRedirects(httpclientBuilder, false).build()
-            httpclientBuilder.dns(fallbackDNS!!)
             httpClientDoH = followRedirects(httpclientBuilder, true).build()
             followRedirects(httpclientBuilder, false).build()
-            httpclientBuilder.cache(
-                Cache(
-                    File(
-                        mainApplication.cacheDir, "http_cache"
-                    ), 16L * 1024L * 1024L
-                )
-            ) // 16Mib of cache
-            httpclientBuilder.dns(Dns.SYSTEM)
             httpClientWithCache = followRedirects(httpclientBuilder, true).build()
-            httpclientBuilder.dns(fallbackDNS!!)
-            httpClientWithCacheDoH = followRedirects(httpclientBuilder, true).build()
             if (MainApplication.forceDebugLogging) Timber.i("Initialized Http successfully!")
             doh = MainApplication.isDohEnabled
         }

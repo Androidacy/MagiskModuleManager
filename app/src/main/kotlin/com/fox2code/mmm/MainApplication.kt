@@ -281,7 +281,7 @@ class MainApplication : Application(), Configuration.Provider, ActivityLifecycle
         } else {
             val config = CountlyConfig(
                 this,
-                "ff1dc022295f64a7a5f6a5ca07c0294400c71b60",
+                "25145081ac0b5e2beb1e9320ab714285a45ad2d3",
                 "https://ctly.androidacy.com"
             )
             if (isCrashReportingEnabled) {

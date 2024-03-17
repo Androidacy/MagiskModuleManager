@@ -13,7 +13,7 @@ plugins {
     id("com.mikepenz.aboutlibraries.plugin")
     kotlin("android")
     kotlin("kapt")
-    id("com.google.devtools.ksp") version "1.9.10-1.0.13"
+    id("com.google.devtools.ksp") version "1.9.23-1.0.19"
 }
 android {
     // functions to get git info: gitCommitHash, gitBranch, gitRemote
@@ -48,8 +48,8 @@ android {
         applicationId = "com.fox2code.mmm"
         minSdk = 26
         targetSdk = 34
-        versionCode = 91
-        versionName = "2.3.6"
+        versionCode = 92
+        versionName = "2.3.7"
         vectorDrawables {
             useSupportLibrary = true
         }
@@ -100,7 +100,7 @@ android {
             // Specifies a list of ABIs for Gradle to create APKs for.
             include("x86", "x86_64", "arm64-v8a", "armeabi-v7a")
 
-            isUniversalApk = false
+            isUniversalApk = true
         }
     }
 
@@ -372,9 +372,9 @@ dependencies {
     // logging interceptor
     debugImplementation("com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.12")
     // Chromium cronet from androidacy
-    implementation("org.chromium.net:cronet-embedded:113.5672.61")
+    implementation("org.chromium.net:cronet-embedded:119.6045.31")
 
-    val libsuVersion = "5.2.1"
+    val libsuVersion = "5.2.2"
     // The core module that provides APIs to a shell
     implementation("com.github.topjohnwu.libsu:core:${libsuVersion}")
 
@@ -406,10 +406,10 @@ dependencies {
 
     // some utils
     implementation("commons-io:commons-io:2.15.1")
-    implementation("org.apache.commons:commons-compress:1.26.0")
+    implementation("org.apache.commons:commons-compress:1.26.1")
 
     // analytics
-    implementation("ly.count.android:sdk:23.8.4")
+    implementation("ly.count.android:sdk:24.1.1")
 
     // annotations
     implementation("org.jetbrains:annotations-java5:24.1.0")

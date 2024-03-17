@@ -11,6 +11,11 @@
     </domain-config>
     <domain-config cleartextTrafficPermitted="false">
         <domain includeSubdomains="true">github.com</domain>
+        <trust-anchors>
+            <certificates src="@raw/gh_main_crt" />
+        </trust-anchors>
+    </domain-config>
+    <domain-config cleartextTrafficPermitted="false">
         <domain includeSubdomains="true">githubusercontent.com</domain>
         <trust-anchors>
             <certificates src="@raw/gh_root_ca" />
