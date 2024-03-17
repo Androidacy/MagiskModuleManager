@@ -367,10 +367,10 @@ dependencies {
 
     // Utils
     implementation("androidx.work:work-runtime:2.9.0")
-    implementation("com.squareup.okhttp3:okhttp:5.0.0-alpha.11")
-    implementation("com.squareup.okhttp3:okhttp-dnsoverhttps:5.0.0-alpha.11")
+    implementation("com.squareup.okhttp3:okhttp:5.0.0-alpha.12")
+    implementation("com.squareup.okhttp3:okhttp-dnsoverhttps:5.0.0-alpha.12")
     // logging interceptor
-    debugImplementation("com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.11")
+    debugImplementation("com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.12")
     // Chromium cronet from androidacy
     implementation("org.chromium.net:cronet-embedded:113.5672.61")
 
