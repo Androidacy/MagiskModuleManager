@@ -363,7 +363,7 @@ dependencies {
     implementation("androidx.webkit:webkit:1.9.0")
     implementation("com.google.android.material:material:1.11.0")
 
-    implementation("com.mikepenz:aboutlibraries:11.1.0")
+    implementation("com.mikepenz:aboutlibraries:11.1.3")
 
     // Utils
     implementation("androidx.work:work-runtime:2.9.0")
