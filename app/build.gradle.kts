@@ -353,7 +353,7 @@ configurations {
 dependencies {
     // UI
     implementation("androidx.appcompat:appcompat:1.7.0")
-    implementation("androidx.activity:activity-ktx:1.8.2")
+    implementation("androidx.activity:activity-ktx:1.9.0")
     implementation("androidx.emoji2:emoji2:1.4.0")
     implementation("androidx.emoji2:emoji2-views-helper:1.4.0")
     implementation("androidx.preference:preference-ktx:1.2.1")
