@@ -370,7 +370,7 @@ dependencies {
     implementation("com.squareup.okhttp3:okhttp:5.0.0-alpha.12")
     implementation("com.squareup.okhttp3:okhttp-dnsoverhttps:5.0.0-alpha.14")
     // logging interceptor
-    debugImplementation("com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.12")
+    debugImplementation("com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.14")
     // Chromium cronet from androidacy
     implementation("org.chromium.net:cronet-embedded:119.6045.31")
 
