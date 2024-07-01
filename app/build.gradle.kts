@@ -396,7 +396,7 @@ dependencies {
     implementation("com.google.net.cronet:cronet-okhttp:0.1.0")
     implementation("com.caverock:androidsvg:1.4")
 
-    implementation("androidx.core:core-ktx:1.12.0")
+    implementation("androidx.core:core-ktx:1.13.1")
 
     // timber
     implementation("com.jakewharton.timber:timber:5.0.1")
