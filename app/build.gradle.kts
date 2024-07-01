@@ -405,7 +405,7 @@ dependencies {
     implementation("androidx.security:security-crypto:1.1.0-alpha06")
 
     // some utils
-    implementation("commons-io:commons-io:2.15.1")
+    implementation("commons-io:commons-io:2.16.1")
     implementation("org.apache.commons:commons-compress:1.26.1")
 
     // analytics
