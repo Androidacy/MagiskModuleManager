@@ -6,6 +6,19 @@
 
 Explore our diverse range of offerings on our [official website](https://www.androidacy.com/?utm_source=fox-readme&utm_medium=web&utm_campaign=github-readme).
 
+#### This app is currently in maintenance mode
+
+We're actively working on its replacement though! We target a Q3 release for v3, which has features like:
+
+- No more webview - the Androidacy repository is a first class citizen
+- Better performance
+- More features for devs and users
+- Better security
+- A full rewrite - completely rewritten from scratch
+- Tighter integration with the Androidacy platform
+
+  More news will be available soon!
+
 [![Latest Release](https://img.shields.io/github/v/release/Androidacy/AndroidacyModuleManager?color=neon&label=Latest%20release&style=for-the-badge)](https://www.androidacy.com/downloads/?view=FoxMMM&utm_source=fox-readme&utm_medium=web&utm_campaign=github-readme)
 
 ## Overview and Purpose
