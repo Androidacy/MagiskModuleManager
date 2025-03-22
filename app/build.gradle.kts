@@ -13,7 +13,7 @@ plugins {
     id("com.mikepenz.aboutlibraries.plugin")
     kotlin("android")
     kotlin("kapt")
-    id("com.google.devtools.ksp") version "2.0.0-1.0.23"
+    id("com.google.devtools.ksp") version "2.0.21-1.0.25"
 }
 android {
     // functions to get git info: gitCommitHash, gitBranch, gitRemote
@@ -48,8 +48,8 @@ android {
         applicationId = "com.fox2code.mmm"
         minSdk = 26
         targetSdk = 34
-        versionCode = 92
-        versionName = "2.3.7"
+        versionCode = 93
+        versionName = "2.3.8"
         vectorDrawables {
             useSupportLibrary = true
         }

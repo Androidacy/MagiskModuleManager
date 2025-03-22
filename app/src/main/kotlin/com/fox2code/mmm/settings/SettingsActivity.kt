@@ -119,7 +119,7 @@ class SettingsActivity : AppCompatActivity(), LanguageActivity,
                 }
             }
         } else {
-            val ts2 = Timestamp(System.currentTimeMillis() - 365L * 24 * 60 * 60 * 1000)
+            val ts2 = Timestamp(System.currentTimeMillis() - 180L * 24 * 60 * 60 * 1000)
             if (ts2.time > buildTime.time) {
                 Toast.makeText(this, R.string.build_expired, Toast.LENGTH_LONG).show()
             }
