@@ -35,16 +35,16 @@ class RepoUpdater(repoData2: RepoData) {
             return 0
         }
         // if MainApplication.repoModules is not empty, return it
-        /*if (MainApplication.INSTANCE!!.repoModules.isNotEmpty()) {
+        /*if (MainApplication.getInstance().repoModules.isNotEmpty()) {
             if (MainApplication.forceDebugLogging) Timber.d("Returning MainApplication.repoModules for %s", repoData.preferenceId)
             // convert to list for toUpdate
             val toUpdateList = ArrayList<RepoModule>()
-            for (module in MainApplication.INSTANCE!!.repoModules) {
+            for (module in MainApplication.getInstance().repoModules) {
                 toUpdateList.add(module.value)
             }
             toUpdate = toUpdateList
             // toapply is a collection of RepoModule, so we need to convert the list to a set
-            toApply = HashSet(MainApplication.INSTANCE!!.repoModules.values)
+            toApply = HashSet(MainApplication.getInstance().repoModules.values)
             return toUpdate!!.size
         }*/
         // if we shouldn't update, get the values from the ModuleListCache realm
@@ -52,7 +52,7 @@ class RepoUpdater(repoData2: RepoData) {
             if (MainApplication.forceDebugLogging) Timber.d("Fetching index from cache for %s", repoData.preferenceId)
             // now the above but for room
             val db = Room.databaseBuilder(
-                MainApplication.INSTANCE!!,
+                MainApplication.getInstance(),
                 ModuleListCacheDatabase::class.java,
                 "ModuleListCache.db"
             ).allowMainThreadQueries().build()
@@ -137,8 +137,8 @@ class RepoUpdater(repoData2: RepoData) {
             toUpdate = repoData.populate(JSONObject(String(indexRaw!!, StandardCharsets.UTF_8)))
             // Since we reuse instances this should work
             toApply = HashSet(repoData.moduleHashMap.values)
-            // add toApply to the hashmap MainApplication.INSTANCE!!.repoModules
-            MainApplication.INSTANCE!!.repoModules.putAll(repoData.moduleHashMap)
+            // add toApply to the hashmap MainApplication.getInstance().repoModules
+            MainApplication.getInstance().repoModules.putAll(repoData.moduleHashMap)
             (toUpdate as MutableList<RepoModule>?)?.let {
                 (toApply as HashSet<RepoModule>).removeAll(
                     it.toSet()
@@ -174,7 +174,7 @@ class RepoUpdater(repoData2: RepoData) {
         if (indexRaw != null) {
             // set lastUpdate
             val db = Room.databaseBuilder(
-                MainApplication.INSTANCE!!.applicationContext,
+                MainApplication.getInstance().applicationContext,
                ReposListDatabase::class.java,
                 "ReposList.db"
             ).allowMainThreadQueries().build()

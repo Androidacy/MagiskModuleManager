@@ -27,7 +27,7 @@ import timber.log.Timber
 class AppearanceFragment : PreferenceFragmentCompat() {
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         val name = "mmmx"
-        val context: Context? = MainApplication.INSTANCE
+        val context: Context? = MainApplication.getInstance()
         val masterKey: MasterKey
         val preferenceManager = preferenceManager
         val dataStore: SharedPreferenceDataStore
@@ -99,7 +99,7 @@ class AppearanceFragment : PreferenceFragmentCompat() {
                             findPreference<Preference>("pref_enable_blur")!!.setSummary(R.string.blur_disabled_summary)
                             // Refresh activity
                             UiThreadHandler.handler.postDelayed({
-                                MainApplication.INSTANCE!!.updateTheme()
+                                MainApplication.getInstance().updateTheme()
                             }, 1)
                             val intent = Intent(requireContext(), SettingsActivity::class.java)
                             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
@@ -117,8 +117,8 @@ class AppearanceFragment : PreferenceFragmentCompat() {
                     findPreference<Preference>("pref_enable_blur")?.summary = ""
                 }
                 UiThreadHandler.handler.postDelayed({
-                    MainApplication.INSTANCE!!.updateTheme()
-                    MainApplication.INSTANCE!!.lastActivity!!
+                    MainApplication.getInstance().updateTheme()
+                    MainApplication.getInstance().lastActivity!!
                 }, 1)
                 true
             }
@@ -130,7 +130,7 @@ class AppearanceFragment : PreferenceFragmentCompat() {
         }
         disableMonet!!.onPreferenceClickListener = Preference.OnPreferenceClickListener {
             UiThreadHandler.handler.postDelayed({
-                MainApplication.INSTANCE!!.updateTheme()
+                MainApplication.getInstance().updateTheme()
             }, 1)
             true
         }

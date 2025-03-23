@@ -75,7 +75,7 @@ class RepoFragment : PreferenceFragmentCompat() {
                     "magisk_alt_repo",
                     java.lang.Boolean.parseBoolean(newValue.toString())
                 )
-                MainApplication.INSTANCE!!.repoModules.clear()
+                MainApplication.getInstance().repoModules.clear()
                 true
             }
         // Disable toggling the pref_androidacy_repo_enabled on builds without an
@@ -114,7 +114,7 @@ class RepoFragment : PreferenceFragmentCompat() {
                     val enabled = androidacyRepoEnabled.isChecked
                     // save the new state
                     db.reposListDao().setEnabled("androidacy_repo", enabled)
-                    MainApplication.INSTANCE!!.repoModules.clear()
+                    MainApplication.getInstance().repoModules.clear()
                     true
                 }
             if (androidacyRepoEnabledPref) {
@@ -149,7 +149,7 @@ class RepoFragment : PreferenceFragmentCompat() {
                                 Toast.makeText(requireContext(), toastText, Toast.LENGTH_SHORT).show()
                                 // open androidacy
                                 IntentHelper.openUrl(
-                                    MainApplication.INSTANCE!!.lastActivity!!,
+                                    MainApplication.getInstance().lastActivity!!,
                                     "https://www.androidacy.com/membership-join/?utm_source=AMMM&utm_medium=app&utm_campaign=donate"
                                 )
                                 true
@@ -618,7 +618,7 @@ class RepoFragment : PreferenceFragmentCompat() {
                         findPreference<Preference>(preferenceName + "_website")!!.onPreferenceClickListener =
                             Preference.OnPreferenceClickListener {
                                 IntentHelper.openUrl(
-                                    MainApplication.INSTANCE!!.lastActivity!!,
+                                    MainApplication.getInstance().lastActivity!!,
                                     repoData.website
                                 )
                                 true
@@ -631,7 +631,7 @@ class RepoFragment : PreferenceFragmentCompat() {
                         findPreference<Preference>(preferenceName + "_support")!!.onPreferenceClickListener =
                             Preference.OnPreferenceClickListener {
                                 IntentHelper.openUrl(
-                                    MainApplication.INSTANCE!!.lastActivity!!,
+                                    MainApplication.getInstance().lastActivity!!,
                                     repoData.support
                                 )
                                 true
@@ -644,7 +644,7 @@ class RepoFragment : PreferenceFragmentCompat() {
                         findPreference<Preference>(preferenceName + "_submit")!!.onPreferenceClickListener =
                             Preference.OnPreferenceClickListener {
                                 IntentHelper.openUrl(
-                                    MainApplication.INSTANCE!!.lastActivity!!,
+                                    MainApplication.getInstance().lastActivity!!,
                                     repoData.submitModule
                                 )
                                 true
@@ -657,7 +657,7 @@ class RepoFragment : PreferenceFragmentCompat() {
                         findPreference<Preference>(preferenceName + "_donate")!!.onPreferenceClickListener =
                             Preference.OnPreferenceClickListener {
                                 IntentHelper.openUrl(
-                                    MainApplication.INSTANCE!!.lastActivity!!,
+                                    MainApplication.getInstance().lastActivity!!,
                                     repoData.donate
                                 )
                                 true
@@ -692,7 +692,7 @@ class RepoFragment : PreferenceFragmentCompat() {
                         R.string.repo_enabled_changed,
                         BaseTransientBottomBar.LENGTH_LONG
                     ).show()
-                    MainApplication.INSTANCE!!.repoModules.clear()
+                    MainApplication.getInstance().repoModules.clear()
                     true
                 }
             }
@@ -704,7 +704,7 @@ class RepoFragment : PreferenceFragmentCompat() {
                 preference.isVisible = true
                 preference.onPreferenceClickListener =
                     Preference.OnPreferenceClickListener {
-                        IntentHelper.openUrl(MainApplication.INSTANCE!!.lastActivity!!, homepage)
+                        IntentHelper.openUrl(MainApplication.getInstance().lastActivity!!, homepage)
                         true
                     }
                 (preference as LongClickablePreference).onPreferenceLongClickListener =
@@ -726,7 +726,7 @@ class RepoFragment : PreferenceFragmentCompat() {
                 preference.setIcon(ActionButtonType.supportIconForUrl(supportUrl))
                 preference.onPreferenceClickListener =
                     Preference.OnPreferenceClickListener {
-                        IntentHelper.openUrl(MainApplication.INSTANCE!!.lastActivity!!, supportUrl)
+                        IntentHelper.openUrl(MainApplication.getInstance().lastActivity!!, supportUrl)
                         true
                     }
                 (preference as LongClickablePreference).onPreferenceLongClickListener =
@@ -748,7 +748,7 @@ class RepoFragment : PreferenceFragmentCompat() {
                 preference.setIcon(ActionButtonType.donateIconForUrl(donateUrl))
                 preference.onPreferenceClickListener =
                     Preference.OnPreferenceClickListener {
-                        IntentHelper.openUrl(MainApplication.INSTANCE!!.lastActivity!!, donateUrl)
+                        IntentHelper.openUrl(MainApplication.getInstance().lastActivity!!, donateUrl)
                         true
                     }
                 (preference as LongClickablePreference).onPreferenceLongClickListener =
@@ -769,7 +769,7 @@ class RepoFragment : PreferenceFragmentCompat() {
                 preference.isVisible = true
                 preference.onPreferenceClickListener =
                     Preference.OnPreferenceClickListener {
-                        IntentHelper.openUrl(MainApplication.INSTANCE!!.lastActivity!!, submissionUrl)
+                        IntentHelper.openUrl(MainApplication.getInstance().lastActivity!!, submissionUrl)
                         true
                     }
                 (preference as LongClickablePreference).onPreferenceLongClickListener =

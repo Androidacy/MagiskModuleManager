@@ -207,7 +207,7 @@ enum class Files {
         fun fixSourceArchiveShit(rawModule: ByteArray?) {
             // unzip the module, check if it has just one folder within. if so, switch to the folder and zip up contents, and replace the original file with that
             try {
-                val tempDir = File(MainApplication.INSTANCE!!.cacheDir, "temp")
+                val tempDir = File(MainApplication.getInstance().cacheDir, "temp")
                 if (tempDir.exists()) {
                     FileUtils.deleteDirectory(tempDir)
                 }

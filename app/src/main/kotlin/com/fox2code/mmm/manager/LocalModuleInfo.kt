@@ -26,7 +26,7 @@ class LocalModuleInfo(id: String?) : ModuleInfo(id!!) {
         get() {
             if (field == null) {
                 try {
-                    field = MainApplication.INSTANCE!!.repoModules[id]
+                    field = MainApplication.getInstance().repoModules[id]
                 } catch (e: IOException) {
                     // ignore
                 }

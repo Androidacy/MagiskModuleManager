@@ -24,7 +24,7 @@ class PrivacyFragment : PreferenceFragmentCompat() {
     @SuppressLint("CommitPrefEdits")
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         val name = "mmmx"
-        val context: Context? = MainApplication.INSTANCE
+        val context: Context? = MainApplication.getInstance()
         val masterKey: MasterKey
         val preferenceManager = preferenceManager
         val dataStore: SharedPreferenceDataStore

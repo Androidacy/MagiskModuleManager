@@ -70,7 +70,7 @@ class RepoModule {
         moduleInfo.flags = moduleInfo.flags or ModuleInfo.FLAG_METADATA_INVALID and ModuleInfo.FLAG_MM_REMOTE_MODULE
         safe = moduleInfo.safe
         // if mainapplication.repomodules has this module, set the flag for remote module
-        if (MainApplication.INSTANCE!!.repoModules.containsKey(id)) {
+        if (MainApplication.getInstance().repoModules.containsKey(id)) {
             moduleInfo.flags = moduleInfo.flags or ModuleInfo.FLAG_MM_REMOTE_MODULE
         }
     }

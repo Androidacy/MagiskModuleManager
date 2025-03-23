@@ -32,12 +32,13 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textview.MaterialTextView
 import timber.log.Timber
 import java.util.Random
+import androidx.core.content.edit
 
 class UpdateFragment : PreferenceFragmentCompat() {
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
 
         val name = "mmmx"
-        val context: Context? = MainApplication.INSTANCE
+        val context: Context? = MainApplication.getInstance()
         val masterKey: MasterKey
         val preferenceManager = preferenceManager
         val dataStore: SharedPreferenceDataStore
@@ -69,7 +70,7 @@ class UpdateFragment : PreferenceFragmentCompat() {
             findPreference<Preference>("pref_background_update_check_excludes_version")
         debugNotification!!.isEnabled = MainApplication.isBackgroundUpdateCheckEnabled
         debugNotification.isVisible =
-            MainApplication.isDeveloper && !MainApplication.isWrapped && MainApplication.isBackgroundUpdateCheckEnabled
+            MainApplication.isDeveloper && !MainApplication.IS_WRAPPED && MainApplication.isBackgroundUpdateCheckEnabled
         debugNotification.onPreferenceClickListener =
             Preference.OnPreferenceClickListener { _: Preference? ->
                 // fake updatable modules hashmap
@@ -94,7 +95,7 @@ class UpdateFragment : PreferenceFragmentCompat() {
                 true
             }
         val backgroundUpdateCheck = findPreference<Preference>("pref_background_update_check")
-        backgroundUpdateCheck!!.isVisible = !MainApplication.isWrapped
+        backgroundUpdateCheck!!.isVisible = !MainApplication.IS_WRAPPED
         // Make uncheckable if POST_NOTIFICATIONS permission is not granted
         if (!MainApplication.isNotificationPermissionGranted) {
             // Instead of disabling the preference, we make it uncheckable and when the user
@@ -104,8 +105,9 @@ class UpdateFragment : PreferenceFragmentCompat() {
                     // set the box to unchecked
                     (backgroundUpdateCheck as SwitchPreferenceCompat?)!!.isChecked = false
                     // ensure that the preference is false
-                    MainApplication.getPreferences("mmm")!!.edit()
-                        .putBoolean("pref_background_update_check", false).apply()
+                    MainApplication.getPreferences("mmm")!!.edit {
+                        putBoolean("pref_background_update_check", false)
+                    }
                     MaterialAlertDialogBuilder(requireContext()).setTitle(R.string.permission_notification_title)
                         .setMessage(
                             R.string.permission_notification_message
@@ -123,15 +125,15 @@ class UpdateFragment : PreferenceFragmentCompat() {
             backgroundUpdateCheck.setSummary(R.string.background_update_check_permission_required)
         }
         updateCheckExcludes!!.isVisible =
-            MainApplication.isBackgroundUpdateCheckEnabled && !MainApplication.isWrapped
+            MainApplication.isBackgroundUpdateCheckEnabled && !MainApplication.IS_WRAPPED
         backgroundUpdateCheck.onPreferenceChangeListener =
             Preference.OnPreferenceChangeListener { _: Preference?, newValue: Any ->
                 val enabled = java.lang.Boolean.parseBoolean(newValue.toString())
                 debugNotification.isEnabled = enabled
                 debugNotification.isVisible =
-                    MainApplication.isDeveloper && !MainApplication.isWrapped && enabled
+                    MainApplication.isDeveloper && !MainApplication.IS_WRAPPED && enabled
                 updateCheckExcludes.isEnabled = enabled
-                updateCheckExcludes.isVisible = enabled && !MainApplication.isWrapped
+                updateCheckExcludes.isVisible = enabled && !MainApplication.IS_WRAPPED
                 if (!enabled) {
                     BackgroundUpdateChecker.onMainActivityResume(requireContext())
                 }
@@ -183,9 +185,11 @@ class UpdateFragment : PreferenceFragmentCompat() {
                                     stringSet.remove(id)
                                 }
                             }
-                            sharedPreferences.edit().putStringSet(
-                                "pref_background_update_check_excludes", stringSet
-                            ).apply()
+                            sharedPreferences.edit {
+                                putStringSet(
+                                    "pref_background_update_check_excludes", stringSet
+                                )
+                            }
                         }.setPositiveButton(R.string.ok) { _: DialogInterface?, _: Int -> }.show()
                 } else {
                     MaterialAlertDialogBuilder(requireContext()).setTitle(R.string.background_update_check_excludes)
@@ -197,7 +201,7 @@ class UpdateFragment : PreferenceFragmentCompat() {
             }
         // now handle pref_background_update_check_excludes_version
         updateCheckVersionExcludes!!.isVisible =
-            MainApplication.isBackgroundUpdateCheckEnabled && !MainApplication.isWrapped
+            MainApplication.isBackgroundUpdateCheckEnabled && !MainApplication.IS_WRAPPED
         updateCheckVersionExcludes.onPreferenceClickListener =
             Preference.OnPreferenceClickListener {
                 // get the stringset pref_background_update_check_excludes_version
@@ -291,9 +295,11 @@ class UpdateFragment : PreferenceFragmentCompat() {
                                     if (MainApplication.forceDebugLogging) Timber.d("text is empty for %s", editText.hint.toString())
                                 }
                             }
-                            sharedPreferences.edit().putStringSet(
-                                "pref_background_update_check_excludes_version", stringSetTemp
-                            ).apply()
+                            sharedPreferences.edit {
+                                putStringSet(
+                                    "pref_background_update_check_excludes_version", stringSetTemp
+                                )
+                            }
                         }.setNegativeButton(R.string.cancel) { _: DialogInterface?, _: Int -> }
                         .show()
                 }
@@ -331,7 +337,7 @@ class UpdateFragment : PreferenceFragmentCompat() {
         val debugDownload =
             findPreference<Preference>("pref_background_update_check_debug_download")
         debugDownload!!.isVisible =
-            MainApplication.isDeveloper && MainApplication.isBackgroundUpdateCheckEnabled && !MainApplication.isWrapped
+            MainApplication.isDeveloper && MainApplication.isBackgroundUpdateCheckEnabled && !MainApplication.IS_WRAPPED
         debugDownload.onPreferenceClickListener =
             Preference.OnPreferenceClickListener { _: Preference? ->
                 val intent = Intent(requireContext(), UpdateActivity::class.java)

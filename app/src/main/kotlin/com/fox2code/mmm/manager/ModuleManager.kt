@@ -60,7 +60,7 @@ class ModuleManager private constructor() : SyncManager() {
         if (modules != null) {
             if (MainApplication.forceDebugLogging) Timber.i("Found %d modules on device in data", modules.size)
             val db = Room.databaseBuilder(
-                MainApplication.INSTANCE!!,
+                MainApplication.getInstance(),
                 ModuleListCacheDatabase::class.java,
                 "ModuleListCache.db"
             ).allowMainThreadQueries().build()
@@ -213,10 +213,10 @@ class ModuleManager private constructor() : SyncManager() {
             return moduleInfos
         }
         set(value) {
-            // add to MainApplication.INSTANCE!!.localModules hashmap
+            // add to MainApplication.getInstance().localModules hashmap
             field = value
             moduleInfos = value
-            MainApplication.INSTANCE!!.localModules = value
+            MainApplication.getInstance().localModules = value
         }
     
     fun getUpdatableModuleCount(): Int {

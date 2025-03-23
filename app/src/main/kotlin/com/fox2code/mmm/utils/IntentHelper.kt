@@ -81,7 +81,7 @@ enum class IntentHelper {;
             } catch (e: ActivityNotFoundException) {
                 if (MainApplication.forceDebugLogging) Timber.d(e, "Could not find suitable activity to handle url")
                 Toast.makeText(
-                    context, MainApplication.INSTANCE!!.lastActivity!!.getString(
+                    context, MainApplication.getInstance().lastActivity!!.getString(
                         R.string.no_browser
                     ), Toast.LENGTH_LONG
                 ).show()
@@ -100,7 +100,7 @@ enum class IntentHelper {;
             } catch (e: ActivityNotFoundException) {
                 if (MainApplication.forceDebugLogging) Timber.d(e, "Could not find suitable activity to handle url")
                 Toast.makeText(
-                    context, MainApplication.INSTANCE!!.lastActivity!!.getString(
+                    context, MainApplication.getInstance().lastActivity!!.getString(
                         R.string.no_browser
                     ), Toast.LENGTH_LONG
                 ).show()
@@ -113,15 +113,15 @@ enum class IntentHelper {;
             val request = DownloadManager.Request(Uri.parse(url))
                 .setAllowedNetworkTypes(DownloadManager.Request.NETWORK_WIFI or DownloadManager.Request.NETWORK_MOBILE)
                 .setTitle((title?.replace(" ", "_") ?: "Module") + ".zip")
-                .setDescription(MainApplication.INSTANCE!!.lastActivity!!.getString(R.string.download_module_description, title))
+                .setDescription(MainApplication.getInstance().lastActivity!!.getString(R.string.download_module_description, title))
                 .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
                 .setAllowedOverMetered(true)
                 .setAllowedOverRoaming(false)
                 .setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, (title?.replace(" ", "_") ?: "Module") + ".zip")
-            val downloadManager= getSystemService(MainApplication.INSTANCE!!.lastActivity!!.applicationContext, DownloadManager::class.java)!!
+            val downloadManager= getSystemService(MainApplication.getInstance().lastActivity!!.applicationContext, DownloadManager::class.java)!!
             val downloadID = downloadManager.enqueue(request)
             Toast.makeText(
-                context, MainApplication.INSTANCE!!.lastActivity!!.getString(
+                context, MainApplication.getInstance().lastActivity!!.getString(
                     R.string.download_started
                 ), Toast.LENGTH_LONG
             ).show()
@@ -136,7 +136,7 @@ enum class IntentHelper {;
                     if (cursor.getInt(cursor.getColumnIndex(DownloadManager.COLUMN_STATUS)) == DownloadManager.STATUS_FAILED) {
                         downloading = false
                         Toast.makeText(
-                            context, MainApplication.INSTANCE!!.lastActivity!!.getString(
+                            context, MainApplication.getInstance().lastActivity!!.getString(
                                 R.string.download_failed
                             ), Toast.LENGTH_LONG
                         ).show()
@@ -144,7 +144,7 @@ enum class IntentHelper {;
                         if (cursor.getInt(cursor.getColumnIndex(DownloadManager.COLUMN_STATUS)) == DownloadManager.STATUS_SUCCESSFUL) {
                             downloading = false
                             Toast.makeText(
-                                context, MainApplication.INSTANCE!!.lastActivity!!.getString(
+                                context, MainApplication.getInstance().lastActivity!!.getString(
                                     R.string.download_finished
                                 ), Toast.LENGTH_LONG
                             ).show()
@@ -357,7 +357,7 @@ enum class IntentHelper {;
                                 intent1.putExtra(EXTRA_TAB_TOOLBAR_COLOR, typedValue.data)
                                 intent1.putExtra(
                                     EXTRA_TAB_COLOR_SCHEME,
-                                    if (MainApplication.INSTANCE!!.isLightTheme) EXTRA_TAB_COLOR_SCHEME_LIGHT else EXTRA_TAB_COLOR_SCHEME_DARK
+                                    if (MainApplication.getInstance().isLightTheme) EXTRA_TAB_COLOR_SCHEME_LIGHT else EXTRA_TAB_COLOR_SCHEME_DARK
                                 )
                             }
                         }

@@ -19,6 +19,10 @@ We're actively working on its replacement though! We target a Q3 release for v3,
 
   More news will be available soon!
 
+**All builds before 2.3.7 are expired and cannot be used.**
+
+##### F-Droid builds are no longer being maintained. Please do not use them.
+
 [![Latest Release](https://img.shields.io/github/v/release/Androidacy/AndroidacyModuleManager?color=neon&label=Latest%20release&style=for-the-badge)](https://www.androidacy.com/downloads/?view=FoxMMM&utm_source=fox-readme&utm_medium=web&utm_campaign=github-readme)
 
 ## Overview and Purpose

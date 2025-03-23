@@ -46,7 +46,7 @@ class RuntimeUtils {
                 ) != PackageManager.PERMISSION_GRANTED
             ) {
                 if (MainApplication.forceDebugLogging) Timber.i("Request Notification Permission")
-                if (MainApplication.INSTANCE!!.lastActivity!!
+                if (MainApplication.getInstance().lastActivity!!
                         .shouldShowRequestPermissionRationale(Manifest.permission.POST_NOTIFICATIONS)
                 ) {
                     // Show a dialog explaining why we need context permission, which is to show

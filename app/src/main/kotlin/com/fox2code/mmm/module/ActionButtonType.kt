@@ -5,14 +5,13 @@ package com.fox2code.mmm.module
 
 import android.annotation.SuppressLint
 import android.content.DialogInterface
-import android.net.Uri
 import android.text.Html
 import android.text.Spanned
 import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.DrawableRes
+import androidx.core.net.toUri
 import com.fox2code.mmm.MainApplication
-import com.fox2code.mmm.MainApplication.Companion.INSTANCE
 import com.fox2code.mmm.MainApplication.Companion.isShowcaseMode
 import com.fox2code.mmm.R
 import com.fox2code.mmm.androidacy.AndroidacyUtil.Companion.isAndroidacyLink
@@ -69,9 +68,7 @@ enum class ActionButtonType {
                     Timber.e(e)
                     Timber.e("Error opening notes - androidacy link. This should never happen.")
                     Toast.makeText(
-                        button.context,
-                        R.string.error_opening_notes,
-                        Toast.LENGTH_SHORT
+                        button.context, R.string.error_opening_notes, Toast.LENGTH_SHORT
                     ).show()
                 }
             } else {
@@ -90,9 +87,7 @@ enum class ActionButtonType {
                 } catch (e: Exception) {
                     Timber.e(e)
                     Toast.makeText(
-                        button.context,
-                        R.string.error_opening_notes,
-                        Toast.LENGTH_SHORT
+                        button.context, R.string.error_opening_notes, Toast.LENGTH_SHORT
                     ).show()
                 }
             }
@@ -130,23 +125,17 @@ enum class ActionButtonType {
             ) {
                 // get safe status from either mainmoduleinfo or repo module
                 val safe =
-                    moduleHolder.mainModuleInfo.safe || moduleHolder.repoModule?.moduleInfo?.safe ?: false
+                    moduleHolder.mainModuleInfo.safe || moduleHolder.repoModule?.moduleInfo?.safe == true
                 if (!safe) {
                     // block local install for safety
-                    MaterialAlertDialogBuilder(button.context)
-                        .setTitle(R.string.install_blocked)
+                    MaterialAlertDialogBuilder(button.context).setTitle(R.string.install_blocked)
                         .setMessage(R.string.install_blocked_message)
-                        .setPositiveButton(android.R.string.ok, null)
-                        .show()
+                        .setPositiveButton(android.R.string.ok, null).show()
                     return
                 }
             }
             // if mainmoduleinfo is null, we are in repo mode
-            val moduleInfo: ModuleInfo = if (moduleHolder.mainModuleInfo != null) {
-                moduleHolder.mainModuleInfo
-            } else {
-                moduleHolder.repoModule?.moduleInfo ?: return
-            }
+            val moduleInfo: ModuleInfo = moduleHolder.mainModuleInfo
             val name: String? = if (moduleHolder.moduleInfo != null) {
                 moduleHolder.moduleInfo!!.name
             } else {
@@ -163,8 +152,12 @@ enum class ActionButtonType {
                 updateZipUrl = moduleHolder.repoModule!!.zipUrl!!
             }
             // check if MainApplicaiton.repomodules contains the module
-            if (updateZipUrl.isEmpty() && INSTANCE!!.repoModules.containsKey(moduleInfo.id)) {
-                updateZipUrl = INSTANCE!!.repoModules[moduleInfo.id]?.zipUrl.toString()
+            if (updateZipUrl.isEmpty() && MainApplication.getInstance().repoModules.containsKey(
+                    moduleInfo.id
+                )
+            ) {
+                updateZipUrl =
+                    MainApplication.getInstance().repoModules[moduleInfo.id]?.zipUrl.toString()
             }
             // if repomodule is null, try localmoduleinfo
             if (updateZipUrl.isEmpty() && moduleHolder.moduleInfo != null && moduleHolder.moduleInfo!!.updateZipUrl != null) {
@@ -183,11 +176,7 @@ enum class ActionButtonType {
             // Androidacy manage the selection between download and install
             if (isAndroidacyLink(updateZipUrl)) {
                 openUrlAndroidacy(
-                    button.context,
-                    updateZipUrl,
-                    true,
-                    moduleInfo.name,
-                    moduleInfo.config
+                    button.context, updateZipUrl, true, moduleInfo.name, moduleInfo.config
                 )
                 return
             }
@@ -199,7 +188,7 @@ enum class ActionButtonType {
             var markwon: Markwon? = null
             val localModuleInfo = moduleHolder.moduleInfo
             if (localModuleInfo != null && localModuleInfo.updateChangeLog.isNotEmpty()) {
-                markwon = INSTANCE!!.markwon
+                markwon = MainApplication.getInstance().markwon
                 // Re-render each time in cse of config changes
                 desc = markwon!!.toMarkdown(localModuleInfo.updateChangeLog)
             }
@@ -232,13 +221,12 @@ enum class ActionButtonType {
                 }
             }
             ExternalHelper.INSTANCE.injectButton(
-                builder,
-                { Uri.parse(updateZipUrl) },
-                moduleHolder.updateZipRepo
+                builder, { updateZipUrl.toUri() }, moduleHolder.updateZipRepo
             )
-            val dim5dp = INSTANCE!!.lastActivity?.resources!!.getDimensionPixelSize(
-                R.dimen.dim5dp
-            )
+            val dim5dp =
+                MainApplication.getInstance().lastActivity?.resources!!.getDimensionPixelSize(
+                    R.dimen.dim5dp
+                )
             builder.setBackgroundInsetStart(dim5dp).setBackgroundInsetEnd(dim5dp)
             val alertDialog = builder.show()
             for (i in -3..-1) {
@@ -315,7 +303,7 @@ enum class ActionButtonType {
                         .show()
                 } else {
                     moduleHolder.moduleInfo = null
-                    INSTANCE!!.lastActivity!!
+                    MainApplication.getInstance().lastActivity!!
                     Timber.e("Cleared: %s", moduleId)
                 }
             }
@@ -327,8 +315,7 @@ enum class ActionButtonType {
     },
     CONFIG {
         override fun update(button: Chip, moduleHolder: ModuleHolder) {
-            button.chipIcon =
-                button.context.getDrawable(R.drawable.ic_baseline_app_settings_alt_24)
+            button.chipIcon = button.context.getDrawable(R.drawable.ic_baseline_app_settings_alt_24)
             button.setText(R.string.config)
         }
 
@@ -424,15 +411,13 @@ enum class ActionButtonType {
             MaterialAlertDialogBuilder(button.context).setTitle(R.string.warning)
                 .setMessage(R.string.warning_message).setPositiveButton(
                     R.string.understand
-                ) { _: DialogInterface?, _: Int -> }
-                .create().show()
+                ) { _: DialogInterface?, _: Int -> }.create().show()
         }
     },
     SAFE {
         // SAFE is for modules that the api says are clean. only supported by androidacy currently
         override fun update(button: Chip, moduleHolder: ModuleHolder) {
-            button.chipIcon =
-                button.context.getDrawable(R.drawable.baseline_verified_user_24)
+            button.chipIcon = button.context.getDrawable(R.drawable.baseline_verified_user_24)
             button.setText(R.string.safe)
         }
 
@@ -451,16 +436,14 @@ enum class ActionButtonType {
             MaterialAlertDialogBuilder(button.context).setTitle(R.string.safe_module)
                 .setMessage(R.string.safe_message).setPositiveButton(
                     R.string.understand
-                ) { _: DialogInterface?, _: Int -> }
-                .create().show()
+                ) { _: DialogInterface?, _: Int -> }.create().show()
         }
     },
     REMOTE {
         @Suppress("NAME_SHADOWING")
         override fun doAction(button: Chip, moduleHolder: ModuleHolder) {
             if (MainApplication.forceDebugLogging) Timber.d(
-                "doAction: remote module for %s",
-                moduleHolder.moduleInfo?.name ?: "null"
+                "doAction: remote module for %s", moduleHolder.moduleInfo?.name ?: "null"
             )
             // that module is from remote repo
             val name: String? = if (moduleHolder.moduleInfo != null) {
@@ -477,11 +460,7 @@ enum class ActionButtonType {
             }
             val madb = MaterialAlertDialogBuilder(button.context)
             madb.setTitle(R.string.remote_module)
-            val moduleInfo: ModuleInfo = if (moduleHolder.mainModuleInfo != null) {
-                moduleHolder.mainModuleInfo
-            } else {
-                moduleHolder.repoModule?.moduleInfo ?: return
-            }
+            val moduleInfo: ModuleInfo = moduleHolder.mainModuleInfo
             var updateZipUrl = moduleHolder.updateZipUrl
             if (updateZipUrl.isNullOrEmpty()) {
                 // try repoModule.zipUrl
@@ -489,7 +468,7 @@ enum class ActionButtonType {
                 if (repoModule?.zipUrl.isNullOrEmpty()) {
                     Timber.e("No repo update zip url for %s", moduleInfo.name)
                 } else {
-                    updateZipUrl = repoModule?.zipUrl
+                    updateZipUrl = repoModule.zipUrl
                 }
                 // next try localModuleInfo.updateZipUrl
                 if (updateZipUrl.isNullOrEmpty()) {
@@ -519,8 +498,7 @@ enum class ActionButtonType {
                 madb.setMessage(
                     Html.fromHtml(
                         button.context.getString(
-                            R.string.remote_message,
-                            name
+                            R.string.remote_message, name
                         ), Html.FROM_HTML_MODE_COMPACT
                     )
                 )
@@ -528,8 +506,7 @@ enum class ActionButtonType {
                     R.string.reinstall
                 ) { _: DialogInterface?, _: Int ->
                     if (MainApplication.forceDebugLogging) Timber.d(
-                        "Set moduleinfo to %s",
-                        moduleInfo.name
+                        "Set moduleinfo to %s", moduleInfo.name
                     )
                     val name: String? = if (moduleHolder.moduleInfo != null) {
                         moduleHolder.moduleInfo!!.name
@@ -537,8 +514,7 @@ enum class ActionButtonType {
                         moduleHolder.repoModule?.moduleInfo?.name
                     }
                     if (MainApplication.forceDebugLogging) Timber.d(
-                        "doAction: remote module for %s",
-                        name
+                        "doAction: remote module for %s", name
                     )
                     if (MainApplication.analyticsAllowed()) {
                         Countly.sharedInstance().events()
@@ -550,11 +526,7 @@ enum class ActionButtonType {
                     if (isAndroidacyLink(updateZipUrl)) {
                         if (MainApplication.forceDebugLogging) Timber.d("Androidacy link detected")
                         openUrlAndroidacy(
-                            button.context,
-                            updateZipUrl,
-                            true,
-                            moduleInfo.name,
-                            moduleInfo.config
+                            button.context, updateZipUrl, true, moduleInfo.name, moduleInfo.config
                         )
                         return@setPositiveButton
                     }
@@ -566,7 +538,7 @@ enum class ActionButtonType {
                     var markwon: Markwon? = null
                     val localModuleInfo = moduleHolder.moduleInfo
                     if (localModuleInfo != null && localModuleInfo.updateChangeLog.isNotEmpty()) {
-                        markwon = INSTANCE!!.markwon
+                        markwon = MainApplication.getInstance().markwon
                         // Re-render each time in cse of config changes
                         desc = markwon!!.toMarkdown(localModuleInfo.updateChangeLog)
                     }
@@ -598,13 +570,12 @@ enum class ActionButtonType {
                         }
                     }
                     ExternalHelper.INSTANCE.injectButton(
-                        builder,
-                        { Uri.parse(updateZipUrl) },
-                        moduleHolder.updateZipRepo
+                        builder, { updateZipUrl.toUri() }, moduleHolder.updateZipRepo
                     )
-                    val dim5dp = INSTANCE!!.lastActivity?.resources!!.getDimensionPixelSize(
-                        R.dimen.dim5dp
-                    )
+                    val dim5dp =
+                        MainApplication.getInstance().lastActivity?.resources!!.getDimensionPixelSize(
+                            R.dimen.dim5dp
+                        )
                     builder.setBackgroundInsetStart(dim5dp).setBackgroundInsetEnd(dim5dp)
                     val alertDialog = builder.show()
                     for (i in -3..-1) {

@@ -12,13 +12,14 @@ import android.content.SharedPreferences
 import android.net.ConnectivityManager
 import android.net.Network
 import android.net.NetworkCapabilities
-import android.net.Uri
 import android.os.Build
 import android.system.ErrnoException
 import android.system.Os
 import android.webkit.CookieManager
 import android.webkit.WebSettings
 import android.widget.Toast
+import androidx.core.content.edit
+import androidx.core.net.toUri
 import androidx.webkit.WebViewCompat
 import com.fox2code.mmm.BuildConfig
 import com.fox2code.mmm.MainActivity
@@ -30,30 +31,19 @@ import com.fox2code.mmm.installer.InstallerInitializer.Companion.peekMagiskVersi
 import com.fox2code.mmm.utils.io.Files.Companion.makeBuffer
 import com.google.net.cronet.okhttptransport.CronetInterceptor
 import ly.count.android.sdk.Countly
-import okhttp3.Cache
 import okhttp3.Dns
-import okhttp3.HttpUrl.*
-import okhttp3.HttpUrl.Companion.toHttpUrl
 import okhttp3.Interceptor
-import okhttp3.Interceptor.Chain.*
 import okhttp3.MediaType
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.OkHttpClient
-import okhttp3.OkHttpClient.Builder.*
 import okhttp3.Request
-import okhttp3.Request.*
-import okhttp3.Request.Builder.*
 import okhttp3.RequestBody
 import okhttp3.Response
-import okhttp3.Response.*
-import okhttp3.dnsoverhttps.DnsOverHttps
-import okhttp3.dnsoverhttps.DnsOverHttps.Builder.*
 import okio.BufferedSink
 import org.chromium.net.CronetEngine
 import timber.log.Timber
 import java.io.File
 import java.io.IOException
-import java.lang.Long.*
 import java.net.InetAddress
 import java.net.Proxy
 import java.net.UnknownHostException
@@ -78,7 +68,8 @@ enum class Http {;
      */
     private class FallBackDNS(parent: Dns, vararg fallbacks: String?) : Dns {
         private val parent: Dns
-        private val sharedPreferences: SharedPreferences = MainApplication.getPreferences("mmm_dns")!!
+        private val sharedPreferences: SharedPreferences =
+            MainApplication.getPreferences("mmm_dns")!!
         private val fallbacks: HashSet<String>
         private val fallbackCache: HashMap<String, List<InetAddress>>
 
@@ -104,8 +95,9 @@ enum class Http {;
                             hostname
                         )
                         fallbackCache[hostname] = addresses
-                        sharedPreferences.edit()
-                            .putString(hostname.replace('.', '_'), toString(addresses)).apply()
+                        sharedPreferences.edit {
+                            putString(hostname.replace('.', '_'), toString(addresses))
+                        }
                     } catch (e: UnknownHostException) {
                         val key = sharedPreferences.getString(hostname.replace('.', '_'), "")
                         if (key!!.isEmpty()) throw e
@@ -113,7 +105,7 @@ enum class Http {;
                             addresses = fromString(key)
                             fallbackCache.put(hostname, addresses)
                         } catch (e2: UnknownHostException) {
-                            sharedPreferences.edit().remove(hostname.replace('.', '_')).apply()
+                            sharedPreferences.edit { remove(hostname.replace('.', '_')) }
                             throw e
                         }
                     }
@@ -197,7 +189,7 @@ enum class Http {;
         private var doh = false
 
         init {
-            val mainApplication = MainApplication.INSTANCE
+            val mainApplication = MainApplication.getInstance()
             if (mainApplication == null) {
                 val error = Error("Initialized Http too soon!")
                 error.fillInStackTrace()
@@ -230,7 +222,7 @@ enum class Http {;
             var webviewVersion = "0.0.0"
             val pi = WebViewCompat.getCurrentWebViewPackage(mainApplication)
             if (pi != null) {
-                webviewVersion = pi.versionName
+                webviewVersion = pi.versionName ?: "0.0.0"
             }
             // webviewVersionMajor is the everything before the first dot
             val webviewVersionCode: Int
@@ -257,8 +249,8 @@ enum class Http {;
             httpclientBuilder.writeTimeout(5, TimeUnit.SECONDS)
             httpclientBuilder.readTimeout(5, TimeUnit.SECONDS)
             httpclientBuilder.proxy(Proxy.NO_PROXY) // Do not use system proxy
-	    // TODO: Make compatible w/ cronet
-  //          var dns = Dns.SYSTEM
+            // TODO: Make compatible w/ cronet
+            //          var dns = Dns.SYSTEM
             try {
                 val cookieJar = WebkitCookieManagerProxy()
                 httpclientBuilder.cookieJar(cookieJar)
@@ -269,7 +261,10 @@ enum class Http {;
             }
             // User-Agent format was agreed on telegram
             androidacyUA = if (hasWebView) {
-                WebSettings.getDefaultUserAgent(mainApplication).replaceFirst("(; )?wv".toRegex(), "").replaceFirst(" Version/[^ ]*".toRegex(), "") + " AMM/" + BuildConfig.VERSION_CODE
+                WebSettings.getDefaultUserAgent(mainApplication)
+                    .replaceFirst("(; )?wv".toRegex(), "").replaceFirst(
+                        " Version/[^ ]*".toRegex(), ""
+                    ) + " AMM/" + BuildConfig.VERSION_CODE
             } else {
                 "Mozilla/5.0 (Linux; Android " + Build.VERSION.RELEASE + "; " + Build.DEVICE + ")" + " AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.131 Mobile Safari/537.36" + " AMMM/" + BuildConfig.VERSION_CODE
             }
@@ -360,21 +355,21 @@ enum class Http {;
                 // Gracefully fallback to okhttp
             }
             // Fallback DNS cache responses in case request fail but already succeeded once in the past
-/*            fallbackDNS = FallBackDNS(
-                dns,
-                "github.com",
-                "api.github.com",
-                "raw.githubusercontent.com",
-                "camo.githubusercontent.com",
-                "user-images.githubusercontent.com",
-                "cdn.jsdelivr.net",
-                "img.shields.io",
-                "magisk-modules-repo.github.io",
-                "www.androidacy.com",
-                "api.androidacy.com",
-                "production-api.androidacy.com"
-            )
-            httpclientBuilder.dns(Dns.SYSTEM)*/
+            /*            fallbackDNS = FallBackDNS(
+                            dns,
+                            "github.com",
+                            "api.github.com",
+                            "raw.githubusercontent.com",
+                            "camo.githubusercontent.com",
+                            "user-images.githubusercontent.com",
+                            "cdn.jsdelivr.net",
+                            "img.shields.io",
+                            "magisk-modules-repo.github.io",
+                            "www.androidacy.com",
+                            "api.androidacy.com",
+                            "production-api.androidacy.com"
+                        )
+                        httpclientBuilder.dns(Dns.SYSTEM)*/
             httpClient = followRedirects(httpclientBuilder, true).build()
             followRedirects(httpclientBuilder, false).build()
             httpClientDoH = followRedirects(httpclientBuilder, true).build()
@@ -400,7 +395,7 @@ enum class Http {;
 
         private fun checkNeedCaptchaAndroidacy(url: String, errorCode: Int) {
             if (errorCode == 403 && AndroidacyUtil.isAndroidacyLink(url)) {
-                needCaptchaAndroidacyHost = Uri.parse(url).host
+                needCaptchaAndroidacyHost = url.toUri().host
             }
         }
 
@@ -437,10 +432,10 @@ enum class Http {;
                 Timber.e(e, "Failed to get %s", url)
                 // detect ssl errors, i.e., cert authority invalid by looking at the message
                 if (e.message != null && e.message!!.contains("_CERT_")) {
-                    MainApplication.INSTANCE!!.lastActivity!!.runOnUiThread {
+                    MainApplication.getInstance().lastActivity!!.runOnUiThread {
                         // show toast
                         Toast.makeText(
-                            MainApplication.INSTANCE, R.string.ssl_error, Toast.LENGTH_LONG
+                            MainApplication.getInstance(), R.string.ssl_error, Toast.LENGTH_LONG
                         ).show()
                     }
                 }
@@ -495,9 +490,13 @@ enum class Http {;
                 }
             }
             if (BuildConfig.DEBUG_HTTP) {
-                if (MainApplication.forceDebugLogging) Timber.d("doHttpGet: " + url.replace("=[^&]*".toRegex(), "=****") + " succeeded")
+                if (MainApplication.forceDebugLogging) Timber.d(
+                    "%s succeeded", url.replace(
+                        "=[^&]*".toRegex(), "=****"
+                    )
+                )
             }
-            var responseBody = response?.body
+            var responseBody = response.body
             // Use cache api if used cached response
             if (response != null) {
                 if (response.code == 304) {
@@ -507,12 +506,15 @@ enum class Http {;
             }
             if (BuildConfig.DEBUG_HTTP) {
                 if (responseBody != null) {
-                    if (MainApplication.forceDebugLogging) Timber.d("doHttpGet: returning " + responseBody.contentLength() + " bytes")
+                    if (MainApplication.forceDebugLogging) Timber.d(
+                        "%s bytes doHttpGet: returning",
+                        responseBody.contentLength()
+                    )
                 }
             }
             if (MainApplication.analyticsAllowed() && MainApplication.isCrashReportingEnabled) {
-                Countly.sharedInstance().apm().endNetworkRequest(uniqid, url, response!!.code,
-                    0, responseBody!!.contentLength().toInt()
+                Countly.sharedInstance().apm().endNetworkRequest(
+                    uniqid, url, response!!.code, 0, responseBody.contentLength().toInt()
                 )
             }
             return responseBody?.bytes() ?: ByteArray(0)
@@ -544,10 +546,10 @@ enum class Http {;
                 Timber.e(e, "Failed to post %s", url)
                 // detect ssl errors, i.e., cert authority invalid by looking at the message
                 if (e.message != null && e.message!!.contains("_CERT_")) {
-                    MainApplication.INSTANCE!!.lastActivity!!.runOnUiThread {
+                    MainApplication.getInstance().lastActivity!!.runOnUiThread {
                         // show toast
                         Toast.makeText(
-                            MainApplication.INSTANCE, R.string.ssl_error, Toast.LENGTH_LONG
+                            MainApplication.getInstance(), R.string.ssl_error, Toast.LENGTH_LONG
                         ).show()
                     }
                 }
@@ -555,7 +557,9 @@ enum class Http {;
             }
             if (response.isRedirect) {
                 // follow redirect with same method
-                if (MainApplication.forceDebugLogging) Timber.d("doHttpPostRaw: following redirect: %s", response.header("Location"))
+                if (MainApplication.forceDebugLogging) Timber.d(
+                    "doHttpPostRaw: following redirect: %s", response.header("Location")
+                )
                 response =
                     (if (allowCache) getHttpClientWithCache() else getHttpClient())!!.newCall(
                         Request.Builder().url(
@@ -606,8 +610,12 @@ enum class Http {;
                 if (response != null) responseBody = response.body
             }
             if (MainApplication.analyticsAllowed() && MainApplication.isCrashReportingEnabled) {
-                Countly.sharedInstance().apm().endNetworkRequest(uniqid, url, response!!.code,
-                    data.toByteArray().size.toLong().toInt(), responseBody.contentLength().toInt()
+                Countly.sharedInstance().apm().endNetworkRequest(
+                    uniqid,
+                    url,
+                    response!!.code,
+                    data.toByteArray().size.toLong().toInt(),
+                    responseBody.contentLength().toInt()
                 )
             }
             return responseBody.bytes()
@@ -627,10 +635,10 @@ enum class Http {;
                 Timber.e(e, "Failed to post %s", url)
                 // detect ssl errors, i.e., cert authority invalid by looking at the message
                 if (e.message != null && e.message!!.contains("_CERT_")) {
-                    MainApplication.INSTANCE!!.lastActivity!!.runOnUiThread {
+                    MainApplication.getInstance().lastActivity!!.runOnUiThread {
                         // show toast
                         Toast.makeText(
-                            MainApplication.INSTANCE, R.string.ssl_error, Toast.LENGTH_LONG
+                            MainApplication.getInstance(), R.string.ssl_error, Toast.LENGTH_LONG
                         ).show()
                     }
                 }
@@ -703,8 +711,8 @@ enum class Http {;
                 (downloaded / divider).toInt(), (target / divider).toInt(), true
             )
             if (MainApplication.analyticsAllowed() && MainApplication.isCrashReportingEnabled) {
-                Countly.sharedInstance().apm().endNetworkRequest(uniqid, url, response.code,
-                    0, responseBody.contentLength().toInt()
+                Countly.sharedInstance().apm().endNetworkRequest(
+                    uniqid, url, response.code, 0, responseBody.contentLength().toInt()
                 )
             }
             return byteArrayOutputStream.toByteArray()
@@ -778,8 +786,7 @@ enum class Http {;
             }
             if (MainApplication.forceDebugLogging) Timber.d("We say we have internet: $hasInternet")
             lastConnectivityCheck = System.currentTimeMillis()
-            @Suppress("KotlinConstantConditions")
-            lastConnectivityResult =
+            @Suppress("KotlinConstantConditions") lastConnectivityResult =
                 systemSaysYes && hasInternet
             return lastConnectivityResult
         }

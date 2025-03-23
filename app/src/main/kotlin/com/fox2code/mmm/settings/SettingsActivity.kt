@@ -1,10 +1,10 @@
 /*
  * Copyright (c) 2023 to present Androidacy and contributors. Names, logos, icons, and the Androidacy name are all trademarks of Androidacy and may not be used without license. See LICENSE for more information.
  */
+@file:Suppress("DEPRECATION")
+
 package com.fox2code.mmm.settings
 
-import android.net.Uri
-import com.fox2code.mmm.utils.IntentHelper
 import android.annotation.SuppressLint
 import android.app.ActivityManager
 import android.content.ClipboardManager
@@ -17,6 +17,8 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.edit
+import androidx.core.net.toUri
 import androidx.fragment.app.FragmentTransaction
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
@@ -24,10 +26,8 @@ import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKey
 import com.fox2code.mmm.BuildConfig
 import com.fox2code.mmm.CrashHandler
-import com.fox2code.mmm.ExpiredActivity
 import com.fox2code.mmm.MainActivity
 import com.fox2code.mmm.MainApplication
-import com.fox2code.mmm.MainApplication.Companion.INSTANCE
 import com.fox2code.mmm.R
 import com.fox2code.mmm.background.BackgroundUpdateChecker.Companion.onMainActivityResume
 import com.fox2code.mmm.utils.IntentHelper.Companion.openUrl
@@ -37,7 +37,6 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationBarView
 import com.mikepenz.aboutlibraries.LibsBuilder
 import timber.log.Timber
-import java.sql.Timestamp
 
 @Suppress("SENSELESS_COMPARISON")
 class SettingsActivity : AppCompatActivity(), LanguageActivity,
@@ -103,27 +102,7 @@ class SettingsActivity : AppCompatActivity(), LanguageActivity,
 
         setContentView(R.layout.settings_activity)
         setTitle(R.string.app_name_v2)
-        val ts = Timestamp(System.currentTimeMillis() - 30L * 24 * 60 * 60 * 1000)
-        val buildTime = Timestamp(BuildConfig.BUILD_TIME)
-        if (BuildConfig.DEBUG) {
-            if (ts.time > buildTime.time) {
-                val pm = packageManager
-                val intent = Intent(this, ExpiredActivity::class.java)
-                val resolveInfo = pm.queryIntentActivities(intent, 0)
-                if (resolveInfo.size > 0) {
-                    startActivity(intent)
-                    finish()
-                    return
-                } else {
-                    throw IllegalAccessError("This build has expired")
-                }
-            }
-        } else {
-            val ts2 = Timestamp(System.currentTimeMillis() - 180L * 24 * 60 * 60 * 1000)
-            if (ts2.time > buildTime.time) {
-                Toast.makeText(this, R.string.build_expired, Toast.LENGTH_LONG).show()
-            }
-        }
+        MainApplication.getInstance().check(this)
         //hideActionBar();
         bottomNavigationView = findViewById(R.id.bottom_navigation)
         bottomNavigationView.setOnItemSelectedListener(onItemSelectedListener)
@@ -150,7 +129,7 @@ class SettingsActivity : AppCompatActivity(), LanguageActivity,
         @SuppressLint("UnspecifiedImmutableFlag")
         override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
             val name = "mmmx"
-            val context: Context? = INSTANCE
+            val context: Context? = MainApplication.getInstance()
             val masterKey: MasterKey
             val preferenceManager = preferenceManager
             val dataStore: SharedPreferenceDataStore
@@ -206,24 +185,26 @@ class SettingsActivity : AppCompatActivity(), LanguageActivity,
             findPreference<Preference>("pref_pkg_info")!!.onPreferenceClickListener =
                 Preference.OnPreferenceClickListener { p: Preference ->
                     versionClicks++
-                    if (MainApplication.forceDebugLogging) Timber.d("Version clicks: %d", versionClicks)
+                    if (MainApplication.forceDebugLogging) Timber.d(
+                        "Version clicks: %d", versionClicks
+                    )
                     if (versionClicks == 7) {
                         versionClicks = 0
                         openUrl(p.context, "https://www.youtube.com/watch?v=dQw4w9WgXcQ")
                     }
                     // enable dev mode if it's disabled otherwise disable it
-                    val editor = dataStore.sharedPreferences.edit()
-                    if (dataStore.sharedPreferences.getBoolean("developer", false)) {
-                        editor.putBoolean("developer", false)
-                        Toast.makeText(
-                            p.context, R.string.dev_mode_disabled, Toast.LENGTH_SHORT
-                        ).show()
-                    } else {
-                        Toast.makeText(
-                            p.context, R.string.dev_mode_enabled, Toast.LENGTH_SHORT
-                        ).show()
+                    dataStore.sharedPreferences.edit {
+                        if (dataStore.sharedPreferences.getBoolean("developer", false)) {
+                            putBoolean("developer", false)
+                            Toast.makeText(
+                                p.context, R.string.dev_mode_disabled, Toast.LENGTH_SHORT
+                            ).show()
+                        } else {
+                            Toast.makeText(
+                                p.context, R.string.dev_mode_enabled, Toast.LENGTH_SHORT
+                            ).show()
+                        }
                     }
-                    editor.apply()
                     // toast yer a wizard harry
                     if (versionClicks == 3) {
                         Toast.makeText(
@@ -244,11 +225,11 @@ class SettingsActivity : AppCompatActivity(), LanguageActivity,
                 }
             findPreference<Preference>("pref_show_apps")!!.onPreferenceClickListener =
                 Preference.OnPreferenceClickListener { _: Preference? ->
-		    val browserIntent = Intent(
-                                Intent.ACTION_VIEW,
-                                Uri.parse("https://play.google.com/store/apps/dev?id=6763514284252789381")
-                            )
-                            startActivity(browserIntent)
+                    val browserIntent = Intent(
+                        Intent.ACTION_VIEW,
+                        "https://play.google.com/store/apps/dev?id=6763514284252789381".toUri()
+                    )
+                    startActivity(browserIntent)
                     return@OnPreferenceClickListener true
                 }
         }
@@ -270,7 +251,7 @@ class SettingsActivity : AppCompatActivity(), LanguageActivity,
                 // device is awarded 1 point for each core and 1 point for each GB of ram.
                 var points = 0
                 val cores = Runtime.getRuntime().availableProcessors()
-                val activityManager = INSTANCE!!.getSystemService(
+                val activityManager = MainApplication.getInstance().getSystemService(
                     ACTIVITY_SERVICE
                 ) as ActivityManager
                 if (activityManager != null) {
@@ -283,7 +264,9 @@ class SettingsActivity : AppCompatActivity(), LanguageActivity,
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
                     points += 1
                 }
-                if (MainApplication.forceDebugLogging) Timber.d("Device performance class: %d", points)
+                if (MainApplication.forceDebugLogging) Timber.d(
+                    "Device performance class: %d", points
+                )
                 return if (points <= 7) {
                     PERFORMANCE_CLASS_LOW
                 } else if (points <= 12) {

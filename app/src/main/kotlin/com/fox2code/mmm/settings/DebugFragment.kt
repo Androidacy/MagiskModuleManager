@@ -30,7 +30,7 @@ import java.util.Date
 class DebugFragment : PreferenceFragmentCompat() {
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         val name = "mmmx"
-        val context: Context? = MainApplication.INSTANCE
+        val context: Context? = MainApplication.getInstance()
         val masterKey: MasterKey
         val preferenceManager = preferenceManager
         val dataStore: SharedPreferenceDataStore
@@ -76,8 +76,8 @@ class DebugFragment : PreferenceFragmentCompat() {
                             FileUtils.forceMkdir(requireContext().cacheDir)
                             // create cache dirs for cronet and webview
                             FileUtils.forceMkdir(File(requireContext().cacheDir, "cronet"))
-                            FileUtils.forceMkdir(File(MainApplication.INSTANCE!!.dataDir.toString() + "/cache/WebView/Default/HTTP Cache/Code Cache/wasm"))
-                            FileUtils.forceMkdir(File(MainApplication.INSTANCE!!.dataDir.toString() + "/cache/WebView/Default/HTTP Cache/Code Cache/js"))
+                            FileUtils.forceMkdir(File(MainApplication.getInstance().dataDir.toString() + "/cache/WebView/Default/HTTP Cache/Code Cache/wasm"))
+                            FileUtils.forceMkdir(File(MainApplication.getInstance().dataDir.toString() + "/cache/WebView/Default/HTTP Cache/Code Cache/js"))
                             Toast.makeText(
                                 requireContext(), R.string.cache_cleared, Toast.LENGTH_SHORT
                             ).show()
@@ -111,7 +111,7 @@ class DebugFragment : PreferenceFragmentCompat() {
                                 R.string.clear_data_dialogue_message
                             ).setPositiveButton(R.string.yes) { _: DialogInterface?, _: Int ->
                                 // Clear app data
-                                MainApplication.INSTANCE!!.resetApp()
+                                MainApplication.getInstance().resetApp()
                             }.setNegativeButton(R.string.no) { _: DialogInterface?, _: Int -> }
                             .show()
                         true

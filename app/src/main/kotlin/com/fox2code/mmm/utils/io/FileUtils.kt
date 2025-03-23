@@ -20,7 +20,7 @@ class FileUtils {
         try {
             FileUtils.forceMkdir(
                 File(
-                    (MainApplication.INSTANCE!!.dataDir.toString() + "/cache/WebView/Default/HTTP Cache/Code Cache/wasm").replace(
+                    (MainApplication.getInstance().dataDir.toString() + "/cache/WebView/Default/HTTP Cache/Code Cache/wasm").replace(
                         "//".toRegex(),
                         "/"
                     )
@@ -28,7 +28,7 @@ class FileUtils {
             )
             FileUtils.forceMkdir(
                 File(
-                    (MainApplication.INSTANCE!!.dataDir.toString() + "/cache/WebView/Default/HTTP Cache/Code Cache/js").replace(
+                    (MainApplication.getInstance().dataDir.toString() + "/cache/WebView/Default/HTTP Cache/Code Cache/js").replace(
                         "//".toRegex(),
                         "/"
                     )
@@ -36,7 +36,7 @@ class FileUtils {
             )
             FileUtils.forceMkdir(
                 File(
-                    (MainApplication.INSTANCE!!.dataDir.toString() + "/cache/cronet").replace(
+                    (MainApplication.getInstance().dataDir.toString() + "/cache/cronet").replace(
                         "//".toRegex(),
                         "/"
                     )

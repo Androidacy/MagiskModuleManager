@@ -3,8 +3,7 @@
  */
 
 @file:Suppress(
-    "KotlinConstantConditions",
-    "ktConcatNullable"
+    "KotlinConstantConditions", "ktConcatNullable"
 )
 
 package com.fox2code.mmm
@@ -38,8 +37,8 @@ enum class NotificationType(
     var special: Boolean = false
 ) : NotificationTypeCst {
 
-    @JvmStatic
-    DEBUG(R.string.debug_build,
+    DEBUG(
+        R.string.debug_build,
         R.drawable.ic_baseline_bug_report_24,
         com.google.android.material.R.attr.colorPrimary,
         com.google.android.material.R.attr.colorOnPrimary,
@@ -66,7 +65,6 @@ enum class NotificationType(
         }
     },
 
-    @JvmStatic
     SHOWCASE_MODE(
         R.string.showcase_mode,
         R.drawable.ic_baseline_lock_24,
@@ -78,7 +76,7 @@ enum class NotificationType(
         }
     },
 
-    @JvmStatic
+
     NO_ROOT(R.string.fail_root_magisk, R.drawable.ic_baseline_numbers_24) {
         override fun shouldRemove(): Boolean {
             return InstallerInitializer.errorNotification !== this
@@ -90,8 +88,9 @@ enum class NotificationType(
         }
     },
 
-    @JvmStatic
-    MAGISK_OUTDATED(R.string.magisk_outdated,
+
+    MAGISK_OUTDATED(
+        R.string.magisk_outdated,
         R.drawable.ic_baseline_update_24,
         View.OnClickListener { v: View ->
             IntentHelper.openUrl(
@@ -103,22 +102,23 @@ enum class NotificationType(
         }
     },
 
-    @JvmStatic
+
     NO_INTERNET(R.string.fail_internet, R.drawable.ic_baseline_cloud_off_24) {
         override fun shouldRemove(): Boolean {
             return RepoManager.getINSTANCE()!!.hasConnectivity()
         }
     },
 
-    @JvmStatic
+
     REPO_UPDATE_FAILED(R.string.repo_update_failed, R.drawable.ic_baseline_cloud_off_24) {
         override fun shouldRemove(): Boolean {
             return RepoManager.getINSTANCE()!!.isLastUpdateSuccess
         }
     },
 
-    @JvmStatic
-    NEED_CAPTCHA_ANDROIDACY(R.string.androidacy_need_captcha,
+
+    NEED_CAPTCHA_ANDROIDACY(
+        R.string.androidacy_need_captcha,
         R.drawable.ic_baseline_refresh_24,
         View.OnClickListener { v: View ->
             IntentHelper.openUrlAndroidacy(
@@ -130,14 +130,14 @@ enum class NotificationType(
         }
     },
 
-    @JvmStatic
+
     NO_WEB_VIEW(R.string.no_web_view, R.drawable.ic_baseline_android_24) {
         override fun shouldRemove(): Boolean {
             return Http.hasWebView()
         }
     },
 
-    @JvmStatic
+
     UPDATE_AVAILABLE(
         R.string.app_update_available,
         R.drawable.ic_baseline_system_update_24,
@@ -166,7 +166,7 @@ enum class NotificationType(
         }
     },
 
-    @JvmStatic
+
     INSTALL_FROM_STORAGE(
         R.string.install_from_storage,
         R.drawable.ic_baseline_storage_24,
@@ -182,17 +182,14 @@ enum class NotificationType(
                     .setPositiveButton(android.R.string.ok, null).show()
                 return@OnClickListener
             }
-            val compatActivity = MainApplication.INSTANCE!!.lastActivity!!
+            val compatActivity = MainApplication.getInstance().lastActivity!!
             val module = File(
                 compatActivity.cacheDir, "installer" + File.separator + "module.zip"
             )
-            IntentHelper.openFileTo(module, object :
-                OnFileReceivedCallback {
+            IntentHelper.openFileTo(module, object : OnFileReceivedCallback {
 
                 override fun onReceived(
-                    target: File?,
-                    uri: Uri?,
-                    response: Int
+                    target: File?, uri: Uri?, response: Int
                 ) {
                     Companion
                     if (response == IntentHelper.RESPONSE_FILE) {
@@ -206,28 +203,16 @@ enum class NotificationType(
                             return
                         }
                         IntentHelper.openInstaller(
-                            compatActivity,
-                            target.absolutePath,
-                            compatActivity.getString(
+                            compatActivity, target.absolutePath, compatActivity.getString(
                                 R.string.local_install_title
-                            ),
-                            null,
-                            null,
-                            false,
-                            BuildConfig.DEBUG &&  // Use debug mode if no root
+                            ), null, null, false, BuildConfig.DEBUG &&  // Use debug mode if no root
                                     InstallerInitializer.peekMagiskPath() == null
                         )
                     } else if (response == IntentHelper.RESPONSE_URL) {
                         IntentHelper.openInstaller(
-                            compatActivity,
-                            uri.toString(),
-                            compatActivity.getString(
+                            compatActivity, uri.toString(), compatActivity.getString(
                                 R.string.remote_install_title
-                            ),
-                            null,
-                            null,
-                            false,
-                            BuildConfig.DEBUG &&  // Use debug mode if no root
+                            ), null, null, false, BuildConfig.DEBUG &&  // Use debug mode if no root
                                     InstallerInitializer.peekMagiskPath() == null
                         )
                     }

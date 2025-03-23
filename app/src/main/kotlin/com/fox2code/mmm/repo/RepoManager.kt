@@ -231,7 +231,7 @@ class RepoManager private constructor(mainApplication: MainApplication) : SyncMa
                     }
                 }
             }
-            MainApplication.INSTANCE!!.repoModules.putAll(modules)
+            MainApplication.getInstance().repoModules.putAll(modules)
         }
         if (MainApplication.forceDebugLogging) Timber.d("Finishing update")
         if (hasConnectivity()) {
@@ -246,7 +246,7 @@ class RepoManager private constructor(mainApplication: MainApplication) : SyncMa
                 if (!isLastUpdateSuccess || modules.isEmpty()) {
                     Timber.e("Failed to update %s", repoUpdaters[i]!!.repoData.name)
                     // Show snackbar on main looper and add some bottom padding
-                    val context: Activity? = MainApplication.INSTANCE!!.lastActivity
+                    val context: Activity? = MainApplication.getInstance().lastActivity
                     Handler(Looper.getMainLooper()).post {
                         if (context != null) {
                             // Show material dialogue with the repo name. for androidacy repo, show an option to reset the api key. show a message then a list of errors
@@ -299,7 +299,7 @@ class RepoManager private constructor(mainApplication: MainApplication) : SyncMa
     }
 
     fun hasConnectivity(): Boolean {
-        return hasConnectivity(MainApplication.INSTANCE!!.applicationContext)
+        return hasConnectivity(MainApplication.getInstance().applicationContext)
     }
 
     private fun addRepoData(url: String, fallBackName: String?): RepoData {
@@ -366,7 +366,7 @@ class RepoManager private constructor(mainApplication: MainApplication) : SyncMa
             if (INSTANCE == null || !INSTANCE!!.initialized) {
                 synchronized(lock) {
                     if (INSTANCE == null) {
-                        val mainApplication = MainApplication.INSTANCE
+                        val mainApplication = MainApplication.getInstance()
                         if (mainApplication != null) {
                             INSTANCE = RepoManager(mainApplication)
                             onRepoManagerInitialized()
@@ -384,7 +384,7 @@ class RepoManager private constructor(mainApplication: MainApplication) : SyncMa
                 if (INSTANCE == null) {
                     synchronized(lock) {
                         if (INSTANCE == null) {
-                            val mainApplication = MainApplication.INSTANCE
+                            val mainApplication = MainApplication.getInstance()
                             if (mainApplication != null) {
                                 INSTANCE = RepoManager(mainApplication)
                                 onRepoManagerInitialized()

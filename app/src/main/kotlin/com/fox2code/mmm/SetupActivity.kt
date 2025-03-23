@@ -41,7 +41,6 @@ import org.apache.commons.io.FileUtils
 import timber.log.Timber
 import java.io.File
 import java.io.IOException
-import java.sql.Timestamp
 import java.util.Objects
 
 class SetupActivity : AppCompatActivity(), LanguageActivity {
@@ -69,27 +68,7 @@ class SetupActivity : AppCompatActivity(), LanguageActivity {
         }
         val binding = ActivitySetupBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        val ts = Timestamp(System.currentTimeMillis() - 30L * 24 * 60 * 60 * 1000)
-        val buildTime = Timestamp(BuildConfig.BUILD_TIME)
-        if (BuildConfig.DEBUG) {
-            if (ts.time > buildTime.time) {
-                val pm = packageManager
-                val intent = Intent(this, ExpiredActivity::class.java)
-                val resolveInfo = pm.queryIntentActivities(intent, 0)
-                if (resolveInfo.size > 0) {
-                    startActivity(intent)
-                    finish()
-                    return
-                } else {
-                    throw IllegalAccessError("This build has expired")
-                }
-            }
-        } else {
-            val ts2 = Timestamp(System.currentTimeMillis() - 180L * 24 * 60 * 60 * 1000)
-            if (ts2.time > buildTime.time) {
-                Toast.makeText(this, R.string.build_expired, Toast.LENGTH_LONG).show()
-            }
-        }
+        MainApplication.getInstance().check(this)
         val view: View = binding.root
         // if our application id is "com.androidacy.mmm" or begins with it, check if com.fox2code.mmm is installed and offer to uninstall it. if we're com.fox2code.mmm, check if com.fox2code.mmm.fdroid or com.fox2code.mmm.debug is installed and offer to uninstall it
         val ourPackageName = BuildConfig.APPLICATION_ID
@@ -112,7 +91,12 @@ class SetupActivity : AppCompatActivity(), LanguageActivity {
                     if (packageName == foxPkgNameDebug || packageName == foxPkgNameFdroid || packageName == foxPkgNamePlay) {
                         val materialAlertDialogBuilder = MaterialAlertDialogBuilder(this)
                         materialAlertDialogBuilder.setTitle(R.string.setup_uninstall_title)
-                        materialAlertDialogBuilder.setMessage(getString(R.string.setup_uninstall_message, packageName))
+                        materialAlertDialogBuilder.setMessage(
+                            getString(
+                                R.string.setup_uninstall_message,
+                                packageName
+                            )
+                        )
                         materialAlertDialogBuilder.setPositiveButton(R.string.uninstall) { _: DialogInterface?, _: Int ->
                             // start uninstall intent
                             val intent = Intent(Intent.ACTION_DELETE)
@@ -122,11 +106,17 @@ class SetupActivity : AppCompatActivity(), LanguageActivity {
                         materialAlertDialogBuilder.setNegativeButton(R.string.cancel) { _: DialogInterface?, _: Int -> }
                     }
                 }
+
                 androidacyPkgName -> {
                     if (packageName == foxPkgName || packageName == foxPkgNameFdroid || packageName == foxPkgNameDebug || packageName == foxPkgNamePlay) {
                         val materialAlertDialogBuilder = MaterialAlertDialogBuilder(this)
                         materialAlertDialogBuilder.setTitle(R.string.setup_uninstall_title)
-                        materialAlertDialogBuilder.setMessage(getString(R.string.setup_uninstall_message, packageName))
+                        materialAlertDialogBuilder.setMessage(
+                            getString(
+                                R.string.setup_uninstall_message,
+                                packageName
+                            )
+                        )
                         materialAlertDialogBuilder.setPositiveButton(R.string.uninstall) { _: DialogInterface?, _: Int ->
                             // start uninstall intent
                             val intent = Intent(Intent.ACTION_DELETE)
@@ -136,11 +126,17 @@ class SetupActivity : AppCompatActivity(), LanguageActivity {
                         materialAlertDialogBuilder.setNegativeButton(R.string.cancel) { _: DialogInterface?, _: Int -> }
                     }
                 }
+
                 else -> {
                     if (packageName == foxPkgNameDebug) {
                         val materialAlertDialogBuilder = MaterialAlertDialogBuilder(this)
                         materialAlertDialogBuilder.setTitle(R.string.setup_uninstall_title)
-                        materialAlertDialogBuilder.setMessage(getString(R.string.setup_uninstall_message, packageName))
+                        materialAlertDialogBuilder.setMessage(
+                            getString(
+                                R.string.setup_uninstall_message,
+                                packageName
+                            )
+                        )
                         materialAlertDialogBuilder.setPositiveButton(R.string.uninstall) { _: DialogInterface?, _: Int ->
                             // start uninstall intent
                             val intent = Intent(Intent.ACTION_DELETE)
@@ -157,8 +153,7 @@ class SetupActivity : AppCompatActivity(), LanguageActivity {
         val setupCrashReporting = view.findViewById<MaterialSwitch>(R.id.setup_crash_reporting)
         val analyticsEnabled = view.findViewById<MaterialSwitch>(R.id.setup_app_analytics)
         val crashReportingPii = view.findViewById<MaterialSwitch>(R.id.setup_crash_reporting_pii)
-        setupCrashReporting.isChecked =
-            BuildConfig.DEFAULT_ENABLE_CRASH_REPORTING
+        setupCrashReporting.isChecked = BuildConfig.DEFAULT_ENABLE_CRASH_REPORTING
         // if analytics is disabled, force disable crash reporting
         if (!view.findViewById<MaterialSwitch>(R.id.setup_app_analytics).isChecked) {
             setupCrashReporting.isEnabled = false
@@ -167,20 +162,20 @@ class SetupActivity : AppCompatActivity(), LanguageActivity {
             crashReportingPii.isChecked = false
         }
         // switch summary for setup_app_analytics_summary
-        val setupAppAnalyticsSummary = view.findViewById<MaterialTextView>(R.id.setup_app_analytics_summary)
+        val setupAppAnalyticsSummary =
+            view.findViewById<MaterialTextView>(R.id.setup_app_analytics_summary)
         // listen for changes to the analytics switch
         analyticsEnabled.setOnCheckedChangeListener { _: CompoundButton?, isChecked: Boolean ->
             if (BuildConfig.DEBUG) Timber.i(
-                "Analytics: %s",
-                isChecked)
+                "Analytics: %s", isChecked
+            )
             // if analytics is disabled, force disable crash reporting
             if (!isChecked) {
                 setupCrashReporting.isChecked = false
                 setupCrashReporting.isEnabled = false
             } else {
                 setupCrashReporting.isEnabled = true
-                setupCrashReporting.isChecked =
-                    BuildConfig.DEFAULT_ENABLE_CRASH_REPORTING
+                setupCrashReporting.isChecked = BuildConfig.DEFAULT_ENABLE_CRASH_REPORTING
             }
             if (!isChecked) {
                 setupAppAnalyticsSummary.setText(R.string.analytics_disabled_desc)
@@ -189,8 +184,7 @@ class SetupActivity : AppCompatActivity(), LanguageActivity {
             }
         }
         // pref_analytics_enabled
-        analyticsEnabled.isChecked =
-            BuildConfig.DEFAULT_ENABLE_ANALYTICS
+        analyticsEnabled.isChecked = BuildConfig.DEFAULT_ENABLE_ANALYTICS
         // Repos are a little harder, as the enabled_repos build config is an arraylist
         val andRepoView =
             Objects.requireNonNull<Any>(view.findViewById(R.id.setup_androidacy_repo)) as MaterialSwitch
@@ -202,32 +196,27 @@ class SetupActivity : AppCompatActivity(), LanguageActivity {
         if (BuildConfig.DEBUG) {
             (Objects.requireNonNull<Any>(view.findViewById(R.id.setup_background_update_check)) as MaterialSwitch).setOnCheckedChangeListener { _: CompoundButton?, isChecked: Boolean ->
                 if (MainApplication.forceDebugLogging) Timber.i(
-                    "Automatic update Check: %s",
-                    isChecked
+                    "Automatic update Check: %s", isChecked
                 )
             }
             setupCrashReporting.setOnCheckedChangeListener { _: CompoundButton?, isChecked: Boolean ->
                 if (MainApplication.forceDebugLogging) Timber.i(
-                    "Crash Reporting: %s",
-                    isChecked
+                    "Crash Reporting: %s", isChecked
                 )
             }
             (Objects.requireNonNull<Any>(view.findViewById(R.id.setup_crash_reporting_pii)) as MaterialSwitch).setOnCheckedChangeListener { _: CompoundButton?, isChecked: Boolean ->
                 if (MainApplication.forceDebugLogging) Timber.i(
-                    "Crash Reporting PII: %s",
-                    isChecked
+                    "Crash Reporting PII: %s", isChecked
                 )
             }
             (Objects.requireNonNull<Any>(view.findViewById(R.id.setup_androidacy_repo)) as MaterialSwitch).setOnCheckedChangeListener { _: CompoundButton?, isChecked: Boolean ->
                 if (MainApplication.forceDebugLogging) Timber.i(
-                    "Androidacy Repo: %s",
-                    isChecked
+                    "Androidacy Repo: %s", isChecked
                 )
             }
             (Objects.requireNonNull<Any>(view.findViewById(R.id.setup_magisk_alt_repo)) as MaterialSwitch).setOnCheckedChangeListener { _: CompoundButton?, isChecked: Boolean ->
                 if (MainApplication.forceDebugLogging) Timber.i(
-                    "Magisk Alt Repo: %s",
-                    isChecked
+                    "Magisk Alt Repo: %s", isChecked
                 )
             }
         }
@@ -258,8 +247,7 @@ class SetupActivity : AppCompatActivity(), LanguageActivity {
             builder.setCancelable(true)
             // Create the dialog
             builder.setSingleChoiceItems(
-                themeNames,
-                checkedItem
+                themeNames, checkedItem
             ) { dialog: DialogInterface, which: Int ->
                 // Set the theme
                 prefs.edit().putString("pref_theme", themeValues[which]).commit()
@@ -300,9 +288,7 @@ class SetupActivity : AppCompatActivity(), LanguageActivity {
             // if agreeEula is not checked, show a toast and return
             if (!agreeEula.isChecked) {
                 Toast.makeText(
-                    this,
-                    R.string.setup_agree_eula_toast,
-                    Toast.LENGTH_LONG
+                    this, R.string.setup_agree_eula_toast, Toast.LENGTH_LONG
                 ).show()
                 return@setOnClickListener
             }
@@ -329,8 +315,7 @@ class SetupActivity : AppCompatActivity(), LanguageActivity {
             )
             // Set the crash reporting pref
             editor.putBoolean(
-                "pref_crash_reporting",
-                setupCrashReporting.isChecked
+                "pref_crash_reporting", setupCrashReporting.isChecked
             )
             // Set the crash reporting PII pref
             editor.putBoolean(
@@ -355,8 +340,7 @@ class SetupActivity : AppCompatActivity(), LanguageActivity {
             if (MainApplication.forceDebugLogging) Timber.d("Saving preferences")
             // now basically do the same thing for room db
             val db = Room.databaseBuilder(
-                applicationContext,
-                ReposListDatabase::class.java, "ReposList.db"
+                applicationContext, ReposListDatabase::class.java, "ReposList.db"
             ).allowMainThreadQueries().build()
             val androidacyRepoRoom = andRepoView.isChecked
             val magiskAltRepoRoom = magiskAltRepoView.isChecked
@@ -371,18 +355,27 @@ class SetupActivity : AppCompatActivity(), LanguageActivity {
             // Commit the changes
             editor.commit()
             // Log the changes
-            if (MainApplication.forceDebugLogging) Timber.d("Setup finished. Preferences: %s", prefs.all)
-            if (MainApplication.forceDebugLogging) Timber.d("Androidacy repo: %s", androidacyRepoRoom)
-            if (MainApplication.forceDebugLogging) Timber.d("Magisk Alt repo: %s", magiskAltRepoRoom)
+            if (MainApplication.forceDebugLogging) Timber.d(
+                "Setup finished. Preferences: %s",
+                prefs.all
+            )
+            if (MainApplication.forceDebugLogging) Timber.d(
+                "Androidacy repo: %s",
+                androidacyRepoRoom
+            )
+            if (MainApplication.forceDebugLogging) Timber.d(
+                "Magisk Alt repo: %s",
+                magiskAltRepoRoom
+            )
             // log last shown setup
-            if (MainApplication.forceDebugLogging) Timber.d("Last shown setup: %s", prefs.getString("last_shown_setup", "v0"))
+            if (MainApplication.forceDebugLogging) Timber.d(
+                "Last shown setup: %s",
+                prefs.getString("last_shown_setup", "v0")
+            )
             // Restart the activity
             MainActivity.doSetupRestarting = true
             val pendingIntent = PendingIntent.getActivity(
-                this,
-                0,
-                Intent(this, MainActivity::class.java),
-                PendingIntent.FLAG_IMMUTABLE
+                this, 0, Intent(this, MainActivity::class.java), PendingIntent.FLAG_IMMUTABLE
             )
             try {
                 pendingIntent.send()
@@ -459,17 +452,13 @@ class SetupActivity : AppCompatActivity(), LanguageActivity {
         val thread = Thread {
             if (MainApplication.forceDebugLogging) Timber.d("Creating databases")
             val startTime = System.currentTimeMillis()
-            val appContext = MainApplication.INSTANCE!!.applicationContext
+            val appContext = MainApplication.getInstance().applicationContext
             val db = Room.databaseBuilder(appContext, ReposListDatabase::class.java, "ReposList.db")
                 .fallbackToDestructiveMigration().build()
             // same for modulelistcache
             val db2 = Room.databaseBuilder(
-                appContext,
-                ModuleListCacheDatabase::class.java,
-                "ModuleListCache.db"
-            )
-                .fallbackToDestructiveMigration()
-                .allowMainThreadQueries().build()
+                appContext, ModuleListCacheDatabase::class.java, "ModuleListCache.db"
+            ).fallbackToDestructiveMigration().allowMainThreadQueries().build()
 
             val reposListDao = db.reposListDao()
             val moduleListCacheDao = db2.moduleListCacheDao()
@@ -533,9 +522,7 @@ class SetupActivity : AppCompatActivity(), LanguageActivity {
                 // show a toast
                 runOnUiThread {
                     Toast.makeText(
-                        this,
-                        R.string.error_creating_repos_database,
-                        Toast.LENGTH_LONG
+                        this, R.string.error_creating_repos_database, Toast.LENGTH_LONG
                     ).show()
                 }
             } else {
@@ -547,9 +534,7 @@ class SetupActivity : AppCompatActivity(), LanguageActivity {
                 // show a toast
                 runOnUiThread {
                     Toast.makeText(
-                        this,
-                        R.string.error_creating_modulelistcache_database,
-                        Toast.LENGTH_LONG
+                        this, R.string.error_creating_modulelistcache_database, Toast.LENGTH_LONG
                     ).show()
                 }
             } else {
@@ -558,7 +543,10 @@ class SetupActivity : AppCompatActivity(), LanguageActivity {
             // close the databases
             db.close()
             db2.close()
-            if (MainApplication.forceDebugLogging) Timber.d("Databases created in %s ms", System.currentTimeMillis() - startTime)
+            if (MainApplication.forceDebugLogging) Timber.d(
+                "Databases created in %s ms",
+                System.currentTimeMillis() - startTime
+            )
         }
         thread.start()
     }
@@ -572,17 +560,15 @@ class SetupActivity : AppCompatActivity(), LanguageActivity {
             // show a toast
             runOnUiThread {
                 Toast.makeText(
-                    this,
-                    R.string.error_creating_cookie_database,
-                    Toast.LENGTH_LONG
+                    this, R.string.error_creating_cookie_database, Toast.LENGTH_LONG
                 ).show()
             }
         }
         // we literally only use these to create the http cache folders
         try {
-            FileUtils.forceMkdir(File(MainApplication.INSTANCE!!.dataDir.toString() + "/cache/cronet"))
-            FileUtils.forceMkdir(File(MainApplication.INSTANCE!!.dataDir.toString() + "/cache/WebView/Default/HTTP Cache/Code Cache/wasm"))
-            FileUtils.forceMkdir(File(MainApplication.INSTANCE!!.dataDir.toString() + "/cache/WebView/Default/HTTP Cache/Code Cache/js"))
+            FileUtils.forceMkdir(File(MainApplication.getInstance().dataDir.toString() + "/cache/cronet"))
+            FileUtils.forceMkdir(File(MainApplication.getInstance().dataDir.toString() + "/cache/WebView/Default/HTTP Cache/Code Cache/wasm"))
+            FileUtils.forceMkdir(File(MainApplication.getInstance().dataDir.toString() + "/cache/WebView/Default/HTTP Cache/Code Cache/js"))
         } catch (e: IOException) {
             Timber.e(e)
         }

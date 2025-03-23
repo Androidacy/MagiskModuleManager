@@ -95,7 +95,7 @@ class MarkdownActivity : AppCompatActivity() {
                 val markdown = String(rawMarkdown, StandardCharsets.UTF_8)
                 if (MainApplication.forceDebugLogging) Timber.i("Done!")
                 runOnUiThread {
-                    MainApplication.INSTANCE!!.markwon?.setMarkdown(
+                    MainApplication.getInstance().markwon?.setMarkdown(
                         textView, MarkdownUrlLinker.urlLinkify(markdown)
                     )
                     if (markdownBackground != null) {

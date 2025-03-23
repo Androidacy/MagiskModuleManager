@@ -21,7 +21,7 @@ import timber.log.Timber
 class InfoFragment : PreferenceFragmentCompat() {
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         val name = "mmmx"
-        val context: Context? = MainApplication.INSTANCE
+        val context: Context? = MainApplication.getInstance()
         val masterKey: MasterKey
         val preferenceManager = preferenceManager
         val dataStore: SharedPreferenceDataStore
@@ -119,7 +119,7 @@ class InfoFragment : PreferenceFragmentCompat() {
                 Preference.OnPreferenceClickListener { _: Preference? ->
                     // open fox
                     IntentHelper.openUrl(
-                        MainApplication.INSTANCE!!.lastActivity!!, "https://paypal.me/fox2code"
+                        MainApplication.getInstance().lastActivity!!, "https://paypal.me/fox2code"
                     )
                     true
                 }
@@ -151,7 +151,7 @@ class InfoFragment : PreferenceFragmentCompat() {
                         Toast.makeText(requireContext(), toastText, Toast.LENGTH_SHORT).show()
                         // open androidacy
                         IntentHelper.openUrl(
-                            MainApplication.INSTANCE!!.lastActivity!!,
+                            MainApplication.getInstance().lastActivity!!,
                             "https://www.androidacy.com/membership-join/?utm_source=AMMM&utm_medium=app&utm_campaign=donate"
                         )
                         true

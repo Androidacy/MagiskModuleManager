@@ -78,9 +78,8 @@ import java.io.File
 import java.io.FileOutputStream
 import java.io.InputStream
 import java.io.OutputStream
-import java.nio.file.Files.*
-import java.sql.Timestamp
 import kotlin.math.roundToInt
+import androidx.core.view.isVisible
 
 
 class MainActivity : AppCompatActivity(), OnRefreshListener, OverScrollHelper {
@@ -134,10 +133,9 @@ class MainActivity : AppCompatActivity(), OnRefreshListener, OverScrollHelper {
             if (ContentResolver.SCHEME_FILE == uri.scheme) {
                 var path = uri.path
                 if (path!!.startsWith("/sdcard/")) { // Fix file paths
-                    path =
-                        Environment.getExternalStorageDirectory().absolutePath + path.substring(
-                            7
-                        )
+                    path = Environment.getExternalStorageDirectory().absolutePath + path.substring(
+                        7
+                    )
                 }
                 inputStream = SuFileInputStream.open(
                     File(path).absoluteFile
@@ -151,21 +149,17 @@ class MainActivity : AppCompatActivity(), OnRefreshListener, OverScrollHelper {
                     this@MainActivity, R.string.file_picker_failure, Toast.LENGTH_SHORT
                 ).show()
                 callback?.onReceived(
-                    destination,
-                    uri,
-                    IntentHelper.RESPONSE_ERROR
+                    destination, uri, IntentHelper.RESPONSE_ERROR
                 )
                 return@registerForActivityResult
             }
             run {
                 outputStream = FileOutputStream(destination)
-                Files.copy(inputStream, outputStream as FileOutputStream)
+                Files.copy(inputStream, outputStream)
                 if (MainApplication.forceDebugLogging) Timber.i("File saved at %s", destination)
                 success = true
                 callback?.onReceived(
-                    destination,
-                    uri,
-                    IntentHelper.RESPONSE_FILE
+                    destination, uri, IntentHelper.RESPONSE_FILE
                 )
             }
         } catch (e: Exception) {
@@ -189,7 +183,7 @@ class MainActivity : AppCompatActivity(), OnRefreshListener, OverScrollHelper {
         super.onResume()
         onMainActivityResume(this)
         // check that installed or online is selected depending on which recyclerview is visible
-        if (moduleList!!.visibility == View.VISIBLE) {
+        if (moduleList!!.isVisible) {
             bottomNavigationView.selectedItemId = R.id.installed_menu_item
         } else {
             bottomNavigationView.selectedItemId = R.id.online_menu_item
@@ -225,14 +219,14 @@ class MainActivity : AppCompatActivity(), OnRefreshListener, OverScrollHelper {
             return
         }
 
-        // hide this behind a buildconfig flag for now, but crash the app if it's not an official build and not debug
-        if (BuildConfig.ENABLE_PROTECTION && !MainApplication.o && !BuildConfig.DEBUG) {
+        if (!MainApplication.o && !BuildConfig.DEBUG) {
             throw RuntimeException("This is not an official build of AMM")
         } else if (!MainApplication.o && !BuildConfig.DEBUG) {
             Timber.w("You may be running an untrusted build.")
             // Show a toast to warn the user
             Toast.makeText(this, R.string.not_official_build, Toast.LENGTH_LONG).show()
         }
+
         // track enabled repos
         Thread {
             val db = Room.databaseBuilder(
@@ -254,32 +248,11 @@ class MainActivity : AppCompatActivity(), OnRefreshListener, OverScrollHelper {
                 repoMap["repos"] = enabledRepos.toString()
                 if (MainApplication.analyticsAllowed()) Countly.sharedInstance().events()
                     .recordEvent(
-                        "enabled_repos",
-                        repoMap as Map<String, Any>?, 1
+                        "enabled_repos", repoMap as Map<String, Any>?, 1
                     )
             }
         }.start()
-        val ts = Timestamp(System.currentTimeMillis() - 30L * 24 * 60 * 60 * 1000)
-        val buildTime = Timestamp(BuildConfig.BUILD_TIME)
-        if (BuildConfig.DEBUG) {
-            if (ts.time > buildTime.time) {
-                val pm = packageManager
-                val intent = Intent(this, ExpiredActivity::class.java)
-                val resolveInfo = pm.queryIntentActivities(intent, 0)
-                if (resolveInfo.size > 0) {
-                    startActivity(intent)
-                    finish()
-                    return
-                } else {
-                    throw IllegalAccessError("This build has expired")
-                }
-            }
-        } else {
-            val ts2 = Timestamp(System.currentTimeMillis() - 180L * 24 * 60 * 60 * 1000)
-            if (ts2.time > buildTime.time) {
-                Toast.makeText(this, R.string.build_expired, Toast.LENGTH_LONG).show()
-            }
-        }
+        MainApplication.getInstance().check(this)
         setContentView(R.layout.activity_main)
         this.setTitle(R.string.app_name_v2)
         // set navigation bar color based on surfacecolors
@@ -300,7 +273,8 @@ class MainActivity : AppCompatActivity(), OnRefreshListener, OverScrollHelper {
         val view = findViewById<View>(R.id.root_container)
         var startBottom = 0f
         var endBottom = 0f
-        ViewCompat.setWindowInsetsAnimationCallback(view,
+        ViewCompat.setWindowInsetsAnimationCallback(
+            view,
             object : WindowInsetsAnimationCompat.Callback(DISPATCH_MODE_STOP) {
                 // Override methods…
                 override fun onProgress(
@@ -357,8 +331,7 @@ class MainActivity : AppCompatActivity(), OnRefreshListener, OverScrollHelper {
                 Thread {
                     if (moduleViewListBuilder.setQueryChange(query)) {
                         if (MainApplication.forceDebugLogging) Timber.i(
-                            "Query submit: %s on offline list",
-                            query
+                            "Query submit: %s on offline list", query
                         )
                         Thread(
                             { moduleViewListBuilder.applyTo(moduleList!!, moduleViewAdapter!!) },
@@ -368,8 +341,7 @@ class MainActivity : AppCompatActivity(), OnRefreshListener, OverScrollHelper {
                     // same for online list
                     if (moduleViewListBuilderOnline.setQueryChange(query)) {
                         if (MainApplication.forceDebugLogging) Timber.i(
-                            "Query submit: %s on online list",
-                            query
+                            "Query submit: %s on online list", query
                         )
                         Thread({
                             moduleViewListBuilderOnline.applyTo(
@@ -392,8 +364,7 @@ class MainActivity : AppCompatActivity(), OnRefreshListener, OverScrollHelper {
                 Thread {
                     if (moduleViewListBuilder.setQueryChange(query)) {
                         if (MainApplication.forceDebugLogging) Timber.i(
-                            "Query submit: %s on offline list",
-                            query
+                            "Query submit: %s on offline list", query
                         )
                         Thread(
                             { moduleViewListBuilder.applyTo(moduleList!!, moduleViewAdapter!!) },
@@ -403,8 +374,7 @@ class MainActivity : AppCompatActivity(), OnRefreshListener, OverScrollHelper {
                     // same for online list
                     if (moduleViewListBuilderOnline.setQueryChange(query)) {
                         if (MainApplication.forceDebugLogging) Timber.i(
-                            "Query submit: %s on online list",
-                            query
+                            "Query submit: %s on online list", query
                         )
                         Thread({
                             moduleViewListBuilderOnline.applyTo(
@@ -460,8 +430,7 @@ class MainActivity : AppCompatActivity(), OnRefreshListener, OverScrollHelper {
                 ) { _: DialogInterface?, which: Int ->
                     when (which) {
                         0 -> RuntimeUtils.reboot(
-                            this@MainActivity,
-                            RuntimeUtils.RebootMode.REBOOT
+                            this@MainActivity, RuntimeUtils.RebootMode.REBOOT
                         )
 
                         1 -> RuntimeUtils.reboot(
@@ -597,7 +566,7 @@ class MainActivity : AppCompatActivity(), OnRefreshListener, OverScrollHelper {
             bottomNavigationView.selectedItemId = R.id.installed_menu_item
         }
         // reset update module and update module count in main application
-        MainApplication.INSTANCE!!.resetUpdateModule()
+        MainApplication.getInstance().resetUpdateModule()
         tryGetMagiskPathAsync(object : InstallerInitializer.Callback {
             override fun onPathReceived(path: String?) {
                 if (MainApplication.forceDebugLogging) Timber.i("Got magisk path: %s", path)
@@ -686,13 +655,11 @@ class MainActivity : AppCompatActivity(), OnRefreshListener, OverScrollHelper {
                                 // progress is out of a hundred (Int) and starts at 30 once we've reached this point
                                 runOnUiThread(if (max == 0) Runnable {
                                     progressIndicator.setProgress(
-                                        80,
-                                        true
+                                        80, true
                                     )
                                 } else Runnable {
                                     progressIndicator.setProgress(
-                                        30 + value,
-                                        true
+                                        30 + value, true
                                     )
                                 })
                             }
@@ -740,8 +707,7 @@ class MainActivity : AppCompatActivity(), OnRefreshListener, OverScrollHelper {
                                 // progress starts at 80 and goes to 99. each module should add a equal amount of progress to the bar, rounded up to the nearest integer
                                 runOnUiThread {
                                     progressIndicator.setProgress(
-                                        80 + (currentTmp / max.toFloat() * 20).roundToInt(),
-                                        true
+                                        80 + (currentTmp / max.toFloat() * 20).roundToInt(), true
                                     )
                                     if (BuildConfig.DEBUG) {
                                         Timber.i(
@@ -764,13 +730,13 @@ class MainActivity : AppCompatActivity(), OnRefreshListener, OverScrollHelper {
                 moduleViewListBuilderOnline.applyTo(moduleListOnline, moduleViewAdapterOnline!!)
                 moduleViewListBuilder.applyTo(moduleList, moduleViewAdapter!!)
                 // if moduleViewListBuilderOnline has the upgradeable notification, show a badge on the online repo nav item
-                if (MainApplication.INSTANCE!!.modulesHaveUpdates) {
+                if (MainApplication.getInstance().modulesHaveUpdates) {
                     if (MainApplication.forceDebugLogging) Timber.i("Applying badge")
                     Handler(Looper.getMainLooper()).post {
                         val badge = bottomNavigationView.getOrCreateBadge(R.id.online_menu_item)
                         badge.isVisible = true
-                        badge.number = MainApplication.INSTANCE!!.updateModuleCount
-                        badge.applyTheme(MainApplication.INSTANCE!!.theme)
+                        badge.number = MainApplication.getInstance().updateModuleCount
+                        badge.applyTheme(MainApplication.getInstance().theme)
                         if (MainApplication.forceDebugLogging) Timber.i("Badge applied")
                     }
                 }
@@ -800,11 +766,10 @@ class MainActivity : AppCompatActivity(), OnRefreshListener, OverScrollHelper {
         if (MainApplication.analyticsAllowed()) Countly.sharedInstance().feedback()
             .getAvailableFeedbackWidgets { retrievedWidgets, error ->
                 if (MainApplication.forceDebugLogging) Timber.i(
-                    "Got feedback widgets: %s",
-                    retrievedWidgets.size
+                    "Got feedback widgets: %s", retrievedWidgets.size
                 )
                 if (error == null) {
-                    if (retrievedWidgets.size > 0) {
+                    if (retrievedWidgets.isNotEmpty()) {
                         val feedbackWidget = retrievedWidgets[0]
                         if (MainApplication.analyticsAllowed()) Countly.sharedInstance().feedback()
                             .presentFeedbackWidget(
@@ -870,7 +835,7 @@ class MainActivity : AppCompatActivity(), OnRefreshListener, OverScrollHelper {
         progressIndicator!!.setProgress(20, true)
         swipeRefreshBlocker = System.currentTimeMillis() + 5000L
 
-        MainApplication.INSTANCE!!.repoModules.clear()
+        MainApplication.getInstance().repoModules.clear()
         // this.swipeRefreshLayout.setRefreshing(true); ??
         Thread({
             cleanDnsCache() // Allow DNS reload from network
@@ -884,13 +849,11 @@ class MainActivity : AppCompatActivity(), OnRefreshListener, OverScrollHelper {
                     } else Runnable {
                         progressIndicator!!.setProgress(
                             // going from 30 to 80 as evenly as possible
-                            30 + value,
-                            true
+                            30 + value, true
                         )
                         if (BuildConfig.DEBUG) {
                             Timber.i(
-                                "Progress: %d",
-                                30 + value
+                                "Progress: %d", 30 + value
                             )
                         }
                     })
@@ -978,8 +941,7 @@ class MainActivity : AppCompatActivity(), OnRefreshListener, OverScrollHelper {
                 runtimeUtils!!.showUpgradeSnackbar(this, this)
             } else {
                 if (AndroidacyRepoData.instance.memberLevel == null || !AndroidacyRepoData.instance.memberLevel.equals(
-                        "Guest",
-                        ignoreCase = true
+                        "Guest", ignoreCase = true
                     )
                 ) {
                     if (MainApplication.forceDebugLogging) Timber.i(
@@ -1015,7 +977,7 @@ class MainActivity : AppCompatActivity(), OnRefreshListener, OverScrollHelper {
                 if (!outRect.contains(event.rawX.toInt(), event.rawY.toInt())) {
                     v.clearFocus()
                     val imm = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
-                    imm.hideSoftInputFromWindow(v.getWindowToken(), 0)
+                    imm.hideSoftInputFromWindow(v.windowToken, 0)
                 }
             }
         }

@@ -65,13 +65,17 @@ import java.io.InputStreamReader
 import java.util.Enumeration
 import java.util.concurrent.Executor
 import java.util.zip.ZipEntry
+import androidx.core.graphics.drawable.toDrawable
+import androidx.core.view.isVisible
 
 class InstallerActivity : AppCompatActivity() {
     private var canGoBack: Boolean = false
     private val isLightTheme: Boolean
-        get() = MainApplication.INSTANCE!!.isLightTheme
+        get() = MainApplication.getInstance().isLightTheme
     private var progressIndicator: LinearProgressIndicator? = null
+    @SuppressLint("RestrictedApi")
     private var rebootFloatingButton: BottomNavigationItemView? = null
+    @SuppressLint("RestrictedApi")
     private var cancelFloatingButton: BottomNavigationItemView? = null
     private var installerTerminal: InstallerTerminal? = null
     private var moduleCache: File? = null
@@ -106,7 +110,7 @@ class InstallerActivity : AppCompatActivity() {
             target = intent.getStringExtra(Constants.EXTRA_INSTALL_PATH)!!.replace(
                 Regex("(\\.\\.|%2E%2E|%252E%252E|%20)"), ""
             )
-            if (target.isEmpty() || !target.startsWith(MainApplication.INSTANCE!!.dataDir.absolutePath) && !target.startsWith(
+            if (target.isEmpty() || !target.startsWith(MainApplication.getInstance().dataDir.absolutePath) && !target.startsWith(
                     "https://"
                 )
             ) {
@@ -140,7 +144,7 @@ class InstallerActivity : AppCompatActivity() {
         setContentView(if (textWrap) R.layout.installer_wrap else R.layout.installer)
         val background: Int
         val foreground: Int
-        if (MainApplication.INSTANCE!!.isLightTheme && !MainApplication.isForceDarkTerminal) {
+        if (MainApplication.getInstance().isLightTheme && !MainApplication.isForceDarkTerminal) {
             background = Color.WHITE
             foreground = Color.BLACK
         } else {
@@ -161,7 +165,7 @@ class InstallerActivity : AppCompatActivity() {
             InstallerTerminal(findViewById<RecyclerView>(R.id.install_terminal).also {
                 installTerminal = it
             }, this.isLightTheme, foreground, mmtReborn)
-        (horizontalScroller ?: installTerminal).background = ColorDrawable(background)
+        (horizontalScroller ?: installTerminal).background = background.toDrawable()
         installTerminal.itemAnimator = null
         val prgInd = progressIndicator
         prgInd?.visibility = View.GONE
@@ -188,7 +192,7 @@ class InstallerActivity : AppCompatActivity() {
         }
         Thread(Runnable {
             // ensure module cache is is in our cache dir
-            if (urlMode && !moduleCache!!.absolutePath.startsWith(MainApplication.INSTANCE!!.cacheDir.absolutePath)) throw SecurityException(
+            if (urlMode && !moduleCache!!.absolutePath.startsWith(MainApplication.getInstance().cacheDir.absolutePath)) throw SecurityException(
                 "Module cache is not in cache dir!"
             )
             toDelete = if (urlMode) File(moduleCache, "module.zip") else File(
@@ -246,7 +250,7 @@ class InstallerActivity : AppCompatActivity() {
                 val zipFileTemp = File(this.cacheDir, "module.zip")
                 FileOutputStream(zipFileTemp).use { fos -> fos.write(rawModule) }
                 try {
-                    ZipFile(zipFileTemp).use { zipFile ->
+                    ZipFile.Builder().setFile(zipFileTemp).get().use { zipFile ->
                         // get the zip entries
                         val zipEntries: Enumeration<out ZipEntry> = zipFile.entries
                         // iterate over the zip entries
@@ -301,7 +305,7 @@ class InstallerActivity : AppCompatActivity() {
                     errMessage = "Failed to patch module zip"
                     runOnUiThread { installerTerminal!!.addLine("- Patching $name") }
                     FileOutputStream(moduleCache).use { outputStream ->
-                        patchModuleSimple(rawModule!!, outputStream)
+                        patchModuleSimple(rawModule, outputStream)
                         outputStream.flush()
                     }
                 }
@@ -353,7 +357,7 @@ class InstallerActivity : AppCompatActivity() {
             }
             installerTerminal!!.enableAnsi()
             try {
-                ZipFile(file).use { zipFile ->
+                ZipFile.Builder().setFile(file).get().use { zipFile ->
                     val zipEntry = zipFile.getEntry("customize.sh")
                     if (zipEntry != null) {
                         FileOutputStream(
@@ -372,7 +376,7 @@ class InstallerActivity : AppCompatActivity() {
             }
             installerMonitor = InstallerMonitor(installScript)
             installJob = Shell.cmd(
-                "export ASH_STANDALONE=1 exec " + ashExec,
+                "export ASH_STANDALONE=1 exec $ashExec",
                 "export MMM_EXT_SUPPORT=1",
                 "export MMM_USER_LANGUAGE=" + this.resources.configuration.locales[0].toLanguageTag(),
                 "export MMM_APP_VERSION=" + BuildConfig.VERSION_NAME,
@@ -394,7 +398,7 @@ class InstallerActivity : AppCompatActivity() {
                 return
             }
             try {
-                ZipFile(file).use { zipFile ->
+                ZipFile.Builder().setFile(file).get().use { zipFile ->
                     // Check if module is AnyKernel module
                     if (zipFile.getEntry("tools/ak3-core.sh") != null) {
                         val updateBinary =
@@ -443,9 +447,9 @@ class InstallerActivity : AppCompatActivity() {
             val compatFlags = AppUpdateManager.getFlagsForModule(moduleId!!)
             if (compatFlags and AppUpdateManager.FLAG_COMPAT_NEED_32BIT != 0) needs32bit = true
             if (compatFlags and AppUpdateManager.FLAG_COMPAT_NO_EXT != 0) noExtensions = true
-            if (moduleId != null && (moduleId!!.isEmpty() || moduleId!!.contains("/") || moduleId!!.contains(
+            if (moduleId != null && (moduleId.isEmpty() || moduleId.contains("/") || moduleId.contains(
                     "\u0000"
-                ) || moduleId!!.startsWith(".") && moduleId!!.endsWith("."))
+                ) || moduleId.startsWith(".") && moduleId.endsWith("."))
             ) {
                 setInstallStateFinished(false, "! This module contain a dangerous moduleId", null)
                 return
@@ -767,7 +771,7 @@ class InstallerActivity : AppCompatActivity() {
                         } catch (ignored: Exception) {
                             progressIndicator!!.setProgressCompat(0, true)
                             progressIndicator.max = 100
-                            if (progressIndicator.visibility == View.VISIBLE) {
+                            if (progressIndicator.isVisible) {
                                 progressIndicator.visibility = View.GONE
                             }
                             progressIndicator.isIndeterminate = true
@@ -775,12 +779,12 @@ class InstallerActivity : AppCompatActivity() {
                     } else {
                         progressIndicator!!.setProgressCompat(0, true)
                         progressIndicator.max = 100
-                        if (progressIndicator.visibility == View.VISIBLE) {
+                        if (progressIndicator.isVisible) {
                             progressIndicator.visibility = View.GONE
                         }
                         progressIndicator.isIndeterminate = true
                     }
-                    progressIndicator!!.visibility = View.VISIBLE
+                    progressIndicator.visibility = View.VISIBLE
                 }
 
                 "setLoading" -> {

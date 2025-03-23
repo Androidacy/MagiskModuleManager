@@ -5,7 +5,6 @@ package com.fox2code.mmm.repo
 
 import androidx.room.Room
 import com.fox2code.mmm.MainApplication
-import com.fox2code.mmm.MainApplication.Companion.INSTANCE
 import com.fox2code.mmm.MainApplication.Companion.getPreferences
 import com.fox2code.mmm.utils.io.Hashes.Companion.hashSha256
 import com.fox2code.mmm.utils.io.PropUtils.Companion.isNullString
@@ -109,7 +108,7 @@ class CustomRepoManager internal constructor(
         }
         val id = "repo_" + hashSha256(repo.toByteArray(StandardCharsets.UTF_8))
         // now the same as above but for room database
-        val applicationContext = INSTANCE!!.applicationContext
+        val applicationContext = MainApplication.getInstance().applicationContext
         val db = Room.databaseBuilder(
             applicationContext, ReposListDatabase::class.java, "ReposList.db"
         ).allowMainThreadQueries().build()

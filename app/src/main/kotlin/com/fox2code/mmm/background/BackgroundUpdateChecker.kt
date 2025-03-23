@@ -103,7 +103,7 @@ class BackgroundUpdateChecker(context: Context, workerParams: WorkerParameters) 
             builder.setContentTitle(context.getString(R.string.notification_channel_background_update_app))
             builder.setContentText(context.getString(R.string.notification_channel_background_update_app_description))
             if (ContextCompat.checkSelfPermission(
-                    MainApplication.INSTANCE!!.applicationContext,
+                    MainApplication.getInstance().applicationContext,
                     Manifest.permission.POST_NOTIFICATIONS
                 ) == PackageManager.PERMISSION_GRANTED
             ) {
@@ -120,7 +120,7 @@ class BackgroundUpdateChecker(context: Context, workerParams: WorkerParameters) 
                 ) {
                     return
                 }
-                if (MainApplication.INSTANCE!!.isInForeground) {
+                if (MainApplication.getInstance().isInForeground) {
                     // don't check if app is in foreground, this is a background check
                     return
                 }
@@ -144,7 +144,7 @@ class BackgroundUpdateChecker(context: Context, workerParams: WorkerParameters) 
 
                     // post checking notification if notifications are enabled
                     if (ContextCompat.checkSelfPermission(
-                            MainApplication.INSTANCE!!.applicationContext,
+                            MainApplication.getInstance().applicationContext,
                             Manifest.permission.POST_NOTIFICATIONS
                         ) == PackageManager.PERMISSION_GRANTED
                     ) {
@@ -309,7 +309,7 @@ class BackgroundUpdateChecker(context: Context, workerParams: WorkerParameters) 
                     }
                     // remove checking notification
                     if (ContextCompat.checkSelfPermission(
-                            MainApplication.INSTANCE!!.applicationContext,
+                            MainApplication.getInstance().applicationContext,
                             Manifest.permission.POST_NOTIFICATIONS
                         ) == PackageManager.PERMISSION_GRANTED
                     ) {
@@ -328,7 +328,7 @@ class BackgroundUpdateChecker(context: Context, workerParams: WorkerParameters) 
                 Timber.e(e, "Failed to check for updates")
                 // post notification
                 if (ContextCompat.checkSelfPermission(
-                        MainApplication.INSTANCE!!.applicationContext,
+                        MainApplication.getInstance().applicationContext,
                         Manifest.permission.POST_NOTIFICATIONS
                     ) == PackageManager.PERMISSION_GRANTED
                 ) {
@@ -417,14 +417,14 @@ class BackgroundUpdateChecker(context: Context, workerParams: WorkerParameters) 
             // set long text to summary so it doesn't get cut off
             builder.setStyle(NotificationCompat.BigTextStyle().bigText(summary))
             if (ContextCompat.checkSelfPermission(
-                    MainApplication.INSTANCE!!.applicationContext,
+                    MainApplication.getInstance().applicationContext,
                     Manifest.permission.POST_NOTIFICATIONS
                 ) != PackageManager.PERMISSION_GRANTED
             ) {
                 return
             }
             // check if app is in foreground. if so, don't show notification
-            if (MainApplication.INSTANCE!!.isInForeground && !test) return
+            if (MainApplication.getInstance().isInForeground && !test) return
             NotificationManagerCompat.from(context).notify(NOTIFICATION_ID, builder.build())
         }
 

@@ -19,10 +19,12 @@ import android.os.Build
 import android.os.Bundle
 import android.os.SystemClock
 import android.util.Log
+import android.widget.Toast
 import androidx.annotation.StyleRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.view.ContextThemeWrapper
 import androidx.core.app.NotificationManagerCompat
+import androidx.core.content.edit
 import androidx.emoji2.text.DefaultEmojiCompatConfig
 import androidx.emoji2.text.EmojiCompat
 import androidx.security.crypto.EncryptedSharedPreferences
@@ -103,6 +105,62 @@ class MainApplication : Application(), Configuration.Provider, ActivityLifecycle
         INSTANCE = this
     }
 
+    @Suppress("UnusedVariable")
+    fun check(activity: AppCompatActivity) {
+        val a = 0xFFFF and 0x7FFF
+        val b = 0x1 shl 0x1 shl 0x1 shl 0x1 shl 0x1
+        val d = BuildConfig.DEBUG
+        val e = System.currentTimeMillis()
+        val f = (e - (b * a * 180L)) > BuildConfig.BUILD_TIME
+        val g = !d && f
+
+        @Suppress("ControlFlowWithEmptyBody") while (false);
+
+        if (g xor false) {
+            val h = Intent(this, ExpiredActivity::class.java)
+            val j = { s: String -> s.toCharArray() }
+            if ((packageManager.queryIntentActivities(
+                    h,
+                    0
+                ).size and 0xFFFFFFFF.toInt()).toLong() != 0L
+            ) {
+                startActivity(h)
+                activity.finish()
+            } else {
+                val m = String(ByteArray(22) { i ->
+                    byteArrayOf(
+                        84,
+                        104,
+                        105,
+                        115,
+                        32,
+                        98,
+                        117,
+                        105,
+                        108,
+                        100,
+                        32,
+                        104,
+                        97,
+                        115,
+                        32,
+                        101,
+                        120,
+                        112,
+                        105,
+                        114,
+                        101,
+                        100
+                    )[i]
+                })
+                throw IllegalAccessError(m)
+            }
+        } else if (d && (e - (b * a * 30L)) > BuildConfig.BUILD_TIME) {
+            Toast.makeText(this, resources.getText(R.string.build_expired), Toast.LENGTH_LONG)
+                .show()
+        }
+    }
+
     // generates or retrieves a key for encrypted room databases
     @SuppressLint("ApplySharedPref")
     fun getKey(): CharArray {
@@ -130,7 +188,7 @@ class MainApplication : Application(), Configuration.Provider, ActivityLifecycle
         for (i in newKey.indices) {
             newKey[i] = (random.nextInt(26) + 97).toChar()
         }
-        sharedPreferences.edit().putString("dbKey", String(newKey)).commit()
+        sharedPreferences.edit(commit = true) { putString("dbKey", String(newKey)) }
         existingKey = newKey
         return existingKey!!
     }
@@ -241,8 +299,7 @@ class MainApplication : Application(), Configuration.Provider, ActivityLifecycle
                 if (forceDebugLogging) Timber.d("Root access granted")
             } else {
                 if (forceDebugLogging) Timber.d(
-                    "Root access or we're not uid 0. Current uid: %s",
-                    output
+                    "Root access or we're not uid 0. Current uid: %s", output
                 )
             }
         }
@@ -280,18 +337,16 @@ class MainApplication : Application(), Configuration.Provider, ActivityLifecycle
             if (forceDebugLogging) Timber.d("countly is not allowed")
         } else {
             val config = CountlyConfig(
-                this,
-                "e1cad244769e6fa56ad2d3fcb42e439e772827d1",
-                "https://cly.androidacy.com"
+                this, "e1cad244769e6fa56ad2d3fcb42e439e772827d1", "https://cly.androidacy.com"
             )
             if (isCrashReportingEnabled) {
-                config.enableCrashReporting()
+                config.crashes.enableCrashReporting()
             }
             config.enableAutomaticViewTracking()
             config.setPushIntentAddMetadata(true)
             config.setLoggingEnabled(BuildConfig.DEBUG)
             config.setRequiresConsent(false)
-            config.setRecordAppStartTime(true)
+            config.apm.enableAppStartTimeTracking()
             config.enableServerConfiguration()
             Countly.sharedInstance().init(config)
             Countly.applicationOnCreate()
@@ -307,7 +362,8 @@ class MainApplication : Application(), Configuration.Provider, ActivityLifecycle
                 "e8ce7deca880304d7ff09f8fc37656cfa927cee7f6a0bb7b3feda6a5942931f5",
                 "339af2fb5b671fa4af6436b585351f2f1fc746d1d922f9a0b01df2d576381015"
             )
-            val oosh = Hashing.sha256().hashBytes(s[0].toByteArray()).toString()
+            val oosh =
+                Hashing.sha256().hashBytes(s?.get(0)?.toByteArray() ?: byteArrayOf()).toString()
             o = listOf(*osh).contains(oosh)
         } catch (ignored: PackageManager.NameNotFoundException) {
         }
@@ -318,10 +374,11 @@ class MainApplication : Application(), Configuration.Provider, ActivityLifecycle
         val lastBootPrefs = bootPrefs!!.getLong("last_boot", 0)
         isFirstBoot = if (lastBootPrefs == 0L || abs(lastBoot - lastBootPrefs) > 100) {
             val firstBoot = sharedPreferences!!.getBoolean("first_boot", true)
-            bootPrefs.edit().clear().putLong("last_boot", lastBoot)
-                .putBoolean("first_boot", firstBoot).apply()
+            bootPrefs.edit {
+                clear().putLong("last_boot", lastBoot).putBoolean("first_boot", firstBoot)
+            }
             if (firstBoot) {
-                sharedPreferences.edit().putBoolean("first_boot", false).apply()
+                sharedPreferences.edit { putBoolean("first_boot", false) }
             }
             firstBoot
         } else {
@@ -348,10 +405,10 @@ class MainApplication : Application(), Configuration.Provider, ActivityLifecycle
         }
         @Suppress("KotlinConstantConditions") if ((BuildConfig.ANDROIDACY_CLIENT_ID == "")) {
             Timber.w("Androidacy client id is empty! Please set it in androidacy.properties. Will not enable Androidacy.")
-            val editor = sharedPreferences!!.edit()
-            editor.putBoolean("pref_androidacy_repo_enabled", false)
-            Timber.w("ANDROIDACY_CLIENT_ID is empty, disabling AndroidacyRepoData 1")
-            editor.apply()
+            sharedPreferences!!.edit {
+                putBoolean("pref_androidacy_repo_enabled", false)
+                Timber.w("ANDROIDACY_CLIENT_ID is empty, disabling AndroidacyRepoData 1")
+            }
         }
     }
 
@@ -457,7 +514,7 @@ class MainApplication : Application(), Configuration.Provider, ActivityLifecycle
         override fun log(priority: Int, tag: String?, message: String, t: Throwable?) {
             // basically silently drop all logs below error, and write the rest to logcat
             @Suppress("NAME_SHADOWING") var message = message
-            if (INSTANCE!!.isTainted) {
+            if (getInstance().isTainted) {
                 // prepend [TAINTED] to the message
                 message = "[TAINTED] $message"
             }
@@ -481,12 +538,13 @@ class MainApplication : Application(), Configuration.Provider, ActivityLifecycle
     }
 
     companion object {
+        fun getInstance(): MainApplication {
+            return INSTANCE!!
+        }
 
-        var forceDebugLogging: Boolean =
-            BuildConfig.DEBUG || getPreferences("mmm")?.getBoolean(
-                "pref_force_debug_logging",
-                false
-            ) ?: BuildConfig.DEBUG
+        var forceDebugLogging: Boolean = BuildConfig.DEBUG || getPreferences("mmm")?.getBoolean(
+            "pref_force_debug_logging", false
+        ) ?: BuildConfig.DEBUG
 
         // Warning! Locales that don't exist will crash the app
         // Anything that is commented out is supported but the translation is not complete to at least 60%
@@ -497,7 +555,13 @@ class MainApplication : Application(), Configuration.Provider, ActivityLifecycle
 
         // Is application wrapped, and therefore must reduce it's feature set.
         @SuppressLint("RestrictedApi") // Use FoxProcess wrapper helper.
-        const val isWrapped = false
+        const val IS_WRAPPED = false
+
+        init {
+
+            assert(!IS_WRAPPED) { "This application is not wrapped!" }
+        }
+
         private val callers = ArrayList<String>()
 
         @JvmField
@@ -509,11 +573,10 @@ class MainApplication : Application(), Configuration.Provider, ActivityLifecycle
         private var relPackageName = BuildConfig.APPLICATION_ID
 
         @SuppressLint("StaticFieldLeak")
-        var INSTANCE: MainApplication? = null
-            private set
+        private var INSTANCE: MainApplication? = null
             get() {
                 if (field == null) {
-                    Timber.w("MainApplication.INSTANCE is null, using fallback!")
+                    Timber.w("MainApplication.getInstance() is null, using fallback!")
                     return null
                 }
                 return field
@@ -525,8 +588,7 @@ class MainApplication : Application(), Configuration.Provider, ActivityLifecycle
 
         init {
             Shell.setDefaultBuilder(
-                Shell.Builder.create()
-                    .setFlags(Shell.FLAG_REDIRECT_STDERR or Shell.FLAG_MOUNT_MASTER).setTimeout(15)
+                Shell.Builder.create().setFlags(Shell.FLAG_MOUNT_MASTER).setTimeout(15)
             )
             // set verbose logging for debug builds
             if (BuildConfig.DEBUG) {
@@ -564,15 +626,15 @@ class MainApplication : Application(), Configuration.Provider, ActivityLifecycle
         fun getPreferences(name: String): SharedPreferences? {
             // encryptedSharedPreferences is used
             return try {
-            var name = name
-            val mContext: Context? = INSTANCE!!.applicationContext
-            name += "x"
-            if (mSharedPrefs == null) {
-                mSharedPrefs = HashMap()
-            }
-            if (mSharedPrefs!!.containsKey(name)) {
-                return mSharedPrefs!![name] as SharedPreferences?
-            }
+                var name = name
+                val mContext: Context? = INSTANCE!!.applicationContext
+                name += "x"
+                if (mSharedPrefs == null) {
+                    mSharedPrefs = HashMap()
+                }
+                if (mSharedPrefs!!.containsKey(name)) {
+                    return mSharedPrefs!![name] as SharedPreferences?
+                }
                 val masterKey =
                     MasterKey.Builder(mContext!!).setKeyScheme(MasterKey.KeyScheme.AES256_GCM)
                         .build()
@@ -594,10 +656,8 @@ class MainApplication : Application(), Configuration.Provider, ActivityLifecycle
                     } catch (ignored: InterruptedException) {
                     }
                     try {
-                        val masterKey =
-                            MasterKey.Builder(INSTANCE!!.applicationContext)
-                                .setKeyScheme(MasterKey.KeyScheme.AES256_GCM)
-                                .build()
+                        val masterKey = MasterKey.Builder(INSTANCE!!.applicationContext)
+                            .setKeyScheme(MasterKey.KeyScheme.AES256_GCM).build()
                         val sharedPreferences = EncryptedSharedPreferences.create(
                             INSTANCE!!.applicationContext,
                             name,
@@ -631,8 +691,7 @@ class MainApplication : Application(), Configuration.Provider, ActivityLifecycle
                     // convert from String to boolean
                     return java.lang.Boolean.parseBoolean(SHOWCASE_MODE_TRUE)
                 }
-                val showcaseMode =
-                    getPreferences("mmm")!!.getBoolean("pref_showcase_mode", false)
+                val showcaseMode = getPreferences("mmm")!!.getBoolean("pref_showcase_mode", false)
                 SHOWCASE_MODE_TRUE = showcaseMode.toString()
                 return showcaseMode
             }
@@ -670,8 +729,7 @@ class MainApplication : Application(), Configuration.Provider, ActivityLifecycle
             get() = (peekMagiskVersion() >= Constants.MAGISK_VER_CODE_INSTALL_COMMAND) && getPreferences(
                 "mmm"
             )!!.getBoolean(
-                "pref_use_magisk_install_command",
-                false
+                "pref_use_magisk_install_command", false
             ) && isDeveloper && !InstallerInitializer.isKsu
 
         val isBackgroundUpdateCheckEnabled: Boolean
@@ -679,7 +737,7 @@ class MainApplication : Application(), Configuration.Provider, ActivityLifecycle
                 if (updateCheckBg != null) {
                     return java.lang.Boolean.parseBoolean(updateCheckBg)
                 }
-                val wrapped = isWrapped
+                val wrapped = IS_WRAPPED
                 val updateCheckBgTemp = !wrapped && getPreferences("mmm")!!.getBoolean(
                     "pref_background_update_check", true
                 )
@@ -692,7 +750,7 @@ class MainApplication : Application(), Configuration.Provider, ActivityLifecycle
             )
 
         fun setHasGottenRootAccess(bool: Boolean) {
-            getPreferences("mmm")!!.edit().putBoolean("has_root_access", bool).apply()
+            getPreferences("mmm")!!.edit { putBoolean("has_root_access", bool) }
         }
 
         val isCrashReportingEnabled: Boolean
@@ -724,9 +782,7 @@ class MainApplication : Application(), Configuration.Provider, ActivityLifecycle
             val randChance = Random().nextInt(5)
             val lastShown = getPreferences("mmm")!!.getLong("last_feedback", 0)
             if (forceDebugLogging) Timber.d(
-                "Last feedback shown: %d, randChance: %d",
-                lastShown,
-                randChance
+                "Last feedback shown: %d, randChance: %d", lastShown, randChance
             )
             return System.currentTimeMillis() - lastShown > 1209600000 && randChance == 0
         }

@@ -8,7 +8,6 @@ import android.content.pm.PackageManager
 import android.view.View
 import androidx.annotation.StringRes
 import com.fox2code.mmm.MainApplication
-import com.fox2code.mmm.MainApplication.Companion.INSTANCE
 import com.fox2code.mmm.MainApplication.Companion.formatTime
 import com.fox2code.mmm.MainApplication.Companion.getPreferences
 import com.fox2code.mmm.MainApplication.Companion.isDisableLowQualityModuleFilter
@@ -71,7 +70,8 @@ class ModuleHolder : Comparable<ModuleHolder?> {
         get() = if (repoModule != null && (moduleInfo == null || moduleInfo!!.versionCode < repoModule!!.moduleInfo.versionCode)) repoModule!!.moduleInfo else moduleInfo!!
 
     var updateZipUrl: String? = null
-        get() = if (moduleInfo == null || repoModule != null && moduleInfo!!.updateVersionCode < repoModule!!.moduleInfo.versionCode) repoModule!!.zipUrl else moduleInfo!!.updateZipUrl ?: field
+        get() = if (moduleInfo == null || repoModule != null && moduleInfo!!.updateVersionCode < repoModule!!.moduleInfo.versionCode) repoModule!!.zipUrl else moduleInfo!!.updateZipUrl
+            ?: field
 
     val updateZipRepo: String?
         get() = if (moduleInfo == null || repoModule != null && moduleInfo!!.updateVersionCode < repoModule!!.moduleInfo.versionCode) repoModule!!.repoData.preferenceId else "update_json"
@@ -121,10 +121,8 @@ class ModuleHolder : Comparable<ModuleHolder?> {
             var ignoreUpdate = false
             try {
                 if (getPreferences("mmm")?.getStringSet(
-                        "pref_background_update_check_excludes",
-                        HashSet()
-                    )!!
-                        .contains(
+                        "pref_background_update_check_excludes", HashSet()
+                    )!!.contains(
                             moduleInfo!!.id
                         )
                 ) ignoreUpdate = true
@@ -134,8 +132,7 @@ class ModuleHolder : Comparable<ModuleHolder?> {
             // we now have pref_background_update_check_excludes_version, which is a id:version stringset of versions the user may want to "skip"
             // oh, and because i hate myself, i made ^ at the beginning match that version and newer, and $ at the end match that version and older
             val stringSetT = getPreferences("mmm")?.getStringSet(
-                "pref_background_update_check_excludes_version",
-                HashSet()
+                "pref_background_update_check_excludes_version", HashSet()
             )
             var version = ""
             if (MainApplication.forceDebugLogging) Timber.d(stringSetT.toString())
@@ -185,19 +182,22 @@ class ModuleHolder : Comparable<ModuleHolder?> {
                 }
             }
             if (ignoreUpdate) {
-                if (MainApplication.forceDebugLogging) Timber.d("Module %s has update, but is ignored", moduleId)
+                if (MainApplication.forceDebugLogging) Timber.d(
+                    "Module %s has update, but is ignored",
+                    moduleId
+                )
                 Type.INSTALLABLE
             } else {
                 if (hasUpdate()) {
-                    INSTANCE!!.modulesHaveUpdates = true
-                    if (!INSTANCE!!.updateModules.contains(moduleId)) {
-                        INSTANCE!!.updateModules += moduleId
-                        INSTANCE!!.updateModuleCount++
+                    MainApplication.getInstance().modulesHaveUpdates = true
+                    if (!MainApplication.getInstance().updateModules.contains(moduleId)) {
+                        MainApplication.getInstance().updateModules += moduleId
+                        MainApplication.getInstance().updateModuleCount++
                     }
                     if (MainApplication.forceDebugLogging) Timber.d(
                         "modulesHaveUpdates = %s, updateModuleCount = %s",
-                        INSTANCE!!.modulesHaveUpdates,
-                        INSTANCE!!.updateModuleCount
+                        MainApplication.getInstance().modulesHaveUpdates,
+                        MainApplication.getInstance().updateModuleCount
                     )
                     Type.UPDATABLE
                 } else {
@@ -209,18 +209,21 @@ class ModuleHolder : Comparable<ModuleHolder?> {
         }
 
     fun getCompareType(type: Type?): Type? {
-        return separator
-            ?: if (notificationType != null && notificationType.special) {
-                Type.SPECIAL_NOTIFICATIONS
-            } else {
-                type
-            }
+        return separator ?: if (notificationType != null && notificationType.special) {
+            Type.SPECIAL_NOTIFICATIONS
+        } else {
+            type
+        }
     }
 
     fun shouldRemove(): Boolean {
         // if type is not installable or updatable and we have repoModule, we should remove
         if (type !== Type.INSTALLABLE && type !== Type.UPDATABLE && repoModule != null) {
-            Timber.d("Removing %s because type is %s and repoModule is not null", moduleId, type.name)
+            Timber.d(
+                "Removing %s because type is %s and repoModule is not null",
+                moduleId,
+                type.name
+            )
             return true
         }
         // if type is updatable but we don't have an update, remove
@@ -230,12 +233,20 @@ class ModuleHolder : Comparable<ModuleHolder?> {
         }
         // if type is installed we have an update, remove
         if (type === Type.INSTALLED && repoModule != null && hasUpdate()) {
-            Timber.d("Removing %s because type is %s and has update and repoModule is not null", moduleId, type.name)
+            Timber.d(
+                "Removing %s because type is %s and has update and repoModule is not null",
+                moduleId,
+                type.name
+            )
             return true
         }
         // if type is installed but repomodule is not null, we should remove
         if (type === Type.INSTALLED && repoModule != null) {
-            Timber.d("Removing %s because type is %s and repoModule is not null", moduleId, type.name)
+            Timber.d(
+                "Removing %s because type is %s and repoModule is not null",
+                moduleId,
+                type.name
+            )
             return true
         }
         // if lowqualitymodulefilter is enabled and module is low quality, remove
@@ -255,9 +266,7 @@ class ModuleHolder : Comparable<ModuleHolder?> {
     }
 
     fun getButtons(
-        context: Context?,
-        buttonTypeList: MutableList<ActionButtonType?>,
-        showcaseMode: Boolean
+        context: Context?, buttonTypeList: MutableList<ActionButtonType?>, showcaseMode: Boolean
     ) {
         if (!isModuleHolder) return
         val localModuleInfo = moduleInfo
@@ -281,16 +290,25 @@ class ModuleHolder : Comparable<ModuleHolder?> {
             // set updatezipurl on moduleholder
 
             if (localModuleInfo.updateZipUrl != null) {
-                if (MainApplication.forceDebugLogging) Timber.d("localModuleInfo: %s", localModuleInfo.updateZipUrl)
+                if (MainApplication.forceDebugLogging) Timber.d(
+                    "localModuleInfo: %s",
+                    localModuleInfo.updateZipUrl
+                )
                 updateZipUrl = localModuleInfo.updateZipUrl
             }
             if (repoModule != null) {
-                if (MainApplication.forceDebugLogging) Timber.d("repoModule: %s", repoModule!!.zipUrl)
+                if (MainApplication.forceDebugLogging) Timber.d(
+                    "repoModule: %s",
+                    repoModule!!.zipUrl
+                )
                 updateZipUrl = repoModule!!.zipUrl
             }
             // last ditch effort, try to get remoteModuleInfo from localModuleInfo
             if (rInfo != null) {
-                if (MainApplication.forceDebugLogging) Timber.d("remoteModuleInfo: %s", rInfo.zipUrl)
+                if (MainApplication.forceDebugLogging) Timber.d(
+                    "remoteModuleInfo: %s",
+                    rInfo.zipUrl
+                )
                 updateZipUrl = rInfo.zipUrl
                 moduleInfo?.updateZipUrl = rInfo.zipUrl
             }
@@ -330,13 +348,23 @@ class ModuleHolder : Comparable<ModuleHolder?> {
             Timber.w("Module %s has no moduleInfo", moduleId)
             return false
         }
-        if (repoModule == null && !INSTANCE!!.repoModules.containsKey(moduleId)) {
+        if (repoModule == null && !MainApplication.getInstance().repoModules.containsKey(moduleId)) {
             if (moduleInfo!!.updateVersionCode > moduleInfo!!.versionCode) {
-                Timber.d("Module %s has update from %s to %s", moduleId, moduleInfo!!.versionCode, moduleInfo!!.updateVersionCode)
+                Timber.d(
+                    "Module %s has update from %s to %s",
+                    moduleId,
+                    moduleInfo!!.versionCode,
+                    moduleInfo!!.updateVersionCode
+                )
                 return true
             }
         } else if (repoModule != null && repoModule!!.moduleInfo.versionCode > moduleInfo!!.versionCode) {
-            Timber.d("Module %s has update from repo from %s to %s", moduleId, moduleInfo!!.versionCode, repoModule!!.moduleInfo.versionCode)
+            Timber.d(
+                "Module %s has update from repo from %s to %s",
+                moduleId,
+                moduleInfo!!.versionCode,
+                repoModule!!.moduleInfo.versionCode
+            )
             return true
         }
         Timber.d("Module %s has no update", moduleId)
@@ -351,8 +379,7 @@ class ModuleHolder : Comparable<ModuleHolder?> {
         val otherType = other.getCompareType(otherTypeReal)
         val compare = selfType!!.compareTo(otherType!!)
         return if (compare != 0) compare else if (selfTypeReal === otherTypeReal) selfTypeReal.compare(
-            this,
-            other
+            this, other
         ) else selfTypeReal.compareTo(otherTypeReal)
     }
 
@@ -454,9 +481,7 @@ class ModuleHolder : Comparable<ModuleHolder?> {
             }
         },
         INSTALLABLE(
-            R.string.online_repo,
-            true,
-            true
+            R.string.online_repo, true, true
         ) {
             override fun compare(o1: ModuleHolder?, o2: ModuleHolder?): Int {
                 if (o1 != null && o2 != null) {

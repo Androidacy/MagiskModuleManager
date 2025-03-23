@@ -9,7 +9,6 @@ import com.fox2code.mmm.AppUpdateManager.Companion.shouldForceHide
 import com.fox2code.mmm.BuildConfig
 import com.fox2code.mmm.MainActivity
 import com.fox2code.mmm.MainApplication
-import com.fox2code.mmm.MainApplication.Companion.INSTANCE
 import com.fox2code.mmm.R
 import com.fox2code.mmm.XRepo
 import com.fox2code.mmm.manager.ModuleInfo
@@ -124,7 +123,7 @@ open class RepoData(url: String, cacheRoot: File) : XRepo() {
         isForceHide = shouldForceHide(tempVarForPreferenceId)
         // basically same as above but for room database
         val db = Room.databaseBuilder(
-            INSTANCE!!.applicationContext, ReposListDatabase::class.java, "ReposList.db"
+            MainApplication.getInstance().applicationContext, ReposListDatabase::class.java, "ReposList.db"
         ).allowMainThreadQueries().build()
         val reposListRoom = db.reposListDao()
         val reposListRoomList = reposListRoom.getById(preferenceId!!)
@@ -278,7 +277,7 @@ open class RepoData(url: String, cacheRoot: File) : XRepo() {
             field
         } else {
             val db = Room.databaseBuilder(
-                INSTANCE!!.applicationContext,
+                MainApplication.getInstance().applicationContext,
                 ReposListDatabase::class.java,
                 "ReposList.db",
             ).allowMainThreadQueries().build()
@@ -295,7 +294,7 @@ open class RepoData(url: String, cacheRoot: File) : XRepo() {
             field = value
             this.enabled = enabled && !isForceHide
             val db = Room.databaseBuilder(
-                INSTANCE!!.applicationContext,
+                MainApplication.getInstance().applicationContext,
                 ReposListDatabase::class.java,
                 "ReposList.db",
             ).allowMainThreadQueries().build()
@@ -362,7 +361,7 @@ open class RepoData(url: String, cacheRoot: File) : XRepo() {
         // if repo starts with repo_, it's always enabled bc custom repos can't be disabled without being deleted.
         isForceHide = shouldForceHide(preferenceId!!)
         val db = Room.databaseBuilder(
-            INSTANCE!!.applicationContext,
+            MainApplication.getInstance().applicationContext,
             ReposListDatabase::class.java,
             "ReposList.db",
         ).allowMainThreadQueries().build()

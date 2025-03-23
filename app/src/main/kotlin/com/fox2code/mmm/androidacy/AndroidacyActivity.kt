@@ -67,10 +67,7 @@ class AndroidacyActivity : AppCompatActivity() {
     var downloadMode = false
 
     @SuppressLint(
-        "SetJavaScriptEnabled",
-        "JavascriptInterface",
-        "RestrictedApi",
-        "ClickableViewAccessibility"
+        "SetJavaScriptEnabled", "JavascriptInterface", "RestrictedApi", "ClickableViewAccessibility"
     )
     override fun onCreate(savedInstanceState: Bundle?) {
         moduleFile = File(this.cacheDir, "module.zip")
@@ -78,8 +75,9 @@ class AndroidacyActivity : AppCompatActivity() {
 
         val intent = this.intent
         var uri: Uri? = intent.data
-        @Suppress("KotlinConstantConditions")
-        if (!MainApplication.checkSecret(intent) || intent.data.also { uri = it!! } == null) {
+        @Suppress("KotlinConstantConditions") if (!MainApplication.checkSecret(intent) || intent.data.also {
+                uri = it!!
+            } == null) {
             Timber.w("Impersonation detected")
             finish()
             return
@@ -153,26 +151,24 @@ class AndroidacyActivity : AppCompatActivity() {
         webSettings?.domStorageEnabled = true
         webSettings?.javaScriptEnabled = true
         webSettings?.cacheMode = WebSettings.LOAD_DEFAULT
-        webSettings?.allowFileAccess = false
-        webSettings?.allowContentAccess = false
         webSettings?.mediaPlaybackRequiresUserGesture = false
         // enable webview debugging on debug builds
         if (BuildConfig.DEBUG) {
             WebView.setWebContentsDebuggingEnabled(true)
         }
         // if app is in dark mode, force dark mode on webview
-        if (MainApplication.INSTANCE!!.isDarkTheme) {
+        if (MainApplication.getInstance().isDarkTheme) {
             // for api 33, use setAlgorithmicDarkeningAllowed, for api 29-32 use setForceDark, for api 28 and below use setForceDarkStrategy
             if (WebViewFeature.isFeatureSupported(WebViewFeature.ALGORITHMIC_DARKENING)) {
                 WebSettingsCompat.setAlgorithmicDarkeningAllowed(webSettings!!, true)
             } else if (WebViewFeature.isFeatureSupported(WebViewFeature.FORCE_DARK)) {
-                @Suppress("DEPRECATION")
-                WebSettingsCompat.setForceDark(webSettings!!, WebSettingsCompat.FORCE_DARK_ON)
-            } else if (WebViewFeature.isFeatureSupported(WebViewFeature.FORCE_DARK_STRATEGY)) {
-                @Suppress("DEPRECATION")
-                WebSettingsCompat.setForceDarkStrategy(
+                @Suppress("DEPRECATION") WebSettingsCompat.setForceDark(
                     webSettings!!,
-                    WebSettingsCompat.DARK_STRATEGY_WEB_THEME_DARKENING_ONLY
+                    WebSettingsCompat.FORCE_DARK_ON
+                )
+            } else if (WebViewFeature.isFeatureSupported(WebViewFeature.FORCE_DARK_STRATEGY)) {
+                @Suppress("DEPRECATION") WebSettingsCompat.setForceDarkStrategy(
+                    webSettings!!, WebSettingsCompat.DARK_STRATEGY_WEB_THEME_DARKENING_ONLY
                 )
             }
         }
@@ -187,8 +183,7 @@ class AndroidacyActivity : AppCompatActivity() {
         wbv?.webViewClient = object : WebViewClientCompat() {
             private var pageUrl: String? = null
             override fun shouldOverrideUrlLoading(
-                view: WebView,
-                request: WebResourceRequest
+                view: WebView, request: WebResourceRequest
             ): Boolean {
                 // Don't open non Androidacy urls inside WebView
                 if (request.isForMainFrame && !AndroidacyUtil.isAndroidacyLink(request.url)) {
@@ -204,8 +199,7 @@ class AndroidacyActivity : AppCompatActivity() {
             }
 
             override fun shouldInterceptRequest(
-                view: WebView,
-                request: WebResourceRequest
+                view: WebView, request: WebResourceRequest
             ): WebResourceResponse? {
                 return if (megaIntercept(pageUrl, request.url.toString())) {
                     // Block request as Androidacy doesn't allow duplicate requests
@@ -237,18 +231,13 @@ class AndroidacyActivity : AppCompatActivity() {
 
             @Deprecated("Deprecated in Java")
             override fun onReceivedError(
-                view: WebView,
-                errorCode: Int,
-                description: String,
-                failingUrl: String
+                view: WebView, errorCode: Int, description: String, failingUrl: String
             ) {
                 this.onReceivedError(failingUrl, errorCode)
             }
 
             override fun onReceivedError(
-                view: WebView,
-                request: WebResourceRequest,
-                error: WebResourceErrorCompat
+                view: WebView, request: WebResourceRequest, error: WebResourceErrorCompat
             ) {
                 if (WebViewFeature.isFeatureSupported(WebViewFeature.WEB_RESOURCE_ERROR_GET_CODE)) {
                     this.onReceivedError(request.url.toString(), error.errorCode)
@@ -256,9 +245,7 @@ class AndroidacyActivity : AppCompatActivity() {
             }
 
             override fun onReceivedSslError(
-                view: WebView,
-                handler: SslErrorHandler,
-                error: SslError
+                view: WebView, handler: SslErrorHandler, error: SslError
             ) {
                 super.onReceivedSslError(view, handler, error)
                 // log the error and url of its request
@@ -280,14 +267,11 @@ class AndroidacyActivity : AppCompatActivity() {
                 // start file chooser activity
                 val intent1 = fileChooserParams.createIntent()
                 try {
-                    @Suppress("DEPRECATION")
-                    startActivityForResult(intent1, 1)
+                    @Suppress("DEPRECATION") startActivityForResult(intent1, 1)
                 } catch (e: Exception) {
                     Timber.e(e)
                     Toast.makeText(
-                        this@AndroidacyActivity,
-                        R.string.file_picker_failure,
-                        Toast.LENGTH_SHORT
+                        this@AndroidacyActivity, R.string.file_picker_failure, Toast.LENGTH_SHORT
                     ).show()
                 }
                 return true
@@ -312,24 +296,21 @@ class AndroidacyActivity : AppCompatActivity() {
                 if (downloadMode) return
                 if (newProgress != 100 && prgInd.visibility != View.VISIBLE) {
                     if (MainApplication.forceDebugLogging) Timber.i(
-                        "Progress: %d, showing progress bar",
-                        newProgress
+                        "Progress: %d, showing progress bar", newProgress
                     )
                     prgInd.visibility = View.VISIBLE
                 }
                 // if progress is greater than one, set indeterminate to false
                 if (newProgress > 1) {
                     if (MainApplication.forceDebugLogging) Timber.i(
-                        "Progress: %d, setting indeterminate to false",
-                        newProgress
+                        "Progress: %d, setting indeterminate to false", newProgress
                     )
                     prgInd.isIndeterminate = false
                 }
                 prgInd.setProgress(newProgress, true)
                 if (newProgress == 100 && prgInd.visibility != View.GONE) {
                     if (MainApplication.forceDebugLogging) Timber.i(
-                        "Progress: %d, hiding progress bar",
-                        newProgress
+                        "Progress: %d, hiding progress bar", newProgress
                     )
                     prgInd.isIndeterminate = true
                     prgInd.visibility = View.GONE
@@ -366,8 +347,7 @@ class AndroidacyActivity : AppCompatActivity() {
                 }
                 backOnResume = true
                 if (MainApplication.forceDebugLogging) Timber.i(
-                    "Exiting WebView %s",
-                    AndroidacyUtil.hideToken(downloadUrl)
+                    "Exiting WebView %s", AndroidacyUtil.hideToken(downloadUrl)
                 )
                 for (prefix in arrayOf<String>(
                     "https://production-api.androidacy.com/magisk/file//",
@@ -387,6 +367,9 @@ class AndroidacyActivity : AppCompatActivity() {
         val headers = HashMap<String, String>()
         headers["Accept-Language"] = this.resources.configuration.locales.get(0).language
         // set layout to view
+        if (BuildConfig.DEBUG) {
+            Timber.i("AndroidacyActivity: loading url: %s", url)
+        }
         wbv?.loadUrl(url, headers)
     }
 
@@ -471,11 +454,7 @@ class AndroidacyActivity : AppCompatActivity() {
         val checksum = AndroidacyUtil.getChecksumFromURL(fileUrl)
         val moduleTitle = AndroidacyUtil.getModuleTitle(fileUrl)
         androidacyWebAPI!!.openNativeModuleDialogRaw(
-            fileUrl,
-            moduleId,
-            moduleTitle,
-            checksum,
-            androidacyWebAPI.canInstall()
+            fileUrl, moduleId, moduleTitle, checksum, androidacyWebAPI.canInstall()
         )
         return true
     }
@@ -489,13 +468,12 @@ class AndroidacyActivity : AppCompatActivity() {
         }
         var module: ByteArray?
         try {
-            module = doHttpGet(
-                url!!, ({ downloaded: Int, total: Int, _: Boolean ->
-                    progressIndicator!!.setProgressCompat(
-                        downloaded * 100 / total, true
-                    )
+            module = doHttpGet(url!!, ({ downloaded: Int, total: Int, _: Boolean ->
+                progressIndicator!!.setProgressCompat(
+                    downloaded * 100 / total, true
+                )
 
-                } as Http.ProgressListener?)!!)
+            } as Http.ProgressListener?)!!)
             FileOutputStream(moduleFile).use { fileOutputStream -> fileOutputStream.write(module) }
         } finally {
             module = null
@@ -503,8 +481,11 @@ class AndroidacyActivity : AppCompatActivity() {
         }
         backOnResume = true
         downloadMode = false
-        @Suppress("ktConcatNullable")
-        return FileProvider.getUriForFile(this, this.packageName + ".file-provider", moduleFile!!)
+        @Suppress("ktConcatNullable") return FileProvider.getUriForFile(
+            this,
+            this.packageName + ".file-provider",
+            moduleFile!!
+        )
     }
 
     override fun onDestroy() {

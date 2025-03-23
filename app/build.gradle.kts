@@ -12,7 +12,6 @@ plugins {
     id("com.android.application")
     id("com.mikepenz.aboutlibraries.plugin")
     kotlin("android")
-    kotlin("kapt")
     id("com.google.devtools.ksp") version "2.0.21-1.0.25"
 }
 android {
@@ -29,8 +28,7 @@ android {
     val timestamp = System.currentTimeMillis()
 
     namespace = "com.fox2code.mmm"
-    compileSdk = 34
-    ndkVersion = "25.2.9519653"
+    compileSdk = 35
     signingConfigs {
         create("release") {
             if (File("signing.properties").exists()) {
@@ -330,7 +328,7 @@ androidComponents {
             if (baseAbiCode != null) {
                 // Assigns the new version code to output.versionCode, which changes the version code
                 // for only the output APK, not for the variant itself.
-                val versioCode = output.versionCode.get() as Int
+                val versioCode = output.versionCode.get()
                 output.versionCode.set((baseAbiCode * 1000) + versioCode)
             }
         }
@@ -353,20 +351,20 @@ configurations {
 dependencies {
     // UI
     implementation("androidx.appcompat:appcompat:1.7.0")
-    implementation("androidx.activity:activity-ktx:1.9.0")
-    implementation("androidx.emoji2:emoji2:1.4.0")
-    implementation("androidx.emoji2:emoji2-views-helper:1.4.0")
+    implementation("androidx.activity:activity-ktx:1.10.1")
+    implementation("androidx.emoji2:emoji2:1.5.0")
+    implementation("androidx.emoji2:emoji2-views-helper:1.5.0")
     implementation("androidx.preference:preference-ktx:1.2.1")
-    implementation("androidx.constraintlayout:constraintlayout:2.1.4")
-    implementation("androidx.recyclerview:recyclerview:1.3.2")
+    implementation("androidx.constraintlayout:constraintlayout:2.2.1")
+    implementation("androidx.recyclerview:recyclerview:1.4.0")
     implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
-    implementation("androidx.webkit:webkit:1.11.0")
+    implementation("androidx.webkit:webkit:1.13.0")
     implementation("com.google.android.material:material:1.12.0")
 
-    implementation("com.mikepenz:aboutlibraries:11.2.2")
+    implementation("com.mikepenz:aboutlibraries:11.6.3")
 
     // Utils
-    implementation("androidx.work:work-runtime:2.9.0")
+    implementation("androidx.work:work-runtime:2.10.0")
     implementation("com.squareup.okhttp3:okhttp:5.0.0-alpha.14")
     implementation("com.squareup.okhttp3:okhttp-dnsoverhttps:5.0.0-alpha.14")
     // logging interceptor
@@ -374,7 +372,7 @@ dependencies {
     // Chromium cronet from androidacy
     implementation("org.chromium.net:cronet-embedded:119.6045.31")
 
-    val libsuVersion = "5.2.2"
+    val libsuVersion = "6.0.0"
     // The core module that provides APIs to a shell
     implementation("com.github.topjohnwu.libsu:core:${libsuVersion}")
 
@@ -396,7 +394,7 @@ dependencies {
     implementation("com.google.net.cronet:cronet-okhttp:0.1.0")
     implementation("com.caverock:androidsvg:1.4")
 
-    implementation("androidx.core:core-ktx:1.13.1")
+    implementation("androidx.core:core-ktx:1.15.0")
 
     // timber
     implementation("com.jakewharton.timber:timber:5.0.1")
@@ -405,11 +403,11 @@ dependencies {
     implementation("androidx.security:security-crypto:1.1.0-alpha06")
 
     // some utils
-    implementation("commons-io:commons-io:2.16.1")
-    implementation("org.apache.commons:commons-compress:1.26.1")
+    implementation("commons-io:commons-io:2.18.0")
+    implementation("org.apache.commons:commons-compress:1.27.1")
 
     // analytics
-    implementation("ly.count.android:sdk:24.7.4")
+    implementation("ly.count.android:sdk:25.1.1")
 
     // annotations
     implementation("org.jetbrains:annotations-java5:24.1.0")
@@ -418,10 +416,10 @@ dependencies {
     debugImplementation("com.squareup.leakcanary:leakcanary-android:2.14")
 
     // desugaring
-    coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.0.4")
+    coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.1.5")
 
     // yes
-    implementation("com.github.fingerprintjs:fingerprint-android:2.1.0")
+    implementation("com.github.fingerprintjs:fingerprint-android:2.2.0")
 
     // room
     implementation("androidx.room:room-runtime:2.6.1")
@@ -445,7 +443,7 @@ android {
         }
     }
 
-    ndkVersion = "26.1.10909125"
+    ndkVersion = "28.0.13004108"
     dependenciesInfo {
         includeInApk = false
         includeInBundle = false
@@ -455,7 +453,6 @@ android {
         buildConfig = true
     }
     //noinspection GrDeprecatedAPIUsage
-    buildToolsVersion = "34.0.0"
     kotlinOptions {
         jvmTarget = "17"
     }

@@ -6,15 +6,15 @@ package com.fox2code.mmm.androidacy
 import android.annotation.SuppressLint
 import android.content.DialogInterface
 import android.content.Intent
-import android.net.Uri
 import android.os.Handler
 import android.os.Looper
 import android.widget.Toast
+import androidx.core.content.edit
+import androidx.core.net.toUri
 import com.fingerprintjs.android.fingerprint.Fingerprinter
 import com.fingerprintjs.android.fingerprint.FingerprinterFactory.create
 import com.fox2code.mmm.BuildConfig
 import com.fox2code.mmm.MainApplication
-import com.fox2code.mmm.MainApplication.Companion.INSTANCE
 import com.fox2code.mmm.MainApplication.Companion.getPreferences
 import com.fox2code.mmm.R
 import com.fox2code.mmm.androidacy.AndroidacyUtil.Companion.hideToken
@@ -32,7 +32,6 @@ import com.fox2code.mmm.utils.io.net.HttpException
 import com.fox2code.mmm.utils.io.net.HttpException.Companion.shouldTimeout
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import okhttp3.HttpUrl.Builder
-import okhttp3.HttpUrl.Builder.*
 import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
@@ -79,8 +78,7 @@ class AndroidacyRepoData(cacheRoot: File?, testMode: Boolean) : RepoData(
         val deviceId = generateDeviceId()
         return try {
             val resp = doHttpGet(
-                "https://$host/auth/me?token=$token&device_id=$deviceId&client_id=$clientID",
-                false
+                "https://$host/auth/me?token=$token&device_id=$deviceId&client_id=$clientID", false
             )
             // response is JSON
             val jsonObject = JSONObject(String(resp))
@@ -89,24 +87,24 @@ class AndroidacyRepoData(cacheRoot: File?, testMode: Boolean) : RepoData(
             val memberPermissions = jsonObject.getJSONArray("permissions")
             // set role and permissions on userInfo property
             userInfo = arrayOf(
-                arrayOf("role", memberLevel),
-                arrayOf("permissions", memberPermissions.toString())
+                arrayOf("role", memberLevel), arrayOf("permissions", memberPermissions.toString())
             )
             true
         } catch (e: HttpException) {
             if (e.errorCode == 401) {
                 Timber.w("Invalid token, resetting...")
                 // Remove saved preference
-                val editor = getPreferences("androidacy")!!.edit()
-                editor.remove("pref_androidacy_api_token")
-                editor.apply()
+                getPreferences("androidacy")!!.edit {
+                    remove("pref_androidacy_api_token")
+                }
                 return false
             } else {
                 val handler = Handler(Looper.getMainLooper())
                 handler.post {
                     Toast.makeText(
-                        INSTANCE!!.lastActivity,
-                        INSTANCE!!.getString(R.string.androidacy_api_error, e.errorCode),
+                        MainApplication.getInstance().lastActivity,
+                        MainApplication.getInstance()
+                            .getString(R.string.androidacy_api_error, e.errorCode),
                         Toast.LENGTH_LONG
                     ).show()
                 }
@@ -118,14 +116,13 @@ class AndroidacyRepoData(cacheRoot: File?, testMode: Boolean) : RepoData(
             Timber.w("Invalid token, resetting...")
             Timber.w(e)
             // Remove saved preference
-            val editor = getPreferences("androidacy")!!.edit()
-            editor.remove("pref_androidacy_api_token")
-            editor.apply()
+            getPreferences("androidacy")!!.edit {
+                remove("pref_androidacy_api_token")
+            }
             requestNewToken()
             isValidToken(
                 getPreferences("androidacy")!!.getString(
-                    "pref_androidacy_api_token",
-                    null
+                    "pref_androidacy_api_token", null
                 )
             )
         }
@@ -153,20 +150,19 @@ class AndroidacyRepoData(cacheRoot: File?, testMode: Boolean) : RepoData(
             }
         }
         // Save the token to the shared preferences
-        val editor = getPreferences("androidacy")!!.edit()
-        editor.putString("pref_androidacy_api_token", token)
-        editor.apply()
+        getPreferences("androidacy")!!.edit {
+            putString("pref_androidacy_api_token", token)
+        }
         return token
     }
 
     @SuppressLint("RestrictedApi", "BinaryOperationInTimber")
     override fun prepare(): Boolean {
         // If ANDROIDACY_CLIENT_ID is not set or is empty, disable this repo and return
-        @Suppress("KotlinConstantConditions")
-        if (BuildConfig.ANDROIDACY_CLIENT_ID == "") {
-            val editor = getPreferences("mmm")!!.edit()
-            editor.putBoolean("pref_androidacy_repo_enabled", false)
-            editor.apply()
+        @Suppress("KotlinConstantConditions") if (BuildConfig.ANDROIDACY_CLIENT_ID == "") {
+            getPreferences("mmm")!!.edit {
+                putBoolean("pref_androidacy_repo_enabled", false)
+            }
             Timber.w("ANDROIDACY_CLIENT_ID is empty, disabling AndroidacyRepoData 2")
             return false
         }
@@ -182,18 +178,16 @@ class AndroidacyRepoData(cacheRoot: File?, testMode: Boolean) : RepoData(
                 // If it's a 400, the app is probably outdated. Show a snackbar suggesting user update app and webview
                 if (connection.responseCode == 400) {
                     // Show a dialog using androidacy_update_needed string
-                    INSTANCE?.let { MaterialAlertDialogBuilder(it) }!!
-                        .setTitle(R.string.androidacy_update_needed)
+                    MaterialAlertDialogBuilder(MainApplication.getInstance()).setTitle(R.string.androidacy_update_needed)
                         .setMessage(
                             R.string.androidacy_update_needed_message
-                        )
-                        .setPositiveButton(R.string.update) { _: DialogInterface?, _: Int ->
+                        ).setPositiveButton(R.string.update) { _: DialogInterface?, _: Int ->
                             // Open the app's page on the Play Store
                             val intent = Intent(Intent.ACTION_VIEW)
                             intent.data =
-                                Uri.parse("https://www.androidacy.com/downloads/?view=FoxMMM&utm_source=foxmnm&utm_medium=app&utm_campaign=android-app")
+                                "https://www.androidacy.com/downloads/?view=FoxMMM&utm_source=foxmnm&utm_medium=app&utm_campaign=android-app".toUri()
                             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-                            INSTANCE!!.startActivity(intent)
+                            MainApplication.getInstance().startActivity(intent)
                         }.setNegativeButton(R.string.cancel, null).show()
                 }
                 return false
@@ -208,8 +202,7 @@ class AndroidacyRepoData(cacheRoot: File?, testMode: Boolean) : RepoData(
         androidacyBlockade = time + 30000L
         try {
             if (token == null) {
-                token =
-                    getPreferences("androidacy")?.getString("pref_androidacy_api_token", null)
+                token = getPreferences("androidacy")?.getString("pref_androidacy_api_token", null)
                 if (token != null && !isValidToken(token)) {
                     if (MainApplication.forceDebugLogging) Timber.i("Token expired or invalid, requesting new one...")
                     token = null
@@ -243,7 +236,7 @@ class AndroidacyRepoData(cacheRoot: File?, testMode: Boolean) : RepoData(
                     val handler = Handler(mainLooper)
                     handler.post {
                         Toast.makeText(
-                            INSTANCE!!.lastActivity,
+                            MainApplication.getInstance().lastActivity,
                             R.string.androidacy_failed_to_validate_token,
                             Toast.LENGTH_LONG
                         ).show()
@@ -251,9 +244,9 @@ class AndroidacyRepoData(cacheRoot: File?, testMode: Boolean) : RepoData(
                     return false
                 } else {
                     // Save token to shared preference
-                    val editor = getPreferences("androidacy")!!.edit()
-                    editor.putString("pref_androidacy_api_token", token)
-                    editor.apply()
+                    getPreferences("androidacy")!!.edit {
+                        putString("pref_androidacy_api_token", token)
+                    }
                     if (MainApplication.forceDebugLogging) Timber.i("Token saved to shared preference")
                 }
             } catch (e: Exception) {
@@ -300,8 +293,7 @@ class AndroidacyRepoData(cacheRoot: File?, testMode: Boolean) : RepoData(
                     jsonObject = jsonArray.getJSONObject(i)
                 } else {
                     if (MainApplication.forceDebugLogging) Timber.d(
-                        "Skipping null module at index %d",
-                        i
+                        "Skipping null module at index %d", i
                     )
                     continue
                 }
@@ -471,8 +463,7 @@ class AndroidacyRepoData(cacheRoot: File?, testMode: Boolean) : RepoData(
 
     companion object {
         private var ANDROIDACY_DEVICE_ID: String? = null
-        var token =
-            getPreferences("androidacy")!!.getString("pref_androidacy_api_token", null)
+        var token = getPreferences("androidacy")!!.getString("pref_androidacy_api_token", null)
 
         init {
             @Suppress("LocalVariableName") val OK_HTTP_URL_BUILDER: Builder =
@@ -485,7 +476,7 @@ class AndroidacyRepoData(cacheRoot: File?, testMode: Boolean) : RepoData(
         private var realInstance: AndroidacyRepoData? = null
             get() {
                 if (field === null) {
-                    field = AndroidacyRepoData(INSTANCE!!.cacheDir, false)
+                    field = AndroidacyRepoData(MainApplication.getInstance().cacheDir, false)
                 }
                 return field
             }
@@ -514,20 +505,19 @@ class AndroidacyRepoData(cacheRoot: File?, testMode: Boolean) : RepoData(
             }
             // Try to get the device ID from the shared preferences
             val sharedPreferences = getPreferences("androidacy")
-            val deviceIdPref =
-                sharedPreferences!!.getString("device_id_v2", null)
+            val deviceIdPref = sharedPreferences!!.getString("device_id_v2", null)
             return if (deviceIdPref != null) {
                 ANDROIDACY_DEVICE_ID = deviceIdPref
                 deviceIdPref
             } else {
-                val fp = create(INSTANCE!!.applicationContext)
+                val fp = create(MainApplication.getInstance().applicationContext)
                 fp.getFingerprint(Fingerprinter.Version.V_5) { fingerprint: String? ->
                     ANDROIDACY_DEVICE_ID = fingerprint
                     // use fingerprint
                     // Save the device ID to the shared preferences
-                    val editor = sharedPreferences.edit()
-                    editor.putString("device_id_v2", ANDROIDACY_DEVICE_ID)
-                    editor.apply()
+                    sharedPreferences.edit {
+                        putString("device_id_v2", ANDROIDACY_DEVICE_ID)
+                    }
                 }
                 // wait for up to 5 seconds for the fingerprint to be generated (ANDROIDACY_DEVICE_ID to be set)
                 val startTime = System.currentTimeMillis()

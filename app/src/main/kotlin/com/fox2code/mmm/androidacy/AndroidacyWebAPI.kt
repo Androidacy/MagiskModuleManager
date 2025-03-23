@@ -236,7 +236,7 @@ class AndroidacyWebAPI(
      */
     @get:JavascriptInterface
     val isLightTheme: Boolean
-        get() = MainApplication.INSTANCE!!.isLightTheme
+        get() = MainApplication.getInstance().isLightTheme
 
     /**
      * Check if the manager has received root access

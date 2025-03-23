@@ -12,7 +12,6 @@ import android.view.View
 import android.webkit.CookieManager
 import android.webkit.WebSettings
 import android.webkit.WebView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.FileProvider
@@ -30,7 +29,6 @@ import timber.log.Timber
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
-import java.sql.Timestamp
 import java.util.Objects
 
 class UpdateActivity : AppCompatActivity() {
@@ -41,27 +39,7 @@ class UpdateActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_update)
-        val ts = Timestamp(System.currentTimeMillis() - 30L * 24 * 60 * 60 * 1000)
-        val buildTime = Timestamp(BuildConfig.BUILD_TIME)
-        if (BuildConfig.DEBUG) {
-            if (ts.time > buildTime.time) {
-                val pm = packageManager
-                val intent = Intent(this, ExpiredActivity::class.java)
-                val resolveInfo = pm.queryIntentActivities(intent, 0)
-                if (resolveInfo.size > 0) {
-                    startActivity(intent)
-                    finish()
-                    return
-                } else {
-                    throw IllegalAccessError("This build has expired")
-                }
-            }
-        } else {
-            val ts2 = Timestamp(System.currentTimeMillis() - 180L * 24 * 60 * 60 * 1000)
-            if (ts2.time > buildTime.time) {
-                Toast.makeText(this, R.string.build_expired, Toast.LENGTH_LONG).show()
-            }
-        }
+        MainApplication.getInstance().check(this)
         chgWv = findViewById(R.id.changelog_webview)
         val changelogWebView = chgWv!!
         val webSettings = changelogWebView.settings
@@ -80,18 +58,18 @@ class UpdateActivity : AppCompatActivity() {
             WebView.setWebContentsDebuggingEnabled(true)
         }
         // if app is in dark mode, force dark mode on webview
-        if (MainApplication.INSTANCE!!.isDarkTheme) {
+        if (MainApplication.getInstance().isDarkTheme) {
             // for api 33, use setAlgorithmicDarkeningAllowed, for api 29-32 use setForceDark, for api 28 and below use setForceDarkStrategy
             if (WebViewFeature.isFeatureSupported(WebViewFeature.ALGORITHMIC_DARKENING)) {
                 WebSettingsCompat.setAlgorithmicDarkeningAllowed(webSettings, true)
             } else if (WebViewFeature.isFeatureSupported(WebViewFeature.FORCE_DARK)) {
-                @Suppress("DEPRECATION")
-                WebSettingsCompat.setForceDark(webSettings, WebSettingsCompat.FORCE_DARK_ON)
-            } else if (WebViewFeature.isFeatureSupported(WebViewFeature.FORCE_DARK_STRATEGY)) {
-                @Suppress("DEPRECATION")
-                WebSettingsCompat.setForceDarkStrategy(
+                @Suppress("DEPRECATION") WebSettingsCompat.setForceDark(
                     webSettings,
-                    WebSettingsCompat.DARK_STRATEGY_WEB_THEME_DARKENING_ONLY
+                    WebSettingsCompat.FORCE_DARK_ON
+                )
+            } else if (WebViewFeature.isFeatureSupported(WebViewFeature.FORCE_DARK_STRATEGY)) {
+                @Suppress("DEPRECATION") WebSettingsCompat.setForceDarkStrategy(
+                    webSettings, WebSettingsCompat.DARK_STRATEGY_WEB_THEME_DARKENING_ONLY
                 )
             }
         }
@@ -166,9 +144,8 @@ class UpdateActivity : AppCompatActivity() {
 
                     ACTIONS.INSTALL -> {
                         // ensure path was passed and points to a file within our cache directory. replace .. and url encoded characters
-                        val path =
-                            intent.getStringExtra("path")?.trim { it <= ' ' }
-                                ?.replace("\\.\\.".toRegex(), "")?.replace("%2e%2e".toRegex(), "")
+                        val path = intent.getStringExtra("path")?.trim { it <= ' ' }
+                            ?.replace("\\.\\.".toRegex(), "")?.replace("%2e%2e".toRegex(), "")
                         if (path!!.isEmpty()) {
                             runOnUiThread {
                                 // set status text to error
@@ -273,7 +250,8 @@ class UpdateActivity : AppCompatActivity() {
                 // set button text to download
                 val button = findViewById<MaterialButton>(R.id.action_update)
                 button.text = getString(R.string.download_update)
-                button.icon = AppCompatResources.getDrawable(this, R.drawable.baseline_cloud_download_24)
+                button.icon =
+                    AppCompatResources.getDrawable(this, R.drawable.baseline_cloud_download_24)
                 button.isEnabled = true
                 button.visibility = View.VISIBLE
                 button.setOnClickListener {
@@ -341,8 +319,7 @@ class UpdateActivity : AppCompatActivity() {
                 runOnUiThread {
                     // update progress bar
                     progressIndicator.setProgressCompat(
-                        (downloaded.toFloat() / total.toFloat() * 100).toInt(),
-                        true
+                        (downloaded.toFloat() / total.toFloat() * 100).toInt(), true
                     )
                     // update status text
                     statusTextView.text = getString(
@@ -422,9 +399,7 @@ class UpdateActivity : AppCompatActivity() {
         val intent = Intent(Intent.ACTION_VIEW)
         val context = applicationContext
         val uri = FileProvider.getUriForFile(
-            context,
-            "${context.packageName}.file-provider",
-            updateFile!!
+            context, "${context.packageName}.file-provider", updateFile!!
         )
         intent.setDataAndTypeAndNormalize(uri, "application/vnd.android.package-archive")
         intent.flags = Intent.FLAG_GRANT_READ_URI_PERMISSION

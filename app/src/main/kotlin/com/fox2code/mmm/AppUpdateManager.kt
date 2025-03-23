@@ -19,7 +19,7 @@ class AppUpdateManager private constructor() {
     private var changes: String? = null
     private val compatDataId = HashMap<String, Int>()
     private val updateLock = Any()
-    private val compatFile: File = File(MainApplication.INSTANCE!!.filesDir, "compat.txt")
+    private val compatFile: File = File(MainApplication.getInstance().filesDir, "compat.txt")
     private var latestRelease: Int?
     private var lastChecked: Long
 
