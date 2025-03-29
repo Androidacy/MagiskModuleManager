@@ -20,13 +20,14 @@ import com.fox2code.mmm.Constants
 import com.fox2code.mmm.MainApplication
 import com.topjohnwu.superuser.internal.UiThreadHandler
 import timber.log.Timber
+import androidx.core.net.toUri
 
 class ExternalHelper private constructor() {
     private var fallback: ComponentName? = null
     private var label: CharSequence? = null
     private var multi = false
     fun refreshHelper(context: Context) {
-        val intent = Intent(FOX_MMM_OPEN_EXTERNAL, Uri.parse("https://fox2code.com/module.zip"))
+        val intent = Intent(FOX_MMM_OPEN_EXTERNAL, "https://fox2code.com/module.zip".toUri())
         val resolveInfos =
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                 context.packageManager.queryIntentActivities(

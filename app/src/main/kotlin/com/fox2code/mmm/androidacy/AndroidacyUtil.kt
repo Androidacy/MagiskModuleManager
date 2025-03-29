@@ -8,6 +8,7 @@ package com.fox2code.mmm.androidacy
 
 import android.net.Uri
 import com.fox2code.mmm.BuildConfig
+import androidx.core.net.toUri
 
 @Suppress("MemberVisibilityCanBePrivate", "MemberVisibilityCanBePrivate")
 enum class AndroidacyUtil {
@@ -79,8 +80,17 @@ enum class AndroidacyUtil {
                 // Strip non alphanumeric
                 moduleId = moduleId.replace("[^a-zA-Z\\d]".toRegex(), "")
                 return moduleId
+            }// fallback to last sergment minus .zip
+            // Get the last segment
+            val lastSegment = moduleUrl.toUri().lastPathSegment
+            // Check if it ends with .zip
+            if (lastSegment != null && lastSegment.endsWith(".zip")) {
+                // Strip the .zip
+                moduleId = lastSegment.substring(0, lastSegment.length - 4)
+                // Strip non alphanumeric
+                moduleId = moduleId.replace("[^a-zA-Z\\d]".toRegex(), "")
+                return moduleId
             }
-            require(!BuildConfig.DEBUG) { "Invalid module url: $moduleUrl" }
             return null
         }
 
@@ -95,6 +105,17 @@ enum class AndroidacyUtil {
                 } else {
                     Uri.decode(moduleUrl.substring(i + 13, j))
                 }
+            }
+            // fallback to last sergment minus .zip
+            // Get the last segment
+            val lastSegment = moduleUrl.toUri().lastPathSegment
+            // Check if it ends with .zip
+            if (lastSegment != null && lastSegment.endsWith(".zip")) {
+                // Strip the .zip
+                val moduleId = lastSegment.substring(0, lastSegment.length - 4)
+                // Strip non alphanumeric
+                val moduleTitle = moduleId.replace("[^a-zA-Z\\d]".toRegex(), "")
+                return moduleTitle
             }
             return null
         }

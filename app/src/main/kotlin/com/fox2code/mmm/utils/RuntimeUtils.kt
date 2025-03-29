@@ -27,6 +27,8 @@ import com.fox2code.mmm.SetupActivity
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.topjohnwu.superuser.Shell
 import timber.log.Timber
+import androidx.core.content.edit
+import androidx.core.net.toUri
 
 @Suppress("UNUSED_PARAMETER")
 class RuntimeUtils {
@@ -64,9 +66,11 @@ class RuntimeUtils {
                         checkBox.setOnCheckedChangeListener { _: CompoundButton?, isChecked: Boolean ->
                             PreferenceManager.getDefaultSharedPreferences(
                                 context
-                            ).edit().putBoolean(
-                                "pref_dont_ask_again_notification_permission", isChecked
-                            ).apply()
+                            ).edit {
+                                putBoolean(
+                                    "pref_dont_ask_again_notification_permission", isChecked
+                                )
+                            }
                         }
                         builder.setView(view)
                         builder.setPositiveButton(R.string.permission_notification_grant) { _, _ ->
@@ -79,7 +83,7 @@ class RuntimeUtils {
                         builder.setNegativeButton(R.string.cancel) { dialog, _ ->
                             // Set pref_background_update_check to false and dismiss dialog
                             val prefs = PreferenceManager.getDefaultSharedPreferences(context)
-                            prefs.edit().putBoolean("pref_background_update_check", false).apply()
+                            prefs.edit { putBoolean("pref_background_update_check", false) }
                             dialog.dismiss()
                             MainActivity.doSetupNowRunning = false
                         }
@@ -118,9 +122,9 @@ class RuntimeUtils {
                     checkBox.setOnCheckedChangeListener { _: CompoundButton?, isChecked: Boolean ->
                         PreferenceManager.getDefaultSharedPreferences(
                             context
-                        ).edit()
-                            .putBoolean("pref_dont_ask_again_notification_permission", isChecked)
-                            .apply()
+                        ).edit {
+                            putBoolean("pref_dont_ask_again_notification_permission", isChecked)
+                        }
                     }
                     builder.setView(view)
                     builder.setPositiveButton(R.string.permission_notification_grant) { _, _ ->
@@ -135,7 +139,7 @@ class RuntimeUtils {
                     builder.setNegativeButton(R.string.cancel) { dialog, _ ->
                         // Set pref_background_update_check to false and dismiss dialog
                         val prefs = MainApplication.getPreferences("mmm")!!
-                        prefs.edit().putBoolean("pref_background_update_check", false).apply()
+                        prefs.edit { putBoolean("pref_background_update_check", false) }
                         dialog.dismiss()
                         MainActivity.doSetupNowRunning = false
                     }
@@ -223,12 +227,12 @@ class RuntimeUtils {
         builder.setPositiveButton(R.string.upgrade_now) { dialog, _ ->
             val intent = Intent(Intent.ACTION_VIEW)
             intent.data =
-                Uri.parse("https://androidacy.com/membership-join/#utm_source=AMMM&utm_medium=app&utm_campaign=upgrade_snackbar")
+                "https://androidacy.com/membership-join/#utm_source=AMMM&utm_medium=app&utm_campaign=upgrade_snackbar".toUri()
             activity.startActivity(intent)
             dialog.dismiss()
         }
         // do not show for another 7 days
-        prefs.edit().putLong("ugsns4", System.currentTimeMillis()).apply()
+        prefs.edit { putLong("ugsns4", System.currentTimeMillis()) }
         if (MainApplication.forceDebugLogging) Timber.i("showUpgradeSnackbar done")
     }
 

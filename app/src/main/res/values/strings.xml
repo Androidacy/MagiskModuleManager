@@ -430,4 +430,6 @@
     <string name="invalid_update_url">No update URL found</string>
     <string name="invalid_update_url_message">Could not determine a suitable URL to reinstall or update this module from. Please check with the source you got this module from.</string>
     <string name="show_apps">Our other apps</string>
+    <string name="last_ver">AMM V3 coming soon!</string>
+    <string name="last_ver_message">V3 of AMM is launching soon! This version (2.3.8) is the last supported version of any version before v3, and will be deprecated shortly after launching v3.</string>
 </resources>

@@ -16,9 +16,12 @@ import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
+import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.edit
 import androidx.core.net.toUri
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.FragmentTransaction
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
@@ -76,6 +79,7 @@ class SettingsActivity : AppCompatActivity(), LanguageActivity,
     @SuppressLint("RestrictedApi", "CommitTransaction")
     override fun onCreate(savedInstanceState: Bundle?) {
         devModeStep = 0
+        enableEdgeToEdge()
         super.onCreate(savedInstanceState)
 
         // check for pref_crashed and if so start crash handler
@@ -101,6 +105,12 @@ class SettingsActivity : AppCompatActivity(), LanguageActivity,
         }
 
         setContentView(R.layout.settings_activity)
+        val view = findViewById<View>(android.R.id.content)
+        ViewCompat.setOnApplyWindowInsetsListener(view) { view, windowInsets ->
+            val insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars())
+            view.setPadding(0, insets.top, 0, insets.bottom)
+            WindowInsetsCompat.CONSUMED
+        }
         setTitle(R.string.app_name_v2)
         MainApplication.getInstance().check(this)
         //hideActionBar();

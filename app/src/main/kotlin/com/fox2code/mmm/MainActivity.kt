@@ -29,11 +29,14 @@ import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.Toast
+import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsAnimationCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.get
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.room.Room
@@ -66,7 +69,6 @@ import com.fox2code.mmm.utils.io.net.Http.Companion.hasWebView
 import com.fox2code.mmm.utils.room.ReposListDatabase
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.google.android.material.elevation.SurfaceColors
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.progressindicator.LinearProgressIndicator
 import com.google.android.material.textfield.TextInputEditText
@@ -79,7 +81,6 @@ import java.io.FileOutputStream
 import java.io.InputStream
 import java.io.OutputStream
 import kotlin.math.roundToInt
-import androidx.core.view.isVisible
 
 
 class MainActivity : AppCompatActivity(), OnRefreshListener, OverScrollHelper {
@@ -208,6 +209,8 @@ class MainActivity : AppCompatActivity(), OnRefreshListener, OverScrollHelper {
             doSetupRestarting = false
         }
         onMainActivityCreate(this)
+        enableEdgeToEdge()
+        // make sure we don't draw behind the status bar
         super.onCreate(savedInstanceState)
         INSTANCE = this
         // check for pref_crashed and if so start crash handler
@@ -254,9 +257,16 @@ class MainActivity : AppCompatActivity(), OnRefreshListener, OverScrollHelper {
         }.start()
         MainApplication.getInstance().check(this)
         setContentView(R.layout.activity_main)
+        val view = findViewById<View>(android.R.id.content)
+        ViewCompat.setOnApplyWindowInsetsListener(view) { view, windowInsets ->
+            val insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars())
+            overScrollInsetTop = insets.top
+            overScrollInsetBottom = insets.bottom
+            view.setPadding(0, insets.top, 0, insets.bottom)
+            WindowInsetsCompat.CONSUMED
+        }
         this.setTitle(R.string.app_name_v2)
         // set navigation bar color based on surfacecolors
-        window.navigationBarColor = SurfaceColors.SURFACE_2.getColor(this)
         progressIndicator = findViewById(R.id.progress_bar)
         progressIndicator?.max = PRECISION
         progressIndicator?.min = 0
@@ -270,12 +280,10 @@ class MainActivity : AppCompatActivity(), OnRefreshListener, OverScrollHelper {
         moduleListOnline = findViewById(R.id.module_list_online)
         searchTextInputEditText = findViewById(R.id.search_input)
         val textInputEditText = searchTextInputEditText!!
-        val view = findViewById<View>(R.id.root_container)
         var startBottom = 0f
         var endBottom = 0f
         ViewCompat.setWindowInsetsAnimationCallback(
-            view,
-            object : WindowInsetsAnimationCompat.Callback(DISPATCH_MODE_STOP) {
+            view, object : WindowInsetsAnimationCompat.Callback(DISPATCH_MODE_STOP) {
                 // Override methods…
                 override fun onProgress(
                     insets: WindowInsetsCompat,
@@ -567,6 +575,8 @@ class MainActivity : AppCompatActivity(), OnRefreshListener, OverScrollHelper {
         }
         // reset update module and update module count in main application
         MainApplication.getInstance().resetUpdateModule()
+        moduleViewListBuilder.addNotification(NotificationType.LAST_VER)
+        moduleViewListBuilderOnline.addNotification(NotificationType.LAST_VER)
         tryGetMagiskPathAsync(object : InstallerInitializer.Callback {
             override fun onPathReceived(path: String?) {
                 if (MainApplication.forceDebugLogging) Timber.i("Got magisk path: %s", path)
@@ -630,7 +640,7 @@ class MainActivity : AppCompatActivity(), OnRefreshListener, OverScrollHelper {
                     moduleViewListBuilder.addNotification(NotificationType.NO_WEB_VIEW)
                     // disable online tab
                     runOnUiThread {
-                        bottomNavigationView.menu.getItem(1).isEnabled = false
+                        bottomNavigationView.menu[1].isEnabled = false
                         bottomNavigationView.selectedItemId = R.id.installed_menu_item
                     }
                 }
@@ -825,7 +835,7 @@ class MainActivity : AppCompatActivity(), OnRefreshListener, OverScrollHelper {
     }
 
     override fun onRefresh() {
-        if (swipeRefreshBlocker > System.currentTimeMillis() || initMode || progressIndicator == null || progressIndicator!!.visibility == View.VISIBLE || doSetupNowRunning) {
+        if (swipeRefreshBlocker > System.currentTimeMillis() || initMode || progressIndicator == null || progressIndicator!!.isVisible || doSetupNowRunning) {
             swipeRefreshLayout!!.isRefreshing = false
             return  // Do not double scan
         }

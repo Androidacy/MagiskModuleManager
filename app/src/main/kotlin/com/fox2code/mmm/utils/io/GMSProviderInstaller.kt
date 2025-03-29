@@ -36,6 +36,14 @@ enum class GMSProviderInstaller {
                     remote.classLoader.loadClass("com.google.android.gms.common.security.ProviderInstallerImpl")
                 cl.getDeclaredMethod("insertProvider", Context::class.java).invoke(null, remote)
                 if (MainApplication.forceDebugLogging) Timber.i("Installed GMS security providers!")
+                // next, try cronet provider
+                val cronet = context.createPackageContext(
+                    "com.google.android.gms",
+                    Context.CONTEXT_INCLUDE_CODE or Context.CONTEXT_IGNORE_SECURITY
+                )
+                val cronetCl =
+                    cronet.classLoader.loadClass("com.google.android.gms.common.security.ProviderInstallerImpl")
+                cronetCl.getDeclaredMethod("insertProvider", Context::class.java).invoke(null, cronet)
             } catch (e: PackageManager.NameNotFoundException) {
                 Timber.w("No GMS Implementation are installed on this device")
             } catch (e: Exception) {

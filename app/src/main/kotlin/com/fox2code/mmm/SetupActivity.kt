@@ -11,14 +11,18 @@ import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.content.res.Resources.Theme
-import android.net.Uri
 import android.os.Bundle
 import android.os.Process
 import android.view.View
 import android.webkit.CookieManager
 import android.widget.CompoundButton
 import android.widget.Toast
+import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.edit
+import androidx.core.net.toUri
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.FragmentActivity
 import androidx.room.Room
 import com.fox2code.mmm.databinding.ActivitySetupBinding
@@ -49,9 +53,9 @@ class SetupActivity : AppCompatActivity(), LanguageActivity {
     @SuppressLint("ApplySharedPref", "RestrictedApi")
     @Suppress("KotlinConstantConditions", "NAME_SHADOWING")
     override fun onCreate(savedInstanceState: Bundle?) {
+        enableEdgeToEdge()
         super.onCreate(savedInstanceState)
         this.setTitle(R.string.setup_title)
-        this.window.navigationBarColor = this.getColor(R.color.black_transparent)
         createFiles()
         disableUpdateActivityForFdroidFlavor()
         if (BuildConfig.DEBUG) {
@@ -68,6 +72,12 @@ class SetupActivity : AppCompatActivity(), LanguageActivity {
         }
         val binding = ActivitySetupBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        ViewCompat.setOnApplyWindowInsetsListener(binding.root) { view, windowInsets ->
+            val insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars())
+            view.setPadding(0, insets.top, 0, insets.bottom)
+            WindowInsetsCompat.CONSUMED
+        }
         MainApplication.getInstance().check(this)
         val view: View = binding.root
         // if our application id is "com.androidacy.mmm" or begins with it, check if com.fox2code.mmm is installed and offer to uninstall it. if we're com.fox2code.mmm, check if com.fox2code.mmm.fdroid or com.fox2code.mmm.debug is installed and offer to uninstall it
@@ -93,14 +103,13 @@ class SetupActivity : AppCompatActivity(), LanguageActivity {
                         materialAlertDialogBuilder.setTitle(R.string.setup_uninstall_title)
                         materialAlertDialogBuilder.setMessage(
                             getString(
-                                R.string.setup_uninstall_message,
-                                packageName
+                                R.string.setup_uninstall_message, packageName
                             )
                         )
                         materialAlertDialogBuilder.setPositiveButton(R.string.uninstall) { _: DialogInterface?, _: Int ->
                             // start uninstall intent
                             val intent = Intent(Intent.ACTION_DELETE)
-                            intent.data = Uri.parse("package:$packageName")
+                            intent.data = "package:$packageName".toUri()
                             startActivity(intent)
                         }
                         materialAlertDialogBuilder.setNegativeButton(R.string.cancel) { _: DialogInterface?, _: Int -> }
@@ -113,14 +122,13 @@ class SetupActivity : AppCompatActivity(), LanguageActivity {
                         materialAlertDialogBuilder.setTitle(R.string.setup_uninstall_title)
                         materialAlertDialogBuilder.setMessage(
                             getString(
-                                R.string.setup_uninstall_message,
-                                packageName
+                                R.string.setup_uninstall_message, packageName
                             )
                         )
                         materialAlertDialogBuilder.setPositiveButton(R.string.uninstall) { _: DialogInterface?, _: Int ->
                             // start uninstall intent
                             val intent = Intent(Intent.ACTION_DELETE)
-                            intent.data = Uri.parse("package:$packageName")
+                            intent.data = "package:$packageName".toUri()
                             startActivity(intent)
                         }
                         materialAlertDialogBuilder.setNegativeButton(R.string.cancel) { _: DialogInterface?, _: Int -> }
@@ -133,14 +141,13 @@ class SetupActivity : AppCompatActivity(), LanguageActivity {
                         materialAlertDialogBuilder.setTitle(R.string.setup_uninstall_title)
                         materialAlertDialogBuilder.setMessage(
                             getString(
-                                R.string.setup_uninstall_message,
-                                packageName
+                                R.string.setup_uninstall_message, packageName
                             )
                         )
                         materialAlertDialogBuilder.setPositiveButton(R.string.uninstall) { _: DialogInterface?, _: Int ->
                             // start uninstall intent
                             val intent = Intent(Intent.ACTION_DELETE)
-                            intent.data = Uri.parse("package:$packageName")
+                            intent.data = "package:$packageName".toUri()
                             startActivity(intent)
                         }
                         materialAlertDialogBuilder.setNegativeButton(R.string.cancel) { _: DialogInterface?, _: Int -> }
@@ -250,7 +257,7 @@ class SetupActivity : AppCompatActivity(), LanguageActivity {
                 themeNames, checkedItem
             ) { dialog: DialogInterface, which: Int ->
                 // Set the theme
-                prefs.edit().putString("pref_theme", themeValues[which]).commit()
+                prefs.edit(commit = true) { putString("pref_theme", themeValues[which]) }
                 // Dismiss the dialog
                 dialog.dismiss()
                 // Set the theme
@@ -356,21 +363,17 @@ class SetupActivity : AppCompatActivity(), LanguageActivity {
             editor.commit()
             // Log the changes
             if (MainApplication.forceDebugLogging) Timber.d(
-                "Setup finished. Preferences: %s",
-                prefs.all
+                "Setup finished. Preferences: %s", prefs.all
             )
             if (MainApplication.forceDebugLogging) Timber.d(
-                "Androidacy repo: %s",
-                androidacyRepoRoom
+                "Androidacy repo: %s", androidacyRepoRoom
             )
             if (MainApplication.forceDebugLogging) Timber.d(
-                "Magisk Alt repo: %s",
-                magiskAltRepoRoom
+                "Magisk Alt repo: %s", magiskAltRepoRoom
             )
             // log last shown setup
             if (MainApplication.forceDebugLogging) Timber.d(
-                "Last shown setup: %s",
-                prefs.getString("last_shown_setup", "v0")
+                "Last shown setup: %s", prefs.getString("last_shown_setup", "v0")
             )
             // Restart the activity
             MainActivity.doSetupRestarting = true
@@ -544,8 +547,7 @@ class SetupActivity : AppCompatActivity(), LanguageActivity {
             db.close()
             db2.close()
             if (MainApplication.forceDebugLogging) Timber.d(
-                "Databases created in %s ms",
-                System.currentTimeMillis() - startTime
+                "Databases created in %s ms", System.currentTimeMillis() - startTime
             )
         }
         thread.start()

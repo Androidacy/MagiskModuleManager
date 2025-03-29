@@ -26,8 +26,11 @@ import android.webkit.WebSettings
 import android.webkit.WebView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.FileProvider
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import androidx.webkit.WebResourceErrorCompat
 import androidx.webkit.WebSettingsCompat
@@ -71,6 +74,7 @@ class AndroidacyActivity : AppCompatActivity() {
     )
     override fun onCreate(savedInstanceState: Bundle?) {
         moduleFile = File(this.cacheDir, "module.zip")
+        enableEdgeToEdge()
         super.onCreate(savedInstanceState)
 
         val intent = this.intent
@@ -127,6 +131,13 @@ class AndroidacyActivity : AppCompatActivity() {
         val config = intent.getStringExtra(Constants.EXTRA_ANDROIDACY_ACTIONBAR_CONFIG)
         val compatLevel = intent.getIntExtra(Constants.EXTRA_ANDROIDACY_COMPAT_LEVEL, 0)
         this.setContentView(R.layout.webview)
+
+        val view = findViewById<View>(android.R.id.content)
+        ViewCompat.setOnApplyWindowInsetsListener(view) { view, windowInsets ->
+            val insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars())
+            view.setPadding(0, insets.top, 0, 0)
+            WindowInsetsCompat.CONSUMED
+        }
         if (title.isNullOrEmpty()) {
             title = "Androidacy"
         }

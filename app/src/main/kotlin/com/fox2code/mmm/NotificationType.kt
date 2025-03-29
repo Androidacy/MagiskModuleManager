@@ -88,7 +88,6 @@ enum class NotificationType(
         }
     },
 
-
     MAGISK_OUTDATED(
         R.string.magisk_outdated,
         R.drawable.ic_baseline_update_24,
@@ -225,6 +224,19 @@ enum class NotificationType(
             return !BuildConfig.DEBUG && (MainApplication.isShowcaseMode || InstallerInitializer.peekMagiskPath() == null)
         }
     },
+    LAST_VER(
+        R.string.last_ver,
+        R.drawable.ic_baseline_info_24,
+        com.google.android.material.R.attr.colorSurfaceBright,
+        com.google.android.material.R.attr.colorOnSurface,
+        View.OnClickListener { v: View ->
+            MaterialAlertDialogBuilder(v.context)
+                .setTitle(R.string.last_ver)
+                .setMessage(R.string.last_ver_message)
+                .setPositiveButton(android.R.string.ok, null)
+                .show()
+        }
+    ),
     KSU_EXPERIMENTAL(
         R.string.ksu_experimental,
         R.drawable.ic_baseline_warning_24,

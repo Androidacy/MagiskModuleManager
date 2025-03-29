@@ -554,12 +554,10 @@ class MainApplication : Application(), Configuration.Provider, ActivityLifecycle
         private var shellBuilder: Shell.Builder? = null
 
         // Is application wrapped, and therefore must reduce it's feature set.
-        @SuppressLint("RestrictedApi") // Use FoxProcess wrapper helper.
         const val IS_WRAPPED = false
 
         init {
-
-            assert(!IS_WRAPPED) { "This application is not wrapped!" }
+            assert(!IS_WRAPPED) { "This application is wrapped!" }
         }
 
         private val callers = ArrayList<String>()
@@ -737,9 +735,8 @@ class MainApplication : Application(), Configuration.Provider, ActivityLifecycle
                 if (updateCheckBg != null) {
                     return java.lang.Boolean.parseBoolean(updateCheckBg)
                 }
-                val wrapped = IS_WRAPPED
-                val updateCheckBgTemp = !wrapped && getPreferences("mmm")!!.getBoolean(
-                    "pref_background_update_check", true
+                @Suppress("KotlinConstantConditions") val updateCheckBgTemp = getPreferences("mmm")!!.getBoolean(
+                    "pref_background_update_check", BuildConfig.ENABLE_AUTO_UPDATER
                 )
                 updateCheckBg = updateCheckBgTemp.toString()
                 return java.lang.Boolean.parseBoolean(updateCheckBg)
@@ -753,6 +750,7 @@ class MainApplication : Application(), Configuration.Provider, ActivityLifecycle
             getPreferences("mmm")!!.edit { putBoolean("has_root_access", bool) }
         }
 
+        @Suppress("KotlinConstantConditions")
         val isCrashReportingEnabled: Boolean
             get() = analyticsAllowed() && getPreferences("mmm")!!.getBoolean(
                 "pref_crash_reporting", BuildConfig.DEFAULT_ENABLE_CRASH_REPORTING
@@ -768,6 +766,7 @@ class MainApplication : Application(), Configuration.Provider, ActivityLifecycle
         val isNotificationPermissionGranted: Boolean
             get() = NotificationManagerCompat.from((INSTANCE)!!).areNotificationsEnabled()
 
+        @Suppress("KotlinConstantConditions")
         fun analyticsAllowed(): Boolean {
             return getPreferences("mmm")!!.getBoolean(
                 "pref_analytics_enabled", BuildConfig.DEFAULT_ENABLE_ANALYTICS

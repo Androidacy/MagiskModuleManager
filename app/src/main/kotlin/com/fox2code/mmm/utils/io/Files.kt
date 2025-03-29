@@ -223,7 +223,7 @@ enum class Files {
                 // unzip
                 if (MainApplication.forceDebugLogging) Timber.d("Unzipping module to %s", tempUnzipDir.absolutePath)
                 try {
-                    ZipFile(tempFile).use { zipFile ->
+                    ZipFile.builder().setFile(tempFile).get().use { zipFile ->
                         var files = zipFile.entries
                         // check if there is only one folder in the top level
                         var folderCount = 0

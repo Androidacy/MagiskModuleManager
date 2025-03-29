@@ -45,6 +45,8 @@ android {
     defaultConfig {
         applicationId = "com.fox2code.mmm"
         minSdk = 26
+        // app is in maintenance mode, we do not intend to update it to target newer SDKs
+        //noinspection OldTargetApi
         targetSdk = 34
         versionCode = 93
         versionName = "2.3.8"
@@ -52,33 +54,34 @@ android {
             useSupportLibrary = true
         }
         multiDexEnabled = true
-        resourceConfigurations.addAll(
-            listOf(
-                "ar",
-                "bs",
-                "cs",
-                "de",
-                "es-rMX",
-                "es",
-                "el",
-                "fr",
-                "hu",
-                "id",
-                "it",
-                "ja",
-                "nl",
-                "pl",
-                "pt",
-                "pt-rBR",
-                "ru",
-                "tr",
-                "uk",
-                "vi",
-                "zh",
-                "zh-rTW",
-                "en"
+        androidResources {
+            localeFilters.addAll(
+                listOf(
+                    "ar",
+                    "bs",
+                    "cs",
+                    "de",
+                    "es-rMX",
+                    "es",
+                    "el",
+                    "fr",
+                    "hu",
+                    "id",
+                    "it",
+                    "ja",
+                    "nl",
+                    "pl",
+                    "pt",
+                    "pt-rBR",
+                    "ru",
+                    "tr",
+                    "uk",
+                    "vi",
+                    "zh",
+                    "zh-rTW"
+                )
             )
-        )
+        }
         ksp {
             arg("room.schemaLocation", "$projectDir/roomSchemas")
         }
@@ -161,8 +164,7 @@ android {
                 propertiesA.load(project.rootProject.file("androidacy.properties").reader())
                 propertiesA.setProperty(
                     "client_id", propertiesA.getProperty(
-                        "client_id",
-                        default
+                        "client_id", default
                     )
                 )
             } else {
@@ -214,8 +216,7 @@ android {
                 propertiesA.load(project.rootProject.file("androidacy.properties").reader())
                 propertiesA.setProperty(
                     "client_id", propertiesA.getProperty(
-                        "client_id",
-                        default
+                        "client_id", default
                     )
                 )
             } else {
@@ -370,6 +371,7 @@ dependencies {
     // logging interceptor
     debugImplementation("com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.14")
     // Chromium cronet from androidacy
+    // implementation("com.google.android.gms:play-services-cronet:18.1.0")
     implementation("org.chromium.net:cronet-embedded:119.6045.31")
 
     val libsuVersion = "6.0.0"

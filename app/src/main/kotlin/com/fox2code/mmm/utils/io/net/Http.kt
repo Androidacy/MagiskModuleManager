@@ -28,6 +28,7 @@ import com.fox2code.mmm.R
 import com.fox2code.mmm.androidacy.AndroidacyUtil
 import com.fox2code.mmm.installer.InstallerInitializer.Companion.peekMagiskPath
 import com.fox2code.mmm.installer.InstallerInitializer.Companion.peekMagiskVersion
+import com.fox2code.mmm.utils.io.CronetLoader
 import com.fox2code.mmm.utils.io.Files.Companion.makeBuffer
 import com.google.net.cronet.okhttptransport.CronetInterceptor
 import ly.count.android.sdk.Countly
@@ -190,19 +191,6 @@ enum class Http {;
 
         init {
             val mainApplication = MainApplication.getInstance()
-            if (mainApplication == null) {
-                val error = Error("Initialized Http too soon!")
-                error.fillInStackTrace()
-                Timber.e(error, "Initialized Http too soon!")
-                System.out.flush()
-                System.err.flush()
-                try {
-                    Os.kill(Os.getpid(), 9)
-                } catch (e: ErrnoException) {
-                    exitProcess(9)
-                }
-                throw error
-            }
             var cookieManager: CookieManager? = null
             try {
                 cookieManager = CookieManager.getInstance()
@@ -318,9 +306,14 @@ enum class Http {;
             // Add cronet interceptor
             // init cronet
             try {
-                // Load the cronet library
-                val builder: CronetEngine.Builder =
-                    CronetEngine.Builder(mainApplication.applicationContext)
+                val cronetEngine = try {
+                    // Load the cronet library
+                    CronetLoader.getCronetEngineBuilder(MainApplication.getInstance().applicationContext) as CronetEngine.Builder
+                } catch (e: Exception) {
+                    Timber.e(e, "Failed to load cronet library from GMS")
+                    null
+                }
+                val builder = cronetEngine ?: CronetEngine.Builder(MainApplication.getInstance().applicationContext)
                 builder.enableBrotli(true)
                 builder.enableHttp2(true)
                 builder.enableQuic(true)

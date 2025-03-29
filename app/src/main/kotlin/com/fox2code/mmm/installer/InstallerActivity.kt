@@ -12,7 +12,6 @@ import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.os.Build
 import android.os.Bundle
 import android.os.PowerManager
@@ -21,8 +20,13 @@ import android.view.KeyEvent
 import android.view.View
 import android.view.WindowManager
 import android.widget.Toast
+import androidx.activity.enableEdgeToEdge
 import androidx.annotation.Keep
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.graphics.drawable.toDrawable
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.fox2code.androidansi.AnsiConstants
 import com.fox2code.androidansi.AnsiParser
@@ -65,16 +69,16 @@ import java.io.InputStreamReader
 import java.util.Enumeration
 import java.util.concurrent.Executor
 import java.util.zip.ZipEntry
-import androidx.core.graphics.drawable.toDrawable
-import androidx.core.view.isVisible
 
 class InstallerActivity : AppCompatActivity() {
     private var canGoBack: Boolean = false
     private val isLightTheme: Boolean
         get() = MainApplication.getInstance().isLightTheme
     private var progressIndicator: LinearProgressIndicator? = null
+
     @SuppressLint("RestrictedApi")
     private var rebootFloatingButton: BottomNavigationItemView? = null
+
     @SuppressLint("RestrictedApi")
     private var cancelFloatingButton: BottomNavigationItemView? = null
     private var installerTerminal: InstallerTerminal? = null
@@ -87,10 +91,11 @@ class InstallerActivity : AppCompatActivity() {
 
     @SuppressLint("RestrictedApi")
     override fun onCreate(savedInstanceState: Bundle?) {
+        enableEdgeToEdge()
+        super.onCreate(savedInstanceState)
         warnReboot = false
         moduleCache = File(this.cacheDir, "installer")
         if (!moduleCache!!.exists() && !moduleCache!!.mkdirs()) Timber.e("Failed to mkdir module cache dir!")
-        super.onCreate(savedInstanceState)
 
         val intent = this.intent
         val target: String
@@ -142,6 +147,12 @@ class InstallerActivity : AppCompatActivity() {
         title = name
         textWrap = MainApplication.isTextWrapEnabled
         setContentView(if (textWrap) R.layout.installer_wrap else R.layout.installer)
+        val view = findViewById<View>(android.R.id.content)
+        ViewCompat.setOnApplyWindowInsetsListener(view) { view, windowInsets ->
+            val insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars())
+            view.setPadding(0, insets.top, 0, insets.bottom)
+            WindowInsetsCompat.CONSUMED
+        }
         val background: Int
         val foreground: Int
         if (MainApplication.getInstance().isLightTheme && !MainApplication.isForceDarkTerminal) {
@@ -181,14 +192,16 @@ class InstallerActivity : AppCompatActivity() {
         if (urlMode) installerTerminal!!.addLine("- Downloading $name")
         // track install
         if (MainApplication.analyticsAllowed()) {
-            Countly.sharedInstance().events().recordEvent("install", mapOf(
-                "name" to name,
-                "url" to target,
-                "checksum" to checksum,
-                "noExtensions" to noExtensions,
-                "rootless" to rootless,
-                "mmtReborn" to mmtReborn
-            ))
+            Countly.sharedInstance().events().recordEvent(
+                "install", mapOf(
+                    "name" to name,
+                    "url" to target,
+                    "checksum" to checksum,
+                    "noExtensions" to noExtensions,
+                    "rootless" to rootless,
+                    "mmtReborn" to mmtReborn
+                )
+            )
         }
         Thread(Runnable {
             // ensure module cache is is in our cache dir
@@ -229,7 +242,10 @@ class InstallerActivity : AppCompatActivity() {
                 }
                 if (canceled) return@Runnable
                 if (!checksum.isNullOrEmpty()) {
-                    if (MainApplication.forceDebugLogging) Timber.i("Checking for checksum: %s", checksum.toString())
+                    if (MainApplication.forceDebugLogging) Timber.i(
+                        "Checking for checksum: %s",
+                        checksum.toString()
+                    )
                     runOnUiThread { installerTerminal!!.addLine("- Checking file integrity") }
                     if (!checkSumMatch(rawModule, checksum)) {
                         setInstallStateFinished(false, "! File integrity check failed", "")
@@ -342,12 +358,12 @@ class InstallerActivity : AppCompatActivity() {
         )
         val installerMonitor: InstallerMonitor
         val installJob: Shell.Job
-            val mgskPath = InstallerInitializer.peekMagiskPath()
-            val ashExec = if (!InstallerInitializer.isKsu) {
-		"$mgskPath/magisk/busybox ash"
-			} else {
-				"$mgskPath/ksu/busybox ash"
-		}
+        val mgskPath = InstallerInitializer.peekMagiskPath()
+        val ashExec = if (!InstallerInitializer.isKsu) {
+            "$mgskPath/magisk/busybox ash"
+        } else {
+            "$mgskPath/ksu/busybox ash"
+        }
 
         if (rootless) { // rootless is only used for debugging
             val installScript = extractInstallScript("module_installer_test.sh")
