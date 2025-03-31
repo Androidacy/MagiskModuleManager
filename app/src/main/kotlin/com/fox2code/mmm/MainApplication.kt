@@ -107,57 +107,26 @@ class MainApplication : Application(), Configuration.Provider, ActivityLifecycle
 
     @Suppress("UnusedVariable")
     fun check(activity: AppCompatActivity) {
-        val a = 0xFFFF and 0x7FFF
-        val b = 0x1 shl 0x1 shl 0x1 shl 0x1 shl 0x1
         val d = BuildConfig.DEBUG
-        val e = System.currentTimeMillis()
-        val f = (e - (b * a * 180L)) > BuildConfig.BUILD_TIME
-        val g = !d && f
+        val t = System.currentTimeMillis()
+        val ms = 86400000L
+        val nd = 90 * 2
+        val dd = 10 * 3
+        val bt = BuildConfig.BUILD_TIME
+        val ex = !d && (t > (bt + nd * ms))
 
-        @Suppress("ControlFlowWithEmptyBody") while (false);
-
-        if (g xor false) {
-            val h = Intent(this, ExpiredActivity::class.java)
-            val j = { s: String -> s.toCharArray() }
-            if ((packageManager.queryIntentActivities(
-                    h,
-                    0
-                ).size and 0xFFFFFFFF.toInt()).toLong() != 0L
-            ) {
-                startActivity(h)
+        if (ex) {
+            val i = Intent(this, ExpiredActivity::class.java)
+            i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        
+            if (packageManager.queryIntentActivities(i, 0).isNotEmpty()) {
+                startActivity(i)
                 activity.finish()
             } else {
-                val m = String(ByteArray(22) { i ->
-                    byteArrayOf(
-                        84,
-                        104,
-                        105,
-                        115,
-                        32,
-                        98,
-                        117,
-                        105,
-                        108,
-                        100,
-                        32,
-                        104,
-                        97,
-                        115,
-                        32,
-                        101,
-                        120,
-                        112,
-                        105,
-                        114,
-                        101,
-                        100
-                    )[i]
-                })
-                throw IllegalAccessError(m)
+                throw IllegalAccessError("e1")
             }
-        } else if (d && (e - (b * a * 30L)) > BuildConfig.BUILD_TIME) {
-            Toast.makeText(this, resources.getText(R.string.build_expired), Toast.LENGTH_LONG)
-                .show()
+        } else if (d && (t > (bt + dd * ms))) {
+            Toast.makeText(this, resources.getText(R.string.build_expired), Toast.LENGTH_LONG).show()
         }
     }
 
