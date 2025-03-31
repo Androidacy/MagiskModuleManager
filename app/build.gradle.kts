@@ -48,8 +48,8 @@ android {
         // app is in maintenance mode, we do not intend to update it to target newer SDKs
         //noinspection OldTargetApi
         targetSdk = 34
-        versionCode = 93
-        versionName = "2.3.8"
+        versionCode = 94
+        versionName = "2.3.8-1"
         vectorDrawables {
             useSupportLibrary = true
         }
