@@ -424,13 +424,13 @@ dependencies {
     implementation("com.github.fingerprintjs:fingerprint-android:2.2.0")
 
     // room
-    implementation("androidx.room:room-runtime:2.6.1")
+    implementation("androidx.room:room-runtime:2.7.2")
 
     // To use Kotlin Symbol Processing (KSP)
-    ksp("androidx.room:room-compiler:2.6.1")
+    ksp("androidx.room:room-compiler:2.7.2")
 
     // optional - Kotlin Extensions and Coroutines support for Room
-    implementation("androidx.room:room-ktx:2.6.1")
+    implementation("androidx.room:room-ktx:2.7.2")
 
     implementation("pl.droidsonroids.gif:android-gif-drawable:1.2.29")
 
