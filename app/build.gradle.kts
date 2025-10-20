@@ -12,7 +12,7 @@ plugins {
     id("com.android.application")
     id("com.mikepenz.aboutlibraries.plugin")
     kotlin("android")
-    id("com.google.devtools.ksp") version "2.1.20-1.0.31"
+    id("com.google.devtools.ksp") version "2.2.20-2.0.4"
 }
 android {
     // functions to get git info: gitCommitHash, gitBranch, gitRemote
