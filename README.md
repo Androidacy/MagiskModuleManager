@@ -17,7 +17,7 @@ We're actively working on its replacement though! We target a Q3 release for v3,
 - A full rewrite - completely rewritten from scratch
 - Tighter integration with the Androidacy platform
 
-  More news will be available soon!
+  Build has been submitted to Google Play. More information coming once its available!
 
 **All builds before 2.3.7 are expired and cannot be used.**
 
